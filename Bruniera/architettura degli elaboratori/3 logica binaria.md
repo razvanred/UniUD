@@ -6,8 +6,8 @@ due modi di inviare segnai in un elaboratore
 
 analogico e digitale:
 
-    Anlogico: il segnale modulato in infiniti livelli, come un onda
-    Digitale: il segnale è presente o assente
+* Anlogico: il segnale modulato in infiniti livelli, come un onda
+* Digitale: il segnale è presente o assente
 
 si parla in ogni caso di voltaggio.
 
@@ -44,19 +44,20 @@ sono semplici circuiti combinatori alla base di ogni circuito combinatorio
 
 alcune porte:
 
-    and: uscita 1 se tutti gli ingressi sono 1
-    or: uscita 1 se almeno un ingresso è 1
-    not: inverte l'ingresso
+* and: uscita 1 se tutti gli ingressi sono 1
+* or: uscita 1 se almeno un ingresso è 1
+* not: inverte l'ingresso
 
 ##### (fig. 1)
 
 ---
 ### paragone elettronica-idraulica
 
-    corrente elettrica - portata
-    cavi - tubi
-    tensione - pressione
-    batteria - pompa
+* corrente elettrica - portata
+* cavi - tubi
+* tensione - pressione
+* batteria - pompa
+    ...
 
 ---
 ### realizzazione fisica porte logiche
@@ -88,6 +89,5 @@ es1:
 
 altri metodi:
 
-    metodo duale, scambio 0<->1 e scambio le porte and e or
-
-    mappe di Karnaugh
+* metodo duale, scambio 0<->1 e scambio le porte and e or
+* mappe di Karnaugh

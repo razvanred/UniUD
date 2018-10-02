@@ -6,16 +6,16 @@ programma: sequenza di istruzioni macchina
 
 i programmi ed i **dati** sono organizzati in file che risiedono in memoria
 
-    la memoria è una delle parti più problematiche nello sviluppo degli elaboratori,
-    non si sapeva come mantenere i dati perché la macchina potesse utilizzarli
+* la memoria è una delle parti più problematiche nello sviluppo degli elaboratori,
+* non si sapeva come mantenere i dati perché la macchina potesse utilizzarli
 
 ---
 ---
 ## Memoria
 due tipi di memoria:
 
-    operativa: RAM, dati in elaborazione, volatile
-    di massa: memoria secondaria, disco rigido, nastro magnetico, eccetera
+* operativa: RAM, dati in elaborazione, volatile
+* di massa: memoria secondaria, disco rigido, nastro magnetico, eccetera
 
 ---
 
@@ -85,17 +85,17 @@ forniscono una seria di funzionalità l'una all'altra
 ---
 Esempio:
 
-    5: Problem oriented lanquage
+    5. Problem oriented lanquage
     |
-    4: assembly
+    4. assembly
     |
-    3: operating system machine
+    3. operating system machine
     |
-    2: instruction set
+    2. instruction set
     |
-    1: microarchitecture
+    1. microarchitecture
     |
-    0: digital logic
+    0. digital logic
 
 ---
 ---
@@ -110,10 +110,10 @@ utilità lavorativa
 
 ## argomenti in dettaglio
 
-    porte logiche
-    circuiti logici, memorie
-    processore
-    assembly
-    periferiche
-    bus, collegamenti
-    calcolatori paralleli, sistemi multiprocessore
+* porte logiche
+* circuiti logici, memorie
+* processore
+* assembly
+* periferiche
+* bus, collegamenti
+* calcolatori paralleli, sistemi multiprocessore
