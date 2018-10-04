@@ -48,7 +48,7 @@ alcune porte:
 * or: uscita 1 se almeno un ingresso è 1
 * not: inverte l'ingresso
 
-##### (fig. 1)
+##### (fig. 1.3.1)
 
 ---
 ### paragone elettronica-idraulica
@@ -64,7 +64,7 @@ alcune porte:
 
 trensistor: regola il segnale attraverso un'altro segnale
 
-##### (fig.2)
+##### (fig. 1.3.2)
 
 le porte nand e nor sono le porte and e or negate
 

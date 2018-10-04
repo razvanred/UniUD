@@ -1,0 +1,22 @@
+# Operazioni matematiche
+
+    mia: (12*2)/(8-2)*(1+2)
+    esempio: (1/3+10*1/7)*4/9/2-(10*2/5)
+
+### rappresento strutturalmente le operazioni
+
+uso uno schema ad albero 
+
+${ (1/3+10*1/7)*4/9/2 } - { (10*2/5) }$
+
+${ { (1/3+10*1/7)*4/9 } /2 } - { (10*2/5) }$
+
+...
+
+${ { { ( { { 1 } / { 3 } } + { { 10 } * { { 1 } / { 7 } } } ) } * { { 4 } / { 9 } } } / { 2 } } - { ( { 10 } * { { 2 } / { 5 } } ) }$
+
+##### fig. 1.2.1
+
+**in scheme si usa la notazione prefissa, non l normale infissa** quindi si scrive prima l'operazione che si esegue per ultima  e poi i suoi argomenti
+
+(- ( / (* (+ (/ 1 3) (* 10 (/ 4 7))) (/ 4 9)) 2) (* 10 (/ 2 5)))
