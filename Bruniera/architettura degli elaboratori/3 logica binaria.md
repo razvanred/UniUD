@@ -14,7 +14,7 @@ si parla in ogni caso di voltaggio.
 digitale ha maggiore tolleranza ai disturbi ed altri vantaggi.
 
 ---
-###logica positiva e negativa
+### logica positiva e negativa
 
 in logica positiva il segnale è presente quando il voltaggo e tra i 3 ed i 5 volt
 
@@ -92,9 +92,13 @@ altri metodi:
 * metodo duale, scambio 0<->1 e scambio le porte and e or
 * mappe di Karnaugh
 
+---
+---
 ## Mappe di Karnaugh
 
-un metodo per minimizzare le porte logiche utilizzate. il metodo precedente crea circuiti con più porte del necessario
+un metodo per **minimizzare** le porte logiche utilizzate. il metodo precedente crea circuiti con più porte del necessario
+
+non è perfetto, si può migliorare
 
 * un or che riceve da più porte AND con ingresso identico può essere sostituito da una sola AND
 * (A && B) || (A && !B) == A --> B attiva comunque una delle due, dipende solo da A, su questo si basano le mappe
@@ -124,8 +128,8 @@ Es:
 
 | c/ab | 00 | 01 | 11 | 10 |
 |------|----|----|----|----|
-| 0    |    |    |    |    |
-| 1    |    |    | 1  | 1  |
+| 0    | 0  | 0  | 0  | 0  |
+| 1    | 0  | 0  | 1  | 1  |
 
 in questa mappa si ha 1 dove B e C sono entrambi ad uno (negli ingressi della tabella il loro valore non cambia) F=AC
 
@@ -133,22 +137,59 @@ bisogna raggruppare le adiacenze di uscite che appaiono in un rettangolo di 2, 4
 
 Es: gruppi di quattro
 
-| 12/34 | 00 | 01 | 11  | 10  |
-|-------|----|----|-----|-----|
-| 00    |    |    |     |  1  |
-| 01    |    |    |  1  |  1  |
-| 11    |    |    |  1  |  1  |
-| 10    |    |    |  1  |  1  |
+| 12/34 | 00 | 01 | 11 | 10 |
+|-------|----|----|----|----|
+| 00    | 0  | 0  | 0  | 1  |
+| 01    | 0  | 0  | 1  | 1  |
+| 11    | 0  | 0  | 1  | 1  |
+| 10    | 0  | 0  | 1  | 1  |
 
 F = (v3 && !v4) || (v3 && v2) || (v1 && v3)
 
 Es: gruppi lati opposti
 
-| 12/34 | 00 | 01 | 11  | 10  |
-|-------|----|----|-----|-----|
-| 00    | 1  |    |     |  1  |
-| 01    | 1  | 1  |     |     |
-| 11    | 1  |    |     |     |
-| 10    | 1  |    |     |  1  |
+| 12/34 | 00 | 01 | 11  | 10 |
+|-------|----|----|----|----|
+| 00    | 1  | 0  | 0  | 1  |
+| 01    | 1  | 1  | 0  | 0  |
+| 11    | 1  | 0  | 0  | 0  |
+| 10    | 1  | 0  | 0  | 1  |
 
 F= (!v3 && !v4) || (!v1 && !v2) || !(v1 && v2 && !v3)
+
+#### anche le mappe di Karnaugh si possono dualizzare:
+
+* invece che valutare gli "uni" valuto gli "zeri"
+* uso OR invece che AND e viceversa
+* scambio il valore degli input
+
+in alcuni casi ottengo un circuito con meno porte
+
+    N.B. a volte alcuni punti rimangono indeterminati e si scelgono i valori che fanno utilizzare meno porte
+
+#### se si usao 5 o 6 variabili si utilizzano 3 dimensioni
+
+* realizzando 2 o 4 mappe
+* considerando le caselle corrispondenti di mappe diverse come adiacenti
+
+Esercizio:
+
+    il circuito fornisce 1 se almeno due su tre ingressi sono 0
+
+| a | b | c | d |
+|---|---|---|---|
+| 0 | 0 | 0 | 1 |
+| 0 | 0 | 1 | 1 |
+| 0 | 1 | 0 | 1 |
+| 0 | 1 | 1 | 0 |
+| 1 | 0 | 0 | 1 |
+| 1 | 0 | 1 | 0 |
+| 1 | 1 | 0 | 0 |
+| 1 | 1 | 1 | 0 |
+
+| c/ab | 00 | 01 | 11 | 10 |
+|------|----|----|----|----|
+| 0    | 1  | 1  | 0  | 1  |
+| 1    | 1  | 0  | 0  | 0  |
+
+F= (!b && !c) || (!a && !c) || (!a && !b)

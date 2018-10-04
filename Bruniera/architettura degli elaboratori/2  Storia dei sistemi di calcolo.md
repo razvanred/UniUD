@@ -42,6 +42,6 @@ es1:
 
 es2 
 
-    se la densità in un chip di memoria è 3E7 T/cm2 che densità avevamo 9 anni fa seondo la legge di Moore?
+    se la densità in un chip di memoria è 3E7 T/cm2 che densità avevamo 9 mesi fa seondo la legge di Moore?
 
     3E7/sqrt(2)
