@@ -69,12 +69,12 @@ trensistor: regola il segnale attraverso un'altro segnale
 le porte nand e nor sono le porte and e or negate
 
 #### Tabella di verità
-|     | and | or | not | nand | nor |
-|-----|-----|----|-----|------|-----|
-| 0-0 | 0   | 0  | 1   | 1    | 1   |
-| 1-0 | 0   | 1  | 0   | 1    | 0   |
-| 0-1 | 0   | 1  | /   | 1    | 0   |
-| 1-1 | 1   | 1  | /   | 0    | 0   | 
+|     | and | or  | not | nand | nor |
+| --- | --- | --- | --- | ---- | --- |
+| 0-0 | 0   | 0   | 1   | 1    | 1   |
+| 1-0 | 0   | 1   | 0   | 1    | 0   |
+| 0-1 | 0   | 1   | /   | 1    | 0   |
+| 1-1 | 1   | 1   | /   | 0    | 0   |
 
 es1:
     
@@ -91,3 +91,64 @@ altri metodi:
 
 * metodo duale, scambio 0<->1 e scambio le porte and e or
 * mappe di Karnaugh
+
+## Mappe di Karnaugh
+
+un metodo per minimizzare le porte logiche utilizzate. il metodo precedente crea circuiti con più porte del necessario
+
+* un or che riceve da più porte AND con ingresso identico può essere sostituito da una sola AND
+* (A && B) || (A && !B) == A --> B attiva comunque una delle due, dipende solo da A, su questo si basano le mappe
+
+le mappe di Karnaugh sono delle tabelle di verità in forma di matrici 
+
+Es:
+
+| c/ab | 00 | 01 | 11 | 10 |
+|------|----|----|----|----|
+| 0    |    |    |    |    |
+| 1    |    |    |    |    |
+
+| cd/ab | 00 | 01 | 11 | 10 |
+|-------|----|----|----|----|
+| 00    |    |    |    |    |
+| 01    |    |    |    |    |
+| 11    |    |    |    |    |
+| 10    |    |    |    |    |
+
+    N.B. gli ingressi della tabella sono in ordine 00 01 11 10,
+    ogni volta cambia solo un bit non di più
+
+    l'uguaglianza "(A && B) || (A && !B) == A" è valida solo se uno solo dei due ingressi cambia
+
+Es: 
+
+| c/ab | 00 | 01 | 11 | 10 |
+|------|----|----|----|----|
+| 0    |    |    |    |    |
+| 1    |    |    | 1  | 1  |
+
+in questa mappa si ha 1 dove B e C sono entrambi ad uno (negli ingressi della tabella il loro valore non cambia) F=AC
+
+bisogna raggruppare le adiacenze di uscite che appaiono in un rettangolo di 2, 4, 8, 16... elementi
+
+Es: gruppi di quattro
+
+| 12/34 | 00 | 01 | 11  | 10  |
+|-------|----|----|-----|-----|
+| 00    |    |    |     |  1  |
+| 01    |    |    |  1  |  1  |
+| 11    |    |    |  1  |  1  |
+| 10    |    |    |  1  |  1  |
+
+F = (v3 && !v4) || (v3 && v2) || (v1 && v3)
+
+Es: gruppi lati opposti
+
+| 12/34 | 00 | 01 | 11  | 10  |
+|-------|----|----|-----|-----|
+| 00    | 1  |    |     |  1  |
+| 01    | 1  | 1  |     |     |
+| 11    | 1  |    |     |     |
+| 10    | 1  |    |     |  1  |
+
+F= (!v3 && !v4) || (!v1 && !v2) || !(v1 && v2 && !v3)
