@@ -1,0 +1,39 @@
+# Note storiche: Scheme e LISP
+
+* turing e church nel 1936 propongono nello stesso periodo due soluzioni molto simili (macchina di turing) inconsapevolmente
+
+* 1958 LISP
+
+    John Mccharty (progetto)
+    Steve Russel, Tim Hart, Mike Levin (sviluppo)
+    MIT
+
+    fra i linguaggi ad alto livello è preceduto solo dal Fortran (1953-57)
+
+    linguaggio funzionale uscito solo 10 anni dopo il calcolatore,molti caolcolatori si programmavano ancora in linguaggio macchina.
+
+* 1962 prima implementazione completa di LISP
+
+* altri linguaggi intermedi
+
+* anni '70 schemer -> dcheme
+ 
+    Gerald Jay Sussman MIT
+
+    scheme nasce come progetto sperimentale
+
+---
+## tre miracoli (Sussman)
+
+* combinare un gran numero di volte un piccolo numero di operazioi elementari permette una potenza d'azione considerevole
+* una grande varietà di insiemi di operazioni elementari (ragionevoli) conduce alla stessa potenza di caocolo
+* i limiti di questa potenza sono esprimibili formalmente
+
+## altra citazione (Duchateau)
+
+* l'informatica è una ricerca pe stanare il "significato" dietro la "forma", uo sforzo per costringere nei limiti della "forma" quello che consideriamo "significato"
+
+## altra citazione ancora (Sussman)
+
+* un linguaggio di programmazione non è un modo per descrivere delle operazioni ad un computer, ma è piuttosto un uovo mezo formale per esprimere idee sulla metodologia
+* perciò i programmi devono essere scritti per essere letti dalle persone, e sol o incidentalmente per esser eseguitu dalle macchine

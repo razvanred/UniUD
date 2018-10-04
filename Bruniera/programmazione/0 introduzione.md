@@ -1,0 +1,12 @@
+## Struttura del corso
+
+1. astrattazione procedurale
+2. strazione sui dati
+3. astrazione relativa allo stato
+
+## materiali
+
+https://users.dimi.uniud.it/~claudio.mirolo/teaching/programmazione/
+
+il primo libro è solo elettronico, il secondo si compra cartaceo
+
