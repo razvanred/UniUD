@@ -61,21 +61,19 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <a name="clabelfont" val="SansSerif plain 12"/>
     <wire from="(380,100)" to="(380,170)"/>
     <wire from="(380,210)" to="(380,280)"/>
-    <wire from="(160,160)" to="(220,160)"/>
-    <wire from="(200,140)" to="(260,140)"/>
-    <wire from="(200,80)" to="(260,80)"/>
+    <wire from="(150,120)" to="(210,120)"/>
     <wire from="(460,190)" to="(510,190)"/>
-    <wire from="(160,120)" to="(210,120)"/>
     <wire from="(210,180)" to="(260,180)"/>
     <wire from="(210,260)" to="(260,260)"/>
     <wire from="(370,160)" to="(370,180)"/>
     <wire from="(370,200)" to="(370,220)"/>
     <wire from="(230,120)" to="(230,200)"/>
     <wire from="(220,160)" to="(220,240)"/>
-    <wire from="(160,80)" to="(200,80)"/>
     <wire from="(220,240)" to="(260,240)"/>
     <wire from="(370,180)" to="(410,180)"/>
     <wire from="(370,200)" to="(410,200)"/>
+    <wire from="(200,80)" to="(300,80)"/>
+    <wire from="(200,140)" to="(300,140)"/>
     <wire from="(210,220)" to="(300,220)"/>
     <wire from="(230,200)" to="(230,300)"/>
     <wire from="(350,100)" to="(380,100)"/>
@@ -87,57 +85,57 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <wire from="(210,180)" to="(210,220)"/>
     <wire from="(210,220)" to="(210,260)"/>
     <wire from="(220,240)" to="(220,280)"/>
-    <wire from="(290,140)" to="(300,140)"/>
     <wire from="(290,180)" to="(300,180)"/>
     <wire from="(290,240)" to="(300,240)"/>
     <wire from="(290,260)" to="(300,260)"/>
-    <wire from="(290,80)" to="(300,80)"/>
+    <wire from="(150,200)" to="(230,200)"/>
     <wire from="(220,160)" to="(300,160)"/>
     <wire from="(220,280)" to="(300,280)"/>
-    <wire from="(160,200)" to="(230,200)"/>
+    <wire from="(190,80)" to="(200,80)"/>
+    <wire from="(150,80)" to="(160,80)"/>
+    <wire from="(150,160)" to="(220,160)"/>
     <wire from="(230,120)" to="(300,120)"/>
     <wire from="(230,200)" to="(300,200)"/>
     <wire from="(230,300)" to="(300,300)"/>
     <wire from="(200,80)" to="(200,140)"/>
     <wire from="(210,120)" to="(210,180)"/>
-    <comp lib="1" loc="(290,140)" name="NOT Gate"/>
-    <comp lib="0" loc="(160,120)" name="Pin">
+    <comp lib="0" loc="(150,200)" name="Pin">
       <a name="tristate" val="false"/>
     </comp>
-    <comp lib="6" loc="(123,76)" name="Text">
-      <a name="text" val="C"/>
-    </comp>
     <comp lib="1" loc="(290,180)" name="NOT Gate"/>
+    <comp lib="6" loc="(110,118)" name="Text">
+      <a name="text" val="D"/>
+    </comp>
+    <comp lib="0" loc="(150,120)" name="Pin">
+      <a name="tristate" val="false"/>
+    </comp>
     <comp lib="1" loc="(350,220)" name="AND Gate">
       <a name="inputs" val="3"/>
     </comp>
-    <comp lib="0" loc="(160,80)" name="Pin">
-      <a name="tristate" val="false"/>
-    </comp>
-    <comp lib="1" loc="(290,80)" name="NOT Gate"/>
-    <comp lib="0" loc="(160,160)" name="Pin">
-      <a name="tristate" val="false"/>
-    </comp>
-    <comp lib="6" loc="(120,118)" name="Text">
-      <a name="text" val="D"/>
-    </comp>
-    <comp lib="6" loc="(122,194)" name="Text">
+    <comp lib="6" loc="(112,194)" name="Text">
       <a name="text" val="B"/>
     </comp>
+    <comp lib="6" loc="(111,158)" name="Text">
+      <a name="text" val="A"/>
+    </comp>
+    <comp lib="0" loc="(150,80)" name="Pin">
+      <a name="tristate" val="false"/>
+    </comp>
+    <comp lib="0" loc="(150,160)" name="Pin">
+      <a name="tristate" val="false"/>
+    </comp>
+    <comp lib="6" loc="(113,76)" name="Text">
+      <a name="text" val="C"/>
+    </comp>
+    <comp lib="1" loc="(190,80)" name="NOT Gate"/>
     <comp lib="1" loc="(460,190)" name="OR Gate">
       <a name="inputs" val="4"/>
-    </comp>
-    <comp lib="0" loc="(160,200)" name="Pin">
-      <a name="tristate" val="false"/>
     </comp>
     <comp lib="1" loc="(350,280)" name="AND Gate">
       <a name="inputs" val="3"/>
     </comp>
     <comp lib="1" loc="(350,100)" name="AND Gate">
       <a name="inputs" val="2"/>
-    </comp>
-    <comp lib="6" loc="(121,158)" name="Text">
-      <a name="text" val="A"/>
     </comp>
     <comp lib="1" loc="(350,160)" name="AND Gate">
       <a name="inputs" val="3"/>
