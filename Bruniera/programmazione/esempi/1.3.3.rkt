@@ -1,6 +1,5 @@
-;; The first three lines of this file were inserted by DrRacket. They record metadata
-;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname 1.3.3) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ())))
+#lang racket
+
 (define con-pp-1
   (lambda (v)
     (string-append 
@@ -24,3 +23,42 @@
      "to")
     )
   )
+
+(define con-pp-2
+  (lambda (v)
+    (string-append 
+     (substring
+      v
+      0
+      (- (string-length v) 3)
+      )
+     "uto")
+    )
+  )
+
+(define seconda?
+  (lambda (v)
+    (char=?
+     (string-ref v 
+                 (- (string-length) 3)
+                 )
+     #\e)
+    )
+  )
+
+(define con-pp
+  (lambda (v)
+    (if (seconda? v)
+        (con-pp-2 v)
+        (con-pp-13 v)
+     )
+    )
+  )
+
+(define setCharacter
+  (lambda (word character position) 
+    (string-set! word position character)
+    word
+    ))
+
+(define stringa (string-append "hello"))
