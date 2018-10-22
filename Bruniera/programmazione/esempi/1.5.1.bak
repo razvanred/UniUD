@@ -1,0 +1,24 @@
+#lang racket
+(define comp-a-1
+  (lambda (string l)
+    (if (> (string-length string) 1)
+        (string-append
+         (comp-a-1 string (- l 1))
+         (if (char=?
+              (string-ref string l)
+              #\1
+              )
+             #\0
+             #\1
+             )
+         )
+         (if (char=?
+              (string-ref string l)
+              #\1
+              )
+             #\0
+             #\1
+             )
+     )
+    )
+  )
