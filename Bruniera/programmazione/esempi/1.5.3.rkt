@@ -10,3 +10,16 @@
          (if (even? num) "0" "1"))
         )
     ))
+
+(define bin-rep
+  (lambda (num)
+    ( let ((lsb (if (even? num) "0" "1"))
+       )
+    (if (< num 2)
+        lsb
+        (string-append
+         (bin-rep (quotient num 2))
+         lsb
+         )
+        ))
+    ))
