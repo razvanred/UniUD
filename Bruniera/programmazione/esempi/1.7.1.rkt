@@ -9,7 +9,7 @@
             )
         (if (= l 1)
             (btd-val lsd)
-            (+ (*3 (btr-val pre))
+            (+ (* 3 (btr-val pre))
                (btd-val lsd))
            ) 
         ))
