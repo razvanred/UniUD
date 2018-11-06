@@ -1,0 +1,36 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname |1.3|) (read-case-sensitive #t) (teachpacks ((lib "drawings.ss" "installed-teachpacks"))) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ((lib "drawings.ss" "installed-teachpacks")) #f)))
+(define bin-rep->number
+  (lambda (bin)
+    (if (neg? bin)
+        (* -1 (absolute bin))
+        (absolute bin)
+        )
+    ))
+
+(define neg?
+  (lambda (bin)
+    (char=? (string-ref bin 0) #\-)
+    ))
+
+(define absolute
+  (lambda (bin)
+    (+
+     (int bin)
+     (float bin))
+    ))
+
+ (define int
+   (lambda (bin)
+     
+     ))
+
+ (define .?
+   (lambda (bin)
+     (let ((l (string-length bin)))
+     (if (> l 0)
+         (or
+          (char=? (string-ref (- l 1)) #\.)
+          (.? (substring bin 0 (- l 1))))))
+     ))
