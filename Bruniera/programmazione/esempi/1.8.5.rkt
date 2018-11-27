@@ -5,7 +5,7 @@
   (lambda (n)
     (if (even? n)
         (= n 2)
-        (ha-divisori-dispari-in? n 3 (floor (sqrt n))))
+        (not (ha-divisori-dispari-in? n 3 (floor (sqrt n))))
     ))
 
 (define ha-divisori-in?
