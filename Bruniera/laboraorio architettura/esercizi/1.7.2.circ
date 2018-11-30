@@ -62,30 +62,27 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <wire from="(590,340)" to="(590,380)"/>
     <wire from="(700,340)" to="(700,380)"/>
     <wire from="(660,340)" to="(700,340)"/>
+    <wire from="(640,350)" to="(640,360)"/>
     <wire from="(700,340)" to="(750,340)"/>
-    <wire from="(540,320)" to="(620,320)"/>
+    <wire from="(560,360)" to="(640,360)"/>
     <wire from="(590,380)" to="(700,380)"/>
     <wire from="(590,340)" to="(620,340)"/>
     <wire from="(660,320)" to="(750,320)"/>
-    <wire from="(450,300)" to="(490,300)"/>
-    <wire from="(450,340)" to="(490,340)"/>
-    <comp lib="4" loc="(660,320)" name="D Flip-Flop"/>
-    <comp lib="0" loc="(450,340)" name="Pin">
-      <a name="tristate" val="false"/>
-    </comp>
-    <comp lib="0" loc="(750,340)" name="Pin">
-      <a name="facing" val="west"/>
-      <a name="output" val="true"/>
-      <a name="labelloc" val="east"/>
-    </comp>
-    <comp lib="0" loc="(450,300)" name="Clock"/>
+    <wire from="(560,320)" to="(620,320)"/>
     <comp lib="0" loc="(750,320)" name="Pin">
       <a name="facing" val="west"/>
       <a name="output" val="true"/>
       <a name="labelloc" val="east"/>
     </comp>
-    <comp lib="1" loc="(540,320)" name="AND Gate">
-      <a name="inputs" val="2"/>
+    <comp lib="0" loc="(560,360)" name="Pin">
+      <a name="tristate" val="false"/>
+    </comp>
+    <comp lib="0" loc="(560,320)" name="Clock"/>
+    <comp lib="4" loc="(660,320)" name="D Flip-Flop"/>
+    <comp lib="0" loc="(750,340)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="labelloc" val="east"/>
     </comp>
   </circuit>
 </project>
