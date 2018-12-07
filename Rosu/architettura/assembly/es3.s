@@ -1,4 +1,4 @@
-@r1 = 4*r2
+@ r1 = 4*r2
 .data
 .text
 main:
