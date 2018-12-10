@@ -13,14 +13,53 @@
           ((even? y) (mul-rec (* 2 x) (quotient y 2) z))
           (else (mul-rec (* 2 x) (quotient y 2) (+ z x)))
           )))
-
+;;;;;;;;;;;
 (define ufo
   (lambda (x)
     (cond  ((= x 1) 1)
            ((even? x) (- (* 2 (ufo (quotient x 2))) 1))
            (else (+ (* 2 (ufo (quotient x 2))) 1)))
     ))
+; a) (ufo 2^k) --> 1       per k>0 intero
+; b) (ufo n) --> d         ==> d dispari
+; c) (ufo n) --> d         ==> (ufo n+1) --> d+2 se n+1!=2^k 
+; d) (ufo n) --> d         ==> d<=n
+; e) (ufo 2^k-1) --> 2^k-1 per k>0 intero
 
+; per ogni k appartenente ad N e j appartenente a [0,2^k-1]
+; (*) = (ufo 2^k+j) --> 2j+1
+
+; (*) ==> a   j=0 ==> 2j+1=1
+; (*) ==> b   2j-1 è dispari
+; (*) ==> c   2(j+1)+1 = 2j+1+2
+; (*) ==> d   j<2^k ==> 2j<=2^k
+; (*) ==> e   2^k-1 = 2^(k-1)+2^(k-1)-1 ==> 2(2^(k-1)-1)+1 = 2^k-2+1 = 2^k-1
+
+; DIMOSTRAZIONE PER INDUZIONE
+; caso base [k=0]:
+;  0<=j<=2^0-1 -> j=0 ->
+;  -> 2j+1=1 = (ufo 1)
+; passo induttivo [scelgo k in N]:
+; [assumo per ogni j in [0,2^k-1] (ufo 2^k+j) --> 2j+1]
+;  per ogni j in [0,2^(k+1)-1]
+;  (ufo 2^(k+1)+j) --> ?
+;   a) assumo che j sia pari
+;    (- (* 2 (ufo (quotient [2^(k+1)+j] 2))) 1) ->
+;    (- (* 2 (ufo [2k+j/2])) 1) ->
+;      j in [0,2^(k+1)-1] ==> j/2 in [0,2^k] ?
+;      è vera perché j è pari (il più grande numero pari nel primo intervallo è 2*(2^k-1))
+;    (- (* 2 [j+1]) 1) -> (- [2j+2] 1) ->
+;    -> 2j+1
+;   b) assumo che j sia dispari
+;    (+ (* 2 (ufo (quotient [2^(k+1)+j] 2))) 1) ->
+;    (+ (* 2 (ufo [2k+(j-1)/2])) 1) ->
+;      j in [0,2^(k+1)-1] ==> (j-1)/2 in [0,2^k] ?
+;      è vera perché j-1 può valere al massimo  2*(2^k-1)
+;    (+ (* 2 [(j-1)+1]) 1)->
+;    (+ [2(j-1)+2] 1) ->
+;    (+ [2j-2+2]) ->
+;    (+ [2j] 1) ->
+;    -> 2j+1
 (ufo 1)
 (ufo 2)
 (ufo 3)
