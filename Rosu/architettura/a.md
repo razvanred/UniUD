@@ -30,9 +30,9 @@ L'algebra dei numeri a precisione finita è diversa dall'algebra normale. Non se
 
 Esempio:
 
-1.   a+(b-c) non è uguale ad (a+b)-c per a=700, b=400 e c=300
-  * la prima espressione darà come risultato 800
-  * la seconda invece andrà in overflow, dato che a+b ritorna un risultato non appartenente all'insieme dei numeri a 3 cifre (1100)
-2. a * (b - c) non è uguale a a * b - a * c per a = 5, b = 210 e c = 195
-  * la prima espressione darà come risultato 75
-  * la seconda invece andrà in overflow, dato che a * b ritorna un risultato troppo grande da poter essere rappresentato in questo insieme (1050)
+1. a+(b-c) non è uguale ad (a+b)-c per a=700, b=400 e c=300
+   * la prima espressione darà come risultato 800
+   * la seconda invece andrà in overflow, dato che a+b ritorna un risultato non appartenente all'insieme dei numeri a 3 cifre (1100)
+2. a*(b - c) non è uguale a a* b - a*c per a = 5, b = 210 e c = 195
+   * la prima espressione darà come risultato 75
+   * la seconda invece andrà in overflow, dato che a * b ritorna un risultato troppo grande da poter essere rappresentato in questo insieme (1050)
