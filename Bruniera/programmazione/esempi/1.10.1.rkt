@@ -25,21 +25,29 @@
     ))
 
 (define cod3            ; val: carattere
-  (lambda (c)           ; c: carattere
-    (let ((i (char->integer c))
-          (k (char->integer #\z))
-          )
-      (if (> (+ i 3) k)
-          (integer->char (- i 23))
-          (integer->char (+ i 3))))
-    ))
+  (cod-cesare 3))
 
 (define codr            ; val: carattere
-  (lambda (c r)           ; c: carattere
-    (let ((i (char->integer c))
-          (k (char->integer #\z))
-          )
-      (if (> (+ i 3) k)
-          (integer->char (- i -26 r))
-          (integer->char (+ i r))))
+  (lambda (c r)
+    ((cod-cesare r) c)
+    ))
+
+(define decrypt
+  (lambda (rule)
+    (let ((c (rule #\a)))
+      (let ((r (-
+                (char->integer c)
+                (char->integer #\a))))
+        (cod-cesare (- 26 r))))
+    ))
+
+(define dec3            ; val: carattere
+  (decrypt cod3))
+
+(define map
+  (lambda (f s)
+    (if (null? s)
+        null
+        (cons (f (car s))
+              (map (cdr s))))
     ))
