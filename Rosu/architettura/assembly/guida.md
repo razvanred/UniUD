@@ -69,3 +69,32 @@ Operano su numeri interi codificati complemento a 2
 **SBC** _Subtract with Carry_ considera anche il bit di carry permettendo operazioni su 64bit
 
 **RSC** _Reverse Subtract with Carry_
+
+## Operazioni logiche
+
+Esiste ai registri (sequenze di bit)
+
+* **and** AND bit a bit tra 2 registri (il secondo argomento può essere costante)
+* **orr** OR bit a bit tra 2 registri
+* **eor** exclusive OR
+* **bic** bit clear(r0 = r2 AND (not r3))
+* **mov** move, funzione identità
+* **mvn** not, move negato
+
+## Rappresentazione numeri
+
+* Decimale: #15
+* Esadecimale: #0xF
+
+## Constainti numeriche
+
+Le constanti sono rappresentate in memoria con 8 bit di mantissa e 4 bit che rappresentano lo spostamento a sinistra di 2 bit. Il valore dell'esponente viene moltiplicato per 2: solo spostamenti pari
+
+---
+
+Non tutte le costanti sono rappresentabili
+
+---
+
+* costanti rappresentabili: 0xFF, 255, 256, 0xCC00 0x1FC00
+* costanti non rappresentabili: 0x101, 257, 0x102, 258
