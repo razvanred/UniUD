@@ -13,5 +13,10 @@ main:
     add r4, r4, r2, lsl #20
     add r4, r4, r1, lsl #24
     add r4, r4, r1, lsl #28
+
+    mov r0, #0xDD
+    add r0, r0, #0xCC00
+    add r0, r0, #0xBB0000
+    add r0, r0, #0xAA000000
     swi 0x11
 .end
