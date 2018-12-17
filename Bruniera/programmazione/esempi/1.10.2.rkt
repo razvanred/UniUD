@@ -13,9 +13,3 @@
       )
     ))
 
-(define °        ; val: procedura
-  (lambda (g f)  ; f,g: procedure
-    (lambda (x)  ; x: reale
-      (g (f x))
-      )
-    ))

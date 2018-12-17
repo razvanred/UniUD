@@ -44,10 +44,25 @@
 (define dec3            ; val: carattere
   (decrypt cod3))
 
-(define map
+(define map1
   (lambda (f s)
     (if (null? s)
         null
         (cons (f (car s))
               (map (cdr s))))
+    ))
+
+(define decrypt2
+  (lambda (rule)
+    (lambda (c)
+      (find (char->integer #\a) c rule)
+      )
+  ))
+
+(define find
+  (lambda (i c rule)
+    (let ((v (integer->char i)))
+      (if (char=? (rule v) c)
+          v
+          (find (+ i 1) c rule)))
     ))

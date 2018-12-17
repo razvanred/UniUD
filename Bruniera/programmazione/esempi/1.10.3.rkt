@@ -8,6 +8,24 @@
       )
     ))
 
+(define iter     ; val: procedura
+  (lambda (k f)  ; k: intero, f: procedura
+    (lambda (x)
+      (if (= k 0)
+          x
+          (f ((iter (- k 1) f) x))
+          ))
+    ))
+
+(define iter2    ; val: procedura
+  (lambda (k f)  ; k: intero, f: procedura
+      (if (= k 0)
+          (lambda (x) x)
+          (° f (iter2 (- k 1) f))
+          )
+    ))
+
+
 (define f
   (lambda (x)
     (* x 6)
