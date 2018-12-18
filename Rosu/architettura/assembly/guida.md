@@ -69,3 +69,98 @@ Operano su numeri interi codificati complemento a 2
 **SBC** _Subtract with Carry_ considera anche il bit di carry permettendo operazioni su 64bit
 
 **RSC** _Reverse Subtract with Carry_
+
+## Operazioni logiche
+
+Esiste ai registri (sequenze di bit)
+
+* **and** AND bit a bit tra 2 registri (il secondo argomento può essere costante)
+* **orr** OR bit a bit tra 2 registri
+* **eor** exclusive OR
+* **bic** bit clear(r0 = r2 AND (not r3))
+* **mov** move, funzione identità
+* **mvn** not, move negato
+
+## Rappresentazione numeri
+
+* Decimale: #15
+* Esadecimale: #0xF
+
+## Constainti numeriche
+
+Le constanti sono rappresentate in memoria con 8 bit di mantissa e 4 bit che rappresentano lo spostamento a sinistra di 2 bit. Il valore dell'esponente viene moltiplicato per 2: solo spostamenti pari
+
+---
+
+Non tutte le costanti sono rappresentabili
+
+---
+
+* costanti rappresentabili: 0xFF, 255, 256, 0xCC00 0x1FC00
+* costanti non rappresentabili: 0x101, 257, 0x102, 258
+
+(Vedi es. 7-8-9-10-11-12)
+
+## Operazioni di shift-rotate
+
+In ogni istruzione aritmetico-logica se l'ultimo argomento è un registro a questo si può applicare un'operazione di shift o rotate:
+
+```assembly
+
+.data
+.text
+main:
+    mov r0, #2
+    mov r1, #4
+    add r0, r1, r0, lsl #2
+    swi 0x11
+.end
+```
+
+Questo codice assembly equivale a scrivere:
+
+```c++
+
+int a = 2;
+int b = 4;
+a = (a << 2) + b;
+
+```
+
+È possibile specificare il numero di posizioni da traslare anche come contenuto di un registro:
+
+```assembly
+
+mov r1, r2, lsl r3
+
+```
+
+Solo gli 8 bit meno significativi del registro sono esaminati.
+
+Operazioni possibili:
+
+* **Logical Shift Left** sposta a sinistra i bit e aggiunge in coda zeri
+* **Logical Shift Right** sposta a destra i bit e aggiuge in teste zeri
+* **Aritmetical Shift Right** si inserisce a sinistra il bit di segno, esegue una divisione per una potenza di due in complemento a 2
+* **ROtate Right** i bit eliminati a destra rientrano a sinistra
+* **ROtate Left** i bit eliminati a sinistra rientrano a destra
+* **Rotate Right eXtended** ruota a destra di una singola posizione coinvolgendo il bit di carry. Il bit a destra eliminato andrà a prendere la precedente posizione del bit di carry con l'istruzione **RRXS**
+
+## Scambio di dati tra registri e memoria principale
+
+Vedi ldr.s e str.s
+
+Oltre alle operazioni sulle singole parole (4byte), è possibile leggere o scrivere dalla memoria anche:
+
+* un singolo byte: **ldrb**, **ldrsb** (load register signed byte), **strb**
+* una half-word (2 byte): **ldrh**, **ldrsh**, **strh** (l'indirizzo deve essere allineato e multiplo di 2)
+
+## Rappresentazione dei dati
+
+Specificano il tipo di dati da inserire in memoria:
+
+* **.word** 34, 46, 0xAABBCCDD, 0xA01, ogni numero scritto con 4 byte
+* **.byte** 45, 0x3a ogni numero scritto con 1 byte
+* **.ascii** "del testo" ciascun carattere della stringa occupa un byte
+* **.asciiz** "altro esempio" si aggiunge un byte 0 alla fine della stringa
+* **.skip** 64, vengono allocati 64 byte inizializzati a 0
