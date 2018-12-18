@@ -130,7 +130,9 @@ a = (a << 2) + b;
 È possibile specificare il numero di posizioni da traslare anche come contenuto di un registro:
 
 ```assembly
+
 mov r1, r2, lsl r3
+
 ```
 
 Solo gli 8 bit meno significativi del registro sono esaminati.
@@ -143,3 +145,22 @@ Operazioni possibili:
 * **ROtate Right** i bit eliminati a destra rientrano a sinistra
 * **ROtate Left** i bit eliminati a sinistra rientrano a destra
 * **Rotate Right eXtended** ruota a destra di una singola posizione coinvolgendo il bit di carry. Il bit a destra eliminato andrà a prendere la precedente posizione del bit di carry con l'istruzione **RRXS**
+
+## Scambio di dati tra registri e memoria principale
+
+Vedi ldr.s e str.s
+
+Oltre alle operazioni sulle singole parole (4byte), è possibile leggere o scrivere dalla memoria anche:
+
+* un singolo byte: **ldrb**, **ldrsb** (load register signed byte), **strb**
+* una half-word (2 byte): **ldrh**, **ldrsh**, **strh** (l'indirizzo deve essere allineato e multiplo di 2)
+
+## Rappresentazione dei dati
+
+Specificano il tipo di dati da inserire in memoria:
+
+* **.word** 34, 46, 0xAABBCCDD, 0xA01, ogni numero scritto con 4 byte
+* **.byte** 45, 0x3a ogni numero scritto con 1 byte
+* **.ascii** "del testo" ciascun carattere della stringa occupa un byte
+* **.asciiz** "altro esempio" si aggiunge un byte 0 alla fine della stringa
+* **.skip** 64, vengono allocati 64 byte inizializzati a 0
