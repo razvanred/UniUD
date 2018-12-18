@@ -164,3 +164,38 @@ Specificano il tipo di dati da inserire in memoria:
 * **.ascii** "del testo" ciascun carattere della stringa occupa un byte
 * **.asciiz** "altro esempio" si aggiunge un byte 0 alla fine della stringa
 * **.skip** 64, vengono allocati 64 byte inizializzati a 0
+
+## Controllo di flusso
+
+In Assembly i meccanismi di controllo di flusso sono elementari:
+
+* salto **incondizionato** (vedi saltoIncondizionato.s)
+* salto **condizionato**
+  * la condizione dipende da 4 bit contenuti nel registro di stato cprs
+  * inserendo il suffisso s al nome dell'istruzione il registro di stato viene modificato a seguito della sua esecuzione
+  * la condizione viene specifica da un ulteriore suffisso di 2 lettere. Alcune condizioni:
+    * **ne** not equal to zero
+    * **eq** equal to zero
+    * **al** always (aggiunto sempre in modo implicito di default, se non viene specificata alcuna condizione)
+
+## Istruzioni di confronto
+
+Tutte queste istruzioni aggiornano il campo Zero del registro CPRS
+
+* **CoMPAare** confronta 2 registri tra di loro
+* **CoMpare Negated** negazione della prima istruzione
+* **TeST** and tra due registri
+* **TeST Equal** eXclusive or tra due registri
+
+Vedi es18-19.s come esempio.
+
+## Linguaggio assembly e linguaggio macchina
+
+* **Linguaggio Assembly** sintassi usata dal programmatore per scrivere, analizzare e rappresentare programmi in linguaggio macchina
+* **Linguaggio Macchina** sintassi usata dal calcolatore per memorizzare ed eseguire programmi. Ogni istruzione è rappresentata da una sequenza di bit
+
+Esiste una corrispondenza 1 a 1 tra istruzioni assembly e istruzioni macchina. In ARM, ogni istruzione macchina utilizza 32 bit.
+
+## Istruzioni macchina di salto
+
+L'istruzione beq label riserva 24 bit per specificare l'indirizzo di memoria a cui saltare. Il salto è **relativo**: si specifica quante istruzioni di 32 bit saltare in avanti o indietro. Al program counter (r15) viene sommato un numero intero (23 bit con segno). Sono raggiungibil +-2^23 * 4 = +-32MB
