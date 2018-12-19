@@ -199,3 +199,34 @@ Esiste una corrispondenza 1 a 1 tra istruzioni assembly e istruzioni macchina. I
 ## Istruzioni macchina di salto
 
 L'istruzione beq label riserva 24 bit per specificare l'indirizzo di memoria a cui saltare. Il salto è **relativo**: si specifica quante istruzioni di 32 bit saltare in avanti o indietro. Al program counter (r15) viene sommato un numero intero (23 bit con segno). Sono raggiungibil +-2^23 * 4 = +-32MB
+
+## Funzioni, metodi, subroutine
+
+Una chiamata di procedura comporta:
+
+* il passaggio del _controllo_ al codice della procedura
+* passaggio di parametri
+* allocazione di spazio di memoria per le variabili locali
+
+L'uscita dalla procedura comporta invece:
+
+* un recupero di spazio in memoria
+* restituzuine del controllo e del risultato chiamante
+
+Attraverso l'istruzione bl label è possibile saltare verso la label specificata con memoriazzazione dell'indirizzo di ritorno di una procedura: viene salvato nel **Link Register** (r14), viene salvata l'istruzione successiva a bl label. Per ritornare indietro dalla procedura (fare un return) basta copiare l'indirizzo di codice da eseguire salvato nel link register nel program counter:
+
+```assembly
+
+mov r15, r14
+
+```
+
+oppure
+
+```assembly
+
+mov pc, lr
+
+```
+
+Esercizio con il fattoriale: es22.s (sincrono).
