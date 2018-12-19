@@ -213,7 +213,7 @@ L'uscita dalla procedura comporta invece:
 * un recupero di spazio in memoria
 * restituzuine del controllo e del risultato chiamante
 
-Attraverso l'istruzione bl label è possibile saltare verso la label specificata con memoriazzazione dell'indirizzo di ritorno di una procedura: viene salvato nel **Link Register** (r14), viene salvata l'istruzione successiva a bl label. Per ritornare indietro dalla procedura (fare un return) basta copiare l'indirizzo di codice da eseguire salvato nel link register nel program counter:
+Attraverso l'istruzione bl label (**Branch and Link**) è possibile saltare verso la label specificata con memorizzazione dell'indirizzo di ritorno di una procedura: viene salvato nel **Link Register** (r14), viene salvata l'istruzione successiva a bl label. Per ritornare indietro dalla procedura (fare un return) basta copiare l'indirizzo di codice da eseguire salvato nel link register nel program counter:
 
 ```assembly
 
@@ -230,3 +230,57 @@ mov pc, lr
 ```
 
 Esercizio con il fattoriale: es22.s (sincrono).
+
+## Passaggio di parametri e risultati
+
+Per convenzione, i registri che vanno da r0 a r3 sono utilizzati per passare argomenti ad una procedura, mentre r0 ed r1 sono utilizzati per restituire al programma chiamante i valori risultato di una procedura. Eventuali parametri aggiuntivi devono essere passati attraverso la memoria.
+
+I registri che vanno da r4 a r14 devono essere preservati dalle procedure. Se una procedura vuole utilizzarli li salva in memoria prima del loro utilizzo e ne ripristina il valore originale prima di restituire il controllo al programma chiamante. I registri che vanno da r0 a r3 sono modificabili dalle procedure, se contengono dati utili il programma chiamante li salva in memoria prima di chiamare una procedura e li ripristina dopo la chiamata.
+
+## Istruzioni di load e store multipli
+
+```assembly
+
+stmfd sp!, {r0, r4-r6, r3}
+
+```
+
+* salva in locazioni decrescenti di memoria il contenuto dei registri r0, r4, r5, r6, r3
+* aggiorna sp alla locazione contenente l'ultimo valore inserito:
+
+```assembly
+
+r1 = r13 - 5*4
+
+```
+
+```assembly
+
+ldmfd sp!, {r0, r4-r6, r3}
+
+```
+
+Ripristina il contenuto di tutti i registri specificati, compreso sp.
+
+## Suffisi di load e store multiplo
+
+* il registro r13 punta alla cima dello stack
+* il comando stm è spesso usato per manipolare lo stack
+* suffissi disponibili per il comando stm:
+  * ia, incrementa da sp (fd)
+  * ib, incrementa da sp+4 (fu)
+  * da, decrementa da sp (ed)
+  * db, decrementa da sp-4 (eu)
+
+## Allocazione spazio di memoria
+
+Ogni procedura necessita di un'area di memoria per mantenere le variabili locali, salvare i registri e acquisire i parametri e restituire i risultati. Tutta l'area è allocata in un frame dello stack. Chiamate innestate generano una pila di frame consecutivi: una chiamata di procedura alloca un nuovo frame e un'uscita dalla procedura libera l'ultimo frame (Last Input - First Output, l'ultima iniziata è la prima da terminare).
+
+ArmSim prevede il seguente uso della memoria:
+
+* da 0x0000 a 0x0FFF sistema operativo
+* da 0x1000 a 0xNNNN codice del programma e costanti (.data)
+* da 0xNNNN a 0x5400 stack per chiamate di procedura
+* da 0x5400 a 0x11400 heap per allocazione di strutture dati dinamiche
+
+Il registro r13 **in teoria** viene inizializzato a 5400, mentre il registro r15 viene inizializzato a 0x1000.

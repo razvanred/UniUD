@@ -1,5 +1,5 @@
 @ Fattoriale di un numero attraverso un while true
-@ Attenzione! è permessa solo la tail recursion, dato che non c'è alcun salvataggio di più lr
+
 .data
 .text
 
