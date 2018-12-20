@@ -1,7 +1,7 @@
 .data
-vet: .skip 64
+vet: .skip 128
 .text
-main:	mov r6, #16 @es 10
+main:	mov r6, #32 @es 10
 		ldr r5, =vet
 		mov r0, r5
 		mov r1, r6
@@ -15,6 +15,8 @@ main:	mov r6, #16 @es 10
 		mov r2, #3
 		mov r1, r6
 		bl zmp  @ take n[i]|p to 0
+		mov r1, r6
+		bl eri  @ Eristotene
 		swi 0x11
 		
 	@es 10.1
@@ -68,5 +70,25 @@ zmpo:	add r4, r4, r2
 		cmp r4, r1
 		blt zmpc
 		ldmfd sp!, {r4}
+		mov pc, lr
+		
+@es 10.5
+		@ Eristotene
+		@ (r0: address, array; r1: int, dimension)->
+		@ (r0: address, array)
+eri:	stmfd sp!, {r4-r5,lr}
+		mov r5, r1
+		bl nat
+		mov r1, r5
+		mov r4, #0
+		str r4, [r0, #4]
+eric:	ldr r2, [r0, r4, lsl #2]
+		cmp r2, #0
+		beq erio
+		bl zmp
+erio:	add r4, r4, #1
+		cmp r4, r1
+		blt eric
+		ldmfd sp!, {r4-r5,lr}
 		mov pc, lr
 .end
