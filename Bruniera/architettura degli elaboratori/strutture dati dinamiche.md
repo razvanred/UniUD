@@ -1,0 +1,61 @@
+# strutture dati dinamiche
+
+si tratta di strutture che evolvono dinamicamente durante l'esecuzione.
+
+* non è nota a priori l'ocupazione dei dati. i dati sono contenuti in nodi collegati tra loro tramite pntatori
+* i puntatori contengono indirizzi di memoria di nodi
+* i nodi sono generalmente distribuiti in locazioni non consecutive di memoria
+
+in assembly gli indirizzi di memoria sono dati di tipo unsigned word. serve **sempre** un indirizzo iniziale da cui poter costruire la struttura. in quell'indirizzo si potra trovare il riferimento alla prima struttura che a sua volta conterrà i riferimenti alle altre strutture
+
+## realizzazione
+
+ogni nodo consiste in una coppia: dato+puntatore. il dato deve essere di tipo costante lungo la liste, il puntatore è un riferimento al nodo successivo.
+
+un nuovo nodo + creato mediante una chiamata a sistema.
+```
+swi 0x12
+```
+il sistema alloca uno spazio di memoria nello heap. regione di memoria allocabile a runtime.
+
+in r0 si passa il numero di byte da allocare, l'interrupt restituisce i r0 l'indirizzo della locazione appena allocata.
+
+## esercizi
+
+scrivi in una lista n interi letti da file
+
+```assembly
+.data
+stringa: .asciiz "inputlista.txt"
+.text
+main:   ldr r0, =stringa
+        mov r1, #0
+        swi 0x66         @apro il file in lettura
+        mov r2, r0
+        swi 0x6c         @leggo il numero di interi
+        mov r3, r0
+create:
+        mov r0, #8
+        swi 0x12         @alloco il nodo
+        mov r5, r0
+next_node:
+        mov r6, r0
+        mov r0, r2
+        swi 0x6c         @leggo intero dal file
+        mov r4, r0
+        str r4, [r6],#4  @salvo il valore punto a next
+        mov r0, #8
+        swi 0x12         @alloco un nodo
+        str r0, [r6]     @salvo next
+        subs r3, r3, #1
+        bne next_node
+        str r3, [r6]     @l'ultimo punta a null
+        mov r7, #0      
+        mov r6, r5
+loop:
+        ldr r4, [r6], #4 @leggo il valore
+        add r7, r7, r4
+        ldr r6, [r6]     @leggo next
+        cmp r6, #0
+        bne loop         @se non è null ripeto
+```
