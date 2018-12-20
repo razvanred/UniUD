@@ -164,3 +164,123 @@ Specificano il tipo di dati da inserire in memoria:
 * **.ascii** "del testo" ciascun carattere della stringa occupa un byte
 * **.asciiz** "altro esempio" si aggiunge un byte 0 alla fine della stringa
 * **.skip** 64, vengono allocati 64 byte inizializzati a 0
+
+## Controllo di flusso
+
+In Assembly i meccanismi di controllo di flusso sono elementari:
+
+* salto **incondizionato** (vedi saltoIncondizionato.s)
+* salto **condizionato**
+  * la condizione dipende da 4 bit contenuti nel registro di stato cprs
+  * inserendo il suffisso s al nome dell'istruzione il registro di stato viene modificato a seguito della sua esecuzione
+  * la condizione viene specifica da un ulteriore suffisso di 2 lettere. Alcune condizioni:
+    * **ne** not equal to zero
+    * **eq** equal to zero
+    * **al** always (aggiunto sempre in modo implicito di default, se non viene specificata alcuna condizione)
+
+## Istruzioni di confronto
+
+Tutte queste istruzioni aggiornano il campo Zero del registro CPRS
+
+* **CoMPAare** confronta 2 registri tra di loro
+* **CoMpare Negated** negazione della prima istruzione
+* **TeST** and tra due registri
+* **TeST Equal** eXclusive or tra due registri
+
+Vedi es18-19.s come esempio.
+
+## Linguaggio assembly e linguaggio macchina
+
+* **Linguaggio Assembly** sintassi usata dal programmatore per scrivere, analizzare e rappresentare programmi in linguaggio macchina
+* **Linguaggio Macchina** sintassi usata dal calcolatore per memorizzare ed eseguire programmi. Ogni istruzione è rappresentata da una sequenza di bit
+
+Esiste una corrispondenza 1 a 1 tra istruzioni assembly e istruzioni macchina. In ARM, ogni istruzione macchina utilizza 32 bit.
+
+## Istruzioni macchina di salto
+
+L'istruzione beq label riserva 24 bit per specificare l'indirizzo di memoria a cui saltare. Il salto è **relativo**: si specifica quante istruzioni di 32 bit saltare in avanti o indietro. Al program counter (r15) viene sommato un numero intero (23 bit con segno). Sono raggiungibil +-2^23 * 4 = +-32MB
+
+## Funzioni, metodi, subroutine
+
+Una chiamata di procedura comporta:
+
+* il passaggio del _controllo_ al codice della procedura
+* passaggio di parametri
+* allocazione di spazio di memoria per le variabili locali
+
+L'uscita dalla procedura comporta invece:
+
+* un recupero di spazio in memoria
+* restituzuine del controllo e del risultato chiamante
+
+Attraverso l'istruzione bl label (**Branch and Link**) è possibile saltare verso la label specificata con memorizzazione dell'indirizzo di ritorno di una procedura: viene salvato nel **Link Register** (r14), viene salvata l'istruzione successiva a bl label. Per ritornare indietro dalla procedura (fare un return) basta copiare l'indirizzo di codice da eseguire salvato nel link register nel program counter:
+
+```assembly
+
+mov r15, r14
+
+```
+
+oppure
+
+```assembly
+
+mov pc, lr
+
+```
+
+Esercizio con il fattoriale: es22.s (sincrono).
+
+## Passaggio di parametri e risultati
+
+Per convenzione, i registri che vanno da r0 a r3 sono utilizzati per passare argomenti ad una procedura, mentre r0 ed r1 sono utilizzati per restituire al programma chiamante i valori risultato di una procedura. Eventuali parametri aggiuntivi devono essere passati attraverso la memoria.
+
+I registri che vanno da r4 a r14 devono essere preservati dalle procedure. Se una procedura vuole utilizzarli li salva in memoria prima del loro utilizzo e ne ripristina il valore originale prima di restituire il controllo al programma chiamante. I registri che vanno da r0 a r3 sono modificabili dalle procedure, se contengono dati utili il programma chiamante li salva in memoria prima di chiamare una procedura e li ripristina dopo la chiamata.
+
+## Istruzioni di load e store multipli
+
+```assembly
+
+stmfd sp!, {r0, r4-r6, r3}
+
+```
+
+* salva in locazioni decrescenti di memoria il contenuto dei registri r0, r4, r5, r6, r3
+* aggiorna sp alla locazione contenente l'ultimo valore inserito:
+
+```assembly
+
+r1 = r13 - 5*4
+
+```
+
+```assembly
+
+ldmfd sp!, {r0, r4-r6, r3}
+
+```
+
+Ripristina il contenuto di tutti i registri specificati, compreso sp.
+
+## Suffisi di load e store multiplo
+
+* il registro r13 punta alla cima dello stack
+* il comando stm è spesso usato per manipolare lo stack
+* suffissi disponibili per il comando stm:
+  * ia, incrementa da sp (fd)
+  * ib, incrementa da sp+4 (fu)
+  * da, decrementa da sp (ed)
+  * db, decrementa da sp-4 (eu)
+
+## Allocazione spazio di memoria
+
+Ogni procedura necessita di un'area di memoria per mantenere le variabili locali, salvare i registri e acquisire i parametri e restituire i risultati. Tutta l'area è allocata in un frame dello stack. Chiamate innestate generano una pila di frame consecutivi: una chiamata di procedura alloca un nuovo frame e un'uscita dalla procedura libera l'ultimo frame (Last Input - First Output, l'ultima iniziata è la prima da terminare).
+
+ArmSim prevede il seguente uso della memoria:
+
+* da 0x0000 a 0x0FFF sistema operativo
+* da 0x1000 a 0xNNNN codice del programma e costanti (.data)
+* da 0xNNNN a 0x5400 stack per chiamate di procedura
+* da 0x5400 a 0x11400 heap per allocazione di strutture dati dinamiche
+
+Il registro r13 **in teoria** viene inizializzato a 5400, mentre il registro r15 viene inizializzato a 0x1000.
