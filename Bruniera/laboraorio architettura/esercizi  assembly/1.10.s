@@ -72,7 +72,7 @@ zmpo:	add r4, r4, r2
 		ldmfd sp!, {r4}
 		mov pc, lr
 		
-@es 10.5
+	@es 10.5
 		@ Eristotene
 		@ (r0: address, array; r1: int, dimension)->
 		@ (r0: address, array)

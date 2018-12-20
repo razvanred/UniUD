@@ -1,0 +1,75 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname 1.es1) (read-case-sensitive #t) (teachpacks ((lib "drawings.ss" "installed-teachpacks") (lib "hanoi.ss" "installed-teachpacks"))) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ((lib "drawings.ss" "installed-teachpacks") (lib "hanoi.ss" "installed-teachpacks")) #f)))
+;1
+(define powers-of-two        ; val: lista
+  (lambda (n)                ; n: intero>=0
+    (powers-of-two-rec n 1 null)
+    ))
+
+(define powers-of-two-rec    ; val: lista
+  (lambda (n a l)            ; n: intero>=0, a: intero>=1, l: lista
+    (cond ((= n 0) l)
+        ((= (remainder n 2) 1)
+         (powers-of-two-rec (quotient n 2) (* 2 a) (cons a l)))
+        (else
+         (powers-of-two-rec (quotient n 2) (* 2 a) l)))
+    ))
+
+(powers-of-two 0)
+(powers-of-two 1)
+(powers-of-two 5)
+(powers-of-two 8)
+(powers-of-two 26)
+(powers-of-two 45)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;2
+(define manhattan-var       ; val: intero
+  (lambda (i j k)           ; i,j,k: interi k<=i e k<=j
+    (let ((x (if (= i k) 0 (manhattan-var (- i 1) j k)))
+          (y (if (= j k) 0 (manhattan-var i (- j 1) k)))
+          (z (if (= k 0) 0 (manhattan-var (- i 1) (- j 1) (- k 1)))))
+      (if (and (> i 0) (> j 0))
+          (+ x y z)
+          1))
+    ))
+
+(manhattan-var 3 2 0)
+(manhattan-var 3 2 2)
+(manhattan-var 2 2 2)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;3
+(define ufo
+  (lambda (n)
+    (cond ((= n 1) 1)
+          ((even? n)
+           (- (* 2 (ufo (quotient n 2))) 1))
+          (else
+           (+ (* 2 (ufo (quotient n 2))) 1)))
+    ))
+
+(ufo 7)
+(ufo 14)
+(ufo 28)
+(ufo 56)
+;3.1
+; per ogni k appartenente ad N (ufo di 7*2^k) -> (3*2^(k+1)+1)
+;3.2
+; caso base: k=0
+; (ufo 7*2^0)->(ufo 7)
+; 3*2^(0+1)+1=7
+; (ufo 7)
+; (+ (* 2 (ufo (quotient 7 2))) 1)
+; (+ (* 2 (ufo 3)) 1)
+; (+ (* 2 (+ (* 2 (ufo 1)) 1))) 1)
+; (+ (* 2 (+ (* 2 1) 1))) 1)=7
+; 7=7
+;3.3
+; scelgo k in N ed assumo che (ufo di 7*2^[k]) -> (3*2^([k]+1)+1)
+; dimostro (ufo di 7*2^([k+1])) -> (3*2^([k+1]+1)+1)
+;  (ufo [7*2^(k+1)])->(- (* 2 (ufo (quotient [7*2^(k+1)] 2))) 1)->
+;  ->(- (* 2 (ufo [7*2^k])) 1)->(- (* 2 (3*2^([k]+1)+1)) 1)->
+;  ->(- [3*2^(k+1)+2] 1)->[3*2^([k+1]+1)+1]->
+;  ->(3*2^([k+1]+1)+1)
