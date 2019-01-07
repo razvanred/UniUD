@@ -1,7 +1,7 @@
 .data
-vet: .skip 128
+vet: .skip 512
 .text
-main:	mov r6, #32 @es 10
+main:	mov r6, #128 @es 10
 		ldr r5, =vet
 		mov r0, r5
 		mov r1, r6

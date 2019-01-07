@@ -73,3 +73,138 @@
 ;  ->(- (* 2 (ufo [7*2^k])) 1)->(- (* 2 (3*2^([k]+1)+1)) 1)->
 ;  ->(- [3*2^(k+1)+2] 1)->[3*2^([k+1]+1)+1]->
 ;  ->(3*2^([k+1]+1)+1)
+
+
+;1
+(define eratosthenes
+  (lambda (n)
+    (sieve 2 n (lambda (i) (and (>= i 2) (<= i n))));;;;;
+  ))
+
+(define sieve
+  (lambda (k n p?)
+    (cond ((> k n)
+           p?)
+          ((p? k)
+           (sieve (+ k 1) n
+                  (lambda (x)
+                    (if (and (> x k) (= (remainder x k) 0));;;;;
+                        false
+                        (p? x)));;;;;
+                  ))
+          (else
+           (sieve (+ k 1) n p?));;;;;
+          )))
+
+(eratosthenes 11)
+
+;2
+(define f
+  (lambda (s)
+    (g s 0)
+    ))
+
+(define g
+  (lambda (s b)
+    (if (null? s)
+        0
+        (if (<= (car s) b)
+            (g (cdr s) b)
+            (max (g (cdr s) b)
+                 (+ (g (cdr s) (car s)) 1))
+            ))))
+
+(f '(5))
+(f '(1 2))
+(f '(1 3 5))
+(f '(5 3))
+(f '(5 3 1))
+(f '(1 5 3))
+(f '(4 2 3 1 5))
+
+;3
+(define mh
+  (lambda (i j)
+    (if (or (= i 0) (= j 0))
+        1;;;;;
+        (+ (md (- i 1) j) (mr i (- j 1)))
+        )))
+
+(define md
+  (lambda (i j)
+    (if (or (= i 0) (< j 2));;;;;
+        1
+        (+ (md (- i 1) j) (mr i (- j 2)));;;;;
+        )))
+
+(define mr
+  (lambda (i j)
+    (if (or (< i 2) (= j 0));;;;;
+        1
+        (+ (md (- i 2) j) (mr i (- j 1)));;;;;
+        )))
+
+(mh 2 2)
+(mh 2 3)
+
+;4
+; in relazione alla rocedura g definira nell'esercizio 2
+; si può dimostrare per induzione sul parametro k che (g (n+1, n+2, ... , n+k) q) -> k
+; con n>=q>=0
+;4.1 formalizza
+; per ogni k>0 , blah blah blah
+;4.2 caso base k=1
+; per ogni n,q n>=1>=0
+; (g (n+1) q) -> 1
+; (if (null? (n+1))       else
+;   0
+;   (if (<= [n+1] q)
+;      (g [null] q)
+;      (max (g [null] q)  0
+;           (+ (g [null] [n+1]) (g [null] q) 1)   0+0+1
+;      ))))
+; =
+; (if (<= [n+1] q)     else
+;      (g [null] q)
+;      (max (g [null] q)  0
+;           (+ (g [null] [n+1]) (g [null] q) 1)   0+0+1
+;      ))
+; =
+;  (max (g [null] q)  0
+;       (+ (g [null] [n+1]) (g [null] q) 1)   0+0+1
+;  )
+; =
+;  (max 0 1)
+; =
+; 1
+;4.3 passo induttivo
+; ipotesi induttiva:
+;  per ogni n,q n>=1>=0
+;  (g (n+1, n+2, ... , n+h) q) -> h
+; per  scelto sopra dimostro che (g (n+1, n+2, ... , n+[h+1]) q) -> [h+1]
+;    (if (null? (n+1, n+2, ... , n+[h+1]))
+;        0
+;        (if (<= (car (n+1, n+2, ... , n+[h+1])) q)
+;            (g (cdr (n+1, n+2, ... , n+[h+1])) q)
+;            (max (g (cdr s) q)
+;                 (+ (g (cdr (n+1, n+2, ... , n+[h+1])) (car (n+1, n+2, ... , n+[h+1]))) 1))
+;            )
+; =
+;        (if (<= (car (n+1, n+2, ... , n+[h+1])) q)
+;            (g (cdr (n+1, n+2, ... , n+[h+1])) q)
+;            (max (g (cdr s) q)
+;                 (+ (g (cdr (n+1, n+2, ... , n+[h+1])) (car (n+1, n+2, ... , n+[h+1]))) 1))
+;            )
+; =
+;        (if (<= [n+1] q)    q<=n ==> q<[n+1]
+;            (g ([n-1]+1, [n-1]+2, ... , [n-1]+h) q)
+;            (max (g ([n+1]+1, [n+1]+2, ... , [n+1]+h) q)                  ->   q<=[[n+1]+1] ==> (g ([n+1]+1, [n+1]+2, ... , [n+1]+h) q)->h
+;                 (+ (g ([n+1]+1, [n+1]+2, ... , [n+1]+h) [n+1]) 1))       ->   [n+1]<=[[n+1]+1] ==> (g ([n+1]+1, [n+1]+2, ... , [n+1]+h) [n+1])->h
+;            )
+; =
+;            (max [h]
+;                 (+ [h] 1))
+; =
+;            (max [h] [h+1])
+; =
+;  h+1
