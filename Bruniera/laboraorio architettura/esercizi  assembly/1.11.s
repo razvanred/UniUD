@@ -1,9 +1,9 @@
 .data
+vet:	.word  1, 2, 3, 4, 5
 file1: .asciz "file11.1.txt"
 file2: .asciz "file11.2.txt"
 space: .ascii " "
 .skip 1
-vet:	.word  1, 2, 3, 4, 5
 .text
 		ldr r0, =file1
         mov r1, #0
