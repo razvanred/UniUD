@@ -1,0 +1,29 @@
+public class SList<T>{
+  private final T first;
+  private final SList<t> rest;
+  private final boolean empty;
+  
+  public SList(){
+    empty=true;
+    first=null;
+    rest=null;
+  }
+  
+  public SList(T e, SList<T> r){
+    empty=false;
+    first=e;
+    rest=r;
+  }
+  
+  public T car(){
+    return first;
+  }
+  
+  public SList<T> cdr(){
+    return rest;
+  }
+  
+  public SList<T> cons(T e){
+    return new SList<T>(e, this);
+  }
+}
