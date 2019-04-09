@@ -10,7 +10,7 @@ public class IntSList{
         rest=null;
     }
 
-    private IntSList(int first, IntSList rest){
+    public IntSList(int first, IntSList rest){
         empty=false;
         this.first=first;
         this.rest=rest;

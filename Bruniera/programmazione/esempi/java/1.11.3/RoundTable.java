@@ -53,6 +53,13 @@ public class RoundTable{
                              true);
   }
   
+  public RoundTable esceCavaliereEPassaBrocca(){
+    return new RoundTable(tav.cdr().cdr().append(IntSList.NULL_INTLIST.cons(tav.car())),
+                          usc.cons(tav.cdr().car()),
+                          false);
+    
+  }
+  
   public IntSList cavalieriUsciti(){ 
     return usc;
   }
@@ -60,8 +67,7 @@ public class RoundTable{
   public static int conta(int n){
     RoundTable t=new RoundTable(n);
     while(t.numCavalieri()>1){
-      t=t.esceCavaliere();
-      t=t.passaBrocca();
+      t=t.esceCavaliereEPassaBrocca();
     }
     return t.chiHaLaBrocca();
   }

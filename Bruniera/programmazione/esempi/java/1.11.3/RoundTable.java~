@@ -2,15 +2,18 @@ public class RoundTable{
   
   private final IntSList tav;
   private final boolean serv;
-  private final IntSlist usc;
+  private final IntSList usc;
   
   public RoundTable(int n){
     tav=range(1,n);
+    usc=IntSList.NULL_INTLIST;
     serv=false;
   }
   
-  private RoundTable(tav){
+  private RoundTable(IntSList tav, IntSList usc, boolean serv){
     this.tav=tav;
+    this.usc=usc;
+    this.serv=serv;
   }
   
   private static IntSList range(int inf, int sup){
@@ -19,7 +22,7 @@ public class RoundTable{
       il=il.cons(sup);
       sup--;
     }
-    retur il;
+    return il;
   }
   
   public int numCavalieri(){
@@ -33,18 +36,25 @@ public class RoundTable{
   public boolean servitoCavaliere(){
     return serv;
   }
+  
   public int cavASinistra(){
     return tav.cdr().car();
+  }
   
   public RoundTable passaBrocca(){
-    return new RoundTable(0);
+    return new RoundTable(tav.cdr().append(IntSList.NULL_INTLIST.cons(tav.car())),
+                          usc,
+                          false);
   }
   
   public RoundTable esceCavaliere(){
-    
+    return new RoundTable(tav.cdr().cdr().cons(tav.car()),
+                             usc.cons(tav.cdr().car()),
+                             true);
   }
   
   public IntSList cavalieriUsciti(){ 
+    return usc;
   }
   
   public static int conta(int n){
