@@ -1,0 +1,14 @@
+public class Board{
+  private final int dim;
+  private final int nq;
+  
+  public Board(int dim){
+    this.dim=dim;
+    this.nq=0;
+  }
+  
+  private Board(int dim, int nq){
+    this.dim=dim;
+    this.nq=nq;
+  }
+}

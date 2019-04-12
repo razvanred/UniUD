@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<drjava version="drjava-20160913-225446">
+  <project autorefresh="false" main="" root="" work="">
+    <createjar file=""/>
+    <source>
+      <file active="true" name="Queens.java" package="" timestamp="11-Apr-2019 19:28:03">
+        <select from="3400" to="3400"/>
+        <scroll column="2180" row="0"/>
+      </file>
+      <file name="IntSList.java" package="" timestamp="11-Apr-2019 18:30:33">
+        <select from="3400" to="3400"/>
+        <scroll column="2180" row="0"/>
+      </file>
+      <file name="Board.java" package="" timestamp="11-Apr-2019 19:26:57">
+        <select from="3400" to="3400"/>
+        <scroll column="2180" row="0"/>
+      </file>
+    </source>
+    <included/>
+    <excluded/>
+    <collapsed/>
+    <classpath/>
+    <breakpoints/>
+    <watches/>
+    <bookmarks/>
+    <preferences/>
+  </project>
+</drjava>
