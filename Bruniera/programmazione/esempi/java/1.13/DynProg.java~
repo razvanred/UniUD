@@ -1,0 +1,20 @@
+public class aaaa{
+  public static int fib(int n){
+    if(n<2){
+      return 1;
+    } else {
+      return fib(n-1)+fib(n-2);
+    }
+  }
+  
+  public static int fibR(int n, h){
+    if(h(n) sconosciuto){
+      if(n<2){
+        return 1;
+      } else {
+        h(n) = fibR(n-1,h)+fibR(n-2,h);
+      }
+    }
+    return h(n);
+  }
+}
