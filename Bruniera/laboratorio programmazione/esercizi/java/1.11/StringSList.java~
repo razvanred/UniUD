@@ -12,7 +12,7 @@
  */
 
 
-public class StringSList {                    // Scheme-Like Lists of int
+public class SList {                    // Scheme-Like Lists of int
 
 
   // ----- Costante lista vuota (condivisa)
@@ -72,7 +72,7 @@ public class StringSList {                    // Scheme-Like Lists of int
   
   // ----- Operazioni aggiuntive, definite in termini dei precedenti metodi
   
-  public int length() {                    // lunghezza di una lista
+  public String length() {                    // lunghezza di una lista
                                            // Scheme: length
     if ( isNull() ) {
       return 0;

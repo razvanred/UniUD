@@ -2,7 +2,12 @@
 <drjava version="drjava-20160913-225446">
   <project autorefresh="false" root="" work="">
     <createjar file=""/>
-    <source/>
+    <source>
+      <file active="true" name="StringSList.java" package="" timestamp="26-Apr-2019 11:07:02">
+        <select from="3787" to="3787"/>
+        <scroll column="2682" row="0"/>
+      </file>
+    </source>
     <included/>
     <excluded/>
     <collapsed/>
