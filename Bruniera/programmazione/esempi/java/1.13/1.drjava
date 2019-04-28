@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <drjava version="drjava-20160913-225446">
-  <project autorefresh="false" main="" root="" work="">
+  <project autorefresh="false" root="" work="">
     <createjar file=""/>
     <source>
-      <file active="true" name="DynProg.java" package="" timestamp="12-Apr-2019 18:29:51">
-        <select from="896" to="896"/>
-        <scroll column="777" row="0"/>
+      <file active="true" name="LCS.java" package="" timestamp="26-Apr-2019 17:09:15">
+        <select from="1576" to="1576"/>
+        <scroll column="794" row="0"/>
+      </file>
+      <file name="DynProg.java" package="" timestamp="12-Apr-2019 18:29:51">
+        <select from="1576" to="1576"/>
+        <scroll column="794" row="0"/>
       </file>
     </source>
     <included/>

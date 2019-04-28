@@ -1,0 +1,14 @@
+public class LCS {
+  
+  public static int llcs(String u, String v){
+    if(u.equals("") || v.equals("")){
+      return 0;
+    } else if(u.charAt(0)==v.charAt(0)){
+      return 1+llcs(u.substring(1),v.substring(1));
+    } else {
+      return Math.max(llcs(u.substring(1),v),
+                      llcs(u,v.substring(1)));
+    }
+  }
+  
+}
