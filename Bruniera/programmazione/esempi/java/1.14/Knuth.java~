@@ -1,0 +1,12 @@
+public class Knuth {
+  
+  public static int conta(int n){
+    RoundTable t = new RoundTable(n);
+    
+    while(t.numeroCav() > 1){
+      t = t.esceCavEPassaBrocca();
+    }
+    
+    return t.chiHaLaBrocca();
+  }
+}

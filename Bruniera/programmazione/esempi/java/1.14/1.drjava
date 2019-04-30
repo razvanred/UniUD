@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<drjava version="drjava-20160913-225446">
+  <project autorefresh="false" main="" root="" work="">
+    <createjar file=""/>
+    <source>
+      <file active="true" name="RoundTable.java" package="" timestamp="30-Apr-2019 17:59:09">
+        <select from="1284" to="1284"/>
+        <scroll column="926" row="0"/>
+      </file>
+      <file name="Knuth.java" package="" timestamp="30-Apr-2019 16:44:19">
+        <select from="1284" to="1284"/>
+        <scroll column="926" row="0"/>
+      </file>
+      <file name="SList.java" package="" timestamp="30-Apr-2019 16:45:00">
+        <select from="1284" to="1284"/>
+        <scroll column="926" row="0"/>
+      </file>
+    </source>
+    <included/>
+    <excluded/>
+    <collapsed/>
+    <classpath/>
+    <breakpoints/>
+    <watches/>
+    <bookmarks/>
+    <preferences/>
+  </project>
+</drjava>
