@@ -49,12 +49,15 @@ public class LCS {
     int m=u.length();
     int n=v.length();
     int[][] h=new int[m+1][n+1];
+    
     for(int y=0;y<=n;y++){
       h[0][y]=0;
     }
+    
     for(int x=1;x<=m;x++){
        h[x][0]=0;
     }
+    
     for(int x=1;x<=m;x++){
       for(int y=1;y<=n;y++){
         if(u.charAt(m-x)==v.charAt(n-y)){
@@ -64,7 +67,50 @@ public class LCS {
         }
       }
     }
+    
     return h[m][n];
+  }
+  
+  public static String LCS(String u, String v){
+    int m=u.length();
+    int n=v.length();
+    int[][] h=new int[m+1][n+1];
+    
+    for(int y=0;y<=n;y++){
+      h[0][y]=0;
+    }
+    
+    for(int x=1;x<=m;x++){
+       h[x][0]=0;
+    }
+    
+    for(int x=1;x<=m;x++){
+      for(int y=1;y<=n;y++){
+        if(u.charAt(m-x)==v.charAt(n-y)){
+          h[x][y] = 1+h[x-1][y-1];
+        } else {
+          h[x][y] = Math.max(h[x-1][y],h[x][y-1]);
+        }
+      }
+    }
+    /////////llcsBU
+    
+    int i=m;
+    int j=n;
+    String s="";
+    
+    while(h[i][j]!=0){
+      if(u.charAt(m-i)==v.charAt(n-j)){
+        s+=u.charAt(m-i);
+        i--;j--;
+      } else if(h[i-1][j] < h[i][j-1]){
+        j--;
+      } else {
+        i--;
+      }
+    }
+    
+    return s;
   }
   
 }
