@@ -1,0 +1,12 @@
+import huffman_toolkit.*;
+
+public class Huffman{
+  
+  public static int[] tabOccorrenze(String doc){
+    InputTextFile itf=new InputTextFile(doc);
+    while(itf.textAvaiable()){
+      char c=itf.readText();
+    }
+    itf.close();
+  }
+}

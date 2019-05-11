@@ -1,0 +1,41 @@
+public class HNode{
+  
+  private final int we;
+  private final HNode ln,rn;
+  private final char ch;
+  
+  public HNode( char c, int W){
+    ch=c;
+    we=w;
+    ln=null;
+    rn=null;
+  }
+  
+  public HNode( HNode l, HNode r ){
+    ch='\0';
+    we=l.weight()+r.weight;
+    ln=l;
+    rn=r;
+  }
+  
+  public boolean isLeaf(){
+    return ln == null;
+  }
+  
+  public int weight(){
+    return we;
+  }
+  
+  public char character(){
+    return ch;
+  }
+  
+  public HNode left(){
+    return ln;
+  }
+  
+  public HNode right(){
+    return rn;
+  }
+  
+}
