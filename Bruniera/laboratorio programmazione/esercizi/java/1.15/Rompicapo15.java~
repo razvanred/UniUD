@@ -1,0 +1,7 @@
+import puzzleboard.*;
+  
+public class Rompicapo15{
+  public static void rompicapo(int n){
+    PuzzleBoard gui = new PuzzleBoard( n )
+  }
+}
