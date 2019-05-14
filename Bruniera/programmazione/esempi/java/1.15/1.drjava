@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <drjava version="drjava-20160913-225446">
-  <project autorefresh="false" main="" root="" work="">
+  <project autorefresh="false" root="" work="">
     <createjar file=""/>
     <source>
-      <file active="true" name="Huffman.java" package="" timestamp="10-May-2019 17:12:08">
-        <select from="1007" to="1007"/>
-        <scroll column="548" row="0"/>
+      <file active="true" name="HNode.java" package="" timestamp="14-May-2019 16:51:52">
+        <select from="1115" to="1115"/>
+        <scroll column="992" row="0"/>
       </file>
-      <file name="HNode.java" package="" timestamp="10-May-2019 17:07:55">
-        <select from="1007" to="1007"/>
-        <scroll column="548" row="0"/>
+      <file name="Huffman.java" package="" timestamp="14-May-2019 16:51:28">
+        <select from="1115" to="1115"/>
+        <scroll column="992" row="0"/>
       </file>
     </source>
     <included/>
