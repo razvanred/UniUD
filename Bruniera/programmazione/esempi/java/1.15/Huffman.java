@@ -65,4 +65,20 @@ public class Huffman{
     itf.close();
     otf.close();
   }
+  
+  public static void decomprimi(String com, String doc){
+    InputTextFile in=new InputTextFile(com);
+    OutputTextFile out=new OutputTextFile(doc);
+    
+    String num=in.readTextLine();
+    int count = Integer.parseInt(num);
+    
+    HNode t=new HNode(in);
+    
+    for(int i=0;i<count;i++){
+      out.writeChar(t.readChar(in));
+    }
+    in.close();
+    out.close();
+  }
 }

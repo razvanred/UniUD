@@ -51,4 +51,29 @@ public class HNode implements Comparable<HNode>{
   public String toString(){
     return ""+weight();
   }
+  
+  public String codAlbero(){
+    if(isLeaf()){
+      if(ch=='@' || ch=='\\'){
+        return  "\\"+ch;
+      }
+      return ""+ch;
+    }
+    return "@"+ln.codAlbero()+rn.codAlbero();
+  }
+  
+  public String[] codesTab(){
+    String[] codes=new String[256];
+    codesTabRec("",codes);
+    return codes;
+  }
+  
+  private void codesTabRec(String a, String[] codes){
+    if(isLeaf()){
+      codes[ch]=a;
+    } else {
+      ln.codesTabRec(a+"0",codes);
+      rn.codesTabRec(a+"1",codes);
+    }
+  }
 }

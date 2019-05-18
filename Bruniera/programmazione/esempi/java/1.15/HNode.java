@@ -1,3 +1,6 @@
+import huffman_toolkit.*;
+import java.util.*;
+
 public class HNode implements Comparable<HNode>{
   
   private final int we;
@@ -62,6 +65,23 @@ public class HNode implements Comparable<HNode>{
     return "@"+ln.codAlbero()+rn.codAlbero();
   }
   
+  public HNode(InputTextFile in){
+    char c=in.readChar();
+    if(c=='@'){
+      ln=new HNode(in);
+      rn=new HNode(in);
+      ch='\0';
+    }else{
+      ln=null;
+      rn=null;
+      if(c=='\\'){
+        c=in.readChar();
+      }
+      ch=c;
+    }
+    we=0;
+  }
+  
   public String[] codesTab(){
     String[] codes=new String[256];
     codesTabRec("",codes);
@@ -74,6 +94,19 @@ public class HNode implements Comparable<HNode>{
     } else {
       ln.codesTabRec(a+"0",codes);
       rn.codesTabRec(a+"1",codes);
+    }
+  }
+  
+  public char readChar(InputTextFile in){
+    if(isLeaf()){
+      return ch;
+    } else {
+      int bit=in.readBit();
+      if(bit==0){
+        return ln.readChar(in);
+      } else {
+        return rn.readChar(in);
+      }
     }
   }
 }
