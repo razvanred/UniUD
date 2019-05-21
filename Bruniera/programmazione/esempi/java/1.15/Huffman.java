@@ -50,7 +50,10 @@ public class Huffman{
     int[] tab=tabOccorrenze(doc);
     HNode t=hAlbero(tab);
     int count=t.weight();
-    String[] codes=t.codesTab();
+    
+    //String[] codes=t.codesTab();
+    String[] codes=tabCodici(t);
+    
     InputTextFile itf=new InputTextFile(doc);
     OutputTextFile otf=new OutputTextFile(com);
     
@@ -75,10 +78,38 @@ public class Huffman{
     
     HNode t=new HNode(in);
     
+    in.readTextLine(); //elimina un lf
     for(int i=0;i<count;i++){
       out.writeChar(t.readChar(in));
     }
     in.close();
     out.close();
   }
+  
+  /////////////////////////////////////////////
+  
+  public static String[] tabCodici(HNode n){
+    
+    String[] tab=new String [256];
+    
+    Stack<Pair> s=new Stack<Pair>();
+    
+    s.push(new Pair(n,""));
+    
+    while(!s.empty()){
+      
+      Pair cp=s.pop();
+      n=cp.nodo;
+      
+      if(n.isLeaf()){
+        char c=n.character();
+        tab[c]=cp.pre;
+      } else {
+        s.push(new Pair(n.right(),cp.pre+"1"));
+        s.push(new Pair(n.left(),cp.pre+"0"));
+      }
+    }
+    return tab;
+  }
+      
 }
