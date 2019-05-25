@@ -267,58 +267,7 @@ public class Huffman {
     }
     System.out.println( "done." );
   }
-  
-  ////////////////////////////////////////////////////////////////////////////////////////////////
-  // es. 1
-  
-  public static void printCodes(String doc, String cod){
-    int[] freq = charHistogram( doc );                      // istogramma delle frequenze
-    
-    Node root = huffmanTree( freq );                        // albero di Huffman
-    
-    int count = root.weight();                              // numero complessivo di caratteri
-    String[] codes = huffmanCodesTable( root );             // tabella (array) dei codici
-    
-    OutputTextFile out = new OutputTextFile( cod );         // documento compresso
-    
-    for(int j=0;j<codes.length;j++){
-      if(freq[j]>0){
-        String ln = j + " ; ";
-        switch(j){                                          // riconosce i caratteri speciali
-          case '\n':
-            ln += "\\n ; ";
-            break;
-          case '\r':
-            ln += "\\r ; ";
-            break;
-          case '\t':
-            ln += "\\t ; ";
-            break;
-          default:
-            ln += (char)j + " ; ";
-        }
-        System.out.println((int)((double)j/codes.length*100) + "%");
-        out.writeTextLine( ln + freq[j] + " ; " + codes[j] + " ; " + codes[j].length()); // stampa il carattere ed il resto dei dati
-      }
-    }
-    
-    System.out.println("completed " + count);
-    out.close();
-  }
-  
-  ////////////////////////////////////////////////////////////////////////////////////////////////
-  // es. 2
-  
-  public static void randomFile(String doc, int length){
-    OutputTextFile out = new OutputTextFile( doc );
-    
-    for(int i=0;i<length;i++){
-      out.writeChar((char)(Math.random()*127));
-    }
-    
-    out.close();
-  }
-  
+
 }  // class Huffman
 
 
