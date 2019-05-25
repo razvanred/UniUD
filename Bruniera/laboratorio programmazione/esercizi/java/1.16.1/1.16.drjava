@@ -3,13 +3,13 @@
   <project autorefresh="false" main="" root="" work="">
     <createjar file=""/>
     <source>
-      <file active="true" name="Huffman.java" package="" timestamp="25-May-2019 19:22:54">
-        <select from="10628" to="10628"/>
-        <scroll column="5000" row="0"/>
+      <file active="true" name="Huffman.java" package="" timestamp="25-May-2019 21:28:15">
+        <select from="10003" to="10003"/>
+        <scroll column="4971" row="0"/>
       </file>
       <file name="Node.java" package="" timestamp="25-May-2019 16:52:42">
-        <select from="10628" to="10628"/>
-        <scroll column="5000" row="0"/>
+        <select from="10003" to="10003"/>
+        <scroll column="4971" row="0"/>
       </file>
     </source>
     <included/>
