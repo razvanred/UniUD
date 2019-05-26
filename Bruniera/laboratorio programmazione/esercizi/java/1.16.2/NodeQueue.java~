@@ -1,0 +1,19 @@
+public class NodeQueue{
+  
+  
+  public NodeQueue(){
+    
+  }
+  
+  public int size(){
+    return 0;
+  }
+  
+  public Node poll(){
+    return null;
+  }
+  
+  public void add(Node n){
+    
+  }
+}

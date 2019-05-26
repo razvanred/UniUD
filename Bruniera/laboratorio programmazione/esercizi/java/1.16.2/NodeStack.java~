@@ -1,0 +1,23 @@
+public NodeStack(){
+  
+  public NodeStack{
+    
+  }
+  
+  public boolean empty(){
+    return true;
+  }
+   
+  public Node peek(){
+    return null;
+  }
+  
+  public Node poll(){
+    return null;
+  }
+  
+  public void push(Node n){
+    
+  }
+    
+}
