@@ -1,0 +1,7 @@
+Si nota che il rapporto di compressione è abbastanza simile, più il file diventa grande più le percentuali si avvicinano a quelle standard.
+
+Non dovendo codificare anche l'albero, la versione che utilizza i pesi standard tende a comprimere meglio
+
+Nel terzo caso, in cui per via della dimensione doveva risultare abbastanza efficiente il metodo con albero standard, si è rivelato più efficace il metodo con albero codificato,
+questo avviene perché il sistema ad albero codificato riesce ad adattarsi all'alto numero di simboli \" presenti nel testo (trattandosi di un dialogo) mentre quello 
+standardizzato assegnera a questi caratteri un codice sfavorevole.
