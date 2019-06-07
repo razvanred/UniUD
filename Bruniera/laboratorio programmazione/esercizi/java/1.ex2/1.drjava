@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <drjava version="drjava-20160913-225446">
-  <project autorefresh="false" main="" root="" work="">
+  <project autorefresh="false" root="" work="">
     <createjar file=""/>
     <source>
-      <file active="true" name="Memoization.java" package="" timestamp="31-May-2019 14:59:22">
-        <select from="193" to="193"/>
-        <scroll column="136" row="0"/>
+      <file active="true" name="Symmetry.java" package="" timestamp="02-Jun-2019 11:59:36">
+        <select from="66" to="66"/>
+        <scroll column="0" row="0"/>
+      </file>
+      <file name="Memoization.java" package="" timestamp="31-May-2019 14:59:22">
+        <select from="66" to="66"/>
+        <scroll column="0" row="0"/>
       </file>
     </source>
     <included/>
