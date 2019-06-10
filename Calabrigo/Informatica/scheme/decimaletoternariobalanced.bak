@@ -1,0 +1,27 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname decimaletoternariobalanced) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ())))
+; 0 = .  --- 1 = + ---- 2 = |-
+(define DecToTer
+  (lambda(n)
+     (if (> n 0)
+     (let (( decTer (DecToTer (quotient n 3)) ))
+     (let (( sign(cond ((= (remainder n 3) 0) ".")
+          ((= (remainder n 3) 1) "+")
+          ((= (remainder n 3) 2) "|-")
+       ) ))
+    (string-append
+     decTer
+     ;(if (string=? (substring (DecToTer (quotient n 3)) 0 1) "|")
+     sign
+     ;""
+     ;)
+    )
+    )
+       )
+     ""
+   )
+  )
+  )
+
+    
