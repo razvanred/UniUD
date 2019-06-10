@@ -1,0 +1,13 @@
+public class Board {
+  int board[][], size;
+  
+  public Board(int n) {
+    size=n;
+    board=new int[size][size];
+  }
+  
+  public int size(){
+    return size;
+  }
+  
+}

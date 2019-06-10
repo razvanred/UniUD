@@ -1,0 +1,62 @@
+public class StringSList {
+  // ----- Costante lista vuota (condivisa)
+  
+  public static final IntSList NULL_INTLIST = new StringSList();
+  
+  // ----- Rappresentazione interna di una lista: private!
+  private final boolean empty;                         // oggetti immutabili:
+  private final String first;                          // variabili di istanza "final"
+  private final StringSList rest;
+  
+  // ----- Operazioni di base sulle liste, mutuate da Scheme
+  public StringSList() {                               // creazione di una lista vuota
+    // Scheme: null
+    empty = true;
+    first = "";                                        // valore irrilevante in questo caso
+    rest = null;
+  }
+  
+  public StringSList( String e, StringSList il ) {     // creazione di una lista non vuota:
+    // Scheme: cons
+    empty = false;
+    first = e;
+    rest = il;
+  }
+  
+  public boolean isNull() {                            // verifica se una lista e' vuota
+    // Scheme: null?
+    return ( empty );
+  }
+  
+  public String car() {                                // primo elemento di una lista
+    // Scheme: car
+    return first;                                      // si assume: lista non vuota
+  }
+  
+  public StringSList cdr() {                  // resto di una lista
+    // Scheme: cdr
+    return rest;                           // si assume: lista non vuota
+  }
+  
+  public StringSList cons( String e ){ // cons (modalità alternativa)
+  }
+  
+  public int length(){ // length
+  }
+  
+  public String listRef( int k ){ // list-ref
+  }
+  
+  public boolean equals( StringSList sl ){ // equal?
+  }
+  
+  public StringSList append( StringSList sl ){ // append
+  }
+  
+  public StringSList reverse(){ // reverse
+  }
+  
+  public String toString(){ // visualizzazione testuale
+  }
+  
+}

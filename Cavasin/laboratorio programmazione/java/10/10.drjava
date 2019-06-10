@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<drjava version="drjava-20160913-225446">
+  <project autorefresh="false" root="" work="">
+    <createjar file=""/>
+    <source>
+      <file active="true" name="StringSList.java" package="" timestamp="11-Jun-2019 00:10:49">
+        <select from="3500" to="3500"/>
+        <scroll column="1556" row="0"/>
+      </file>
+      <file name="IntSList.java" package="" timestamp="10-Jun-2019 20:12:36">
+        <select from="3500" to="3500"/>
+        <scroll column="1556" row="0"/>
+      </file>
+    </source>
+    <included/>
+    <excluded/>
+    <collapsed/>
+    <classpath/>
+    <breakpoints/>
+    <watches/>
+    <bookmarks/>
+    <preferences/>
+  </project>
+</drjava>
