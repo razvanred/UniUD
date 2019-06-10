@@ -1,0 +1,160 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname cose) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ())))
+(define is-identifier?     ; val: boolean
+  (lambda (s)              ; s: string
+    (if (= (string-length s) 0)
+        #f
+        (if (is-letter? (string-ref s 0))
+            (is-identifier?-rec (substring s 1))
+            #f)
+        )))
+
+(define is-identifier?-rec    ; val: boolean
+  (lambda (s)              ; s: string
+    (if (= (string-length s) 0)
+        #t
+        (if (is-permitted? (string-ref s 0))
+            (is-identifier?-rec (substring s 1))
+            #f)
+        )))
+
+(define is-letter?
+  (lambda (c)
+    (or
+     (and (char<=? #\a c) (char>=? #\z c))
+     (and (char<=? #\A c) (char>=? #\Z c)))
+    ))
+
+(define is-number?
+  (lambda (c)
+    (and (char<=? #\0 c) (char>=? #\9 c))
+    ))
+
+(define is-permitted?
+  (lambda (c)
+    (or
+     (char=? c #\_)
+     (is-letter? c)
+     (is-number? c))
+    ))
+
+(is-identifier? "")
+(is-identifier? "5")
+(is-identifier? "3o")
+(is-identifier? "_ape")
+(is-identifier? "Q")
+(is-identifier? "Iter_2")
+(is-identifier? "latoBase")
+(is-identifier? "w3c")
+
+
+(define btr-val
+  (lambda (v)
+    (btr-val-rec v 0)
+    ))
+
+(define btr-val-alt
+  (lambda (v)
+    (+
+     (bit-val (string-ref s (- (string-length s) 1)))
+     (* 3
+        (btr-val (substring s 0 (- (string-length s) 1)))))
+    ))
+
+(define btr-val-rec
+  (lambda (v a)
+    (if (= (string-length v) 0)
+        a
+        (btr-val-rec (substring v 1)
+                     (+ (* a 3) (bit-val (string-ref v 0)))))
+    ))
+
+(define bit-val
+  (lambda (c)
+    (cond ((char=? c #\+) 1)
+          ((char=? c #\-) -1)
+          (else 0))
+    ))
+
+(btr-val "----")
+(btr-val "---.")
+(btr-val "---+")
+(btr-val "--.-")
+(btr-val "--..")
+(btr-val "--.+")
+(btr-val "--+-")
+(btr-val "--+.")
+(btr-val "--++")
+(btr-val "-.--")
+(btr-val "-.-.")
+(btr-val "-.-+")
+(btr-val "-..-")
+(btr-val "-...")
+(btr-val "-..+")
+(btr-val "-.+-")
+(btr-val "-.+.")
+(btr-val "-.++")
+(btr-val "-+--")
+(btr-val "-+-.")
+(btr-val "-+-+")
+(btr-val "-+.-")
+(btr-val "-+..")
+(btr-val "-+.+")
+(btr-val "-++-")
+(btr-val "-++.")
+(btr-val "-+++")
+(btr-val ".---")
+(btr-val ".--.")
+(btr-val ".--+")
+(btr-val ".-.-")
+(btr-val ".-..")
+(btr-val ".-.+")
+(btr-val ".-+-")
+(btr-val ".-+.")
+(btr-val ".-++")
+(btr-val "..--")
+(btr-val "..-.")
+(btr-val "..-+")
+(btr-val "...-")
+(btr-val "....")
+(btr-val "...+")
+(btr-val "..+-")
+(btr-val "..+.")
+(btr-val "..++")
+(btr-val ".+--")
+(btr-val ".+-.")
+(btr-val ".+-+")
+(btr-val ".+.-")
+(btr-val ".+..")
+(btr-val ".+.+")
+(btr-val ".++-")
+(btr-val ".++.")
+(btr-val ".+++")
+(btr-val "+---")
+(btr-val "+--.")
+(btr-val "+--+")
+(btr-val "+-.-")
+(btr-val "+-..")
+(btr-val "+-.+")
+(btr-val "+-+-")
+(btr-val "+-+.")
+(btr-val "+-++")
+(btr-val "+.--")
+(btr-val "+.-.")
+(btr-val "+.-+")
+(btr-val "+..-")
+(btr-val "+...")
+(btr-val "+..+")
+(btr-val "+.+-")
+(btr-val "+.+.")
+(btr-val "+.++")
+(btr-val "++--")
+(btr-val "++-.")
+(btr-val "++-+")
+(btr-val "++.-")
+(btr-val "++..")
+(btr-val "++.+")
+(btr-val "+++-")
+(btr-val "+++.")
+(btr-val "++++")
