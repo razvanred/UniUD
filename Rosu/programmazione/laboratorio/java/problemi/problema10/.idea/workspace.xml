@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2adabe95-0c6f-456a-a01d-b74f2ef96cb7" name="Default Changelist" comment="" />
+    <list default="true" id="a4833294-0824-4652-838d-7ef4253d4680" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/ints-list/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/ints-list/.idea/workspace.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,20 +17,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/intSList/Principale.kt">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/stringSList/Principale.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+            <state relative-caret-position="420">
+              <caret line="28" column="12" lean-forward="true" selection-start-line="28" selection-start-column="12" selection-end-line="28" selection-end-column="12" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/intSList/IntSList.kt">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/stringSList/BtrNotation.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
+            <state relative-caret-position="195">
+              <caret line="13" column="12" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/stringSList/StringSList.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="195">
+              <caret line="13" column="26" lean-forward="true" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -43,13 +54,14 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../../.." />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/intSList/Principale.kt" />
-        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/intSList/IntSList.kt" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/stringSList/StringSList.kt" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/stringSList/BtrNotation.kt" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/stringSList/Principale.kt" />
       </list>
     </option>
   </component>
@@ -71,58 +83,57 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="ints-list" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ints-list" type="462c0819:PsiDirectoryNode" />
+              <item name="problema10" type="b2602c69:ProjectViewProjectNode" />
+              <item name="problema10" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="ints-list" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ints-list" type="462c0819:PsiDirectoryNode" />
+              <item name="problema10" type="b2602c69:ProjectViewProjectNode" />
+              <item name="problema10" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="ints-list" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ints-list" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ro" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ints-list" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ints-list" type="462c0819:PsiDirectoryNode" />
+              <item name="problema10" type="b2602c69:ProjectViewProjectNode" />
+              <item name="problema10" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ro" type="462c0819:PsiDirectoryNode" />
-              <item name="razvan" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="ints-list" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ints-list" type="462c0819:PsiDirectoryNode" />
+              <item name="problema10" type="b2602c69:ProjectViewProjectNode" />
+              <item name="problema10" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ro" type="462c0819:PsiDirectoryNode" />
               <item name="razvan" type="462c0819:PsiDirectoryNode" />
-              <item name="uniud" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="ints-list" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ints-list" type="462c0819:PsiDirectoryNode" />
+              <item name="problema10" type="b2602c69:ProjectViewProjectNode" />
+              <item name="problema10" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ro" type="462c0819:PsiDirectoryNode" />
               <item name="razvan" type="462c0819:PsiDirectoryNode" />
               <item name="uniud" type="462c0819:PsiDirectoryNode" />
-              <item name="intSList" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="problema10" type="b2602c69:ProjectViewProjectNode" />
+              <item name="problema10" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ro" type="462c0819:PsiDirectoryNode" />
+              <item name="razvan" type="462c0819:PsiDirectoryNode" />
+              <item name="uniud" type="462c0819:PsiDirectoryNode" />
+              <item name="stringSList" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -144,14 +155,14 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="ro.razvan.uniud.intSList.PrincipaleKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
-      <module name="ints-list" />
+    <configuration name="ro.razvan.uniud.stringSList.PrincipaleKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
+      <module name="problema10" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="ro.razvan.uniud.intSList.PrincipaleKt" />
+      <option name="MAIN_CLASS_NAME" value="ro.razvan.uniud.stringSList.PrincipaleKt" />
       <option name="WORKING_DIRECTORY" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -159,7 +170,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Kotlin.ro.razvan.uniud.intSList.PrincipaleKt" />
+        <item itemvalue="Kotlin.ro.razvan.uniud.stringSList.PrincipaleKt" />
       </list>
     </recent_temporary>
   </component>
@@ -168,20 +179,20 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="2adabe95-0c6f-456a-a01d-b74f2ef96cb7" name="Default Changelist" comment="" />
-      <created>1560265195195</created>
+      <changelist id="a4833294-0824-4652-838d-7ef4253d4680" name="Default Changelist" comment="" />
+      <created>1560271424777</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1560265195195</updated>
-      <workItem from="1560265196396" duration="5428000" />
+      <updated>1560271424777</updated>
+      <workItem from="1560271426018" duration="7857000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5428000" />
+    <option name="totallyTimeSpent" value="7857000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1196" y="0" width="1364" height="1080" extended-state="6" />
+    <frame x="1246" y="0" width="1314" height="1080" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Image Layers" />
@@ -189,9 +200,9 @@
       <window_info id="UI Designer" />
       <window_info id="Capture Tool" />
       <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21028744" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.206761" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Messages" weight="0.32970297" />
+      <window_info anchor="bottom" id="Messages" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Version Control" />
@@ -199,7 +210,7 @@
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32970297" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32970297" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -219,17 +230,24 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/intSList/IntSList.kt">
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/stringSList/Principale.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
+        <state relative-caret-position="420">
+          <caret line="28" column="12" lean-forward="true" selection-start-line="28" selection-start-column="12" selection-end-line="28" selection-end-column="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/intSList/Principale.kt">
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/stringSList/BtrNotation.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+        <state relative-caret-position="195">
+          <caret line="13" column="12" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/stringSList/StringSList.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="26" lean-forward="true" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
         </state>
       </provider>
     </entry>
