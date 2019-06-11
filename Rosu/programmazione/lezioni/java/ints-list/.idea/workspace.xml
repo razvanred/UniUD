@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ba522b4d-0fa9-4902-8a1d-65a12c93b87a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="2adabe95-0c6f-456a-a01d-b74f2ef96cb7" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../iterative-programs/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../iterative-programs/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,10 +18,19 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/iterativePrograms/Principale.kt">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/intSList/Principale.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="395">
-              <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+            <state relative-caret-position="135">
+              <caret line="9" column="67" selection-start-line="9" selection-start-column="67" selection-end-line="9" selection-end-column="67" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/intSList/IntSList.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="945">
+              <caret line="63" column="21" selection-start-line="63" selection-start-column="21" selection-end-line="63" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -41,7 +50,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/iterativePrograms/Principale.kt" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/intSList/Principale.kt" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/intSList/IntSList.kt" />
       </list>
     </option>
   </component>
@@ -68,8 +78,8 @@
         <subPane>
           <expand>
             <path>
-              <item name="iterative-programs" type="b2602c69:ProjectViewProjectNode" />
-              <item name="iterative-programs" type="462c0819:PsiDirectoryNode" />
+              <item name="ints-list" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ints-list" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -79,7 +89,6 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -101,14 +110,14 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="ro.razvan.uniud.iterativePrograms.PrincipaleKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
-      <module name="iterative-programs" />
+    <configuration name="ro.razvan.uniud.intSList.PrincipaleKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
+      <module name="ints-list" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="ro.razvan.uniud.iterativePrograms.PrincipaleKt" />
+      <option name="MAIN_CLASS_NAME" value="ro.razvan.uniud.intSList.PrincipaleKt" />
       <option name="WORKING_DIRECTORY" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -116,7 +125,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Kotlin.ro.razvan.uniud.iterativePrograms.PrincipaleKt" />
+        <item itemvalue="Kotlin.ro.razvan.uniud.intSList.PrincipaleKt" />
       </list>
     </recent_temporary>
   </component>
@@ -125,20 +134,20 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ba522b4d-0fa9-4902-8a1d-65a12c93b87a" name="Default Changelist" comment="" />
-      <created>1560246858483</created>
+      <changelist id="2adabe95-0c6f-456a-a01d-b74f2ef96cb7" name="Default Changelist" comment="" />
+      <created>1560265195195</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1560246858483</updated>
-      <workItem from="1560246859680" duration="4190000" />
+      <updated>1560265195195</updated>
+      <workItem from="1560265196396" duration="4884000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4190000" />
+    <option name="totallyTimeSpent" value="4884000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1244" y="0" width="1316" height="1080" extended-state="6" />
+    <frame x="1196" y="0" width="1364" height="1080" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Image Layers" />
@@ -146,9 +155,9 @@
       <window_info id="UI Designer" />
       <window_info id="Capture Tool" />
       <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.1844584" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21028744" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Messages" />
+      <window_info anchor="bottom" id="Messages" weight="0.32970297" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Version Control" />
@@ -156,7 +165,7 @@
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32970297" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32970297" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -176,10 +185,17 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/iterativePrograms/Principale.kt">
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/intSList/IntSList.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+        <state relative-caret-position="945">
+          <caret line="63" column="21" selection-start-line="63" selection-start-column="21" selection-end-line="63" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/intSList/Principale.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="67" selection-start-line="9" selection-start-column="67" selection-end-line="9" selection-end-column="67" />
         </state>
       </provider>
     </entry>
