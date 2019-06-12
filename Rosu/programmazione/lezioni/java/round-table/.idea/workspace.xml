@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="527bec5a-329b-4531-b0ff-f68b485b1f97" name="Default Changelist" comment="" />
+    <list default="true" id="7ffd059f-994f-44f4-9dd0-5999d3c93aa4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../complex-numbers/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../complex-numbers/.idea/workspace.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,19 +18,28 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/complexNumbers/Principale.kt">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/roundTable/IntSList.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="1" lean-forward="true" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+            <state>
+              <caret column="12" selection-start-column="12" selection-end-column="12" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/complexNumbers/Complex.kt">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/roundTable/Principale.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" column="14" lean-forward="true" selection-start-line="21" selection-start-column="14" selection-end-line="21" selection-end-column="14" />
+            <state relative-caret-position="75">
+              <caret line="5" column="1" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/roundTable/RoundTable.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1290">
+              <caret line="86" lean-forward="true" selection-start-line="86" selection-end-line="86" />
             </state>
           </provider>
         </entry>
@@ -48,8 +59,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/complexNumbers/Complex.kt" />
-        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/complexNumbers/Principale.kt" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/roundTable/IntSList.kt" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/roundTable/RoundTable.kt" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/roundTable/Principale.kt" />
       </list>
     </option>
   </component>
@@ -71,58 +83,57 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="complex-numbers" type="b2602c69:ProjectViewProjectNode" />
-              <item name="complex-numbers" type="462c0819:PsiDirectoryNode" />
+              <item name="round-table" type="b2602c69:ProjectViewProjectNode" />
+              <item name="round-table" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="complex-numbers" type="b2602c69:ProjectViewProjectNode" />
-              <item name="complex-numbers" type="462c0819:PsiDirectoryNode" />
+              <item name="round-table" type="b2602c69:ProjectViewProjectNode" />
+              <item name="round-table" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="complex-numbers" type="b2602c69:ProjectViewProjectNode" />
-              <item name="complex-numbers" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ro" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="complex-numbers" type="b2602c69:ProjectViewProjectNode" />
-              <item name="complex-numbers" type="462c0819:PsiDirectoryNode" />
+              <item name="round-table" type="b2602c69:ProjectViewProjectNode" />
+              <item name="round-table" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ro" type="462c0819:PsiDirectoryNode" />
-              <item name="razvan" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="complex-numbers" type="b2602c69:ProjectViewProjectNode" />
-              <item name="complex-numbers" type="462c0819:PsiDirectoryNode" />
+              <item name="round-table" type="b2602c69:ProjectViewProjectNode" />
+              <item name="round-table" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ro" type="462c0819:PsiDirectoryNode" />
               <item name="razvan" type="462c0819:PsiDirectoryNode" />
-              <item name="uniud" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="complex-numbers" type="b2602c69:ProjectViewProjectNode" />
-              <item name="complex-numbers" type="462c0819:PsiDirectoryNode" />
+              <item name="round-table" type="b2602c69:ProjectViewProjectNode" />
+              <item name="round-table" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ro" type="462c0819:PsiDirectoryNode" />
               <item name="razvan" type="462c0819:PsiDirectoryNode" />
               <item name="uniud" type="462c0819:PsiDirectoryNode" />
-              <item name="complexNumbers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="round-table" type="b2602c69:ProjectViewProjectNode" />
+              <item name="round-table" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ro" type="462c0819:PsiDirectoryNode" />
+              <item name="razvan" type="462c0819:PsiDirectoryNode" />
+              <item name="uniud" type="462c0819:PsiDirectoryNode" />
+              <item name="roundTable" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -144,14 +155,14 @@
     </option>
   </component>
   <component name="RunManager">
-    <configuration name="ro.razvan.uniud.complexNumbers.PrincipaleKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
-      <module name="complex-numbers" />
+    <configuration name="ro.razvan.uniud.roundTable.PrincipaleKt" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
+      <module name="round-table" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="ro.razvan.uniud.complexNumbers.PrincipaleKt" />
+      <option name="MAIN_CLASS_NAME" value="ro.razvan.uniud.roundTable.PrincipaleKt" />
       <option name="WORKING_DIRECTORY" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -159,7 +170,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Kotlin.ro.razvan.uniud.complexNumbers.PrincipaleKt" />
+        <item itemvalue="Kotlin.ro.razvan.uniud.roundTable.PrincipaleKt" />
       </list>
     </recent_temporary>
   </component>
@@ -168,17 +179,17 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="527bec5a-329b-4531-b0ff-f68b485b1f97" name="Default Changelist" comment="" />
-      <created>1560326216648</created>
+      <changelist id="7ffd059f-994f-44f4-9dd0-5999d3c93aa4" name="Default Changelist" comment="" />
+      <created>1560342087428</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1560326216648</updated>
-      <workItem from="1560326219640" duration="4455000" />
+      <updated>1560342087428</updated>
+      <workItem from="1560342088707" duration="6718000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4455000" />
+    <option name="totallyTimeSpent" value="6718000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1286" y="0" width="1274" height="1080" extended-state="0" />
@@ -189,9 +200,9 @@
       <window_info id="UI Designer" />
       <window_info id="Capture Tool" />
       <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" weight="0.2573052" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.31737012" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Messages" />
+      <window_info anchor="bottom" id="Messages" weight="0.32970297" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Version Control" />
@@ -219,17 +230,30 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/complexNumbers/Principale.kt">
+    <entry file="file://$PROJECT_DIR$/src/ro.razvan.uniud.roundTable.kt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/round-table.iml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/roundTable/IntSList.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="1" lean-forward="true" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+        <state>
+          <caret column="12" selection-start-column="12" selection-end-column="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/complexNumbers/Complex.kt">
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/roundTable/RoundTable.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="14" lean-forward="true" selection-start-line="21" selection-start-column="14" selection-end-line="21" selection-end-column="14" />
+        <state relative-caret-position="1290">
+          <caret line="86" lean-forward="true" selection-start-line="86" selection-end-line="86" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/roundTable/Principale.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="1" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
         </state>
       </provider>
     </entry>
