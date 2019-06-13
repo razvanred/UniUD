@@ -1,17 +1,17 @@
 public class Board {
   private int size, queens;
-  private IntSList cols, rows, dright, dleft;
+  private SList<Integer> cols, rows, dright, dleft;
   
   public Board(int size) {
     this.size=size;
     queens=0;
-    cols=new IntSList();
-    rows=new IntSList();
-    dright=new IntSList();
-    dleft=new IntSList();
+    cols=new SList<Integer>();
+    rows=new SList<Integer>();
+    dright=new SList<Integer>();
+    dleft=new SList<Integer>();
   }
   
-  private Board(int size,int queens,IntSList cols,IntSList rows,IntSList dright, IntSList dleft){
+  private Board(int size,int queens,SList<Integer> cols,SList<Integer> rows,SList<Integer> dright, SList<Integer> dleft){
     this.size=size;
     this.queens=queens;
     this.cols=cols;
@@ -32,7 +32,7 @@ public class Board {
     return (contains(cols,i)||contains(rows,j)||contains(dright,i-j)||contains(dleft,i+j));
   }
   
-  private boolean contains(IntSList list,int n){
+  private boolean contains(SList<Integer> list,int n){
     while(!list.isNull()){
       if(list.car()==n)
         return true;
@@ -45,15 +45,26 @@ public class Board {
     return new Board(size,queens+1,cols.cons(i),rows.cons(j),dright.cons(i-j),dleft.cons(i+j));
   }
   
-  public String arrangement(){ // String codifica testuale della configurazione 
-    String s="< "+size+", "+queens+", "+rows+", "+cols+", "+dright+", "+dleft+", \" ";
-    IntSList curCols=cols, curRows=rows;
+  public String representation(){
+    String s="";
+    SList<Integer> curCols=cols, curRows=rows;
     while(!curCols.isNull()){
-      s=s+(char)(curCols.car()+96)+curRows.car()+" ";
+      s=s+((char)(curCols.car()+96))+curRows.car()+" ";
       curCols=curCols.cdr();
       curRows=curRows.cdr();
     }
-    return s+"\" >";
+    return s;
+  }
+  
+  public String toString(){ // String codifica testuale della configurazione 
+    String s="< "+size+", "+queens+", "+rows+", "+cols+", "+dright+", "+dleft+", \" ";
+    SList<Integer> curCols=cols, curRows=rows;
+    while(!curCols.isNull()){
+      s=s+((char)(curCols.car()+96))+curRows.car()+" ";
+      curCols=curCols.cdr();
+      curRows=curRows.cdr();
+    }
+    return s+"\">";
   }
   
 }

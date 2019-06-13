@@ -1,6 +1,3 @@
-/**
- * Auto Generated Java Class.
- */
 public class Test {
   
   public Test() { 

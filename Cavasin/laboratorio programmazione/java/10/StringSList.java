@@ -1,7 +1,7 @@
 public class StringSList {
   // ----- Costante lista vuota (condivisa)
   
-  public static final IntSList NULL_INTLIST = new StringSList();
+  public static final StringSList NULL_STRINGLIST = new StringSList();
   
   // ----- Rappresentazione interna di una lista: private!
   private final boolean empty;                         // oggetti immutabili:
@@ -38,7 +38,6 @@ public class StringSList {
     return rest;                                       // si assume: lista non vuota
   }
   
-  // ----- Realizzazione alternativa (sostanzialmente equivalente) del "cons"
   public StringSList cons( String e ) {                // costruzione di nuove liste
     // Scheme: cons
     return new StringSList( e, this );
