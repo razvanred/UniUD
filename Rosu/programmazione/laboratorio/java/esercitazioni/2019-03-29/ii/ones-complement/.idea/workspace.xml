@@ -2,23 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0a3798ca-336c-42d4-92c5-931805ba629e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/next-btr/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/next-btr/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/next-btr/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/next-btr/.idea/kotlinc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/next-btr/.idea/libraries/KotlinJavaRuntime.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/next-btr/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/next-btr/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/next-btr/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/next-btr/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/next-btr/next-btr.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/next-btr/out/production/next-btr/META-INF/next-btr.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/next-btr/out/production/next-btr/ro/razvan/uniud/nextBtr/BtrNotation.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/next-btr/out/production/next-btr/ro/razvan/uniud/nextBtr/PrincipaleKt.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/next-btr/src/ro/razvan/uniud/nextBtr/BtrNotation.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/next-btr/src/ro/razvan/uniud/nextBtr/Principale.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/principale.bak" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../../racket/esercitazioni/2019-03-29/i/principale.rkt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,12 +16,12 @@
     <option name="delegatedBuild" value="true" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/onesComplement/Principale.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="187">
-              <caret line="11" column="1" lean-forward="true" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+              <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -83,6 +67,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -94,8 +80,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -148,28 +132,27 @@
       <option name="presentableId" value="Default" />
       <updated>1560190311531</updated>
       <workItem from="1560190313393" duration="99000" />
-      <workItem from="1560190476335" duration="3527000" />
+      <workItem from="1560190476335" duration="3715000" />
+      <workItem from="1560501762951" duration="158000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3626000" />
+    <option name="totallyTimeSpent" value="3972000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1455" height="935" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22222222" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22580644" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32876712" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32876712" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -179,6 +162,7 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Terminal" order="10" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -194,17 +178,17 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/onesComplement/Principale.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="1" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/onesComplement/IterationStrings.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
           <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/onesComplement/Principale.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="1" lean-forward="true" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
         </state>
       </provider>
     </entry>
