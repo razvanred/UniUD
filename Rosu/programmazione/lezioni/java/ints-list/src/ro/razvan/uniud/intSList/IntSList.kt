@@ -21,11 +21,13 @@ class IntSList {
         rest = null
     }
 
+    constructor(e: Int) : this(e, NULL_INT_S_LIST)
+
     /**
      * Creazione di una lista non vuota
      * Scheme: cons
      */
-    constructor(e: Int, il: IntSList = NULL_INT_S_LIST) {
+    constructor(e: Int, il: IntSList) {
         rest = il
         first = e
         empty = false
