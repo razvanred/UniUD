@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afab6bcc-76c4-48d4-a48a-55600618a6fe" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../../../../lezioni/java/generics/.idea/artifacts/generics_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../problema11/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../problema11/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/generics/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/generics/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/generics/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/generics/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/generics/out/production/generics/ro/razvan/uniud/generics/PrincipaleKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/generics/out/production/generics/ro/razvan/uniud/generics/PrincipaleKt.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/generics/out/production/generics/ro/razvan/uniud/generics/SList.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/generics/out/production/generics/ro/razvan/uniud/generics/SList.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,7 +21,7 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Board.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="253">
+                <state relative-caret-position="1760">
                   <caret line="115" column="50" selection-start-line="115" selection-start-column="50" selection-end-line="115" selection-end-column="50" />
                   <folding>
                     <element signature="imports" expanded="true" />
@@ -34,7 +29,6 @@
                     <element signature="e#1116#1117#0" expanded="true" />
                     <element signature="e#1139#1140#0" expanded="true" />
                     <element signature="e#1168#1169#0" expanded="true" />
-                    <element signature="docComment;method#addQueen#0;class#Board#0" />
                     <element signature="method#addQueen#0;class#Board#0" />
                   </folding>
                 </state>
@@ -45,7 +39,7 @@
             <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Board.kt">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="1376">
-                  <caret line="105" column="13" lean-forward="true" selection-start-line="105" selection-start-column="13" selection-end-line="105" selection-end-column="13" />
+                  <caret line="105" column="13" selection-start-line="105" selection-start-column="13" selection-end-line="105" selection-end-column="13" />
                   <folding>
                     <element signature="n#!!doc;n#contains#0;n#!!block;n#Companion#0;n#!!block;n#Board#0" />
                     <element signature="n#!!doc;n#addQueen#0;n#!!block;n#Board#0" />
@@ -55,10 +49,10 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Queens.kt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="464">
+                <state relative-caret-position="-59">
                   <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
                   <folding>
                     <element signature="e#47#113#0" expanded="true" />
@@ -67,11 +61,11 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Principale.kt">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="224">
-                  <caret line="14" column="1" lean-forward="true" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+                <state relative-caret-position="160">
+                  <caret line="11" selection-start-line="11" selection-end-line="11" />
                   <folding>
                     <element signature="e#47#144#0" expanded="true" />
                   </folding>
@@ -82,12 +76,12 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Board.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2115">
-                  <caret line="137" column="4" lean-forward="true" selection-start-line="137" selection-start-column="4" selection-end-line="143" selection-end-column="7" />
+                <state relative-caret-position="467">
+                  <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#1089#1090#0" expanded="true" />
@@ -103,16 +97,10 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Queens.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="144">
+                <state relative-caret-position="96">
                   <caret line="9" column="23" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#333#334#0" expanded="true" />
-                    <element signature="e#389#390#0" expanded="true" />
-                    <element signature="e#464#465#0" expanded="true" />
-                    <element signature="e#524#525#0" expanded="true" />
-                    <element signature="e#2462#2463#0" expanded="true" />
-                    <element signature="e#2501#2502#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -121,8 +109,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Principale.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="256">
-                  <caret line="16" column="5" lean-forward="true" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
+                <state relative-caret-position="240">
+                  <caret line="16" column="5" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -177,72 +165,14 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="n-queens-with-gui" type="b2602c69:ProjectViewProjectNode" />
-              <item name="problema12" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="n-queens-with-gui" type="b2602c69:ProjectViewProjectNode" />
-              <item name="problema12" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="n-queens-with-gui" type="b2602c69:ProjectViewProjectNode" />
-              <item name="problema12" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ro" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="n-queens-with-gui" type="b2602c69:ProjectViewProjectNode" />
-              <item name="problema12" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ro" type="462c0819:PsiDirectoryNode" />
-              <item name="razvan" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="n-queens-with-gui" type="b2602c69:ProjectViewProjectNode" />
-              <item name="problema12" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ro" type="462c0819:PsiDirectoryNode" />
-              <item name="razvan" type="462c0819:PsiDirectoryNode" />
-              <item name="uniud" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="n-queens-with-gui" type="b2602c69:ProjectViewProjectNode" />
-              <item name="problema12" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ro" type="462c0819:PsiDirectoryNode" />
-              <item name="razvan" type="462c0819:PsiDirectoryNode" />
-              <item name="uniud" type="462c0819:PsiDirectoryNode" />
-              <item name="nQueensWithGui" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="n-queens-with-gui" type="b2602c69:ProjectViewProjectNode" />
-              <item name="problema12" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ro" type="462c0819:PsiDirectoryNode" />
-              <item name="razvan" type="462c0819:PsiDirectoryNode" />
-              <item name="uniud" type="462c0819:PsiDirectoryNode" />
-              <item name="nQueensWithGui" type="462c0819:PsiDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="true" />
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/queens.jar!/" />
@@ -347,12 +277,13 @@
       <option name="presentableId" value="Default" />
       <updated>1561051859578</updated>
       <workItem from="1561051863185" duration="13933000" />
-      <workItem from="1561106305052" duration="3384000" />
+      <workItem from="1561106305052" duration="3657000" />
+      <workItem from="1561115037981" duration="600000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17317000" />
+    <option name="totallyTimeSpent" value="18190000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1455" height="935" extended-state="6" />
@@ -407,36 +338,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Principale.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="16" column="5" lean-forward="true" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Queens.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="9" column="23" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#333#334#0" expanded="true" />
-            <element signature="e#389#390#0" expanded="true" />
-            <element signature="e#464#465#0" expanded="true" />
-            <element signature="e#524#525#0" expanded="true" />
-            <element signature="e#2462#2463#0" expanded="true" />
-            <element signature="e#2501#2502#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Board.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1376">
-          <caret line="105" column="13" lean-forward="true" selection-start-line="105" selection-start-column="13" selection-end-line="105" selection-end-column="13" />
+          <caret line="105" column="13" selection-start-line="105" selection-start-column="13" selection-end-line="105" selection-end-column="13" />
           <folding>
             <element signature="n#!!doc;n#contains#0;n#!!block;n#Companion#0;n#!!block;n#Board#0" />
             <element signature="n#!!doc;n#addQueen#0;n#!!block;n#Board#0" />
@@ -445,25 +350,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Board.java">
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Principale.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="115" column="50" selection-start-line="115" selection-start-column="50" selection-end-line="115" selection-end-column="50" />
+        <state relative-caret-position="160">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1089#1090#0" expanded="true" />
-            <element signature="e#1116#1117#0" expanded="true" />
-            <element signature="e#1139#1140#0" expanded="true" />
-            <element signature="e#1168#1169#0" expanded="true" />
-            <element signature="docComment;method#addQueen#0;class#Board#0" />
-            <element signature="method#addQueen#0;class#Board#0" />
+            <element signature="e#47#144#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Queens.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="464">
+        <state relative-caret-position="-59">
           <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
           <folding>
             <element signature="e#47#113#0" expanded="true" />
@@ -471,12 +370,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Principale.kt">
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Board.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="14" column="1" lean-forward="true" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+        <state relative-caret-position="467">
+          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
           <folding>
-            <element signature="e#47#144#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#1089#1090#0" expanded="true" />
+            <element signature="e#1116#1117#0" expanded="true" />
+            <element signature="e#1139#1140#0" expanded="true" />
+            <element signature="e#1168#1169#0" expanded="true" />
+            <element signature="method#addQueen#0;class#Board#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Queens.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="9" column="23" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Principale.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="5" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
