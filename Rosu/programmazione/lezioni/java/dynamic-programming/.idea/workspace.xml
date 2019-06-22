@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f459de3f-3da6-482a-9eac-eea2cb8163f9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../../laboratorio/java/problemi/problema12/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../laboratorio/java/problemi/problema12/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../laboratorio/java/progetti/longest-increasing-subsequence/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../laboratorio/java/progetti/longest-increasing-subsequence/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../laboratorio/java/progetti/longest-increasing-subsequence/src/ro/razvan/uniud/lis/kotlin/LongestIncreasingSubsequence.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../../laboratorio/java/progetti/longest-increasing-subsequence/src/ro/razvan/uniud/lis/kotlin/LongestIncreasingSubsequence.kt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -200,12 +199,12 @@
       <workItem from="1560419032166" duration="15457000" />
       <workItem from="1560492935848" duration="1279000" />
       <workItem from="1561123923904" duration="2705000" />
-      <workItem from="1561239181438" duration="1513000" />
+      <workItem from="1561239181438" duration="1722000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25103000" />
+    <option name="totallyTimeSpent" value="25312000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="960" extended-state="0" />

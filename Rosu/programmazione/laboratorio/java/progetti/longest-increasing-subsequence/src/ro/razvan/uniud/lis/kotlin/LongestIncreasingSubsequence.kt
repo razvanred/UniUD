@@ -93,11 +93,30 @@ object LongestIncreasingSubsequence {
         return matrix[i][j]
     }
 
+    /**
+     * Versione del metodo llisTopDown che ritorna in un oggetto Pair la lunghezza della sottosequenza crescente
+     * più lunga e il numero di inizializzazioni eseguite dal metodo sulle celle della matrice matrix
+     *
+     * @param s sequenza di interi positivi
+     * @return oggetto Pair contente la lunghezza della sottosequenza crescente e il numero di inizializzazioni
+     * eseguite dal metodo sulle celle della matrice matrix
+     */
     fun llisTopDownDebugInits(s: IntArray): Pair<Int, Int> =
         llisTopDownDebugInits(s, 0, 0, Array(s.size + 1) {
             IntArray(s.size + 1) { UNKNOWN }
         })
 
+    /**
+     * Versione del metodo llisTopDown che ritorna in un oggetto Pair la lunghezza della sottosequenza crescente
+     * più lunga e il numero di inizializzazioni eseguite dal metodo sulle celle della matrice matrix
+     *
+     * @param s      sequenza di interi positivi
+     * @param i      indice di partenza della sottosequenza da esaminiare
+     * @param j      indice che permette di determinare t leggendo l'elemento in posizione j nella sequenza estesa
+     * @param matrix stato dell'elaborazione
+     * @return oggetto Pair contente la lunghezza della sottosequenza crescente e il numero di inizializzazioni
+     * eseguite dal metodo sulle celle della matrice matrix
+     */
     private fun llisTopDownDebugInits(s: IntArray, i: Int, j: Int, matrix: Array<IntArray>): Pair<Int, Int> {
 
         val counter: Int

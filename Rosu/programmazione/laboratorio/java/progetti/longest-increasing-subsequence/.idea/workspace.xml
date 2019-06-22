@@ -2,6 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8e8f315e-4ed2-4d26-bb1e-cff5b1f83e79" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/ints_list.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/annotations-17.0.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/ints-list.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/longest-increasing-subsequence.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/longest-increasing-subsequence/META-INF/longest-increasing-subsequence.kotlin_module" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/longest-increasing-subsequence/ro/razvan/uniud/lis/java/LongestIncresingSubsequence.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/longest-increasing-subsequence/ro/razvan/uniud/lis/java/Pair.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/longest-increasing-subsequence/ro/razvan/uniud/lis/java/Principale.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/longest-increasing-subsequence/ro/razvan/uniud/lis/kotlin/LongestIncreasingSubsequence.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/longest-increasing-subsequence/ro/razvan/uniud/lis/kotlin/PrincipaleKt.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/lis/java/LongestIncresingSubsequence.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/lis/java/Pair.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/lis/java/Principale.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/lis/kotlin/LongestIncreasingSubsequence.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/lis/kotlin/Principale.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../problemi/problema12/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../problemi/problema12/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/.idea/workspace.xml" afterDir="false" />
@@ -23,7 +46,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/lis/java/LongestIncresingSubsequence.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-361">
@@ -57,11 +80,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/lis/kotlin/LongestIncreasingSubsequence.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="439">
-              <caret line="144" lean-forward="true" selection-start-line="144" selection-end-line="144" />
+            <state relative-caret-position="-101">
+              <caret line="208" lean-forward="true" selection-start-line="208" selection-end-line="208" />
               <folding>
                 <element signature="e#36#99#0" expanded="true" />
               </folding>
@@ -209,6 +232,7 @@
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/ints-list.jar!/" />
@@ -275,12 +299,12 @@
       <option name="presentableId" value="Default" />
       <updated>1561119909284</updated>
       <workItem from="1561119917425" duration="28698000" />
-      <workItem from="1561241009319" duration="333000" />
+      <workItem from="1561241009319" duration="617000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29031000" />
+    <option name="totallyTimeSpent" value="29315000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1455" height="935" extended-state="6" />
@@ -384,16 +408,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/lis/kotlin/LongestIncreasingSubsequence.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="439">
-          <caret line="144" lean-forward="true" selection-start-line="144" selection-end-line="144" />
-          <folding>
-            <element signature="e#36#99#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/lis/java/LongestIncresingSubsequence.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-361">
@@ -402,6 +416,16 @@
             <element signature="imports" expanded="true" />
             <element signature="e#6984#6985#0" expanded="true" />
             <element signature="e#7022#7023#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/lis/kotlin/LongestIncreasingSubsequence.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-101">
+          <caret line="208" lean-forward="true" selection-start-line="208" selection-end-line="208" />
+          <folding>
+            <element signature="e#36#99#0" expanded="true" />
           </folding>
         </state>
       </provider>
