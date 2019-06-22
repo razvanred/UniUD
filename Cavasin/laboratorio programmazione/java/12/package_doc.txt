@@ -1,0 +1,22 @@
+/* * Package "queens" * * Supponiamo che il modulo Test.java utilizzi il package queens. * Il programma Test.java deve importare le classi definite dal package * (specificamente, ChessboardView). * * Se i file Test.java e queens.jar sono collocati nella stessa * cartella (directory), il programma deve premettere l'istruzione: * *   import queens.*; * * Quindi, e' possibile compilare ed eseguire il programma Test * con le seguenti linee di comando: * *   javac -classpath "queens.jar:." Test.java *   java  -classpath "queens.jar:." Test * * Il protocollo della classe ChessboardView prevede un costruttore * per costruire il modello di una scacchiera n x n: * *   ChessboardView view = new ChessboardView( n ); * * e il seguente metodo: * *   view.setQueens( s );  * * per aggiornare la visualizzazione della scacchiera.
+ *
+ * Quando viene invocato il metodo setQueens, una successiva invocazione
+ * dello stesso metodo resta in sospeso finche' l'utente opera un click
+ * con il mouse sull'immagine della scacchiera. Questa funzionalita' ha
+ * lo scopo di permettere all'utente di vedere una configurazione per un
+ * tempo sufficiente prima di passare ad una diversa visualizzazione.
+ *
+ * Il parametro del costruttore di ChessboardView deve essere un numero
+ * intero compreso fra 1 e 15, che rappresenta il numero di righe e di
+ * colonne della scacchiera da visualizzare.
+ *
+ * L'argomento del metodo setQueens e' una stringa composta da coppie
+ * lettera-cifra, dove una lettera minuscola e' seguita immediatamente
+ * da una cifra (se necessario estendendo le cifre decimali con le prime
+ * lettere maiuscole, adottate nella notazione esadecimale).
+ * Le coppie devono essere separate da uno o più spazi bianchi (spazi
+ * che possono eventualmente anche precedere e/o seguire le coppie).
+ * Non devono in ogni caso comparire altri caratteri o combinazioni di
+ * caratteri diverse da quelle descritte.
+ * Le coppie lettera-cifra rappresentano le coordinate di colonna e riga
+ * secondo le convenzioni in uso da parte dei giocatori di scacchi. */

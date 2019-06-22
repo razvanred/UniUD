@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<drjava version="drjava-20160913-225446">
+  <project autorefresh="false" root="" work="">
+    <createjar file=""/>
+    <source>
+      <file active="true" name="Puzzle.java" package="" timestamp="20-Jun-2019 13:34:28">
+        <select from="1350" to="1350"/>
+        <scroll column="378" row="0"/>
+      </file>
+      <file name="package_doc.txt" package="" timestamp="20-Jun-2019 09:58:16">
+        <select from="1350" to="1350"/>
+        <scroll column="378" row="0"/>
+      </file>
+      <file name="Main.java" package="" timestamp="20-Jun-2019 10:54:41">
+        <select from="1350" to="1350"/>
+        <scroll column="378" row="0"/>
+      </file>
+    </source>
+    <included/>
+    <excluded/>
+    <collapsed/>
+    <classpath/>
+    <breakpoints/>
+    <watches/>
+    <bookmarks/>
+    <preferences/>
+  </project>
+</drjava>

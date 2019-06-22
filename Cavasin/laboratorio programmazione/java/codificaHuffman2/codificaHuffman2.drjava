@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<drjava version="drjava-20160913-225446">
+  <project autorefresh="false" main="" root="" work="">
+    <createjar file=""/>
+    <source>
+      <file active="true" name="NodeQueue.java" package="" timestamp="22-Jun-2019 23:47:08">
+        <select from="841" to="841"/>
+        <scroll column="246" row="0"/>
+      </file>
+      <file name="Node.java" package="" timestamp="21-Jun-2019 10:43:19">
+        <select from="841" to="841"/>
+        <scroll column="246" row="0"/>
+      </file>
+      <file name="Huffman.java" package="" timestamp="22-Jun-2019 23:41:31">
+        <select from="841" to="841"/>
+        <scroll column="246" row="0"/>
+      </file>
+      <file name="Main.java" package="" timestamp="22-Jun-2019 23:42:27">
+        <select from="841" to="841"/>
+        <scroll column="246" row="0"/>
+      </file>
+      <file name="NodeStack.java" package="" timestamp="22-Jun-2019 23:46:35">
+        <select from="841" to="841"/>
+        <scroll column="246" row="0"/>
+      </file>
+    </source>
+    <included/>
+    <excluded/>
+    <collapsed/>
+    <classpath>
+      <file absolute="false" name="huffman_toolkit.jar"/>
+    </classpath>
+    <breakpoints/>
+    <watches/>
+    <bookmarks/>
+    <preferences/>
+  </project>
+</drjava>
