@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<drjava version="drjava-20160913-225446">
+  <project autorefresh="false" root="" work="">
+    <createjar file=""/>
+    <source>
+      <file active="true" name="Queens.java" package="" timestamp="13-Jun-2019 23:52:34">
+        <select from="4082" to="4082"/>
+        <scroll column="2293" row="0"/>
+      </file>
+      <file name="SList.java" package="" timestamp="13-Jun-2019 18:07:13">
+        <select from="4082" to="4082"/>
+        <scroll column="2293" row="0"/>
+      </file>
+      <file name="Board.java" package="" timestamp="13-Jun-2019 23:49:09">
+        <select from="4082" to="4082"/>
+        <scroll column="2293" row="0"/>
+      </file>
+    </source>
+    <included/>
+    <excluded/>
+    <collapsed/>
+    <classpath/>
+    <breakpoints/>
+    <watches/>
+    <bookmarks/>
+    <preferences/>
+  </project>
+</drjava>
