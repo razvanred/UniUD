@@ -23,7 +23,7 @@ public final class Es4 {
 
         final double removeClosestTo(final double x) {
 
-            final var value = measures.get(removeClosestTo(x, 0, -1));
+            final var value = measures.get(removeClosestTo(x, 0, 0));
 
             measures.remove(value);
 
@@ -37,15 +37,20 @@ public final class Es4 {
             }
 
             final var value = Math.abs(x - measures.get(i));
-            final var t = li == -1 ? x : Math.abs(x - measures.get(li));
+            final var t = Math.abs(x - measures.get(li));
 
-            if (value < t) {
+            println(t + " vs " + value);
+
+            if (value <= t) {
                 return removeClosestTo(x, i + 1, i);
+            } else {
+                return removeClosestTo(x, i + 1, li);
             }
-
-            return removeClosestTo(x, i + 1, li);
         }
 
+        List<Double> getMeasures() {
+            return measures;
+        }
 
     }
 
@@ -58,10 +63,12 @@ public final class Es4 {
         measures.add(45);
         measures.add(1);
 
-        measures.removeClosestTo(3);
+        println(measures.getSize());
 
         println(measures.removeClosestTo(3));
-        println(measures.getSize());
+        println(measures.getMeasures());
+        println(measures.removeClosestTo(3));
+        println(measures.getMeasures());
 
     }
 

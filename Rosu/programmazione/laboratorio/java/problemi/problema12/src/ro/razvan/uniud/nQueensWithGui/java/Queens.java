@@ -7,7 +7,7 @@ import ro.razvan.uniud.generics.SList;
 
 final class Queens {
 
-    static final SLisbot<Board> NULL_BOARD_LIST = new SList<>();
+    static final SList<Board> NULL_BOARD_LIST = new SList<>();
 
     static int numberOfSolutions(final int n) {
         return numberOfCompletions(new Board(n));

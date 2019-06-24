@@ -1,38 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8e8f315e-4ed2-4d26-bb1e-cff5b1f83e79" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/ints_list.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/annotations-17.0.0.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/ints-list.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/longest-increasing-subsequence.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/longest-increasing-subsequence/META-INF/longest-increasing-subsequence.kotlin_module" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/longest-increasing-subsequence/ro/razvan/uniud/lis/java/LongestIncresingSubsequence.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/longest-increasing-subsequence/ro/razvan/uniud/lis/java/Pair.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/longest-increasing-subsequence/ro/razvan/uniud/lis/java/Principale.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/longest-increasing-subsequence/ro/razvan/uniud/lis/kotlin/LongestIncreasingSubsequence.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/longest-increasing-subsequence/ro/razvan/uniud/lis/kotlin/PrincipaleKt.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/lis/java/LongestIncresingSubsequence.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/lis/java/Pair.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/lis/java/Principale.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/lis/kotlin/LongestIncreasingSubsequence.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/lis/kotlin/Principale.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../problemi/problema12/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../problemi/problema12/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/out/production/dynamic-programming/ro/razvan/uniud/memoization/java/LongestCommonSubsequence.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/out/production/dynamic-programming/ro/razvan/uniud/memoization/java/LongestCommonSubsequence.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/out/production/dynamic-programming/ro/razvan/uniud/memoization/java/Principale.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/out/production/dynamic-programming/ro/razvan/uniud/memoization/java/Principale.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/out/production/dynamic-programming/ro/razvan/uniud/memoization/kotlin/LongestCommonSubsequence.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/out/production/dynamic-programming/ro/razvan/uniud/memoization/kotlin/LongestCommonSubsequence.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/out/production/dynamic-programming/ro/razvan/uniud/memoization/kotlin/PrincipaleKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/out/production/dynamic-programming/ro/razvan/uniud/memoization/kotlin/PrincipaleKt.class" afterDir="false" />
-    </list>
+    <list default="true" id="8e8f315e-4ed2-4d26-bb1e-cff5b1f83e79" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,8 +18,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/lis/java/LongestIncresingSubsequence.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-361">
-              <caret line="154" column="17" selection-start-line="154" selection-start-column="17" selection-end-line="154" selection-end-column="17" />
+            <state relative-caret-position="448">
+              <caret line="135" column="4" selection-start-line="135" selection-start-column="4" selection-end-line="145" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#6984#6985#0" expanded="true" />
@@ -83,8 +52,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/lis/kotlin/LongestIncreasingSubsequence.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-101">
-              <caret line="208" lean-forward="true" selection-start-line="208" selection-end-line="208" />
+            <state relative-caret-position="464">
+              <caret line="113" column="39" selection-start-line="113" selection-start-column="39" selection-end-line="113" selection-end-column="39" />
               <folding>
                 <element signature="e#36#99#0" expanded="true" />
               </folding>
@@ -144,8 +113,8 @@
         <option value="$PROJECT_DIR$/src/ro/razvan/uniud/lis/java/Principale.java" />
         <option value="$PROJECT_DIR$/src/ro/razvan/uniud/lis/java/Pair.java" />
         <option value="$PROJECT_DIR$/src/ro/razvan/uniud/lis/kotlin/Principale.kt" />
-        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/lis/kotlin/LongestIncreasingSubsequence.kt" />
         <option value="$PROJECT_DIR$/src/ro/razvan/uniud/lis/java/LongestIncresingSubsequence.java" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/lis/kotlin/LongestIncreasingSubsequence.kt" />
       </list>
     </option>
   </component>
@@ -166,66 +135,7 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="longest-increasing-subsequence" type="b2602c69:ProjectViewProjectNode" />
-              <item name="longest-increasing-subsequence" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="longest-increasing-subsequence" type="b2602c69:ProjectViewProjectNode" />
-              <item name="longest-increasing-subsequence" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="longest-increasing-subsequence" type="b2602c69:ProjectViewProjectNode" />
-              <item name="longest-increasing-subsequence" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ro" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="longest-increasing-subsequence" type="b2602c69:ProjectViewProjectNode" />
-              <item name="longest-increasing-subsequence" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ro" type="462c0819:PsiDirectoryNode" />
-              <item name="razvan" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="longest-increasing-subsequence" type="b2602c69:ProjectViewProjectNode" />
-              <item name="longest-increasing-subsequence" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ro" type="462c0819:PsiDirectoryNode" />
-              <item name="razvan" type="462c0819:PsiDirectoryNode" />
-              <item name="uniud" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="longest-increasing-subsequence" type="b2602c69:ProjectViewProjectNode" />
-              <item name="longest-increasing-subsequence" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ro" type="462c0819:PsiDirectoryNode" />
-              <item name="razvan" type="462c0819:PsiDirectoryNode" />
-              <item name="uniud" type="462c0819:PsiDirectoryNode" />
-              <item name="lis" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="longest-increasing-subsequence" type="b2602c69:ProjectViewProjectNode" />
-              <item name="longest-increasing-subsequence" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="ro" type="462c0819:PsiDirectoryNode" />
-              <item name="razvan" type="462c0819:PsiDirectoryNode" />
-              <item name="uniud" type="462c0819:PsiDirectoryNode" />
-              <item name="lis" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="true" />
@@ -299,12 +209,12 @@
       <option name="presentableId" value="Default" />
       <updated>1561119909284</updated>
       <workItem from="1561119917425" duration="28698000" />
-      <workItem from="1561241009319" duration="617000" />
+      <workItem from="1561241009319" duration="825000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29315000" />
+    <option name="totallyTimeSpent" value="29523000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1455" height="935" extended-state="6" />
@@ -319,7 +229,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32876712" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32876712" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -410,8 +320,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/lis/java/LongestIncresingSubsequence.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-361">
-          <caret line="154" column="17" selection-start-line="154" selection-start-column="17" selection-end-line="154" selection-end-column="17" />
+        <state relative-caret-position="448">
+          <caret line="135" column="4" selection-start-line="135" selection-start-column="4" selection-end-line="145" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#6984#6985#0" expanded="true" />
@@ -422,8 +332,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/lis/kotlin/LongestIncreasingSubsequence.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-101">
-          <caret line="208" lean-forward="true" selection-start-line="208" selection-end-line="208" />
+        <state relative-caret-position="464">
+          <caret line="113" column="39" selection-start-line="113" selection-start-column="39" selection-end-line="113" selection-end-column="39" />
           <folding>
             <element signature="e#36#99#0" expanded="true" />
           </folding>

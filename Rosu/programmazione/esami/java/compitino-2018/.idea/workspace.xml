@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0c1eb152-98d7-4f98-a2e2-fbffbca11021" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../../lezioni/java/eratosthenes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../lezioni/java/eratosthenes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../lezioni/java/eratosthenes/out/production/eratosthenes/ro/razvan/uniud/eratosthenes/java/Eratosthenes.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../lezioni/java/eratosthenes/out/production/eratosthenes/ro/razvan/uniud/eratosthenes/java/Eratosthenes.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../lezioni/java/eratosthenes/out/production/eratosthenes/ro/razvan/uniud/eratosthenes/kotlin/Eratosthenes.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../../lezioni/java/eratosthenes/out/production/eratosthenes/ro/razvan/uniud/eratosthenes/kotlin/Eratosthenes.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ro/razvan/uniud/compitino2018/Es4.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/compitino2018/Es4.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../laboratorio/java/problemi/problema12/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../laboratorio/java/problemi/problema12/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../laboratorio/java/problemi/problema12/src/ro/razvan/uniud/nQueensWithGui/java/Queens.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../laboratorio/java/problemi/problema12/src/ro/razvan/uniud/nQueensWithGui/java/Queens.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../laboratorio/java/progetti/longest-increasing-subsequence/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../laboratorio/java/progetti/longest-increasing-subsequence/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../lezioni/java/dynamic-programming/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../lezioni/java/dynamic-programming/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -13,12 +16,16 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="testRunner" value="GRADLE" />
+    <option name="delegatedBuild" value="true" />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/compitino2018/Es3.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1680">
+            <state relative-caret-position="643">
               <caret line="107" column="1" selection-start-line="107" selection-start-column="1" selection-end-line="107" selection-end-column="1" />
             </state>
           </provider>
@@ -27,17 +34,14 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/compitino2018/Es4.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="38" selection-start-line="38" selection-end-line="38" />
+            <state relative-caret-position="350">
+              <caret line="46" column="51" selection-start-line="46" selection-start-column="51" selection-end-line="46" selection-end-column="51" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#238#239#0" expanded="true" />
                 <element signature="e#290#291#0" expanded="true" />
-                <element signature="e#312#313#0" expanded="true" />
-                <element signature="e#358#359#0" expanded="true" />
-                <element signature="e#394#395#0" expanded="true" />
-                <element signature="e#433#434#0" expanded="true" />
-                <element signature="e#1541#1542#0" expanded="true" />
+                <element signature="e#1170#1171#0" expanded="true" />
+                <element signature="e#1199#1200#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -64,8 +68,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="953" />
-    <option name="width" value="974" />
+    <option name="x" value="952" />
+    <option name="width" value="975" />
     <option name="height" value="1047" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -74,6 +78,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -121,13 +126,14 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1561381719908" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -189,17 +195,18 @@
       <updated>1561305443734</updated>
       <workItem from="1561305446673" duration="4344000" />
       <workItem from="1561378161435" duration="2572000" />
+      <workItem from="1561392146304" duration="758000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6916000" />
+    <option name="totallyTimeSpent" value="7674000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-7" y="-7" width="1455" height="935" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12260128" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12401434" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -208,8 +215,8 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3261105" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3997833" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32503113" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -236,24 +243,21 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/compitino2018/Es3.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1680">
+        <state relative-caret-position="643">
           <caret line="107" column="1" selection-start-line="107" selection-start-column="1" selection-end-line="107" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/compitino2018/Es4.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="38" selection-start-line="38" selection-end-line="38" />
+        <state relative-caret-position="350">
+          <caret line="46" column="51" selection-start-line="46" selection-start-column="51" selection-end-line="46" selection-end-column="51" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#238#239#0" expanded="true" />
             <element signature="e#290#291#0" expanded="true" />
-            <element signature="e#312#313#0" expanded="true" />
-            <element signature="e#358#359#0" expanded="true" />
-            <element signature="e#394#395#0" expanded="true" />
-            <element signature="e#433#434#0" expanded="true" />
-            <element signature="e#1541#1542#0" expanded="true" />
+            <element signature="e#1170#1171#0" expanded="true" />
+            <element signature="e#1199#1200#0" expanded="true" />
           </folding>
         </state>
       </provider>
