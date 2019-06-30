@@ -5,6 +5,7 @@ import huffman_toolkit.OutputTextFile;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.stream.IntStream;
@@ -19,6 +20,11 @@ class Huffman {
     }
 
     static class Encoder {
+
+        @Contract(" -> fail")
+        private Encoder() {
+            throw new AssertionError("No Encoder instances for you");
+        }
 
         /**
          * Istogramma della frequenza dei caratteri
@@ -36,7 +42,8 @@ class Huffman {
 
                 while (in.textAvailable()) {
                     final var c = in.readChar();
-                    freq[c] = freq[c] + 1;
+                    System.out.println(c);
+                    freq[c]++;
                 }
 
                 return freq;
@@ -56,7 +63,7 @@ class Huffman {
         @NotNull
         static Node huffmanTree(@NotNull final int[] freq) {
 
-            /* Attraverso l'interfaccia Comparable questa lista è in grado di mantenere ordinati i suoi elementi */
+            /* Attraverso l'interfaccia Comparable questa lista ? in grado di mantenere ordinati i suoi elementi */
             final var queue = new PriorityQueue<Node>();
 
             /* vengono aggiunti alla coda solo i caratteri che hanno almeno un'occorrenza nel testo */
@@ -68,7 +75,7 @@ class Huffman {
                 }
             }
 
-            /* finché c'è più di un nodo nella coda... */
+            /* finch? c'? pi? di un nodo nella coda... */
             while (queue.size() > 1) {
 
                 /* ... tolgo i primi due nodi di peso minimo... */
@@ -80,7 +87,7 @@ class Huffman {
 
             }
 
-            /* alla fine di questa operazione rimarrà sempre e comunque un solo albero */
+            /* alla fine di questa operazione rimarr? sempre e comunque un solo albero */
 
             return Objects.requireNonNull(queue.poll(), "the string was empty");
         }
@@ -179,21 +186,131 @@ class Huffman {
 
         }
 
+        /**
+         * Analizza il file di input per scrivere su file di output la tabella che contiene i seguenti elementi:
+         * <ol>
+         * <li>Codice ASCII (0-127)</li>
+         * <li>Simbolo del carattere corrispondente</li>
+         * <li>Numero di occorrenze nel file di input</li>
+         * <li>Codice di Huffman</li>
+         * <li>Lunghezza del codice di Huffman</li>
+         * </ol>
+         * <p>
+         * Gestire inoltre i caratteri speciali nuova-linea, capo-linea e tabulazione
+         *
+         * @param inputPath  file da leggere
+         * @param outputPath file di output
+         */
+        static void huffmanCodesCharacters(@NotNull final String inputPath, @NotNull final String outputPath) {
+
+            final var freq = charHistogram(inputPath);
+            final var root = huffmanTree(freq);
+            final var codes = huffmanCodesTable(root);
+
+            final var outputFile = new OutputTextFile(outputPath);
+
+            try {
+
+                IntStream.range(0, freq.length)
+                        .mapToObj((i) -> new Pair<>(i, freq[i]))
+                        .filter((pair) -> pair.getSecondNonNull() > 0)
+                        .forEach((pair) -> {
+
+                            final int i = pair.getFirstNonNull();
+
+                            final var builder = new StringBuilder(String.format("%03d", i))
+                                    .append(" ; ");
+
+                            switch (i) {
+                                case '\n':
+                                    builder.append("\\n");
+                                    break;
+                                case '\r':
+                                    builder.append("\\r");
+                                    break;
+                                case '\t':
+                                    builder.append("\\t");
+                                    break;
+                                default:
+                                    builder.append((char) i);
+                            }
+
+                            final var code = Objects.requireNonNull(codes[i]);
+
+                            outputFile.writeTextLine(
+                                    builder.append(" ; ")
+                                            .append(pair.getSecondNonNull())
+                                            .append(" ; ")
+                                            .append(code)
+                                            .append(" ; ")
+                                            .append(code.length())
+                                            .toString()
+                            );
+
+                        });
+
+            } finally {
+                outputFile.close();
+            }
+
+        }
+
+        /**
+         * Genera un file di testo random composto da caratteri i cui codici ASCII sono prodotti in modo casuale,
+         * con distribuzione uniforme nell'intervallo 0 - 127
+         *
+         * @param inputPath
+         * @param outputPath
+         */
+        static void generateRandomTextFile(@NotNull final String inputPath, @NotNull final String outputPath) {
+
+            final var outputFile = new OutputTextFile(inputPath);
+            final var length = getFileLength(inputPath);
+
+            try {
+
+                for (int i = 0; i < length; i++) {
+                    outputFile.writeChar(((char) (int) (Math.random() * 127)));
+                }
+
+            } finally {
+
+                outputFile.close();
+
+            }
+
+        }
+
+        /**
+         * Get file length
+         *
+         * @param path path of the file to elaborate
+         * @return length of the file
+         */
+        private static int getFileLength(@NotNull final String path) {
+            return huffmanTree(charHistogram(path)).getWeight();
+        }
+
     }
 
     static class Decoder {
 
+        @Contract(" -> fail")
+        private Decoder() {
+            throw new AssertionError("No Decoder instances for you");
+        }
+
         /**
          * Ricostruzione dell'albero di Huffman della sua codifica lineare
          * Struttura:
-         * - una foglia è rappresentata dal carattere corrispondente
-         * - un albero con più di un nodo è rappresentato dalla linearizzazione dei sottoalberi sinistro e destro
+         * - una foglia ? rappresentata dal carattere corrispondente
+         * - un albero con pi? di un nodo ? rappresentato dalla linearizzazione dei sottoalberi sinistro e destro
          *
          * @param in documento compresso
          * @return radice dell'albero di Huffman
          */
         @NotNull
-        static Node restoreTree(final InputTextFile in) {
+        static Node restoreTree(@NotNull final InputTextFile in) {
 
             final var c = in.readChar();
 

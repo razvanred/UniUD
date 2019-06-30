@@ -5,6 +5,7 @@ import huffman_toolkit.OutputTextFile;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.stream.IntStream;
@@ -19,6 +20,11 @@ class Huffman {
     }
 
     static class Encoder {
+
+        @Contract(" -> fail")
+        private Encoder() {
+            throw new AssertionError("No Encoder instances for you");
+        }
 
         /**
          * Istogramma della frequenza dei caratteri
@@ -36,7 +42,7 @@ class Huffman {
 
                 while (in.textAvailable()) {
                     final var c = in.readChar();
-                    freq[c] = freq[c] + 1;
+                    freq[c]++;
                 }
 
                 return freq;
@@ -179,9 +185,142 @@ class Huffman {
 
         }
 
+        /**
+         * Analizza il file di input per scrivere su file di output la tabella che contiene i seguenti elementi:
+         * <ol>
+         * <li>Codice ASCII (0-127)</li>
+         * <li>Simbolo del carattere corrispondente</li>
+         * <li>Numero di occorrenze nel file di input</li>
+         * <li>Codice di Huffman</li>
+         * <li>Lunghezza del codice di Huffman</li>
+         * </ol>
+         * <p>
+         * Gestire inoltre i caratteri speciali nuova-linea, capo-linea e tabulazione
+         *
+         * @param inputPath  file da leggere
+         * @param outputPath file di output
+         */
+        static void huffmanCodesCharacters(@NotNull final String inputPath, @NotNull final String outputPath) {
+
+            final var freq = charHistogram(inputPath);
+            final var root = huffmanTree(freq);
+            final var codes = huffmanCodesTable(root);
+
+            final var outputFile = new OutputTextFile(outputPath);
+
+            try {
+
+                IntStream.range(0, freq.length)
+                        .mapToObj((i) -> new Pair<>(i, freq[i]))
+                        .filter((pair) -> pair.getSecondNonNull() > 0)
+                        .forEach((pair) -> {
+
+                            final int i = pair.getFirstNonNull();
+
+                            final var builder = new StringBuilder(String.format("%03d", i))
+                                    .append(" ; ");
+
+                            switch (i) {
+                                case '\n':
+                                    builder.append("\\n");
+                                    break;
+                                case '\r':
+                                    builder.append("\\r");
+                                    break;
+                                case '\t':
+                                    builder.append("\\t");
+                                    break;
+                                default:
+                                    builder.append((char) i);
+                            }
+
+                            final var code = Objects.requireNonNull(codes[i]);
+
+                            outputFile.writeTextLine(
+                                    builder.append(" ; ")
+                                            .append(pair.getSecondNonNull())
+                                            .append(" ; ")
+                                            .append(code)
+                                            .append(" ; ")
+                                            .append(code.length())
+                                            .toString()
+                            );
+
+                        });
+
+            } finally {
+                outputFile.close();
+            }
+
+        }
+
+        /**
+         * Genera un file di testo random composto da caratteri i cui codici ASCII sono prodotti in modo casuale,
+         * con distribuzione uniforme nell'intervallo 0 - 127
+         *
+         * @param inputPath  path del file da leggere per trovare la lunghezza del file random generato
+         * @param outputPath path del file random generato
+         */
+        static void generateRandomTextFile(@NotNull final String inputPath, @NotNull final String outputPath) {
+
+            final var outputFile = new OutputTextFile(outputPath);
+
+            try {
+
+                final var length = getFileLength(inputPath);
+
+                for (int i = 0; i < length; i++) {
+                    outputFile.writeChar(((char) ((int) (Math.random() * 127))));
+                }
+
+            } finally {
+                outputFile.close();
+            }
+
+        }
+
+        /**
+         * Get file length
+         *
+         * @param path path of the file to elaborate
+         * @return length of the file
+         */
+        static int getFileLength(@NotNull final String path) {
+            return huffmanTree(charHistogram(path)).getWeight();
+        }
+
+        /**
+         * Calcola la dimensione in byte del testo compresso
+         *
+         * @param inputPath path assoluta del file da leggere
+         * @return dimensione in byte del testo compresso
+         */
+        static int getCompressedFileLength(@NotNull final String inputPath) {
+
+            final var freq = charHistogram(inputPath);
+            final var root = huffmanTree(freq);
+            final var codes = huffmanCodesTable(root);
+
+            final var bodyLength = IntStream.range(0, freq.length)
+                    .mapToObj((i) -> new Pair<>(i, freq[i]))
+                    .filter((pair) -> pair.getSecondNonNull() > 0)
+                    .mapToInt((pair) -> {
+                        final int i = pair.getFirstNonNull();
+                        return pair.getSecondNonNull() + Objects.requireNonNull(codes[i]).length();
+                    })
+                    .sum() / 7;
+
+            return bodyLength + Integer.toString(root.getWeight()).length() + flattenTree(root).length();
+        }
+
     }
 
     static class Decoder {
+
+        @Contract(" -> fail")
+        private Decoder() {
+            throw new AssertionError("No Decoder instances for you");
+        }
 
         /**
          * Ricostruzione dell'albero di Huffman della sua codifica lineare
@@ -193,7 +332,7 @@ class Huffman {
          * @return radice dell'albero di Huffman
          */
         @NotNull
-        static Node restoreTree(final InputTextFile in) {
+        static Node restoreTree(@NotNull final InputTextFile in) {
 
             final var c = in.readChar();
 

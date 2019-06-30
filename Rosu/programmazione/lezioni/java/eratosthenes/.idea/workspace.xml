@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="32e45b0c-538b-4a23-867f-f6fa3fbbde81" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../esami/java/compitino-2018/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../esami/java/compitino-2018/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/eratosthenes/ro/razvan/uniud/eratosthenes/java/Eratosthenes.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/eratosthenes/ro/razvan/uniud/eratosthenes/java/Eratosthenes.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/eratosthenes/ro/razvan/uniud/eratosthenes/kotlin/Eratosthenes.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/eratosthenes/ro/razvan/uniud/eratosthenes/kotlin/Eratosthenes.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -58,7 +57,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="953" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -116,8 +115,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -219,17 +218,18 @@
       <workItem from="1561295869555" duration="2863000" />
       <workItem from="1561299359386" duration="4033000" />
       <workItem from="1561378159414" duration="599000" />
+      <workItem from="1561832671514" duration="442000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7495000" />
+    <option name="totallyTimeSpent" value="7937000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="953" y="0" width="974" height="1047" extended-state="1" />
+    <frame x="953" y="0" width="974" height="1047" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25382933" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25929978" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />

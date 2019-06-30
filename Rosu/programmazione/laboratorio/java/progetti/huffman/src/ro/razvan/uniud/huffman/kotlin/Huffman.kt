@@ -4,6 +4,7 @@ import huffman_toolkit.InputTextFile
 import huffman_toolkit.OutputTextFile
 import java.util.*
 
+
 object Huffman {
 
     private const val CHARS = InputTextFile.CHARS
@@ -123,6 +124,119 @@ object Huffman {
             inputFile.close()
             outputFile.close()
 
+        }
+
+        /**
+         * Analizza il file di input per scrivere su file di output la tabella che contiene i seguenti elementi:
+         * <ol>
+         * <li>Codice ASCII (0-127)</li>
+         * <li>Simbolo del carattere corrispondente</li>
+         * <li>Numero di occorrenze nel file di input</li>
+         * <li>Codice di Huffman</li>
+         * <li>Lunghezza del codice di Huffman</li>
+         * </ol>
+         * <p>
+         * Gestire inoltre i caratteri speciali nuova-linea, capo-linea e tabulazione
+         *
+         * @param inputPath  file da leggere
+         * @param outputPath file di output
+         */
+        fun huffmanCodesCharacters(inputPath: String, outputPath: String) {
+
+            val columnSeparator = " ; "
+
+            val freq = charHistogram(inputPath)
+            val root = huffmanTree(freq)
+            val codes = huffmanCodesTable(root)
+
+            val outputFile = OutputTextFile(outputPath)
+
+            try {
+
+                IntArray(CHARS) { it }
+                    .map { Pair(it, freq[it]) }
+                    .filter { it.second > 0 }
+                    .forEach { pair ->
+
+                        val builder = StringBuilder(String.format("%03d", pair.first))
+                            .append(columnSeparator)
+
+                        val code = codes[pair.first]!!
+
+                        builder.append(
+                            when (pair.first.toChar()) {
+                                '\n' -> "\\n"
+                                '\r' -> "\\r"
+                                '\t' -> "\\t"
+                                else -> pair.first.toChar()
+                            }
+                        ).append(columnSeparator)
+
+                        outputFile.writeTextLine(
+                            builder.append(pair.second)
+                                .append(columnSeparator)
+                                .append(code)
+                                .append(columnSeparator)
+                                .append(code.length)
+                                .toString()
+                        )
+
+                    }
+
+            } finally {
+                outputFile.close()
+            }
+
+        }
+
+        /**
+         * Trova la lunghezza del file risiedente nella path assoluta [path]
+         */
+        fun getFileLength(path: String): Int = huffmanTree(charHistogram(path)).weight
+
+        /**
+         * Genera un file di testo random composto da caratteri i cui codici ASCII sono prodotti in modo casuale,
+         * con distribuzione uniforme nell'intervallo 0 - 127
+         *
+         * @param inputPath  path del file da leggere per trovare la lunghezza del file random generato
+         * @param outputPath path del file random generato
+         */
+        fun generateRandomTextFile(inputPath: String, outputPath: String) {
+
+            val outputFile = OutputTextFile(outputPath)
+
+            try {
+
+                val length = getFileLength(inputPath)
+
+                for (i in 0 until length) {
+                    outputFile.writeChar((Math.random() * 127).toInt().toChar())
+                }
+
+            } finally {
+                outputFile.close()
+            }
+
+        }
+
+        /**
+         * Calcola la dimensione in byte del testo compresso
+         *
+         * @param inputPath path assoluta del file da leggere
+         * @return dimensione in byte del testo compresso
+         */
+        fun getCompressedFileLength(inputPath: String): Int {
+
+            val freq = charHistogram(inputPath)
+            val root = huffmanTree(freq)
+            val codes = huffmanCodesTable(root)
+
+            val bodyLength = IntArray(freq.size) { it }
+                .map { Pair(it, freq[it]) }
+                .filter { it.second > 0 }
+                .fold(0) { acc, act -> acc + act.second + codes[act.first]!!.length } / 7
+
+            return bodyLength + root.weight.toString().length + flattenTree(root).length
         }
 
     }
