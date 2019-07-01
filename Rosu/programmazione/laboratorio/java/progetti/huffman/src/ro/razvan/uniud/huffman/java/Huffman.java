@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 class Huffman {
 
@@ -15,6 +16,134 @@ class Huffman {
     @Contract(" -> fail")
     private Huffman() {
         throw new AssertionError("No Huffman instances for you");
+    }
+
+    /**
+     * Albero di Huffman "standard" per le testate giornalistiche inglesi
+     *
+     * @return radice dell'albero di Huffman
+     */
+    @NotNull
+    static Node englishHuffmanTree() {
+
+        final var averageWordLength = 5.1; // chars
+        final var averageSentenceLength = 24.5; // words
+        final var averageParagraphLength = 2.5; // sentences
+
+        final var averageCharsNumber = 100_000;
+        final var averageWordsNumber = averageCharsNumber / averageWordLength; // 19607.843137254902
+        final var averageSentencesNumber = averageCharsNumber / (averageWordLength * averageSentenceLength); // 800.3201280512205
+        final var averageParagraphsNumber = averageCharsNumber / (averageParagraphLength * averageSentenceLength * averageWordLength); // 320.1280512204882
+
+        final var lowerCaseChars = new Node[]
+                {
+                        new Node('a', 8_167),
+                        new Node('b', 1_492),
+                        new Node('c', 2_782),
+                        new Node('d', 4_253),
+                        new Node('e', 12_702),
+                        new Node('f', 2_228),
+                        new Node('g', 2_015),
+                        new Node('h', 6_094),
+                        new Node('i', 6_966),
+                        new Node('j', 153),
+                        new Node('k', 772),
+                        new Node('l', 4_025),
+                        new Node('m', 2_406),
+                        new Node('n', 6_749),
+                        new Node('o', 7_507),
+                        new Node('p', 1_929),
+                        new Node('q', 95),
+                        new Node('r', 5_987),
+                        new Node('s', 6_327),
+                        new Node('t', 9_056),
+                        new Node('u', 2_758),
+                        new Node('v', 978),
+                        new Node('w', 2_361),
+                        new Node('x', 150),
+                        new Node('y', 1_974),
+                        new Node('z', 74)
+                };
+
+        final var upperCaseChars = Arrays.stream(lowerCaseChars)
+                .map((element) ->
+                        new Node(
+                                ((char) (((int) element.getCharacter()) - 32)),
+                                element.getWeight() / ((int) Math.floor(averageSentenceLength) * (int) Math.floor(averageWordLength))
+                        ))
+                .toArray(Node[]::new);
+
+        final var punctuationChars = new Node[]{
+                new Node('.', (int) Math.floor(averageSentencesNumber)),
+                new Node(',', (int) Math.floor(averageSentencesNumber) + 200)
+        };
+
+        final var spaceChar = new Node(' ', (int) Math.floor(
+                averageSentencesNumber * (averageWordLength - 1)
+        ));
+
+        final var terminalChars = new Node[]{
+                new Node('\n', (int) Math.floor(averageParagraphsNumber)),
+                new Node('\r', (int) Math.floor(averageParagraphsNumber))
+        };
+
+        final var quotationMarksChar = new Node('"', (int) Math.floor(averageParagraphsNumber));
+
+        final var numbersChars = IntStream.rangeClosed('0', '9')
+                .mapToObj((element) -> new Node((char) element, (int) Math.floor(averageParagraphsNumber)))
+                .toArray(Node[]::new);
+
+        final var otherChars = new Node[]{ //30
+                new Node('!', 1),
+                new Node('$', 1),
+                new Node('&', 1),
+                new Node('%', 1),
+                new Node('/', 1),
+                new Node('(', 1),
+                new Node(')', 1),
+                new Node('=', 1),
+                new Node('?', 1),
+                new Node('^', 1),
+                new Node('\\', 1),
+                new Node('\'', 1),
+                new Node('<', 1),
+                new Node('>', 1),
+                new Node('+', 1),
+                new Node('-', 1),
+                new Node('*', 1),
+                new Node('[', 1),
+                new Node(']', 1),
+                new Node('{', 1),
+                new Node('}', 1),
+                new Node('#', 1),
+                new Node('@', 1),
+                new Node('\t', 1),
+                new Node('|', 1),
+                new Node('_', 1),
+                new Node(':', 1),
+                new Node(';', 1),
+                new Node('~', 1),
+                new Node('`', 1)
+        };
+
+        final var queue = new PriorityQueue<Node>();
+
+        Stream.of(lowerCaseChars, upperCaseChars, punctuationChars, terminalChars, numbersChars, otherChars)
+                .map(Arrays::asList)
+                .forEach(queue::addAll);
+
+        queue.add(spaceChar);
+        queue.add(quotationMarksChar);
+
+        while (queue.size() > 1) {
+
+            final var left = Objects.requireNonNull(queue.poll());
+            final var right = Objects.requireNonNull(queue.poll());
+            queue.add(new Node(left, right));
+
+        }
+
+        return Objects.requireNonNull(queue.poll());
     }
 
     static class Encoder {
@@ -313,6 +442,46 @@ class Huffman {
         }
 
         /**
+         * Compressione con l'englishHuffmanTree
+         *
+         * @param inputPath  path assoluta del file da comprimere
+         * @param outputPath path assoluta del file da decomprimere
+         */
+        static void standardCompress(@NotNull final String inputPath, @NotNull final String outputPath) {
+
+            // Scansione I : frequenze dei carattteri
+
+            final var root = englishHuffmanTree();
+
+            var count = 0;
+            final var codes = huffmanCodesTable(root);
+
+            // Scansione II : codifica di Huffman
+
+            var inputFile = new InputTextFile(inputPath);
+            final var outputFile = new OutputTextFile(outputPath);
+
+            while (inputFile.textAvailable()) {
+
+                int c = inputFile.readChar();
+                count++;
+            }
+
+            inputFile.close();
+            inputFile = new InputTextFile(inputPath);
+
+            outputFile.writeTextLine("" + count);
+
+            for (int i = 0; i < count; i++) {
+                final var c = inputFile.readChar();
+                outputFile.writeCode(codes[c]);
+            }
+
+            inputFile.close();
+            outputFile.close();
+        }
+
+        /**
          * Analizza il file di input per scrivere su file di output la tabella che contiene i seguenti elementi:
          * <ol>
          * <li>Codice ASCII (0-127)</li>
@@ -535,6 +704,29 @@ class Huffman {
             }
         }
 
-    }
+        /**
+         * Decompressione con l'englishHuffmanTree
+         *
+         * @param inputPath  path assoluta del file da decomprimere
+         * @param outputPath path assoluta del file decompresso geenrato
+         */
+        static void standardDecompress(@NotNull final String inputPath, @NotNull final String outputPath) {
 
+            final var in = new InputTextFile(inputPath);
+
+            final int count = Integer.parseInt(in.readTextLine());
+            final var root = englishHuffmanTree();
+
+            final var out = new OutputTextFile(outputPath);
+
+            for (int i = 0; i < count; i++) {
+                char c = decodeNextChar(root, in);
+                out.writeChar(c);
+            }
+
+            in.close();
+            out.close();
+        }
+
+    }
 }

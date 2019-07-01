@@ -91,6 +91,17 @@ final class Principale {
 
     }
 
+    static class TestParte7 {
+
+        private TestParte7(){
+        }
+
+        public static void main(@NotNull final String[] args) {
+            Huffman.englishHuffmanTree();
+        }
+
+    }
+
     static void println(@Nullable final Object any) {
         System.out.println(any);
     }
