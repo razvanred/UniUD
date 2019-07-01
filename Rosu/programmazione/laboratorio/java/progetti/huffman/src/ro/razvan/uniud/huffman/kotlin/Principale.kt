@@ -2,6 +2,12 @@ package ro.razvan.uniud.huffman.kotlin
 
 object TestParte1 {
 
+    /**
+     * args[0]: path assoluta del file non compresso da leggere
+     * args[1]: path assoluta del file contente i codici di Huffman del file non compresso
+     *
+     * @param args argomenti contenenti path assolute dei file
+     */
     @JvmStatic
     fun main(args: Array<String>) {
         Huffman.Encoder.huffmanCodesCharacters(args[0], args[1])
@@ -30,10 +36,38 @@ object TestParte2 {
 
 object TestParte3 {
 
+    /**
+     * args[0]: path assoluta del file non compresso da verificare
+     *
+     * @param args argomenti contenenti path assolute dei file
+     */
     @JvmStatic
     fun main(args: Array<String>) {
-        val compressedFileLength = Huffman.Encoder.getFileLength(args[1])
-        println("${Huffman.Encoder.getCompressedFileLength(args[0])} vs $compressedFileLength")
+        println("${Huffman.Encoder.getCompressedFileLength(args[0])} vs ${Huffman.Encoder.getFileLength(args[1])}")
+    }
+
+}
+
+object TestParte6 {
+
+    /**
+     * args[0]: path assoluta del file non compresso da verificare
+     *
+     * @param args argomenti contenenti path assolute dei file
+     */
+    @JvmStatic
+    fun main(args: Array<String>) {
+        val freq = Huffman.Encoder.charHistogram(args[0])
+
+        println(Huffman.Encoder.huffmanTree(freq) === Huffman.Encoder.huffmanTreeWithNodeQueue(freq))
+
+        val root = Huffman.Encoder.huffmanTree(freq)
+
+        println(
+            Huffman.Encoder.huffmanCodesTableIterWithNodeStack(root) contentEquals Huffman.Encoder.huffmanCodesTableIter(
+                root
+            )
+        )
     }
 
 }

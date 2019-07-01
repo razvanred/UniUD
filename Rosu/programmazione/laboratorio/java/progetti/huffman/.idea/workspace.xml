@@ -2,12 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="52515474-8683-4d43-9850-e2a28f150f1f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../../../esami/java/compitino-2018/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../esami/java/compitino-2018/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/eratosthenes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/eratosthenes/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/huffman/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/huffman/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/huffman/src/ro/razvan/uniud/huffman/java/Huffman.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/huffman/src/ro/razvan/uniud/huffman/java/Huffman.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/huffman/src/ro/razvan/uniud/huffman/kotlin/Huffman.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/huffman/src/ro/razvan/uniud/huffman/kotlin/Huffman.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/huffman/txts-out/0.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/huffman/txts-out/0.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/huffman/META-INF/huffman.kotlin_module" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/huffman/META-INF/huffman.kotlin_module" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/java/Huffman$Decoder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/java/Huffman$Decoder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/java/Huffman$Encoder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/java/Huffman$Encoder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/java/Huffman.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/java/Huffman.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/java/Principale$TestParte1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/java/Principale$TestParte1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/java/Principale$TestParte2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/java/Principale$TestParte2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/java/Principale$TestParte3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/java/Principale$TestParte3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/java/Principale.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/java/Principale.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/kotlin/Huffman$Decoder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/kotlin/Huffman$Decoder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/kotlin/Huffman$Encoder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/kotlin/Huffman$Encoder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/kotlin/TestParte1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/kotlin/TestParte1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/kotlin/TestParte2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/kotlin/TestParte2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/kotlin/TestParte3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/huffman/ro/razvan/uniud/huffman/kotlin/TestParte3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Huffman.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Huffman.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Principale.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Principale.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Huffman.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Huffman.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Principale.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Principale.kt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,51 +28,97 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DockManager">
-    <window id="1">
-      <content type="file-editors">
-        <state>
-          <leaf>
-            <file pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Huffman.kt">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="781">
-                    <caret line="225" column="42" lean-forward="true" selection-start-line="225" selection-start-column="42" selection-end-line="225" selection-end-column="42" />
-                    <folding>
-                      <element signature="e#40#133#0" expanded="true" />
-                    </folding>
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
-  </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Principale.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-9">
-              <caret line="43" column="15" lean-forward="true" selection-start-line="43" selection-start-column="15" selection-end-line="43" selection-end-column="15" />
+            <state relative-caret-position="239">
+              <caret line="88" column="12" selection-start-line="88" selection-start-column="12" selection-end-line="88" selection-end-column="144" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#437#438#0" expanded="true" />
-                <element signature="e#517#518#0" expanded="true" />
-                <element signature="e#1923#1924#0" expanded="true" />
-                <element signature="e#1962#1963#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Huffman.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="878">
+              <caret line="170" column="39" selection-start-line="170" selection-start-column="39" selection-end-line="170" selection-end-column="39" />
+              <folding>
+                <element signature="e#40#133#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/NodeStack.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1088">
+              <caret line="68" column="5" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#319#320#0" expanded="true" />
+                <element signature="e#359#360#0" expanded="true" />
+                <element signature="e#392#393#0" expanded="true" />
+                <element signature="e#447#448#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/NodeStack.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="320">
+              <caret line="20" column="19" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/NodeQueue.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="731">
+              <caret line="61" column="5" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Principale.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="271">
+              <caret line="64" column="61" selection-start-line="64" selection-start-column="61" selection-end-line="64" selection-end-column="61" />
+              <folding>
+                <element signature="e#40#114#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Principale.kt">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/util/ArrayExt.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+            <state relative-caret-position="160">
+              <caret line="10" column="34" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/NodeQueue.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="271">
+              <caret line="78" column="5" selection-start-line="78" selection-start-column="5" selection-end-line="78" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#220#221#0" expanded="true" />
+                <element signature="e#255#256#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -68,71 +126,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Huffman.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="389">
-              <caret line="308" column="54" selection-start-line="308" selection-start-column="54" selection-end-line="308" selection-end-column="54" />
+            <state relative-caret-position="284">
+              <caret line="167" column="11" selection-start-line="167" selection-start-column="11" selection-end-line="167" selection-end-column="11" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#517#518#0" expanded="true" />
-                <element signature="e#684#685#0" expanded="true" />
-                <element signature="e#9833#9834#0" expanded="true" />
-                <element signature="e#9908#9909#0" expanded="true" />
-                <element signature="e#10394#10395#0" expanded="true" />
-                <element signature="e#10474#10475#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Pair.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
-              <caret line="45" column="5" lean-forward="true" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#567#568#0" expanded="true" />
-                <element signature="e#595#596#0" expanded="true" />
-                <element signature="e#637#638#0" expanded="true" />
-                <element signature="e#666#667#0" expanded="true" />
-                <element signature="e#713#714#0" expanded="true" />
-                <element signature="e#765#766#0" expanded="true" />
-                <element signature="e#813#814#0" expanded="true" />
-                <element signature="e#866#867#0" expanded="true" />
-                <element signature="e#912#913#0" expanded="true" />
-                <element signature="e#968#969#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Node.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="880">
-              <caret line="55" column="5" selection-start-line="55" selection-start-column="5" selection-end-line="55" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Node.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-309">
-              <caret line="5" selection-start-line="5" selection-end-line="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#739#740#0" expanded="true" />
-                <element signature="e#771#772#0" expanded="true" />
-                <element signature="e#794#795#0" expanded="true" />
-                <element signature="e#823#824#0" expanded="true" />
-                <element signature="e#859#860#0" expanded="true" />
-                <element signature="e#886#887#0" expanded="true" />
-                <element signature="e#923#924#0" expanded="true" />
-                <element signature="e#951#952#0" expanded="true" />
-                <element signature="e#1053#1054#0" expanded="true" />
-                <element signature="e#1088#1089#0" expanded="true" />
-                <element signature="e#1147#1148#0" expanded="true" />
-                <element signature="e#1203#1204#0" expanded="true" />
+                <element signature="e#5539#5570#0" expanded="true" />
+                <element signature="e#6683#6714#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -148,27 +147,44 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>:1,</find>
+      <find>PriorityQueue</find>
+      <find>,</find>
+      <find>arraycopu</find>
+      <find>System.out</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../../.." />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Node.java" />
         <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Node.kt" />
         <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Pair.java" />
         <option value="$PROJECT_DIR$/txts-in/Huffman.java" />
-        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Principale.java" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Node.java" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/NodeStack.kt" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/utils/ArrayUtils.java" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/NodeQueue.java" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/NodeStack.java" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/NodeStack.kt" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/NodeQueue.kt" />
         <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Huffman.java" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Principale.java" />
         <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Huffman.kt" />
         <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Principale.kt" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/util/ArrayExt.kt" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="922" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="818" />
+    <option name="y" value="-14" />
     <option name="width" value="1005" />
-    <option name="height" value="1047" />
+    <option name="height" value="1051" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -237,7 +253,29 @@
               <item name="razvan" type="462c0819:PsiDirectoryNode" />
               <item name="uniud" type="462c0819:PsiDirectoryNode" />
               <item name="huffman" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="huffman" type="b2602c69:ProjectViewProjectNode" />
+              <item name="huffman" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ro" type="462c0819:PsiDirectoryNode" />
+              <item name="razvan" type="462c0819:PsiDirectoryNode" />
+              <item name="uniud" type="462c0819:PsiDirectoryNode" />
+              <item name="huffman" type="462c0819:PsiDirectoryNode" />
               <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="huffman" type="b2602c69:ProjectViewProjectNode" />
+              <item name="huffman" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ro" type="462c0819:PsiDirectoryNode" />
+              <item name="razvan" type="462c0819:PsiDirectoryNode" />
+              <item name="uniud" type="462c0819:PsiDirectoryNode" />
+              <item name="huffman" type="462c0819:PsiDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -253,7 +291,7 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1561925432528" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1562001682694" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/huffman_toolkit.jar!/" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -274,21 +312,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Kotlin.ro.razvan.uniud.huffman.kotlin.TestParte3">
-    <configuration name="Principale$TestParte1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="ro.razvan.uniud.huffman.java.Principale$TestParte1" />
-      <module name="huffman" />
-      <option name="PROGRAM_PARAMETERS" value="C:\Users\Razvan\repos\UniUD\Rosu\programmazione\laboratorio\java\progetti\huffman\txts-in\Huffman.java C:\Users\Razvan\repos\UniUD\Rosu\programmazione\laboratorio\java\progetti\huffman\txts-out\Huffman.txt" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ro.razvan.uniud.huffman.java.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Kotlin.ro.razvan.uniud.huffman.kotlin.TestParte6">
     <configuration name="Principale$TestParte2" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ro.razvan.uniud.huffman.java.Principale$TestParte2" />
       <module name="huffman" />
@@ -311,28 +335,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ro.razvan.uniud.huffman.kotlin.TestParte1" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
+    <configuration name="Principale$TestParte6" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ro.razvan.uniud.huffman.java.Principale$TestParte6" />
       <module name="huffman" />
-      <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="C:\Users\Razvan\repos\UniUD\Rosu\programmazione\laboratorio\java\progetti\huffman\txts-in\Huffman.java C:\Users\Razvan\repos\UniUD\Rosu\programmazione\laboratorio\java\progetti\huffman\txts-out\Huffman.txt" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="ro.razvan.uniud.huffman.kotlin.TestParte1" />
-      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PROGRAM_PARAMETERS" value="C:\Users\Razvan\repos\UniUD\Rosu\programmazione\laboratorio\java\progetti\huffman\txts-in\Huffman.java" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ro.razvan.uniud.huffman.java.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ro.razvan.uniud.huffman.kotlin.TestParte2" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
+    <configuration name="ro.razvan.uniud.huffman.kotlin.TestParte1" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
       <module name="huffman" />
-      <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="C:\Users\Razvan\repos\UniUD\Rosu\programmazione\laboratorio\java\progetti\huffman\txts-in\Huffman.java C:\Users\Razvan\repos\UniUD\Rosu\programmazione\laboratorio\java\progetti\huffman\txts-out\Huffman.txt C:\Users\Razvan\repos\UniUD\Rosu\programmazione\laboratorio\java\progetti\huffman\txts-out\random.txt C:\Users\Razvan\repos\UniUD\Rosu\programmazione\laboratorio\java\progetti\huffman\txts-out\random-codes.txt" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="MAIN_CLASS_NAME" value="ro.razvan.uniud.huffman.kotlin.TestParte2" />
-      <option name="WORKING_DIRECTORY" value="" />
+      <option name="MAIN_CLASS_NAME" value="ro.razvan.uniud.huffman.kotlin.TestParte1" />
+      <option name="WORKING_DIRECTORY" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -350,21 +375,34 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ro.razvan.uniud.huffman.kotlin.TestParte6" type="JetRunConfigurationType" factoryName="Kotlin" temporary="true" nameIsGenerated="true">
+      <module name="huffman" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="C:\Users\Razvan\repos\UniUD\Rosu\programmazione\laboratorio\java\progetti\huffman\txts-in\Huffman.java" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" value="ro.razvan.uniud.huffman.kotlin.TestParte6" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.Principale$TestParte2" />
       <item itemvalue="Application.Principale$TestParte3" />
-      <item itemvalue="Application.Principale$TestParte1" />
-      <item itemvalue="Kotlin.ro.razvan.uniud.huffman.kotlin.TestParte1" />
-      <item itemvalue="Kotlin.ro.razvan.uniud.huffman.kotlin.TestParte2" />
+      <item itemvalue="Application.Principale$TestParte6" />
       <item itemvalue="Kotlin.ro.razvan.uniud.huffman.kotlin.TestParte3" />
+      <item itemvalue="Kotlin.ro.razvan.uniud.huffman.kotlin.TestParte1" />
+      <item itemvalue="Kotlin.ro.razvan.uniud.huffman.kotlin.TestParte6" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.ro.razvan.uniud.huffman.kotlin.TestParte6" />
+        <item itemvalue="Application.Principale$TestParte6" />
+        <item itemvalue="Kotlin.ro.razvan.uniud.huffman.kotlin.TestParte1" />
         <item itemvalue="Kotlin.ro.razvan.uniud.huffman.kotlin.TestParte3" />
         <item itemvalue="Application.Principale$TestParte3" />
-        <item itemvalue="Kotlin.ro.razvan.uniud.huffman.kotlin.TestParte2" />
-        <item itemvalue="Application.Principale$TestParte1" />
-        <item itemvalue="Kotlin.ro.razvan.uniud.huffman.kotlin.TestParte1" />
       </list>
     </recent_temporary>
   </component>
@@ -379,11 +417,14 @@
       <option name="presentableId" value="Default" />
       <updated>1561893822004</updated>
       <workItem from="1561893824958" duration="26475000" />
+      <workItem from="1561925606023" duration="6595000" />
+      <workItem from="1561975438769" duration="4404000" />
+      <workItem from="1561990489256" duration="10652000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26475000" />
+    <option name="totallyTimeSpent" value="48126000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -395,79 +436,44 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="922" y="0" width="1005" height="1047" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info id="Image Layers" />
-      <window_info id="Designer" />
-      <window_info id="UI Designer" />
-      <window_info id="Capture Tool" />
-      <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20952381" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21375267" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Messages" weight="0.32932165" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" />
-      <window_info anchor="bottom" id="Version Control" weight="0.32936078" />
-      <window_info anchor="bottom" id="Terminal" weight="0.32936078" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32932165" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.44637054" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Palette" />
-      <window_info anchor="right" id="Theme Preview" />
-      <window_info anchor="right" id="Maven" />
-      <window_info anchor="right" id="Capture Analysis" />
-      <window_info anchor="right" id="Palette&#9;" />
-      <window_info anchor="right" id="Database" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32936078" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.32936078" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32827735" />
+      <window_info anchor="bottom" id="Duplicate detector" order="13" weight="0.32932165" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Maven" order="6" />
+      <window_info anchor="right" id="Capture Analysis" order="7" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Node.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="880">
-          <caret line="55" column="5" selection-start-line="55" selection-start-column="5" selection-end-line="55" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Node.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-309">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#739#740#0" expanded="true" />
-            <element signature="e#771#772#0" expanded="true" />
-            <element signature="e#794#795#0" expanded="true" />
-            <element signature="e#823#824#0" expanded="true" />
-            <element signature="e#859#860#0" expanded="true" />
-            <element signature="e#886#887#0" expanded="true" />
-            <element signature="e#923#924#0" expanded="true" />
-            <element signature="e#951#952#0" expanded="true" />
-            <element signature="e#1053#1054#0" expanded="true" />
-            <element signature="e#1088#1089#0" expanded="true" />
-            <element signature="e#1147#1148#0" expanded="true" />
-            <element signature="e#1203#1204#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.base/java/lang/System.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-16836">
-          <caret line="104" column="22" lean-forward="true" selection-start-line="104" selection-start-column="22" selection-end-line="104" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/huffman_toolkit.jar!/huffman_toolkit/InputTextFile.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
@@ -491,10 +497,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$KOTLIN_BUNDLED$/lib/kotlin-stdlib-sources.jar!/kotlin/Comparable.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.base/java/util/PriorityQueue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1015">
+          <caret line="124" column="11" selection-start-line="124" selection-start-column="11" selection-end-line="124" selection-end-column="11" />
+          <folding>
+            <element signature="e#4453#4454#0" expanded="true" />
+            <element signature="e#4505#4506#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Pair.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="45" column="5" lean-forward="true" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
+        <state relative-caret-position="528">
+          <caret line="45" column="5" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#567#568#0" expanded="true" />
@@ -511,50 +535,144 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Principale.java">
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Node.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-9">
-          <caret line="43" column="15" lean-forward="true" selection-start-line="43" selection-start-column="15" selection-end-line="43" selection-end-column="15" />
+        <state relative-caret-position="32">
+          <caret line="2" column="19" selection-start-line="2" selection-start-column="19" selection-end-line="2" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Node.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="704">
+          <caret line="55" column="43" selection-start-line="55" selection-start-column="43" selection-end-line="55" selection-end-column="43" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#437#438#0" expanded="true" />
-            <element signature="e#517#518#0" expanded="true" />
-            <element signature="e#1923#1924#0" expanded="true" />
-            <element signature="e#1962#1963#0" expanded="true" />
+            <element signature="e#739#740#0" expanded="true" />
+            <element signature="e#771#772#0" expanded="true" />
+            <element signature="e#794#795#0" expanded="true" />
+            <element signature="e#823#824#0" expanded="true" />
+            <element signature="e#859#860#0" expanded="true" />
+            <element signature="e#886#887#0" expanded="true" />
+            <element signature="e#923#924#0" expanded="true" />
+            <element signature="e#951#952#0" expanded="true" />
+            <element signature="e#1053#1054#0" expanded="true" />
+            <element signature="e#1088#1089#0" expanded="true" />
+            <element signature="e#1203#1204#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/NodeStack.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="4" column="10" lean-forward="true" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/utils/ArrayUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="720">
+          <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/NodeQueue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="78" column="5" selection-start-line="78" selection-start-column="5" selection-end-line="78" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#220#221#0" expanded="true" />
+            <element signature="e#255#256#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-11.0.2/lib/src.zip!/java.base/java/lang/System.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="532" column="51" selection-start-line="532" selection-start-column="51" selection-end-line="532" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/NodeStack.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1088">
+          <caret line="68" column="5" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#319#320#0" expanded="true" />
+            <element signature="e#359#360#0" expanded="true" />
+            <element signature="e#392#393#0" expanded="true" />
+            <element signature="e#447#448#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/NodeStack.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="20" column="19" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/NodeQueue.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="731">
+          <caret line="61" column="5" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Huffman.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="167" column="11" selection-start-line="167" selection-start-column="11" selection-end-line="167" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#5539#5570#0" expanded="true" />
+            <element signature="e#6683#6714#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Principale.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="88" column="12" selection-start-line="88" selection-start-column="12" selection-end-line="88" selection-end-column="144" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Huffman.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="781">
-          <caret line="225" column="42" lean-forward="true" selection-start-line="225" selection-start-column="42" selection-end-line="225" selection-end-column="42" />
+        <state relative-caret-position="878">
+          <caret line="170" column="39" selection-start-line="170" selection-start-column="39" selection-end-line="170" selection-end-column="39" />
           <folding>
             <element signature="e#40#133#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/java/Huffman.java">
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Principale.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="308" column="54" selection-start-line="308" selection-start-column="54" selection-end-line="308" selection-end-column="54" />
+        <state relative-caret-position="271">
+          <caret line="64" column="61" selection-start-line="64" selection-start-column="61" selection-end-line="64" selection-end-column="61" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#517#518#0" expanded="true" />
-            <element signature="e#684#685#0" expanded="true" />
-            <element signature="e#9833#9834#0" expanded="true" />
-            <element signature="e#9908#9909#0" expanded="true" />
-            <element signature="e#10394#10395#0" expanded="true" />
-            <element signature="e#10474#10475#0" expanded="true" />
+            <element signature="e#40#114#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/Principale.kt">
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/huffman/kotlin/util/ArrayExt.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+        <state relative-caret-position="160">
+          <caret line="10" column="34" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
         </state>
       </provider>
     </entry>

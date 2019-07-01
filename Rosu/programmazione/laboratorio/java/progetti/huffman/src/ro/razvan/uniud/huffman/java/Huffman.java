@@ -5,9 +5,7 @@ import huffman_toolkit.OutputTextFile;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.PriorityQueue;
+import java.util.*;
 import java.util.stream.IntStream;
 
 class Huffman {
@@ -63,6 +61,7 @@ class Huffman {
         static Node huffmanTree(@NotNull final int[] freq) {
 
             /* Attraverso l'interfaccia Comparable questa lista è in grado di mantenere ordinati i suoi elementi */
+            //final var queue = new PriorityQueue<Node>();
             final var queue = new PriorityQueue<Node>();
 
             /* vengono aggiunti alla coda solo i caratteri che hanno almeno un'occorrenza nel testo */
@@ -80,6 +79,44 @@ class Huffman {
                 /* ... tolgo i primi due nodi di peso minimo... */
                 final var left = queue.poll();
                 final var right = queue.poll();
+
+                /* ...costruisco un sotto albero e lo inserisco in coda */
+                queue.add(new Node(left, right));
+
+            }
+
+            /* alla fine di questa operazione rimarrà sempre e comunque un solo albero */
+
+            return Objects.requireNonNull(queue.poll(), "the string was empty");
+        }
+
+        /**
+         * Albero binario di codifica dei caratteri
+         *
+         * @param freq istogramma delle frequenze
+         * @return la radice dell'albero di Huffman
+         */
+        @NotNull
+        static Node huffmanTreeWithNodeQueue(@NotNull final int[] freq) {
+
+            /* Attraverso l'interfaccia Comparable questa lista è in grado di mantenere ordinati i suoi elementi */
+            final var queue = new NodeQueue();
+
+            /* vengono aggiunti alla coda solo i caratteri che hanno almeno un'occorrenza nel testo */
+            for (int i = 0; i < freq.length; i++) {
+                if (freq[i] > 0) {
+                    queue.add(
+                            new Node((char) i, freq[i])
+                    );
+                }
+            }
+
+            /* finché c'è più di un nodo nella coda... */
+            while (queue.size() > 1) {
+
+                /* ... tolgo i primi due nodi di peso minimo... */
+                final var left = Objects.requireNonNull(queue.poll());
+                final var right = Objects.requireNonNull(queue.poll());
 
                 /* ...costruisco un sotto albero e lo inserisco in coda */
                 queue.add(new Node(left, right));
@@ -121,6 +158,96 @@ class Huffman {
                 fillTable(Objects.requireNonNull(n.getLeft()), code + "0", codes);
                 fillTable(Objects.requireNonNull(n.getRight()), code + "1", codes);
             }
+        }
+
+        /**
+         * Tabella di codifica dei caratteri - versione iterativa
+         *
+         * @param root nodo della radice dell'albero di Huffman
+         * @return tabella compilata
+         */
+        @SuppressWarnings("Duplicates")
+        @NotNull
+        public static String[] huffmanCodesTableIter(@NotNull final Node root) {
+
+            final var codes = new String[CHARS];
+
+            final var stack = new Stack<Node>();
+            stack.push(root);
+
+            var code = "";
+
+            do {
+
+                final var n = Objects.requireNonNull(stack.pop());
+
+                if (n.isLeaf()) {
+
+                    codes[n.getCharacter()] = code;
+
+                    final var k = code.lastIndexOf('0');
+
+                    if (k >= 0) {
+                        code = code.substring(0, k) + "1";
+                    }
+
+                } else {
+
+                    stack.push(Objects.requireNonNull(n.getRight()));
+                    stack.push(Objects.requireNonNull(n.getLeft()));
+
+                    code += "0";
+
+                }
+
+            } while (!stack.isEmpty());
+
+            return codes;
+        }
+
+        /**
+         * Tabella di codifica dei caratteri - versione iterativa
+         *
+         * @param root nodo della radice dell'albero di Huffman
+         * @return tabella compilata
+         */
+        @SuppressWarnings("Duplicates")
+        @NotNull
+        public static String[] huffmanCodesTableIterWithNodeStack(@NotNull final Node root) {
+
+            final var codes = new String[CHARS];
+
+            final var stack = new NodeStack();
+            stack.push(root);
+
+            var code = "";
+
+            do {
+
+                final var n = Objects.requireNonNull(stack.pop());
+
+                if (n.isLeaf()) {
+
+                    codes[n.getCharacter()] = code;
+
+                    final var k = code.lastIndexOf('0');
+
+                    if (k >= 0) {
+                        code = code.substring(0, k) + "1";
+                    }
+
+                } else {
+
+                    stack.push(Objects.requireNonNull(n.getRight()));
+                    stack.push(Objects.requireNonNull(n.getLeft()));
+
+                    code += "0";
+
+                }
+
+            } while (!stack.isEmpty());
+
+            return codes;
         }
 
         /**

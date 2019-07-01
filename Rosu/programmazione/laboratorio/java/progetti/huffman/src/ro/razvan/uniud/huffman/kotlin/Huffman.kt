@@ -56,6 +56,30 @@ object Huffman {
         }
 
         /**
+         * Albero di Huffman, costruito in base all'istogramma di frequenza dei caratteri
+         *
+         * @param freq istogramma di frequenza dei caratteri
+         * @return la radice dell'albero generato
+         * @throws IllegalArgumentException se l'istogramma non presenta caratteri
+         */
+        fun huffmanTreeWithNodeQueue(freq: IntArray): Node {
+
+            val queue = NodeQueue()
+
+            freq.mapIndexed { index, element -> Pair(index, element) }
+                .filter { it.second > 0 }
+                .forEach { queue.add(Node(it.first.toChar(), it.second)) }
+
+            while (queue.size > 1) {
+                val left = queue.poll()!!
+                val right = queue.poll()!!
+                queue.add(Node(left, right))
+            }
+
+            return queue.poll() ?: throw IllegalArgumentException("the string was empty")
+        }
+
+        /**
          * Tabella di codifica dei caratteri
          *
          * @param root nodo radice dell'albero di Huffman
@@ -67,6 +91,92 @@ object Huffman {
             fillTable(root, "", array)
 
             return array
+        }
+
+        /**
+         * Tabella di codifica dei caratteri - versione iterativa
+         *
+         * @param root nodo della radice dell'albero di Huffman
+         * @return tabella compilata
+         */
+        fun huffmanCodesTableIter(root: Node): Array<String?> {
+
+            val codes = arrayOfNulls<String>(CHARS)
+
+            val stack = Stack<Node>()
+            stack.push(root)
+
+            var code = ""
+
+            do {
+
+                val n = stack.pop()!!
+
+                if (n.isLeaf) {
+
+                    codes[n.character.toInt()] = code
+
+                    val k = code.lastIndexOf('0')
+
+                    if (k >= 0) {
+                        code = code.substring(0, k) + "1"
+                    }
+
+                } else {
+
+                    stack.push(Objects.requireNonNull(n.right))
+                    stack.push(Objects.requireNonNull(n.left))
+
+                    code += "0"
+
+                }
+
+            } while (!stack.isEmpty())
+
+            return codes
+        }
+
+        /**
+         * Tabella di codifica dei caratteri - versione iterativa
+         *
+         * @param root nodo della radice dell'albero di Huffman
+         * @return tabella compilata
+         */
+        fun huffmanCodesTableIterWithNodeStack(root: Node): Array<String?> {
+
+            val codes = arrayOfNulls<String>(CHARS)
+
+            val stack = NodeStack()
+            stack.push(root)
+
+            var code = ""
+
+            do {
+
+                val n = stack.pop()!!
+
+                if (n.isLeaf) {
+
+                    codes[n.character.toInt()] = code
+
+                    val k = code.lastIndexOf('0')
+
+                    if (k >= 0) {
+                        code = code.substring(0, k) + "1"
+                    }
+
+                } else {
+
+                    stack.push(n.right!!)
+                    stack.push(n.left!!)
+
+                    code += "0"
+
+                }
+
+            } while (!stack.empty)
+
+            return codes
         }
 
         /**

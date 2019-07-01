@@ -3,6 +3,8 @@ package ro.razvan.uniud.huffman.java;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+
 final class Principale {
 
     private Principale() {
@@ -19,7 +21,7 @@ final class Principale {
          *
          * @param args argomenti contenenti path assolute dei file
          */
-        public static void main(String[] args) {
+        public static void main(@NotNull final String[] args) {
             Huffman.Encoder.huffmanCodesCharacters(args[0], args[1]);
         }
 
@@ -55,12 +57,36 @@ final class Principale {
 
         /**
          * args[0]: path assoluta del file non compresso da verificare
+         *
          * @param args argomenti contenenti path assolute dei file
          */
         public static void main(@NotNull final String[] args) {
             final var compressedFileLength = Huffman.Encoder.getFileLength(args[1]);
 
             println(Huffman.Encoder.getCompressedFileLength(args[0]) + " vs " + compressedFileLength);
+        }
+
+    }
+
+    static class TestParte6 {
+
+        private TestParte6() {
+        }
+
+        /**
+         * args[0]: path assoluta del file non compresso da verificare
+         *
+         * @param args argomenti contenenti path assolute dei file
+         */
+        public static void main(@NotNull final String[] args) {
+
+            final var freq = Huffman.Encoder.charHistogram(args[0]);
+
+            println(Huffman.Encoder.huffmanTree(freq) == Huffman.Encoder.huffmanTreeWithNodeQueue(freq));
+
+            final var root = Huffman.Encoder.huffmanTree(freq);
+
+            println(Arrays.compare(Huffman.Encoder.huffmanCodesTableIter(root), Huffman.Encoder.huffmanCodesTableIterWithNodeStack(root)) == 0);
         }
 
     }
