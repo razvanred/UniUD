@@ -43,7 +43,7 @@
   (lambda (l v)
     (if (null? l)
         (list v)
-        (if (string<=? (car l) v))
+        (if (string<=? (car l) v)
             (append (car l) (append-in-order (cdr l)))
             (append (list v) (cdr l))))))
 

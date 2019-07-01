@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <drjava version="drjava-20160913-225446">
-  <project autorefresh="false" main="" root="" work="">
+  <project autorefresh="false" root="" work="">
     <createjar file=""/>
     <source>
-      <file active="true" name="NodeQueue.java" package="" timestamp="22-Jun-2019 23:47:08">
-        <select from="841" to="841"/>
-        <scroll column="246" row="0"/>
+      <file active="true" name="Main.java" package="" timestamp="28-Jun-2019 23:22:56">
+        <select from="390" to="390"/>
+        <scroll column="0" row="0"/>
       </file>
-      <file name="Node.java" package="" timestamp="21-Jun-2019 10:43:19">
-        <select from="841" to="841"/>
-        <scroll column="246" row="0"/>
+      <file name="Huffman.java" package="" timestamp="22-Jun-2019 23:55:36">
+        <select from="390" to="390"/>
+        <scroll column="0" row="0"/>
       </file>
-      <file name="Huffman.java" package="" timestamp="22-Jun-2019 23:41:31">
-        <select from="841" to="841"/>
-        <scroll column="246" row="0"/>
+      <file name="Node.java" package="" timestamp="22-Jun-2019 23:55:36">
+        <select from="390" to="390"/>
+        <scroll column="0" row="0"/>
       </file>
-      <file name="Main.java" package="" timestamp="22-Jun-2019 23:42:27">
-        <select from="841" to="841"/>
-        <scroll column="246" row="0"/>
+      <file name="NodeStack.java" package="" timestamp="22-Jun-2019 23:55:36">
+        <select from="390" to="390"/>
+        <scroll column="0" row="0"/>
       </file>
-      <file name="NodeStack.java" package="" timestamp="22-Jun-2019 23:46:35">
-        <select from="841" to="841"/>
-        <scroll column="246" row="0"/>
+      <file name="MyHuffman.java" package="" timestamp="23-Jun-2019 13:51:14">
+        <select from="390" to="390"/>
+        <scroll column="0" row="0"/>
+      </file>
+      <file name="NodeQueue.java" package="" timestamp="28-Jun-2019 23:08:55">
+        <select from="390" to="390"/>
+        <scroll column="0" row="0"/>
       </file>
     </source>
     <included/>

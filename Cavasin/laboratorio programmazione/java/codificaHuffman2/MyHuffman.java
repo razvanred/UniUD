@@ -2,7 +2,7 @@ import huffman_toolkit.*;
 import java.util.*;
 
 public class MyHuffman {
-  private static final int LENGTH=256;
+  private static final int LENGTH=128;
   
   private static char read8bit(InputTextFile in){
     char t=0;
@@ -10,7 +10,6 @@ public class MyHuffman {
       t<<=1;
       t+=in.readBit();
     }
-    System.out.print(t);
     return t;
   }
   
@@ -41,6 +40,30 @@ public class MyHuffman {
       nodes.add(new Node(l,r));
     }
     return nodes.poll();
+  }
+  
+  public static String[] huffmanCodesTableIterative(Node root){
+    String codes[]=new String[LENGTH];
+    NodeStack stack=new NodeStack();
+    Node node;
+    String code="";
+    
+    stack.push(root);
+    do{
+      node=stack.pop();
+      if(node.isLeaf()){
+        codes[node.character()]=code;
+        int i=code.lastIndexOf('0');
+        if(i>=0){
+          code=code.substring(0,i)+'1';
+        }
+      }else{
+        stack.push(node.right());
+        stack.push(node.left());
+        code+='0';
+      }
+    }while(!stack.empty());
+    return codes;
   }
   
   public static String[] huffmanCodesTable(Node root){
@@ -109,7 +132,7 @@ public class MyHuffman {
     
     in.readTextLine();
     
-    System.out.println(flattenTree(root));
+//    System.out.println(flattenTree(root));
     OutputTextFile out=new OutputTextFile(dst);
     
     for(;length>0;length--){
