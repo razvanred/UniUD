@@ -89,6 +89,8 @@ final class Board {
     /**
      * @return Codifica testuale della situazione
      */
+    @SuppressWarnings("Duplicates")
+    @NotNull
     final String arrangement() {
 
         final var builder = new StringBuilder("< ")
@@ -116,6 +118,9 @@ final class Board {
         return builder.append(" \" >").toString();
     }
 
+
+    @SuppressWarnings("Duplicates")
+    @NotNull
     final String representation() {
 
         final var builder = new StringBuilder();

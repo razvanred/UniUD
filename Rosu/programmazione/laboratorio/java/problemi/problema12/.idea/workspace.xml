@@ -2,10 +2,43 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afab6bcc-76c4-48d4-a48a-55600618a6fe" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../problema10/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../problema10/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema10/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../problema10/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema10/out/production/problema10/ro/razvan/uniud/stringSList/BtrNotation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema10/out/production/problema10/ro/razvan/uniud/stringSList/PrincipaleKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/../problema10/out/production/problema10/ro/razvan/uniud/stringSList/PrincipaleKt.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema10/out/production/problema10/ro/razvan/uniud/stringSList/StringSList$Companion.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema10/out/production/problema10/ro/razvan/uniud/stringSList/StringSList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema10/problema10.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../problema10/problema10.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema10/src/ro/razvan/uniud/stringSList/BtrNotation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../problema10/src/ro/razvan/uniud/stringSList/kotlin/BtrNotation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema10/src/ro/razvan/uniud/stringSList/Principale.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../problema10/src/ro/razvan/uniud/stringSList/Principale.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema10/src/ro/razvan/uniud/stringSList/StringSList.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../problema10/src/ro/razvan/uniud/stringSList/kotlin/StringSList.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Queens.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Queens.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../progetti/longest-increasing-subsequence/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../progetti/longest-increasing-subsequence/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../lezioni/java/dynamic-programming/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/problema12/ro/razvan/uniud/nQueensWithGui/java/Principale.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/problema12/ro/razvan/uniud/nQueensWithGui/java/Principale.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/problema12/ro/razvan/uniud/nQueensWithGui/kotlin/Board$Companion.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/problema12/ro/razvan/uniud/nQueensWithGui/kotlin/Board$Companion.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/problema12/ro/razvan/uniud/nQueensWithGui/kotlin/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/problema12/ro/razvan/uniud/nQueensWithGui/kotlin/Board.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/problema12/ro/razvan/uniud/nQueensWithGui/kotlin/Queens.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/problema12/ro/razvan/uniud/nQueensWithGui/kotlin/Queens.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Principale.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Principale.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema13/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../problema13/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema13/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../problema13/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/java/Principale.class" beforeDir="false" afterPath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/java/Principale.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/java/control/PuzzleBoardPresenter.class" beforeDir="false" afterPath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/java/control/PuzzleBoardPresenter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/java/model/Board$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/java/model/Board$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/java/model/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/java/model/Board.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/java/util/Injector.class" beforeDir="false" afterPath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/java/util/Injector.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/java/util/Integers.class" beforeDir="false" afterPath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/java/util/Integers.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/java/util/Pair.class" beforeDir="false" afterPath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/java/util/Pair.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/kotlin/PrincipaleKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/kotlin/PrincipaleKt.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/kotlin/ui/PuzzleBoard.class" beforeDir="false" afterPath="$PROJECT_DIR$/../problema13/out/production/puzzleboard/ro/razvan/uniud/puzzleboard/kotlin/ui/PuzzleBoard.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema13/src/ro/razvan/uniud/puzzleboard/java/control/PuzzleBoardPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../problema13/src/ro/razvan/uniud/puzzleboard/java/control/PuzzleBoardPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../problema13/src/ro/razvan/uniud/puzzleboard/kotlin/control/PuzzleBoardPresenter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../problema13/src/ro/razvan/uniud/puzzleboard/kotlin/control/PuzzleBoardPresenter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../progetti/huffman/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../progetti/huffman/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../progetti/huffman/out/production/huffman/ro/razvan/uniud/huffman/java/Huffman$Decoder.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../progetti/huffman/out/production/huffman/ro/razvan/uniud/huffman/java/Huffman$Decoder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../progetti/huffman/out/production/huffman/ro/razvan/uniud/huffman/java/Huffman$Encoder.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../progetti/huffman/out/production/huffman/ro/razvan/uniud/huffman/java/Huffman$Encoder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../progetti/huffman/out/production/huffman/ro/razvan/uniud/huffman/java/Huffman.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../progetti/huffman/out/production/huffman/ro/razvan/uniud/huffman/java/Huffman.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../progetti/huffman/out/production/huffman/ro/razvan/uniud/huffman/java/Principale$TestParte7.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../progetti/huffman/out/production/huffman/ro/razvan/uniud/huffman/java/Principale$TestParte7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../progetti/huffman/out/production/huffman/ro/razvan/uniud/huffman/java/Principale.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../progetti/huffman/out/production/huffman/ro/razvan/uniud/huffman/java/Principale.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../progetti/huffman/src/ro/razvan/uniud/huffman/java/Principale.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../progetti/huffman/src/ro/razvan/uniud/huffman/java/Principale.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,114 +51,50 @@
     <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Board.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1760">
-                  <caret line="115" column="50" selection-start-line="115" selection-start-column="50" selection-end-line="115" selection-end-column="50" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#1089#1090#0" expanded="true" />
-                    <element signature="e#1116#1117#0" expanded="true" />
-                    <element signature="e#1139#1140#0" expanded="true" />
-                    <element signature="e#1168#1169#0" expanded="true" />
-                    <element signature="method#addQueen#0;class#Board#0" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Board.kt">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1376">
-                  <caret line="105" column="13" selection-start-line="105" selection-start-column="13" selection-end-line="105" selection-end-column="13" />
-                  <folding>
-                    <element signature="n#!!doc;n#contains#0;n#!!block;n#Companion#0;n#!!block;n#Board#0" />
-                    <element signature="n#!!doc;n#addQueen#0;n#!!block;n#Board#0" />
-                    <element signature="n#!!doc;n#isUnderAttack#0;n#!!block;n#Board#0" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Queens.kt">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="16">
-                  <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
-                  <folding>
-                    <element signature="e#47#113#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Principale.kt">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="160">
-                  <caret line="11" selection-start-line="11" selection-end-line="11" />
-                  <folding>
-                    <element signature="e#47#144#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Board.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="336">
-                  <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#1089#1090#0" expanded="true" />
-                    <element signature="e#1116#1117#0" expanded="true" />
-                    <element signature="e#1139#1140#0" expanded="true" />
-                    <element signature="e#1168#1169#0" expanded="true" />
-                    <element signature="method#addQueen#0;class#Board#0" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Queens.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="597">
-                  <caret line="85" column="16" selection-start-line="85" selection-start-column="16" selection-end-line="85" selection-end-column="16" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                    <element signature="e#2470#2471#0" expanded="true" />
-                    <element signature="e#2509#2510#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Principale.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="304">
-                  <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Board.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="339">
+              <caret line="71" column="21" lean-forward="true" selection-start-line="71" selection-start-column="21" selection-end-line="71" selection-end-column="21" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1089#1090#0" expanded="true" />
+                <element signature="e#1116#1117#0" expanded="true" />
+                <element signature="e#1139#1140#0" expanded="true" />
+                <element signature="e#1168#1169#0" expanded="true" />
+                <element signature="e#2239#2270#0" expanded="true" />
+                <element signature="e#3057#3088#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Queens.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="741">
+              <caret line="85" column="16" selection-start-line="85" selection-start-column="16" selection-end-line="85" selection-end-column="16" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Principale.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="304">
+              <caret line="19" column="24" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -141,12 +110,12 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Board.java" />
         <option value="$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Principale.kt" />
-        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Principale.java" />
         <option value="$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Board.kt" />
         <option value="$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Queens.kt" />
         <option value="$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Queens.java" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Principale.java" />
+        <option value="$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Board.java" />
       </list>
     </option>
   </component>
@@ -160,7 +129,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-12" />
     <option name="width" value="1101" />
     <option name="height" value="1392" />
@@ -170,7 +139,66 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="n-queens-with-gui" type="b2602c69:ProjectViewProjectNode" />
+              <item name="problema12" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="n-queens-with-gui" type="b2602c69:ProjectViewProjectNode" />
+              <item name="problema12" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="n-queens-with-gui" type="b2602c69:ProjectViewProjectNode" />
+              <item name="problema12" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ro" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="n-queens-with-gui" type="b2602c69:ProjectViewProjectNode" />
+              <item name="problema12" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ro" type="462c0819:PsiDirectoryNode" />
+              <item name="razvan" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="n-queens-with-gui" type="b2602c69:ProjectViewProjectNode" />
+              <item name="problema12" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ro" type="462c0819:PsiDirectoryNode" />
+              <item name="razvan" type="462c0819:PsiDirectoryNode" />
+              <item name="uniud" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="n-queens-with-gui" type="b2602c69:ProjectViewProjectNode" />
+              <item name="problema12" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ro" type="462c0819:PsiDirectoryNode" />
+              <item name="razvan" type="462c0819:PsiDirectoryNode" />
+              <item name="uniud" type="462c0819:PsiDirectoryNode" />
+              <item name="nQueensWithGui" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="n-queens-with-gui" type="b2602c69:ProjectViewProjectNode" />
+              <item name="problema12" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ro" type="462c0819:PsiDirectoryNode" />
+              <item name="razvan" type="462c0819:PsiDirectoryNode" />
+              <item name="uniud" type="462c0819:PsiDirectoryNode" />
+              <item name="nQueensWithGui" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="true" />
@@ -180,7 +208,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../esami/java/compitino-2018" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -202,7 +230,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Kotlin.ro.razvan.uniud.nQueensWithGui.kotlin.PrincipaleKt">
+  <component name="RunManager" selected="Application.Principale">
     <configuration name="Principale" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ro.razvan.uniud.nQueensWithGui.java.Principale" />
       <module name="problema12" />
@@ -264,9 +292,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Principale" />
         <item itemvalue="Kotlin.ro.razvan.uniud.nQueensWithGui.kotlin.PrincipaleKt" />
         <item itemvalue="Kotlin.ro.razvan.uniud.nQueensWithGui.kotlin.Queens" />
-        <item itemvalue="Application.Principale" />
         <item itemvalue="Application.Queens" />
       </list>
     </recent_temporary>
@@ -285,16 +313,19 @@
       <workItem from="1561106305052" duration="3657000" />
       <workItem from="1561115037981" duration="600000" />
       <workItem from="1561391294427" duration="740000" />
+      <workItem from="1562060743662" duration="250000" />
+      <workItem from="1562061246916" duration="588000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18930000" />
+    <option name="totallyTimeSpent" value="19768000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1455" height="935" extended-state="6" />
+    <frame x="-7" y="-7" width="1455" height="935" extended-state="7" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.516129" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26021504" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -343,9 +374,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Queens.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
+          <folding>
+            <element signature="e#47#113#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Board.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1376">
+        <state relative-caret-position="723">
           <caret line="105" column="13" selection-start-line="105" selection-start-column="13" selection-end-line="105" selection-end-column="13" />
           <folding>
             <element signature="n#!!doc;n#contains#0;n#!!block;n#Companion#0;n#!!block;n#Board#0" />
@@ -357,7 +398,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Principale.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
+        <state relative-caret-position="176">
           <caret line="11" selection-start-line="11" selection-end-line="11" />
           <folding>
             <element signature="e#47#144#0" expanded="true" />
@@ -365,39 +406,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/kotlin/Queens.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
-          <folding>
-            <element signature="e#47#113#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Board.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1089#1090#0" expanded="true" />
-            <element signature="e#1116#1117#0" expanded="true" />
-            <element signature="e#1139#1140#0" expanded="true" />
-            <element signature="e#1168#1169#0" expanded="true" />
-            <element signature="method#addQueen#0;class#Board#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Queens.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="597">
+        <state relative-caret-position="741">
           <caret line="85" column="16" selection-start-line="85" selection-start-column="16" selection-end-line="85" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2470#2471#0" expanded="true" />
-            <element signature="e#2509#2510#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -405,9 +419,25 @@
     <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Principale.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+          <caret line="19" column="24" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/razvan/uniud/nQueensWithGui/java/Board.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="71" column="21" lean-forward="true" selection-start-line="71" selection-start-column="21" selection-end-line="71" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1089#1090#0" expanded="true" />
+            <element signature="e#1116#1117#0" expanded="true" />
+            <element signature="e#1139#1140#0" expanded="true" />
+            <element signature="e#1168#1169#0" expanded="true" />
+            <element signature="e#2239#2270#0" expanded="true" />
+            <element signature="e#3057#3088#0" expanded="true" />
           </folding>
         </state>
       </provider>

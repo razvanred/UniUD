@@ -1,4 +1,4 @@
-package ro.razvan.uniud.stringSList
+package ro.razvan.uniud.stringSList.kotlin
 
 @Suppress("EqualsOrHashCode")
 class StringSList {
@@ -17,7 +17,9 @@ class StringSList {
         rest = null
     }
 
-    constructor(first: String, sl: StringSList = NULL_STRING_S_LIST) {
+    constructor(first: String) : this(first, NULL_STRING_S_LIST)
+
+    constructor(first: String, sl: StringSList) {
         rest = sl
         this.first = first
         empty = false

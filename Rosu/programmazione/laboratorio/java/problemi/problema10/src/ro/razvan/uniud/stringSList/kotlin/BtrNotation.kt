@@ -1,4 +1,4 @@
-package ro.razvan.uniud.stringSList
+package ro.razvan.uniud.stringSList.kotlin
 
 object BtrNotation {
 

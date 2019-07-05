@@ -1,0 +1,45 @@
+
+Rare Supernovae May Solve 40-Year-Old Antimatter Mystery
+Most of the Milky Way's antimatter may come from the explosive collisions of white dwarf stars
+By Charles Q. Choi, SPACE.com on May 22, 2017
+
+
+The majority of antimatter that pervades the Milky Way may come from clashing remnants of dead stars, a new study finds.
+
+The work may solve a 40-year-old astrophysics mystery, the study's researchers said.
+
+For every particle of normal matter, there is an antimatter counterpart with the opposite electrical charge but the same mass. The antiparticle of the negatively charged electron, for instance, is the positively charged positron.
+
+When a particle meets its antiparticle, they annihilate each other, giving off a burst of energy. A gram of antimatter annihilating a gram of matter would release about twice the amount of energy as the nuclear bomb dropped on Hiroshima, Japan.
+
+More than 40 years ago, scientists first detected that the kind of gamma-rays that are given off when positrons are annihilated were being emitted from all around the galaxy. Their findings suggested that 10^43 positrons --- that's a 1 with 43 zeroes behind it --- were being annihilated in the Milky Way every second. Oddly, most of these positrons were detected in the galaxy's central bulge rather than its outer disk, even though the bulge hosts less than half of the Milky Way's mass.
+
+These positrons could have been emitted from radioactive material synthesized by stars. However, for decades, researchers have been unable to pinpoint a type of star that could generate such vast amounts of antimatter. This led to suggestions that many positrons could originate from exotic sources, such as the supermassive black hole thought to exist at the center of the galaxy, or from dark matter particles annihilating one another.
+
+"The origin of these positrons is a 40-year-old mystery in astrophysics," said Roland Crocker, lead author of the new work and a particle astrophysicist at the Australian National University in Canberra.The new study suggests that a kind of supernova --- a catastrophic explosion from a star --- could generate the vast amounts of positrons that previous research saw and explain the locations in the galaxy from which they are detected.
+
+"You don't need anything exotic like dark matter to explain the positrons," Crocker told Space.com.
+
+The scientists focused on a type of supernova known as SN 1991bg-like, which has been detected in other galaxies. Unlike most supernovas, which can briefly outshine all of the other stars in their galaxies, this kind of supernova does not generate much visible light and is fairly rare, which is why it has avoided detection in the Milky Way, Crocker said.
+
+Previous research suggested that these dim supernovas occur when two white dwarfs merge. White dwarfs are superdense, Earth-size cores of dead stars that are left behind when stars have exhausted their fuel and lose their outer layers. Most stars, including the sun, will become white dwarfs one day.
+
+Specifically, these faint supernovas are thought to occur when two low-mass white dwarfs --- one rich in carbon and oxygen, and the other rich in helium --- slam together. Although such supernovas are rarer than standard supernovas, they generate much larger amounts of a radioactive isotope known as titanium-44, which gives off the kinds of positrons that astronomers have detected zipping across the Milky Way.
+
+The new work suggests that those supernovas could be sufficient to create all of the unexplained positrons, thus solving the galaxy-wide mystery.
+
+Whereas most supernovas occur when young, massive stars die, SN 1991bg-like supernovas are found in neighborhoods richer in older stars that are 3 billion to 6 billion years old. This age difference could explain why the previously detected positrons were seen mostly in the Milky Way's central bulge, which has a greater proportion of older stars than the galaxy's outer disk.
+
+Other sources may contribute some of the positrons that prior work detected, Crocker said. Still, "they are not necessary, given the SN1991bg-like supernovae can basically explain the entire positron phenomenology," he said."The most recent data show that there's a positron source connected to the very center of the galaxy," Crocker added. "In our model, this is explained as due to the old stars distributed on roughly 200-parsec [650 light years] scales around the galaxy's supermassive black hole, but the black hole itself is an interesting alternative source."
+
+The scientists detailed their findings online May 22 in the journal Nature Astronomy.
+
+
+EDITOR'S RECOMMENDATIONS
+
+Anti-Matter Drive To Alpha Centauri? New Short-Documentary Explores | Video
+Supernova Photos: Great Images of Star Explosions
+Spy Ancient Remnants and Newfound Supernovas Using Mobile Apps
+
+
+Copyright 2017 SPACE.com, a Purch company. All rights reserved. This material may not be published, broadcast, rewritten or redistributed.

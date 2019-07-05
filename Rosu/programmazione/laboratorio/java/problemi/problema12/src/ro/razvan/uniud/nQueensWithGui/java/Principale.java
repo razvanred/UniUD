@@ -5,6 +5,11 @@ import queens.ChessboardView;
 
 public final class Principale {
 
+    /**
+     * args[0]: dimensione del lato della scacchiera
+     *
+     * @param args argomenti del programma
+     */
     public static void main(@NotNull final String[] args) {
 
         final var size = Integer.parseInt(args[0]);

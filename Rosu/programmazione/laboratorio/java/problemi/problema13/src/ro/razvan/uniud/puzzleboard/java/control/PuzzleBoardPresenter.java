@@ -66,9 +66,6 @@ public final class PuzzleBoardPresenter {
                 final var blankCoordinates = board.getRowAndColumn(blank);
                 final var kCoordinates = board.getRowAndColumn(board.findPosition(k));
 
-                println(blankCoordinates);
-                println(kCoordinates);
-
                 gui.setNumber(kCoordinates.getFirstNonNull() + 1, kCoordinates.getSecondNonNull() + 1, k);
                 gui.clear(blankCoordinates.getFirstNonNull() + 1, blankCoordinates.getSecondNonNull() + 1);
 

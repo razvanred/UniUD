@@ -48,9 +48,7 @@ class PuzzleBoardPresenter(
 
                 val blankCoordinates = board.getRowAndColumn(blankPosition)
                 val kCoordinates = board.getRowAndColumn(board.findPosition(k))
-
-                println(blankCoordinates)
-                println(kCoordinates)
+                
 
                 gui.setNumber(kCoordinates.first + 1, kCoordinates.second + 1, k)
                 gui.clear(blankCoordinates.first + 1, blankCoordinates.second + 1)
