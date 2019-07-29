@@ -3,25 +3,29 @@
   <project autorefresh="false" root="" work="">
     <createjar file=""/>
     <source>
-      <file active="true" name="Huffman.java" package="" timestamp="01-Jul-2019 20:47:09">
-        <select from="8808" to="8808"/>
-        <scroll column="1515" row="0"/>
+      <file active="true" name="Main.java" package="" timestamp="02-Jul-2019 10:58:50">
+        <select from="447" to="447"/>
+        <scroll column="0" row="0"/>
+      </file>
+      <file name="Huffman.java" package="" timestamp="01-Jul-2019 20:47:09">
+        <select from="447" to="447"/>
+        <scroll column="0" row="0"/>
       </file>
       <file name="Node.java" package="" timestamp="30-Jun-2019 17:25:09">
-        <select from="8808" to="8808"/>
-        <scroll column="1515" row="0"/>
+        <select from="447" to="447"/>
+        <scroll column="0" row="0"/>
       </file>
       <file name="sample_2.txt" package="" timestamp="30-Jun-2019 17:13:06">
-        <select from="8808" to="8808"/>
-        <scroll column="1515" row="0"/>
+        <select from="447" to="447"/>
+        <scroll column="0" row="0"/>
       </file>
       <file name="sample_3.txt" package="" timestamp="30-Jun-2019 17:13:22">
-        <select from="8808" to="8808"/>
-        <scroll column="1515" row="0"/>
+        <select from="447" to="447"/>
+        <scroll column="0" row="0"/>
       </file>
       <file name="sample_1.txt" package="" timestamp="01-Jul-2019 20:54:42">
-        <select from="8808" to="8808"/>
-        <scroll column="1515" row="0"/>
+        <select from="447" to="447"/>
+        <scroll column="0" row="0"/>
       </file>
     </source>
     <included/>
