@@ -1,0 +1,17 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-intermediate-lambda-reader.ss" "lang")((modname |Percorsi di Manhattan|) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
+;PERCORSI DI MANHATTAN --- path finding, trova il  numero di percorsi x raggiungere B da A
+; se paths(0,j) o paths(i,0) allora c'è solo un modo per raggiungere B da A (in questo caso A e B si trovato sullo stesso path)
+;paths(i,j)=paths(i,j-1)+paths(i-1,j) (A e B si trovano in una tabella)7
+
+(define mahn  ; val: intero(lambda(i,j)
+    (lambda(i j)   ;i,j: interi non negativi
+      (if (or (= i 0)(= j 0))
+          1
+          (+ (mahn i (- j 1))  ; qui faccio tutte le combinazioni possibili di tabella[i][j]
+             (mahn (- i 1) j)
+          )
+       )
+     )
+)
