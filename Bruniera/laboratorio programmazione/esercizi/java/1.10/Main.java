@@ -3,6 +3,9 @@ public class Main{
    System.out.println(btrSucc("+.-+-.")); 
    System.out.println(btrSucc("+.-+--"));
    System.out.println(btrSucc("+.-.++"));
+   System.out.println(btrSucc(".")); 
+   System.out.println(btrSucc("-"));
+   System.out.println(btrSucc("+"));
    System.out.println(onesComplement2("101000110110101"));
    System.out.println(onesComplement2("001110110001011"));
    System.out.println(onesComplement("101000110110101"));
@@ -10,6 +13,14 @@ public class Main{
   }
   
   public static String btrSucc(String btr){
+    if(btr.length()==1){
+      if(btr=="-"){
+        return ".";
+      } else if(btr=="."){
+        return "+";
+      }
+      return "+-";
+    }
     if(btr.charAt(btr.length()-1)=='-'){
       return btr.substring(0,btr.length()-1)+".";
     } else if(btr.charAt(btr.length()-1)=='.'){
