@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="puzzleboard">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/puzzleboard.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

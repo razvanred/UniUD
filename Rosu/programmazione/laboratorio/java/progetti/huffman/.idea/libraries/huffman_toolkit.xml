@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="huffman_toolkit">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/huffman_toolkit.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

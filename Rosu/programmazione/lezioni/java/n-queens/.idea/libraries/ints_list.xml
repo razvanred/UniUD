@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="ints-list">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../ints-list/out/artifacts/ints_list_jar/ints-list.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

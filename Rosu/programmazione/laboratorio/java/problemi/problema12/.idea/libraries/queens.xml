@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="queens">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/queens.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
