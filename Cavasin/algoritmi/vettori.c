@@ -20,7 +20,9 @@ void insertionSort(int v[], int size) {
   }
 }
 
-void mergeSort() {}
+void mergeSort() {
+  
+}
 
 int main() {
   int v[6], t[6] = {5, 3, 2, 4, 8, 1};
