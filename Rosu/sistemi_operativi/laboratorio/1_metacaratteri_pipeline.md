@@ -205,7 +205,7 @@ Per visualizzare l'output di ```ls``` pagina per pagina:
   * fornire la lista dei file della home directory il cui nome è una stringa di 3 caratteri seguita da una cifra
 
     ```bash
-    ls /home ???[0-9]
+    ls -d /home ???[0-9] # -d visualizza solamente il contenuto della cartella attuale, non il contenuto di una cartella contenuta nella cartella attuale
     ```
 
 * Qual'è la differenza tra i seguenti comandi?
@@ -219,5 +219,5 @@ ls | more # identico a cat, ma la visualizzazione è paginata
 * Quale effetto producono i seguenti comandi?
 
   * ```uniq <file``` comando che filtra le righe consecutive identiche tra di loro (stampando su stdout una sola volta)
-  * ```who | wc -l``` stampa su stdout il numero di righe fornito dal comando who (1)
-  * ```ps -e | wc -l``` stampa su stdout il numero di processi (più la riga di intestazione, quindi n (processi) + 1) che girano sulla macchina nell'instante in cui è stato eseguito il comando
+  * ```who | wc -l``` stampa su stdout il numero di righe fornito dal comando who, ovvero il numero di utenti collegati al sistema
+  * ```ps -e | wc -l``` stampa su stdout il numero di processi (più la riga di intestazione, quindi n processi + 1) che girano sulla macchina nell'instante in cui è stato eseguito il comando
