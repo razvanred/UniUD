@@ -26,12 +26,12 @@ void println_array(int A[], int length){
 
 
 int main(int argc, char **argv) { 
-	printf("empty vector:\n");
+	printf("empty array:\n");
 	println_array(NULL, 0);
 	insertion_sort(NULL, 0);
 	println_array(NULL, 0);
 	
-	printf("\nsingle element vector:\n");
+	printf("\nsingle element array:\n");
 	int SINGLE[] = {4};
 	println_array(SINGLE, 1);
 	insertion_sort(SINGLE, 1);
@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
 	insertion_sort(WORST, 7);
 	println_array(WORST, 7);
 	
-	printf("\nrandom vector :\n");
+	printf("\nrandom array :\n");
 	int RANDOM[] = {43, 234, 87, 2, 8, 34, 12};
 	println_array(RANDOM, 7);
 	insertion_sort(RANDOM, 7);
