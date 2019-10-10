@@ -1,0 +1,4 @@
+1) df
+2) ordina il contenuto di file e lo salva in file
+4) tr a-<A-Z0-9 ' '
+5)date | cut -d: -f2
