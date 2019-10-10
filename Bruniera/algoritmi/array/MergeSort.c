@@ -35,6 +35,11 @@ int merge_sort(int A[], int p, int q){ // p: indice prima cella, q: indice ultim
 }
 
 
+
+
+//////////////////////////////////////////////////////////////
+// tests
+
 void println_array(int A[], int length){
 	for(int i = 0; i < length; i++){
 		printf("%d ", A[i]);
