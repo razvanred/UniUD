@@ -1,7 +1,23 @@
+# To Ignore
+
+# All hidden files
 .*
-!/.gitignore
-Bruniera\programmazione\esempi\1.2
-Bruniera\programmazione\esempi\*.bak
-Rosu\*.bak
-!Bruniera\supergay
+
+# Bruniera
+Bruniera/programmazione/esempi/1.2
+Bruniera/programmazione/esempi/*.bak
 Bruniera/**/*.exe
+
+# Rosu
+Rosu/*.bak
+
+#############################################################
+
+# Exceptions
+
+!/.gitignore
+# Markdown Linter files
+!.markdownlint.json 
+
+# Bruniera
+!Bruniera/supergay
