@@ -13,6 +13,7 @@
 * `chmod xxx p1` cambia i permessi del file nel percorso p1, i permessi sono rispettivamente per utente che ha creato il file, gruppo a cui appartiene il file e tutti gli altri utenti: rwx rwx rwx. Ogni rwx può essere scritto come un numero in base 2 a tre cifre, e quindi rwx = 111 = 7, se volessi dare solo permesso di esecuzione a tutti farei: `chmod 111 file`
 * `cat` serve per vedere il contenuto di un file su terminale, si può usare cat anche per scrivere su file in questo modo: `cat > file`
 * `ln f2 f2_new` (hard link) il file f2_new ha lo stesso INode di f2. Se due file hanno lo stesso INode vuol dire che sono lo stesso file, se ne modifico uno, mpodifico anche l'altro.
+  * `-s` crea un simlink, ovvero f2_new diventa simlink di f2
 * `echo stringa` stampo su terminale la stringa 'stringa'
 * `cut stringa -d'char' -fn` taglio e stampo una porzione della stringa 'stringa'. -d'char' vuol dire che suddividerò in campi la mia stringa in base al carattere 'char', esempio ciao&sono&tizio verrà suddiviso in 3 campi. Per accedere ai campi poi uso -fn, dove n è un numero intero, esempio `cut stringa -d'char' -f2` sulla stringa"ciao&sono&tizio" darà come risultato "sono".
 * `tr` sostituisci le occorrenze del primo campo, con quelle del secondo. Esempio: `tr A-Z a-z`, sostituisce le lettere maiuscole con quelle minuscole
@@ -29,3 +30,7 @@
 * `sed`
 * `set`
 * `alias`
+* `wc stringa` stampa varie informazioni sulla stringa come il numero di righe e il numero di parole
+  * `-w` numero di parole
+  * `-l` numero di righe
+  * `-m` numero di caratteri
