@@ -7,7 +7,7 @@ Es.: F1 and F2  dove F1 = (p or t) e F2 = (p or n)\
 quindi ((p or t) and (p or n)) = K, dove K è in FNC\
 Scambiando gli or con gli and ottengo una formula in Forma Normale Disgiuntiva.\
 ((p and t) or (p and n)) = S\
-N.B.: le formule K e S non sono le stesse, una volta ottenuta K non basta scambiare and e or per ottenere S.
+N.B.: le formule K e S non sono le stesse, una volta ottenuta una formula FNC K non basta scambiare and e or per ottenere una formula FND S.
 
 # Algoritmo di FNC e FND
 
@@ -54,3 +54,9 @@ A questo punto abbiamo la stessa alpha-formula, con not(p->q) or not(s) che dive
 Bene abbiamo ottenuto un K che sia in FNC, dove ogni disgiunto di ogni congiunto è un letterale. Ora togliamo la sintassi scomoda e abbiamo finito:\
 K = `((p or r) and (not(q) or r) and (p or not(s)) and (not(q) or not(s)))`\
 FINITO
+
+# Rango di una funzione
+Il rango di una funzione F, rg(F), esprime una misura di complessità di F:
+* se F è un letterale, rg(F) = 1
+* se F è una doppia negazione F = not(not(G)), allora rg(F) = rg(G) + 1
+* se F è una alpha o beta-formula F = (G or H), rg(F) = rg(G) + rg(H) + 1
