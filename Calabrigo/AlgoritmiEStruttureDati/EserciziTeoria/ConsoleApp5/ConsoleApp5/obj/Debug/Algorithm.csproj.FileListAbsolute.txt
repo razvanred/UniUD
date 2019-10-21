@@ -1,0 +1,14 @@
+C:\Users\grand\source\repos\ConsoleApp5\ConsoleApp5\bin\Debug\ConsoleApp5.exe.config
+C:\Users\grand\source\repos\ConsoleApp5\ConsoleApp5\bin\Debug\ConsoleApp5.exe
+C:\Users\grand\source\repos\ConsoleApp5\ConsoleApp5\bin\Debug\ConsoleApp5.pdb
+C:\Users\grand\source\repos\ConsoleApp5\ConsoleApp5\obj\Debug\Algorithm.csprojAssemblyReference.cache
+C:\Users\grand\source\repos\ConsoleApp5\ConsoleApp5\obj\Debug\Algorithm.csproj.CoreCompileInputs.cache
+C:\Users\grand\source\repos\ConsoleApp5\ConsoleApp5\obj\Debug\ConsoleApp5.exe
+C:\Users\grand\source\repos\ConsoleApp5\ConsoleApp5\obj\Debug\ConsoleApp5.pdb
+C:\Users\grand\Desktop\Programming\UniUD\Calabrigo\AlgoritmiEStruttureDati\EserciziTeoria\ConsoleApp5\ConsoleApp5\bin\Debug\ConsoleApp5.exe.config
+C:\Users\grand\Desktop\Programming\UniUD\Calabrigo\AlgoritmiEStruttureDati\EserciziTeoria\ConsoleApp5\ConsoleApp5\bin\Debug\ConsoleApp5.exe
+C:\Users\grand\Desktop\Programming\UniUD\Calabrigo\AlgoritmiEStruttureDati\EserciziTeoria\ConsoleApp5\ConsoleApp5\bin\Debug\ConsoleApp5.pdb
+C:\Users\grand\Desktop\Programming\UniUD\Calabrigo\AlgoritmiEStruttureDati\EserciziTeoria\ConsoleApp5\ConsoleApp5\obj\Debug\Algorithm.csprojAssemblyReference.cache
+C:\Users\grand\Desktop\Programming\UniUD\Calabrigo\AlgoritmiEStruttureDati\EserciziTeoria\ConsoleApp5\ConsoleApp5\obj\Debug\Algorithm.csproj.CoreCompileInputs.cache
+C:\Users\grand\Desktop\Programming\UniUD\Calabrigo\AlgoritmiEStruttureDati\EserciziTeoria\ConsoleApp5\ConsoleApp5\obj\Debug\ConsoleApp5.exe
+C:\Users\grand\Desktop\Programming\UniUD\Calabrigo\AlgoritmiEStruttureDati\EserciziTeoria\ConsoleApp5\ConsoleApp5\obj\Debug\ConsoleApp5.pdb
