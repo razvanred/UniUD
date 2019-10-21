@@ -16,20 +16,23 @@ namespace ConsoleApp5 {
 
         static void Main(string[] args) {
             //Program p = new Program(new ConsolePrinter());
-            HeapNode H = HeapNode.createHeap();
+            ConcatenateList root = ConcatenateList.createVoidQueue();
             data key = new data(1, "a");
-            H.tailInsert(H, key);
-            key = new data(2, "a");
-            H.tailInsert(H, key);
-            key = new data(3, "a");
-            H.tailInsert(H, key);
-            H.tailInsert(H, key);
-            H.tailInsert(H, key);
-            H.tailInsert(H, key);
-            key = new data(2, "a");
-            H.insertNode(H, key, 5);
-            H.deleteNode(H,2);
-            H.printHeap(H);
+            root.Insert(key);
+            key = new data(2, "b");
+            root.Insert(key);
+            key = new data(3, "c");
+            root.Insert(key);
+            root.printList();
+            Console.ReadKey();
+            root.getElement();
+            root.getElement();
+            key = new data(4, "d");
+            root.Insert(key);
+            key = new data(5, "e");
+            root.Insert(key);
+            root.getElement();
+            root.printList();
             Console.ReadKey();
         }
 

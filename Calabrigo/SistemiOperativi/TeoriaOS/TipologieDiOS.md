@@ -1,0 +1,29 @@
+# 6 tipologie di Sistemi Operativi
+* OS monotilici
+
+I sistemi operativi monolitici sono composti da una parte principale detta kernel, che è un unico programma in esecuzione in modalità kernel, e da librerie che vengono eseguiti in modalità utente, e vengono chiamati dall'OS.
+I sistemi monolitici sono i più veloci, tuttavia non sono molto sicuri poichè se si verifica un errore nel codice del kernel (per esempio un indirizzo di memoria sbagliato), il sistema crasha. Si è calcolato che in un codice industriale serio ci siano dai 2 ai 10 errori ogni 10.000 righe di codice.
+
+Quindi i sistemi monolitici sono: più velici, ma meno affidabili di altre tipologie di OS.
+Esempi di OS monolitici sono: Windows, Linux
+* OS a livelli
+
+Un OS a livelli sfrutta la stessa idea dei modelli delle reti ISO/OSI e TCP/IP, ovvero partire da un livello zero che offre funzionalità di base (nel caso degli OS a livelli il livello zero può essere la multiprogrammazione, ad un livello più alto ci può essere la gestione della memoria, ecc.), per arrivare all'ultimo livello che offre le funzionalità più avanzate (nel caso dell'OS a livelli l'ultimo livello conterrà i processi dell'utente).
+
+* OS microkernel
+
+Un OS microkernel ha l'obiettivo di superare la poca affidabilità di un kernel monolitico , oltre che ad essere più facile da mantenere per la sua natura modulare, a discapito delle performance. La struttura di un OS microkernel è composta da un microkernel, che contiene le funzionalità più essenziali e le chiamate che poi dovranno far funzionare tutti gli altri moduli; il microkernel è l'unico modulo ad essere eseguito in modalità kernel. Poi ci sono i driver, dove ogni driver corrisponde ad un modulo; i driver vengono eseguiti in modalità utente e devono chiamare il microkernel. Poi ci sono i "server" (come moduli software ,che sono diversi dai server come macchine), che vengono eseguiti in modalità utente, e contengono tutte le funzionalità che non sono state implementate dal microkernel (quindi la maggior parte, per esempio mem. virtuale, file system, gestione processi, ecc.); tra i vari moduli server ce n'è anche uno particolare, il reincarnation server, che controlla che gli altri moduli (driver o server), non siano crashati o malfunzionanti. Alla fine ci sono i processi utente (ovviamente eseguiti in modalità utente), che contengono i processi dell'utente (esempio: shell, Hearthstone, google chrome con porn hub aperto, ecc.).
+* OS client-server
+
+Gli OS client-server sono i sistemi operativi da server.Questi sistemi possono essere organizzati con un microkernel o anche no, ma la loro particolarità è che devono gestire molti utenti contemporaneamente; quando gli arriva una richiesta da una macchina esterna, uno dei moduli server (moduli software, ne ho parlato prima) accetta la richiesta della macchina client, e il modulo server crea un processo client(eseguito in modalità utente), per quella macchina client.\
+N.B.: stare attenti ai termini: mudulo server è diverso da macchina server, e processo (o modulo) client è diverso da macchina client.
+* OS macchine virtuali
+
+Una VM (Virtual Machine), è un sistema operativo che gira su hardware simulato.
+La particolarità di una VM è di non interagire direttamente con l'hardware, ma invece eseguire il proprio linguaggio macchina su di un hardware simulato. Questo pone diversi problemi, per esempio se dovessimo fare una chiamata trap da una VM, che alla fine non è altro che un processo utente, non potremmo farlo, perchè saremmo un programma utente che cerca di prendersi i diritti kernel da solo, senza passare per il sistema OS che gestisce l'hardware vero. (infatti nei pentium non si poteva, se non usando un interprete che rallentava molto le VM).\
+Per usare le VM come sistemi operativi, visto che non possono interagire direttamente con l'hardware, sono state sviluppate 2 modalità. L'hypervisor di tipo 1, che consiste nell'avere un OS chiamato hypervisor, che possiamo vedere come un OS normale con funzionalità ridotte, e ottimizzato per comunicare con VM; utilizzando l'hypervisor possiamo creare varie VM con diversi sistemi operativi e i tipo 1 girano direttamente sopra l'hardware. L'hypervisor di tipo 2, invece, girano sopra un sistema operativo gia esistente come programmi utente (per esempio virtual Box); se alla base ci sono l'hardware della macchina(es. intel x86-64) e l'os della macchina (es. Windows 10), come processo utente troviamo l'hypervisor di tipo 2 (es Virtual Box), e i suoi processi, poichè il tipo 2 supporta dei sistemi di caching per le istruzioni ricorrenti delle VM, infine sopra troviamo le VM (es. Windows 8, Linux). Gli hypervisor vengono usati dai server hosting per fare in modo da non dover assegnare una macchina per utente, e vengono anche usati dai server web per avere su di una stessa macchina server mail/ftp/http/..., in modo tale che anche se crasha uno di questi, non crashino tutti.\
+La cosa importante è che sia per il tipo 1 che per il tipo 2, l'hardware emulato sia lo stesso di quello fisico, altrimenti servirebbe un interprete. Questa cosa non è valida per un altra macchina virtuale, la JVM, che è diversa dalle macchine virtuali OS poichè queste ultime emulano l'hardware con sopra un OS, mentre la JVM emula una sua architettura senza OS, e poi ha un interprete per tradutte il bytecode (codice macchina di quell'architettura java), in linguaggio macchina per l'hardware vero (es. x86-64).
+
+* OS exokernel
+
+L'OS exokernel ha come obiettivo il partizionamento delle risorse e la sicurezza, e si basa su una richiesta di potenza computazionale non troppo elevata, ma da parte di molti utenti, e funziona sempre con le VM. Si basa sul partizionamento delle risorse, ovvero se la macchina ha 3000 celle di memoria, il sistema puù essere diviso in 3 parti, con 3 OS diversi, e ognuno con le proprie 1000 celle di memoria. il primo 0-999, il secondo 1000-1999 e il terzo 2000-2999.
