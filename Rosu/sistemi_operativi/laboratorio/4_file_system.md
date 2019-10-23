@@ -252,7 +252,7 @@ bin    /usr/bin
 * Scrivere un comando per sostituire tutti i caratteri alfanumerici nell'input con un carattere ```<Tab>```, in modo che non compaiono più ```<Tab>``` consecutivi.
 
   ```bash
-  % tr -s 0-9 '\t'
+  % tr -s 0-9A-Za-z '\t'
   ```
 
 * Il comando ```date```fornisce data e ora su stdin. Scrivere una pipeline per estrarre soltanto i minuti.
