@@ -32,10 +32,10 @@
   * `-n [k]` stampa le ultime `k` righe di `p`
   * `-n +[k]` stampa a partire dalla riga `k`
 * `du {p}` (disk usage) stampa il numero di blocchi di memoria che occupano gli elementi `p`
-  * `-h` (hooman) misura in KB/MB/GB/..., al posto che a blocchi
+  * `-h` (hooman) misura in kB/mB/gB/..., al posto che a blocchi
   * `-b` (byte) misura in byte
-  * `-k` (kb) misura in kB
-  * `-m` (mb) misura in mB
+  * `-k` (kB) misura in kB
+  * `-m` (mB) misura in mB
   * `-c` accoda la dimensione totale
 * `find {p}` stampa il contenuto di `p` ricorsivamente, segue i link
   * `-name '[regex]'` filtra i nomi degli elementi in base a `regex`, non cerca all'interno dei file.
@@ -49,6 +49,35 @@
   * `-w` mostra solo numero di parole
   * `-m` numero di caratteri
   * `-L` lunghezza della riga più lunga
-* `grep`
-* `sed`
+* `grep [regex] {p}` cerca le occorrenze in `p` in base a `regex`\
+  * sintassi di `regex`:
+    * `^` (B) inizio della linea
+    * `$` (B) fine della linea
+    * `\<` (B) inizio di una parola
+    * `\>` (B) fine di una parola
+    * `.` (B) un singolo carattere (qualsiasi)
+    * `[str]` (B) un qualunque carattere in `str`
+    * `[^str]` (B) un qualunque carattere non in `str`
+    * `[a-z]` (B) un qualunque carattere tra `a` e `z`
+    * `\` (B) inibisce l'interpretazione del metacarattere che segue
+    * `*` (B) zero o più ripetizioni dell'elemento precedente
+    * `+` (E) una o più ripetizioni dell'elemento precedente
+    * `?` (E) zero od una ripetizione dell'elemento precedente
+    * `{j,k}` (E) un numero di ripetizioni compreso tra `j` e `k` dell'elemento precedente
+    * `s|t` (E) l'elemento `s` oppure l'elemento `t`
+    * `(exp)` (E) raggruppamento di `exp` come singolo elemento
+  * `-E` abilita la sintassi estesa per `regex`
+  * `-w` richiede il match per parole intere
+  * `-i` (insensitive) abilita la case insensitiveness
+  * `-n` mostra il numero della riga
+  * `-r` (recursive) ricerca ricorsiva, permette di passare una cartella come `p`
+  * `-l` (list) mostra i file che contengono `regex`
+  * `-c` (count) mostra i file che contengono `regex` e numero di occorrenze
+  * `-B [n]` (before) mostra anche le `n` righe precedenti
+  * `-A [n]` (after) mostra anche le `n` righe successive
+  * `-C [n]` (context) mostra anche `n` righe tra precedenti e successive
+* `sed [actions] {p}`
+  * sintassi di `actions`:
+    * 
 * `set`
+* `history` stampa la cronologia dei comandi
