@@ -2,23 +2,24 @@ package telephonicOperator;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class Sim{
 	private String number, puk;
 	private LocalDate lastRecharge;
 	private double credit;
-	private byte promotions;
+	private Promotion promotion;
 	private Owner owner;
 	private ArrayList<Call> calls;
 	private boolean ported;
 
-	public Sim(String number, String puk, double credit, byte promotions, Owner owner){
+	public Sim(String number, String puk, Owner owner){
 		this.number=number;
 		this.puk=puk;
-		this.credit=credit;
-		this.promotions=promotions;
 		this.owner=owner;
+		credit=0;
+		promotion=new Promotion();
 		lastRecharge=LocalDate.now();
 		calls=new ArrayList<Call>();
 		ported=false;
@@ -29,17 +30,35 @@ public class Sim{
 		puk=sim.getPuk();
 		lastRecharge=sim.getLastRecharge();
 		credit=sim.getCredit();
-		promotions=sim.getPromotions();
 		owner=sim.getOwner();
+		promotion=new Promotion();
 		calls=new ArrayList<Call>();
 		ported=true;
+	}
+
+	public void activatePromotion(Promotion promotion){
+		this.promotion=promotion;
+		credit-=promotion.getPrice();
+	}
+
+	public void deactivatePromotion(){
+		promotion=new Promotion();
 	}
 
 	public void addCall(Call call){
 		calls.add(call);
 	}
 
-	public Duration callTime(){
+	public boolean isActive(){
+		if(Duration.between(lastRecharge,LocalDate.now()).compareTo(Duration.of(1,ChronoUnit.YEARS))<0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public Duration getCallTime(){
 		Duration d=Duration.ZERO;
 
 		for(Call t:calls){
@@ -48,11 +67,11 @@ public class Sim{
 		return d;
 	}
 
-	public ArrayList<Call> calls(){
+	public ArrayList<Call> getCalls(){
 		return calls;
 	}
 
-	public ArrayList<Call> callsTo(Sim sim){
+	public ArrayList<Call> getCallsTo(Sim sim){
 		ArrayList<Call> t=new ArrayList<Call>();
 
 		for(Call c:calls){
@@ -61,6 +80,34 @@ public class Sim{
 			}
 		}
 		return t;
+	}
+
+	public String getNumber(){
+		return number;
+	}
+
+	public String getPuk(){
+		return puk;
+	}
+
+	public LocalDate getLastRecharge(){
+		return lastRecharge;
+	}
+
+	public double getCredit(){
+		return credit;
+	}
+
+	public Promotion getPromotions(){
+		return promotion;
+	}
+
+	public Owner getOwner(){
+		return owner;
+	}
+
+	public boolean isPorted(){
+		return ported;
 	}
 
 	@Override
@@ -82,31 +129,8 @@ public class Sim{
 		return true;
 	}
 
-	public String getNumber(){
-		return number;
-	}
-
-	public String getPuk(){
-		return puk;
-	}
-
-	public LocalDate getLastRecharge(){
-		return lastRecharge;
-	}
-
-	public double getCredit(){
-		return credit;
-	}
-
-	public byte getPromotions(){
-		return promotions;
-	}
-
-	public Owner getOwner(){
-		return owner;
-	}
-
-	public boolean isPorted(){
-		return ported;
+	@Override
+	public String toString(){
+		return "\tSim [\n\t\tnumber="+number+"\n\t\tpuk="+puk+"\n\t\tlastRecharge="+lastRecharge+"\n\t\tcredit="+credit+"\n\t\tpromotion="+promotion+"\n\t\towner="+owner+"\n\t\tcalls="+calls+"\n\t\tported="+ported+"\n\t]\n";
 	}
 }

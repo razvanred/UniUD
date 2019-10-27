@@ -15,4 +15,9 @@ public class Owner{
 	public String getSurname(){
 		return surname;
 	}
+
+	@Override
+	public String toString(){
+		return "Owner [name="+name+", surname="+surname+"]";
+	}
 }
