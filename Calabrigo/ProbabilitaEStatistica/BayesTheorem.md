@@ -67,26 +67,3 @@ P(E|A) = Bi(2, 0.9) = (2 su 1) * (9/10)^1 * (1/10)^1 = 0.18\
 P(E|B) = Bi(2, 0.5) = (2 su 1) * (5/10)^1 * (5/10)^1 = 0.50\
 P(E|C) = Bi(2, 0.1) = (2 su 1) * (1/10)^1 * (9/10)^1 = 0.18\
 `P(B|E) = P(E|B) * P(B) / (P(E|B) * P(B) + P(E|A) * P(A) + P(E|C) * P(C)) = (5/10 * 1/3) / ((5/10 * 1/3) + (0.18 * 1/3) + (0.18 * 1/3)) = 0.5813953488 = 58.1%`
-
-### testo d'esame
-Esercizio 5.8 (compito del 23/07/18) Un’urna contiene 20 palline nere e 80
-bianche. Una seconda urna contiene 50 palline nere e 50 bianche. Una terza
-urna contiene 60 palline nere e 40 bianche. Una quarta urna contiene 80 palline
-nere e 20 bianche. Uno sperimentatore sceglie a caso un’urna fra le quattro con
-equiprobabilita, poi estrae a caso, con reinserimento, sei palline dall’urna scelta.
-Si determini la probabilita che l’urna scelta sia stata quella con 80 nere, se le
-palline estratte risultano, senza tener conto dell’ordine di estrazione, cinque nere
-e una bianca.\
-E = "estraggo 5 palline nere e una bianca con reinserimento"
-A = "estrai dalla prima urna" (1/4)\
-B = "estrai dalla seconda urna" (1/4)\
-C = "estrai dalla terza urna" (1/4)\
-D = "estrai dalla quarta urna" (1/4)\
-P(D|E) = ?\
-Considero i neri come successi, e calcolo E|A, E|B, E|C, E|D:
-* E|A = Bi(6, 2/10) = (6 su 5) * (2/10)^5 * (8/10)^1 = 0.001536
-* E|B = Bi(6, 5/10) = (6 su 5) * (5/10)^5 * (5/10)^1 = 0.09375
-* E|C = Bi(6, 6/10) = (6 su 5) * (6/10)^5 * (4/10)^1 = 0.186624
-* E|D = Bi(6, 8/10) = (6 su 5) * (8/10)^5 * (2/10)^1 = 0.393216
-
-`P(D|E) = P(E|D) * P(D) / P(E|A) * P(A) + P(E|B) * P(B) + P(E|C) * P(C + P(E|D) * P(D) = (0.393216 * (1/4)) / ((0.393216 * (1/4)) + (0.001536 * (1/4)) + (0.09375 * (1/4)) + (0.186624 * (1/4))) = 0.5824335 = 58.2%`

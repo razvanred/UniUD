@@ -52,3 +52,79 @@ Si calcoli la probabilità di ottenere due teste.
 
 A ="esce un numero pari dal dado" (1/2), B ="esce un numero dispari dal dado" (1/2), C="escono 2 teste da 2 monete"(1/4), D="escono 2 teste su 3 monete"(1/8)\
 Io so che C e D sono dipendenti rispettivamente da A e B, però sono indipendenti tra loro. `P(C intersecato D) = P(A) * P(C|A) + P(B) * (D|B) = P(A) * P(A intersecato C)/P(A) + P(B) * P(B intersecato D)/P(B) = P(A) * P(C) + P(B) * P(D) = (1/8) + (1/16) = (3/16)`
+
+# Capitolo 5
+Esercizio 5.8 (compito del 23/07/18) Un’urna contiene 20 palline nere e 80
+bianche. Una seconda urna contiene 50 palline nere e 50 bianche. Una terza
+urna contiene 60 palline nere e 40 bianche. Una quarta urna contiene 80 palline
+nere e 20 bianche. Uno sperimentatore sceglie a caso un’urna fra le quattro con
+equiprobabilita, poi estrae a caso, con reinserimento, sei palline dall’urna scelta.
+Si determini la probabilita che l’urna scelta sia stata quella con 80 nere, se le
+palline estratte risultano, senza tener conto dell’ordine di estrazione, cinque nere
+e una bianca.\
+E = "estraggo 5 palline nere e una bianca con reinserimento"
+A = "estrai dalla prima urna" (1/4)\
+B = "estrai dalla seconda urna" (1/4)\
+C = "estrai dalla terza urna" (1/4)\
+D = "estrai dalla quarta urna" (1/4)\
+P(D|E) = ?\
+Considero i neri come successi, e calcolo E|A, E|B, E|C, E|D:
+* E|A = Bi(6, 2/10) = (6 su 5) * (2/10)^5 * (8/10)^1 = 0.001536
+* E|B = Bi(6, 5/10) = (6 su 5) * (5/10)^5 * (5/10)^1 = 0.09375
+* E|C = Bi(6, 6/10) = (6 su 5) * (6/10)^5 * (4/10)^1 = 0.186624
+* E|D = Bi(6, 8/10) = (6 su 5) * (8/10)^5 * (2/10)^1 = 0.393216
+
+`P(D|E) = P(E|D) * P(D) / P(E|A) * P(A) + P(E|B) * P(B) + P(E|C) * P(C + P(E|D) * P(D) = (0.393216 * (1/4)) / ((0.393216 * (1/4)) + (0.001536 * (1/4)) + (0.09375 * (1/4)) + (0.186624 * (1/4))) = 0.5824335 = 58.2%`
+
+# Capitolo 6
+Esercizio 6.4 Si indaghi se le v.c. univariate X ∼ Bi(2, 0.5) e Y ∼ U d(0, 1, 2)
+sono identicamente distribuite.
+
+X ∼ Bi(2, 0.5)\
+P(X = 0) = (2 su 0) * (0.5)^0 * (0.5)^2 = 1/4\
+P(X = 0) = (2 su 1) * (0.5)^1 * (0.5)^1 = 1/2\
+P(X = 0) = (2 su 2) * (0.5)^2 * (0.5)^0 = 1/4\
+
+Y ∼ U d(0, 1, 2)\
+P(Y = 0) = 1/3\
+P(Y = 1) = 1/3\
+P(Y = 2) = 1/3\
+
+X e Y non sono identicamente distribuite
+
+
+Esercizio 6.5 Sia X ∼ Ud(x1, . . . , xk). Si calcolino E(X) e Var(X) (prova con k = 3 Ud(0,1,2))\
+E(X) = sum(xi * pi) = 1/k * sum(xi) = 1/3 * 3 = 1
+VAR(X) = 1/k * sum(xi^2) - E(X)^2 = 1/3 * 5 - 1 = 5/3 - 3/3 = 2/3 = 0.667
+
+# Capitolo 7
+Esercizio 7.6 (compito del 18/06/18) Sia (X, Y ) una variabile casuale bivariata con componente marginale X ∼ Bi(2, 1/2) (legge binomiale con indice
+n = 2 e parametro p = 1/2) e distribuzioni condizionate binomiali Y |X = x ∼
+Bi(1, 1/2), per x ∈ SX . Si determinino il supporto congiunto di (X, Y ), la funzione di probabilita congiunta di (X, Y ), il supporto marginale di Y , la funzione
+di probabilit`a marginale di Y . Si dica, motivando, se (X, Y ) ha componenti
+indipendenti. Si calcoli infine P(X + Y = 2).
+
+SX = {0,1,2} ; Px(0) = 1/4 ; Px(1) = 1/2 ; Px(2) = 1/4\
+SY = {0,1} ; Py(0) = 1/2 ; Py(1) = 1/2\
+SX,Y = {0,1,2} x {0,1} = {(0,0),(0,1),(1,0),(1,1),(2,0),(2,1)}\
+PX,Y(0,0) = PX(0) * PY(0) = 1/8
+PX,Y(0,1) = PX(0) * PY(1) = 1/8
+PX,Y(1,0) = PX(1) * PY(0) = 1/4
+PX,Y(1,1) = PX(1) * PY(1) = 1/4
+PX,Y(2,0) = PX(2) * PY(0) = 1/8
+PX,Y(2,1) = PX(2) * PY(1) = 1/8
+
+|      |   |   |    |
+|:----:|:-:|:-:|:----:|
+| X/Y  |Y=0|Y=1|P(X=x)|
+|X=0   |1/8|1/8|2/8   |
+|X=1   |1/4|1/4|2/4   |
+|X=2   |1/8|1/8|2/8   |
+|P(Y=y)|4/8|4/8|
+
+PX,Y(0,0) = PX(0) * PY(0) = 2/8 * 4/8 = 1/8\
+......\
+PX,Y(2,0) = PX(2) * PY(0) = 4/8 * 2/8 = 1/8\
+PX,Y(2,1) = PX(2) * PY(1) = 4/8 * 2/8 = 1/8\
+X e Y sono indipendeti perchè PX,Y(x,y) = PX(x) * PY(y), per ogni valore di x e di y.\
+P(X + Y = 2) = PX,Y(1,1) + PX,Y(2,0) = 1/4 + 1/8 = 3/8
