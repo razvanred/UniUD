@@ -128,3 +128,20 @@ PX,Y(2,0) = PX(2) * PY(0) = 4/8 * 2/8 = 1/8\
 PX,Y(2,1) = PX(2) * PY(1) = 4/8 * 2/8 = 1/8\
 X e Y sono indipendeti perchè PX,Y(x,y) = PX(x) * PY(y), per ogni valore di x e di y.\
 P(X + Y = 2) = PX,Y(1,1) + PX,Y(2,0) = 1/4 + 1/8 = 3/8
+
+# Capitolo 8
+Esercizio 8.1 Sia X ∼ U(0, 1). Si calcolino P(X > 0), P(X < 1), P(1/4 < X <
+3/4), P(X > 1/2), E(X).\
+* P(X > 0)\
+Se considero P(X > 0) come limitante rispetto a X strettamente maggiore di 0\
+(con 0 < x < 1) integrale da x a infinito di 1/(b-a) = integrale da x a 1 di 1/(b-a) + integrale da 1 a infinito di 0 = integrale da x a 1 di [x/(b-a)]1 - [x/(b-a)]x = 1/(b-a) - x/(b-a) = (1-x)/(b-a)\
+Visto che siamo nel continuo, e non nel discreto posso anche considerare P(X > 0) = P(X >= 0), quindi posso sostituire zero ad x, nella formula precedente:\
+integrale da 0 a infinito di 1/(b-a) = integrale da 0 a 1 di 1/(b-a) + integrale da 1 a infinito di 0 = integrale da 0 a 1 di [x/(b-a)]1 - [x/(b-a)]0 = 1/(b-a) - 0/(b-a) = (1)/(b-a) = 1.
+* P(X < 1)\
+integrale da - infinito a 1 di PX(x) = integrale da - infinito a 0 di 0 + integrale da 0 a 1 di 1/(b-a) = integrale da 0 a 1 di 1/(b-a) = [x/(b-a)]1 - [x/(b-a)]0 = (1)/(b-a) = 1
+* P(1/4 < X < 3/4)\
+1 - (integrale da 0 a 1/4 di PX(x) + integrale da 3/4 a 1 di PX(x)) = 1 - ([x/(b-a)]1/4 - [x/(b-a)]0 + [x/(b-a)]1 - [x/(b-a)]3/4) = 1 - ((1/4 - 0) + (1/4 - 0)) = 1 - 1/2 = 1/2.
+* P(X > 1/2)\
+integrale da 1/2 a 1 di PX(x) + integrale da 1 a infinito di PX(x) = integrale da 1/2 a 1 di 1/(b-a) = 1/(b-a)*[x]1 - 1/(b-a)*[x]1/2 = 1 - 1/2 = 1/2.
+* E(X)\
+integrale tra a e b di x*PX(x) = integrale tra a e b di x/(b-a) = [x^2/2(b-a)]b - [x^2/2(b-a)]a = b^2/(2(b-a)) - a^2/(2(b-a)) = (b^2 - a^2)/(2(b-a)) = (b-a) * (b+a) / (2(b-a)) = (b+a)/2 = (a+b)/2 = 1/2.
