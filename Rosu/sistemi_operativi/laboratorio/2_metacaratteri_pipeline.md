@@ -1,4 +1,4 @@
-# Metacaratteri e Redirezione dell'I/O
+# Lezione 2
 
 ## Metacaratteri
 

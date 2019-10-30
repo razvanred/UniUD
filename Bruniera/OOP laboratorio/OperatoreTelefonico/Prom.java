@@ -5,7 +5,7 @@ public enum Prom {
   
   public final float cost;
   
-  Prom(float cost) {
+  Prom(final float cost) {
     this.cost = cost;
   }
 }

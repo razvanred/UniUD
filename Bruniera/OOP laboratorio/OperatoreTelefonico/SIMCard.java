@@ -12,7 +12,7 @@ public class SIMCard {
   private Person owner;
   private Prom prom;
   
-  public SIMCard(String number, String puk, Person owner) {
+  public SIMCard(final String number, final String puk, final Person owner) {
     prom = null;
     chiamate = new ArrayList<Call>();
     ultimaRicarica = null;
