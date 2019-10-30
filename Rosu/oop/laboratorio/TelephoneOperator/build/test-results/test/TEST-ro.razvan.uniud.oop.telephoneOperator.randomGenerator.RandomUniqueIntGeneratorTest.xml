@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ro.razvan.uniud.oop.telephoneOperator.randomGenerator.RandomUniqueIntGeneratorTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2019-10-29T17:00:26" hostname="SurfacePro3" time="0.043">
+  <properties/>
+  <testcase name="testPhoneNumberRandom" classname="ro.razvan.uniud.oop.telephoneOperator.randomGenerator.RandomUniqueIntGeneratorTest" time="0.003"/>
+  <testcase name="testPhoneNumberRandomStringLength" classname="ro.razvan.uniud.oop.telephoneOperator.randomGenerator.RandomUniqueIntGeneratorTest" time="0.036"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
