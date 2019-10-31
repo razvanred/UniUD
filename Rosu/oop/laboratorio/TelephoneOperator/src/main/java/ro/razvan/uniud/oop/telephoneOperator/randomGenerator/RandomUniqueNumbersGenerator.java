@@ -14,7 +14,7 @@ public final class RandomUniqueNumbersGenerator {
     List<Integer> availableNumbers;
     private final int digits;
 
-    RandomUniqueNumbersGenerator(final int digits) {
+    public RandomUniqueNumbersGenerator(final int digits) {
         this.digits = digits;
         availableNumbers = IntStream.range(0, (int) Math.pow(10D, digits))
                 .boxed()

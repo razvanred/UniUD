@@ -19,7 +19,7 @@ public final class Person {
     }
 
     @NotNull
-    public String getSurname() {
+    public String surname() {
         return surname;
     }
 
