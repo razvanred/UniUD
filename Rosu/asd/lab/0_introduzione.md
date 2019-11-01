@@ -2,7 +2,7 @@
 
 [Gabriele Puppis](gabiele.puppis@uniud.it)
 
-# Hello World
+## Hello World
 
 ```c
 #include <stdio.h>
@@ -29,7 +29,7 @@ int main() {
 }
 ```
 
-# Puntatori
+## Puntatori
 
 In C/C++ abbiamo un utilizzo esplicito dei puntatori, mentre in Java no.
 
