@@ -145,3 +145,26 @@ integrale da - infinito a 1 di PX(x) = integrale da - infinito a 0 di 0 + integr
 integrale da 1/2 a 1 di PX(x) + integrale da 1 a infinito di PX(x) = integrale da 1/2 a 1 di 1/(b-a) = 1/(b-a)*[x]1 - 1/(b-a)*[x]1/2 = 1 - 1/2 = 1/2.
 * E(X)\
 integrale tra a e b di x*PX(x) = integrale tra a e b di x/(b-a) = [x^2/2(b-a)]b - [x^2/2(b-a)]a = b^2/(2(b-a)) - a^2/(2(b-a)) = (b^2 - a^2)/(2(b-a)) = (b-a) * (b+a) / (2(b-a)) = (b+a)/2 = (a+b)/2 = 1/2.
+
+Esercizio 8.2 La durata X di corretto funzionamento di un certo componente
+ha legge esponenziale con valore atteso 6 anni. Si calcolino P(X > 6), P(X >
+12), P(X > 18).\
+lambda = 1/E(X) = 1/6 ; 1/6*e^-(1/6*x)\
+Vediamo che, nella legge esponenziale a variabili continua, le probabilità di concentrano vicino allo zero, e mano a mano che ci allontaniamo da esso verso i positivi, le possibilità diminuiscono esponenzialmente.
+* P(X > 6)\
+1 - integrale da 0 a 6 di [1/6*e^-(1/6*x)] = 1 - [1/6*(e^-(x/6))/1/6]6 - [1/6*(e^-(x/6))/1/6]0 = 1 - [e^-(x/6)]6 - [e^-(x/6)]0 = 1 - 1/e - 1 = 1 - -1/e.
+* P(X > 12)\
+1 - integrale da 0 a 12 di [1/6*(e^-(x/6))] = 1 - [(e^-(x/6))]12 - [(e^-(x/6))]0 = 1 - 1/(e^2) - 1 = 1/(e^2).
+* P(X > 18)\
+1 - integrale da 0 a 18 di [1/6*(e^-(x/6))] = 1 - [(e^-(x/6))]18 - [(e^-(x/6))]0 = 1 - 1/(e^3) - 1 = 1/(e^3).
+
+
+Esercizio 8.4 Sia X una v.c. continua con densita di forma pX(x) = c*e^x, se
+x ∈ (−∞, 0], e zero altrove. Si determini il valore della costante c di modo
+che pX(x) sia effettivamente una funzione di densita di probabilita. Si calcolino
+P(0 ≤ X ≤ 2), P(−1 ≤ X ≤ 0.5) e P(X = −0.5). Infine, si ottenga il valore
+atteso di X.\
+integrale tra -infinito e +infinito di ce^x = integrale tra -infinito e 0 di ce^x = c*[e^x]0 - c*[e^x]-infinito = c - 0 = c ; Quindi c = 1
+* P(0 ≤ X ≤ 2) = integrale da 0 a 2 di e^x = 0, perchè x ∈ (−∞, 0], l'unico punto papabile sarebbe lo zero, ma nelle v.c. continue la probabilità di un punto singolo è zero.
+* P(−1 ≤ X ≤ 0.5) = integrale tra -1  e 0.5 di e^x = 1 - integrale tra -1 e 0 di e^x = [e^x]0 - [e^x]-1 = e^0 - 1/e = 1 - 1/e = (e-1)/e = 63%
+* P(X = −0.5) = non lo calcolo xchè nelle v.c. continue la probabilità di un punto singolo è zero.
