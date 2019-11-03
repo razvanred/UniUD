@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int merge(int A[], int p, int q, int r){ //p: indice prima cella primo vettore, q: indice ultima cella secondo vettore, r: indice ultima cella prmo vettores=
+void merge(int A[], int p, int q, int r){ //p: indice prima cella primo vettore, q: indice ultima cella secondo vettore, r: indice ultima cella prmo vettores=
 	int s = q - p + 1;
 	int B[s];
 	int i = p, j = r + 1;
@@ -25,7 +25,7 @@ int merge(int A[], int p, int q, int r){ //p: indice prima cella primo vettore, 
 	}
 }
 
-int merge_sort(int A[], int p, int q){ // p: indice prima cella, q: indice ultima cella (non dimensione)
+void merge_sort(int A[], int p, int q){ // p: indice prima cella, q: indice ultima cella (non dimensione)
 	if(q > p){                    // se non è banale
 		int r = (p + q) / 2;
 		merge_sort(A, p, r);      //ordino le due metà
@@ -47,7 +47,7 @@ void println_array(int A[], int length){
 	printf("\n");
 }
 
-
+/*
 int main(int argc, char **argv) { 
 	printf("empty array:\n");
 	println_array(NULL, 0);
@@ -77,4 +77,4 @@ int main(int argc, char **argv) {
 	println_array(RANDOM, 14);
 	merge_sort(RANDOM, 0, 13);
 	println_array(RANDOM, 14);
-}
+}*/
