@@ -1,0 +1,650 @@
+-r--------  1 root   root    140737477881856 nov  2 18:24 /dev/core
+-rw-r--r--  1 alvise alvise                0 nov  2 18:24 /dev/stdout
+crw-rw-rw-  1 root   tty              5,   2 nov  2 18:24 /dev/ptmx
+crw--w----  1 alvise tty            136,   1 nov  2 18:24 /dev/stderr
+crw--w----  1 alvise tty            136,   1 nov  2 18:24 /dev/stdin
+crw-------  1 alvise tty              4,   3 nov  2 18:00 /dev/tty3
+crw--w----  1 alvise tty              4,   2 nov  2 17:54 /dev/tty2
+crw-rw-rw-  1 root   root            10,  54 nov  2 17:51 /dev/vsock
+crw-rw-rw-  1 root   root            10,  55 nov  2 17:51 /dev/vmci
+crw-rw-rw-  1 root   root           195, 254 nov  2 17:51 /dev/nvidia-modeset
+crw--w----  1 gdm    tty              4,   1 nov  2 17:51 /dev/tty1
+crw-------  1 root   root             5,   1 nov  2 17:51 /dev/console
+brw-rw----  1 root   disk             7,  36 nov  2 17:50 /dev/loop36
+brw-rw----  1 root   disk             7,  27 nov  2 17:50 /dev/loop27
+brw-rw----  1 root   disk             7,  34 nov  2 17:50 /dev/loop34
+brw-rw----  1 root   disk             7,  24 nov  2 17:50 /dev/loop24
+brw-rw----  1 root   disk             7,  40 nov  2 17:50 /dev/loop40
+brw-rw----  1 root   disk             7,  37 nov  2 17:50 /dev/loop37
+brw-rw----  1 root   disk             7,  32 nov  2 17:50 /dev/loop32
+brw-rw----  1 root   disk             7,  39 nov  2 17:50 /dev/loop39
+brw-rw----  1 root   disk             7,  26 nov  2 17:50 /dev/loop26
+brw-rw----  1 root   disk             7,  38 nov  2 17:50 /dev/loop38
+brw-rw----  1 root   disk             7,  28 nov  2 17:50 /dev/loop28
+brw-rw----  1 root   disk             7,  33 nov  2 17:50 /dev/loop33
+brw-rw----  1 root   disk             7,  35 nov  2 17:50 /dev/loop35
+brw-rw----  1 root   disk             7,  14 nov  2 17:50 /dev/loop14
+brw-rw----  1 root   disk             7,  43 nov  2 17:50 /dev/loop43
+brw-rw----  1 root   disk             7,  42 nov  2 17:50 /dev/loop42
+brw-rw----  1 root   disk             7,  31 nov  2 17:50 /dev/loop31
+brw-rw----  1 root   disk             7,  30 nov  2 17:50 /dev/loop30
+brw-rw----  1 root   disk             7,  29 nov  2 17:50 /dev/loop29
+brw-rw----  1 root   disk             8,   2 nov  2 17:50 /dev/sda2
+brw-rw----  1 root   disk             7,  25 nov  2 17:50 /dev/loop25
+brw-rw----  1 root   disk             8,   5 nov  2 17:50 /dev/sda5
+brw-rw----  1 root   disk             7,  23 nov  2 17:50 /dev/loop23
+brw-rw----  1 root   disk             7,  22 nov  2 17:50 /dev/loop22
+brw-rw----  1 root   disk             8,   1 nov  2 17:50 /dev/sda1
+brw-rw----  1 root   disk             7,  21 nov  2 17:50 /dev/loop21
+brw-rw----  1 root   disk             7,  16 nov  2 17:50 /dev/loop16
+brw-rw----  1 root   disk             7,  12 nov  2 17:50 /dev/loop12
+brw-rw----  1 root   disk             7,   1 nov  2 17:50 /dev/loop1
+brw-rw----  1 root   disk             7,   8 nov  2 17:50 /dev/loop8
+brw-rw----  1 root   disk             8,   6 nov  2 17:50 /dev/sda6
+brw-rw----  1 root   disk             7,  20 nov  2 17:50 /dev/loop20
+brw-rw----  1 root   disk             7,   9 nov  2 17:50 /dev/loop9
+brw-rw----  1 root   disk             8,   3 nov  2 17:50 /dev/sda3
+brw-rw----  1 root   disk             7,  19 nov  2 17:50 /dev/loop19
+brw-rw----  1 root   disk             7,  18 nov  2 17:50 /dev/loop18
+brw-rw----+ 1 root   cdrom           11,   0 nov  2 17:50 /dev/cdrom
+brw-rw----+ 1 root   cdrom           11,   0 nov  2 17:50 /dev/cdrw
+brw-rw----+ 1 root   cdrom           11,   0 nov  2 17:50 /dev/dvd
+brw-rw----+ 1 root   cdrom           11,   0 nov  2 17:50 /dev/dvdrw
+brw-rw----+ 1 root   cdrom           11,   0 nov  2 17:50 /dev/sr0
+brw-rw----  1 root   disk             7,  17 nov  2 17:50 /dev/loop17
+brw-rw----  1 root   disk             7,  15 nov  2 17:50 /dev/loop15
+brw-rw----  1 root   disk             7,  10 nov  2 17:50 /dev/loop10
+brw-rw----  1 root   disk             7,   6 nov  2 17:50 /dev/loop6
+brw-rw----  1 root   disk             7,   7 nov  2 17:50 /dev/loop7
+brw-rw----  1 root   disk             7,   5 nov  2 17:50 /dev/loop5
+brw-rw----  1 root   disk             7,   4 nov  2 17:50 /dev/loop4
+brw-rw----  1 root   disk             8,  17 nov  2 17:50 /dev/sdb1
+brw-rw----  1 root   disk             8,  18 nov  2 17:50 /dev/sdb2
+crw-------  1 root   root            89,   0 nov  2 17:50 /dev/i2c-0
+crw-------  1 root   root            89,   1 nov  2 17:50 /dev/i2c-1
+crw-------  1 root   root            89,   2 nov  2 17:50 /dev/i2c-2
+crw-------  1 root   root            89,   3 nov  2 17:50 /dev/i2c-3
+crw-------  1 root   root            89,   4 nov  2 17:50 /dev/i2c-4
+brw-rw----  1 root   disk             7,   2 nov  2 17:50 /dev/loop2
+brw-rw----  1 root   disk             7,   0 nov  2 17:50 /dev/loop0
+crw-rw-rw-  1 root   root           238,   0 nov  2 17:50 /dev/nvidia-uvm
+crw-rw-rw-  1 root   root           238,   1 nov  2 17:50 /dev/nvidia-uvm-tools
+crw-rw-rw-  1 root   root           195,   0 nov  2 17:50 /dev/nvidia0
+crw-rw-rw-  1 root   root           195, 255 nov  2 17:50 /dev/nvidiactl
+brw-rw----  1 root   disk             8,  48 nov  2 17:50 /dev/sdd
+brw-rw----  1 root   disk             8,  64 nov  2 17:50 /dev/sde
+brw-rw----  1 root   disk             8,  80 nov  2 17:50 /dev/sdf
+brw-rw----  1 root   disk             8,  32 nov  2 17:50 /dev/sdc
+crw-rw----  1 root   disk            21,   3 nov  2 17:50 /dev/sg3
+crw-rw----  1 root   disk            21,   4 nov  2 17:50 /dev/sg4
+crw-rw----  1 root   disk            21,   5 nov  2 17:50 /dev/sg5
+crw-rw----  1 root   disk            21,   6 nov  2 17:50 /dev/sg6
+crw-------  1 root   root           244,   1 nov  2 17:50 /dev/hidraw1
+crw-------  1 root   root           244,   0 nov  2 17:50 /dev/hidraw0
+crw-------  1 root   root           254,   0 nov  2 17:50 /dev/gpiochip0
+brw-rw----  1 root   disk             8,   0 nov  2 17:50 /dev/sda
+brw-rw----  1 root   disk             8,  16 nov  2 17:50 /dev/sdb
+crw-------  1 root   root            10, 232 nov  2 17:50 /dev/kvm
+crw-------  1 root   root             5,   3 nov  2 17:50 /dev/ttyprintk
+crw-rw----  1 root   tty              7,   0 nov  2 17:50 /dev/vcs
+crw-rw----  1 root   tty              7,   1 nov  2 17:50 /dev/vcs1
+crw-rw----  1 root   tty              7,   2 nov  2 17:50 /dev/vcs2
+crw-rw----  1 root   tty              7,   3 nov  2 17:50 /dev/vcs3
+crw-rw----  1 root   tty              7,   4 nov  2 17:50 /dev/vcs4
+crw-rw----  1 root   tty              7,   5 nov  2 17:50 /dev/vcs5
+crw-rw----  1 root   tty              7,   6 nov  2 17:50 /dev/vcs6
+crw-rw----  1 root   tty              7, 128 nov  2 17:50 /dev/vcsa
+crw-rw----  1 root   tty              7, 129 nov  2 17:50 /dev/vcsa1
+crw-rw----  1 root   tty              7, 130 nov  2 17:50 /dev/vcsa2
+crw-rw----  1 root   tty              7, 131 nov  2 17:50 /dev/vcsa3
+crw-rw----  1 root   tty              7, 132 nov  2 17:50 /dev/vcsa4
+crw-rw----  1 root   tty              7, 133 nov  2 17:50 /dev/vcsa5
+crw-rw----  1 root   tty              7, 134 nov  2 17:50 /dev/vcsa6
+crw--w----  1 root   tty              4,  32 nov  2 17:50 /dev/tty32
+crw--w----  1 root   tty              4,  36 nov  2 17:50 /dev/tty36
+crw--w----  1 root   tty              4,  38 nov  2 17:50 /dev/tty38
+crw--w----  1 root   tty              4,  39 nov  2 17:50 /dev/tty39
+crw--w----  1 root   tty              4,   4 nov  2 17:50 /dev/tty4
+crw--w----  1 root   tty              4,  40 nov  2 17:50 /dev/tty40
+crw--w----  1 root   tty              4,  41 nov  2 17:50 /dev/tty41
+crw--w----  1 root   tty              4,  42 nov  2 17:50 /dev/tty42
+crw--w----  1 root   tty              4,  43 nov  2 17:50 /dev/tty43
+crw--w----  1 root   tty              4,  44 nov  2 17:50 /dev/tty44
+crw--w----  1 root   tty              4,  45 nov  2 17:50 /dev/tty45
+crw--w----  1 root   tty              4,  46 nov  2 17:50 /dev/tty46
+crw--w----  1 root   tty              4,  47 nov  2 17:50 /dev/tty47
+crw--w----  1 root   tty              4,  48 nov  2 17:50 /dev/tty48
+crw--w----  1 root   tty              4,  49 nov  2 17:50 /dev/tty49
+crw--w----  1 root   tty              4,   5 nov  2 17:50 /dev/tty5
+crw--w----  1 root   tty              4,  50 nov  2 17:50 /dev/tty50
+crw--w----  1 root   tty              4,  51 nov  2 17:50 /dev/tty51
+crw--w----  1 root   tty              4,  52 nov  2 17:50 /dev/tty52
+crw--w----  1 root   tty              4,  53 nov  2 17:50 /dev/tty53
+crw--w----  1 root   tty              4,  54 nov  2 17:50 /dev/tty54
+crw--w----  1 root   tty              4,  55 nov  2 17:50 /dev/tty55
+crw--w----  1 root   tty              4,  56 nov  2 17:50 /dev/tty56
+crw--w----  1 root   tty              4,  57 nov  2 17:50 /dev/tty57
+crw--w----  1 root   tty              4,  58 nov  2 17:50 /dev/tty58
+crw--w----  1 root   tty              4,  59 nov  2 17:50 /dev/tty59
+crw--w----  1 root   tty              4,   6 nov  2 17:50 /dev/tty6
+crw--w----  1 root   tty              4,  60 nov  2 17:50 /dev/tty60
+crw--w----  1 root   tty              4,  61 nov  2 17:50 /dev/tty61
+crw--w----  1 root   tty              4,  62 nov  2 17:50 /dev/tty62
+crw--w----  1 root   tty              4,  63 nov  2 17:50 /dev/tty63
+crw--w----  1 root   tty              4,   7 nov  2 17:50 /dev/tty7
+crw--w----  1 root   tty              4,   8 nov  2 17:50 /dev/tty8
+crw--w----  1 root   tty              4,   9 nov  2 17:50 /dev/tty9
+crw--w----  1 root   tty              4,  13 nov  2 17:50 /dev/tty13
+crw--w----  1 root   tty              4,  14 nov  2 17:50 /dev/tty14
+crw--w----  1 root   tty              4,  15 nov  2 17:50 /dev/tty15
+crw--w----  1 root   tty              4,  16 nov  2 17:50 /dev/tty16
+crw--w----  1 root   tty              4,  17 nov  2 17:50 /dev/tty17
+crw--w----  1 root   tty              4,  18 nov  2 17:50 /dev/tty18
+crw--w----  1 root   tty              4,  19 nov  2 17:50 /dev/tty19
+crw--w----  1 root   tty              4,  20 nov  2 17:50 /dev/tty20
+crw--w----  1 root   tty              4,  21 nov  2 17:50 /dev/tty21
+crw--w----  1 root   tty              4,  22 nov  2 17:50 /dev/tty22
+crw--w----  1 root   tty              4,  23 nov  2 17:50 /dev/tty23
+crw--w----  1 root   tty              4,  24 nov  2 17:50 /dev/tty24
+crw--w----  1 root   tty              4,  25 nov  2 17:50 /dev/tty25
+crw--w----  1 root   tty              4,  26 nov  2 17:50 /dev/tty26
+crw--w----  1 root   tty              4,  27 nov  2 17:50 /dev/tty27
+crw--w----  1 root   tty              4,  28 nov  2 17:50 /dev/tty28
+crw--w----  1 root   tty              4,  29 nov  2 17:50 /dev/tty29
+crw--w----  1 root   tty              4,  30 nov  2 17:50 /dev/tty30
+crw--w----  1 root   tty              4,  31 nov  2 17:50 /dev/tty31
+crw--w----  1 root   tty              4,  33 nov  2 17:50 /dev/tty33
+crw--w----  1 root   tty              4,  34 nov  2 17:50 /dev/tty34
+crw--w----  1 root   tty              4,  35 nov  2 17:50 /dev/tty35
+crw--w----  1 root   tty              4,  37 nov  2 17:50 /dev/tty37
+crw--w----  1 root   tty              4,   0 nov  2 17:50 /dev/tty0
+crw--w----  1 root   tty              4,  10 nov  2 17:50 /dev/tty10
+crw--w----  1 root   tty              4,  11 nov  2 17:50 /dev/tty11
+crw--w----  1 root   tty              4,  12 nov  2 17:50 /dev/tty12
+crw-rw----  1 root   disk            10, 237 nov  2 17:50 /dev/loop-control
+crw-------  1 root   root           108,   0 nov  2 17:50 /dev/ppp
+crw-------  1 root   root            10,  56 nov  2 17:50 /dev/memory_bandwidth
+crw-------  1 root   root            10, 227 nov  2 17:50 /dev/mcelog
+crw-------  1 root   root            10, 223 nov  2 17:50 /dev/uinput
+crw-------  1 root   root            10,  63 nov  2 17:50 /dev/vga_arbiter
+crw-------  1 root   root            10,   1 nov  2 17:50 /dev/psaux
+crw-rw-r--+ 1 root   netdev          10,  62 nov  2 17:50 /dev/rfkill
+crw-------  1 root   root            10, 231 nov  2 17:50 /dev/snapshot
+crw-------  1 root   root            10,  59 nov  2 17:50 /dev/cpu_dma_latency
+crw-------  1 root   root            10,  61 nov  2 17:50 /dev/ecryptfs
+crw-rw-rw-  1 root   root            10, 229 nov  2 17:50 /dev/fuse
+crw-------  1 root   root            10, 228 nov  2 17:50 /dev/hpet
+crw-------  1 root   root            10, 183 nov  2 17:50 /dev/hwrng
+crw-------  1 root   root            10,  58 nov  2 17:50 /dev/network_latency
+crw-------  1 root   root            10,  57 nov  2 17:50 /dev/network_throughput
+crw-rw-rw-  1 root   root             1,   5 nov  2 17:50 /dev/zero
+crw-r--r--  1 root   root            10, 235 nov  2 17:50 /dev/autofs
+crw-rw-rw-  1 root   root             1,   7 nov  2 17:50 /dev/full
+crw-r--r--  1 root   root             1,  11 nov  2 17:50 /dev/kmsg
+crw-r-----  1 root   kmem             1,   1 nov  2 17:50 /dev/mem
+crw-rw-rw-  1 root   root             1,   3 nov  2 17:50 /dev/null
+crw-r-----  1 root   kmem             1,   4 nov  2 17:50 /dev/port
+crw-rw-rw-  1 root   root             1,   8 nov  2 17:50 /dev/random
+crw-rw-rw-  1 root   root             1,   9 nov  2 17:50 /dev/urandom
+crw-rw----  1 root   dialout          4,  64 nov  2 17:50 /dev/ttyS0
+crw-------  1 root   root           249,   0 nov  2 17:50 /dev/rtc
+crw-------  1 root   root           249,   0 nov  2 17:50 /dev/rtc0
+crw-rw----  1 root   dialout          4,  65 nov  2 17:50 /dev/ttyS1
+crw-rw----  1 root   video           29,   0 nov  2 17:50 /dev/fb0
+crw-rw----  1 root   disk            21,   0 nov  2 17:50 /dev/sg0
+crw-rw----  1 root   disk            21,   1 nov  2 17:50 /dev/sg1
+crw-rw----+ 1 root   cdrom           21,   2 nov  2 17:50 /dev/sg2
+crw-rw----  1 root   dialout          4,  75 nov  2 17:50 /dev/ttyS11
+crw-rw----  1 root   dialout          4,  85 nov  2 17:50 /dev/ttyS21
+crw-rw----  1 root   dialout          4,  86 nov  2 17:50 /dev/ttyS22
+crw-rw----  1 root   dialout          4,  87 nov  2 17:50 /dev/ttyS23
+crw-rw----  1 root   dialout          4,  89 nov  2 17:50 /dev/ttyS25
+crw-rw----  1 root   dialout          4,  91 nov  2 17:50 /dev/ttyS27
+crw-rw----  1 root   dialout          4,  93 nov  2 17:50 /dev/ttyS29
+crw-rw----  1 root   dialout          4,  67 nov  2 17:50 /dev/ttyS3
+crw-rw----  1 root   dialout          4,  94 nov  2 17:50 /dev/ttyS30
+crw-rw----  1 root   dialout          4,  95 nov  2 17:50 /dev/ttyS31
+crw-rw----  1 root   dialout          4,  68 nov  2 17:50 /dev/ttyS4
+crw-rw----  1 root   dialout          4,  69 nov  2 17:50 /dev/ttyS5
+crw-rw----  1 root   dialout          4,  70 nov  2 17:50 /dev/ttyS6
+crw-rw----  1 root   dialout          4,  71 nov  2 17:50 /dev/ttyS7
+crw-rw----  1 root   dialout          4,  72 nov  2 17:50 /dev/ttyS8
+crw-rw----  1 root   dialout          4,  73 nov  2 17:50 /dev/ttyS9
+crw-rw----  1 root   dialout          4,  74 nov  2 17:50 /dev/ttyS10
+crw-rw----  1 root   dialout          4,  76 nov  2 17:50 /dev/ttyS12
+crw-rw----  1 root   dialout          4,  77 nov  2 17:50 /dev/ttyS13
+crw-rw----  1 root   dialout          4,  78 nov  2 17:50 /dev/ttyS14
+crw-rw----  1 root   dialout          4,  79 nov  2 17:50 /dev/ttyS15
+crw-rw----  1 root   dialout          4,  80 nov  2 17:50 /dev/ttyS16
+crw-rw----  1 root   dialout          4,  81 nov  2 17:50 /dev/ttyS17
+crw-rw----  1 root   dialout          4,  82 nov  2 17:50 /dev/ttyS18
+crw-rw----  1 root   dialout          4,  83 nov  2 17:50 /dev/ttyS19
+crw-rw----  1 root   dialout          4,  66 nov  2 17:50 /dev/ttyS2
+crw-rw----  1 root   dialout          4,  84 nov  2 17:50 /dev/ttyS20
+crw-rw----  1 root   dialout          4,  88 nov  2 17:50 /dev/ttyS24
+crw-rw----  1 root   dialout          4,  90 nov  2 17:50 /dev/ttyS26
+crw-rw----  1 root   dialout          4,  92 nov  2 17:50 /dev/ttyS28
+crw-------  1 root   root           243,   1 nov  2 17:50 /dev/ptp1
+crw-------  1 root   root           243,   0 nov  2 17:50 /dev/ptp0
+crw-------  1 root   root            10, 234 nov  2 17:50 /dev/btrfs-control
+crw-------  1 root   root            10, 203 nov  2 17:50 /dev/cuse
+crw-------  1 root   root            10, 239 nov  2 17:50 /dev/uhid
+crw-------  1 root   root            10, 240 nov  2 17:50 /dev/userio
+crw-------  1 root   root            10, 137 nov  2 17:50 /dev/vhci
+crw-------  1 root   root            10, 238 nov  2 17:50 /dev/vhost-net
+crw-------  1 root   root            10, 241 nov  2 17:50 /dev/vhost-vsock
+prw-------  1 root   root                  0 nov  2 17:50 /dev/initctl
+srw-rw-rw-  1 root   root                  0 nov  2 17:50 /dev/log
+crw-rw-rw-  1 root   tty              5,   0 nov  2 17:29 /dev/tty
+brw-rw----  1 root   disk             7,  41 nov  2 16:56 /dev/loop41
+brw-rw----  1 root   disk             7,  11 nov  2 16:56 /dev/loop11
+brw-rw----  1 root   disk             7,   3 nov  2 16:54 /dev/loop3
+brw-rw----  1 root   disk             7,  13 nov  2 16:54 /dev/loop13
+brw-rw----  1 root   disk             7,  47 nov  2 16:53 /dev/loop47
+brw-rw----  1 root   disk             7,  46 nov  2 16:53 /dev/loop46
+brw-rw----  1 root   disk             7,  45 nov  2 16:51 /dev/loop45
+brw-rw----  1 root   disk             7,  44 nov  2 16:51 /dev/loop44
+
+/dev/fd:
+total 16
+-rw-r--r-- 1 alvise alvise  16384 nov  2 18:24 1
+dr-x------ 2 alvise alvise      0 nov  2 18:24 3
+crw--w---- 1 alvise tty    136, 1 nov  2 18:24 0
+crw--w---- 1 alvise tty    136, 1 nov  2 18:24 2
+
+/dev/shm:
+total 992
+-rwx------ 1 alvise alvise 67108904 nov  2 17:45 pulse-shm-2220973897
+-rwx------ 1 alvise alvise 67108904 nov  2 17:17 pulse-shm-1935519460
+-rwx------ 1 alvise alvise 67108904 nov  2 17:17 pulse-shm-71775278
+-rwx------ 1 alvise alvise 67108904 nov  2 17:01 pulse-shm-1637342444
+-rwx------ 1 alvise alvise 67108904 nov  2 17:01 pulse-shm-53962919
+-rwx------ 1 alvise alvise 67108904 nov  2 17:01 pulse-shm-3394401202
+
+/dev/char:
+total 0
+crw-rw-rw-  1 root   tty       5,   2 nov  2 18:24 5:2
+crw-------  1 alvise tty       4,   3 nov  2 18:00 4:3
+crw--w----  1 alvise tty       4,   2 nov  2 17:54 4:2
+crw-rw-rw-  1 root   root     10,  54 nov  2 17:51 10:54
+crw-rw-rw-  1 root   root     10,  55 nov  2 17:51 10:55
+crw--w----  1 gdm    tty       4,   1 nov  2 17:51 4:1
+crw-------  1 root   root      5,   1 nov  2 17:51 5:1
+crw-rw----  1 root   input    13,  78 nov  2 17:50 13:78
+crw-rw----  1 root   input    13,  76 nov  2 17:50 13:76
+crw-rw----  1 root   input    13,  79 nov  2 17:50 13:79
+crw-rw----  1 root   input    13,  77 nov  2 17:50 13:77
+crw-rw----  1 root   input    13,  75 nov  2 17:50 13:75
+crw-rw----+ 1 root   audio   116,  12 nov  2 17:50 116:12
+crw-rw----+ 1 root   audio   116,   7 nov  2 17:50 116:7
+crw-------  1 root   root     89,   0 nov  2 17:50 89:0
+crw-------  1 root   root     89,   1 nov  2 17:50 89:1
+crw-------  1 root   root     89,   2 nov  2 17:50 89:2
+crw-------  1 root   root     89,   3 nov  2 17:50 89:3
+crw-------  1 root   root     89,   4 nov  2 17:50 89:4
+crw-rw----  1 root   input    13,  70 nov  2 17:50 13:70
+crw-rw----  1 root   input    13,  72 nov  2 17:50 13:72
+crw-rw----  1 root   input    13,  74 nov  2 17:50 13:74
+crw-rw----  1 root   input    13,  68 nov  2 17:50 13:68
+crw-rw----  1 root   input    13,  69 nov  2 17:50 13:69
+crw-rw----  1 root   input    13,  71 nov  2 17:50 13:71
+crw-rw----  1 root   input    13,  73 nov  2 17:50 13:73
+crw-rw----+ 1 root   audio   116,   2 nov  2 17:50 116:2
+crw-rw----+ 1 root   audio   116,   5 nov  2 17:50 116:5
+crw-rw----+ 1 root   audio   116,   6 nov  2 17:50 116:6
+crw-rw----+ 1 root   video   226,   0 nov  2 17:50 226:0
+crw-rw----+ 1 root   video   226, 128 nov  2 17:50 226:128
+crw-rw----  1 root   input    13,  67 nov  2 17:50 13:67
+crw-rw----+ 1 root   audio   116,   1 nov  2 17:50 116:1
+crw-rw----  1 root   input    13,  32 nov  2 17:50 13:32
+crw-rw----  1 root   input    13,  66 nov  2 17:50 13:66
+crw-rw----  1 root   disk     21,   3 nov  2 17:50 21:3
+crw-rw----  1 root   disk     21,   4 nov  2 17:50 21:4
+crw-rw----  1 root   disk     21,   5 nov  2 17:50 21:5
+crw-rw----  1 root   disk     21,   6 nov  2 17:50 21:6
+crw-------  1 root   root    246,   3 nov  2 17:50 246:3
+crw-------  1 root   root    246,   4 nov  2 17:50 246:4
+crw-------  1 root   root    246,   5 nov  2 17:50 246:5
+crw-------  1 root   root    246,   6 nov  2 17:50 246:6
+crw-------  1 root   root    244,   1 nov  2 17:50 244:1
+crw-------  1 root   root    180,   0 nov  2 17:50 180:0
+crw-------  1 root   root    244,   0 nov  2 17:50 244:0
+crw-rw-r--  1 root   root    189, 130 nov  2 17:50 189:130
+crw-rw-r--  1 root   root    189, 641 nov  2 17:50 189:641
+crw-rw----+ 1 root   audio   116,  33 nov  2 17:50 116:33
+crw-rw----  1 root   input    13,  64 nov  2 17:50 13:64
+crw-rw----  1 root   input    13,  65 nov  2 17:50 13:65
+crw-------  1 root   root    254,   0 nov  2 17:50 254:0
+crw-------  1 root   root     10, 232 nov  2 17:50 10:232
+crw-------  1 root   root      5,   3 nov  2 17:50 5:3
+crw-rw----  1 root   tty       7,   0 nov  2 17:50 7:0
+crw-rw----  1 root   tty       7,   1 nov  2 17:50 7:1
+crw-rw----  1 root   tty       7, 128 nov  2 17:50 7:128
+crw-rw----  1 root   tty       7, 129 nov  2 17:50 7:129
+crw-rw----  1 root   tty       7, 130 nov  2 17:50 7:130
+crw-rw----  1 root   tty       7, 131 nov  2 17:50 7:131
+crw-rw----  1 root   tty       7, 132 nov  2 17:50 7:132
+crw-rw----  1 root   tty       7, 133 nov  2 17:50 7:133
+crw-rw----  1 root   tty       7, 134 nov  2 17:50 7:134
+crw-rw----  1 root   tty       7,   2 nov  2 17:50 7:2
+crw-rw----  1 root   tty       7,   3 nov  2 17:50 7:3
+crw-rw----  1 root   tty       7,   4 nov  2 17:50 7:4
+crw-rw----  1 root   tty       7,   5 nov  2 17:50 7:5
+crw-rw----  1 root   tty       7,   6 nov  2 17:50 7:6
+crw--w----  1 root   tty       4,  32 nov  2 17:50 4:32
+crw--w----  1 root   tty       4,  36 nov  2 17:50 4:36
+crw--w----  1 root   tty       4,  38 nov  2 17:50 4:38
+crw--w----  1 root   tty       4,  39 nov  2 17:50 4:39
+crw--w----  1 root   tty       4,   4 nov  2 17:50 4:4
+crw--w----  1 root   tty       4,  40 nov  2 17:50 4:40
+crw--w----  1 root   tty       4,  41 nov  2 17:50 4:41
+crw--w----  1 root   tty       4,  42 nov  2 17:50 4:42
+crw--w----  1 root   tty       4,  43 nov  2 17:50 4:43
+crw--w----  1 root   tty       4,  44 nov  2 17:50 4:44
+crw--w----  1 root   tty       4,  45 nov  2 17:50 4:45
+crw--w----  1 root   tty       4,  46 nov  2 17:50 4:46
+crw--w----  1 root   tty       4,  47 nov  2 17:50 4:47
+crw--w----  1 root   tty       4,  48 nov  2 17:50 4:48
+crw--w----  1 root   tty       4,  49 nov  2 17:50 4:49
+crw--w----  1 root   tty       4,   5 nov  2 17:50 4:5
+crw--w----  1 root   tty       4,  50 nov  2 17:50 4:50
+crw--w----  1 root   tty       4,  51 nov  2 17:50 4:51
+crw--w----  1 root   tty       4,  52 nov  2 17:50 4:52
+crw--w----  1 root   tty       4,  53 nov  2 17:50 4:53
+crw--w----  1 root   tty       4,  54 nov  2 17:50 4:54
+crw--w----  1 root   tty       4,  55 nov  2 17:50 4:55
+crw--w----  1 root   tty       4,  56 nov  2 17:50 4:56
+crw--w----  1 root   tty       4,  57 nov  2 17:50 4:57
+crw--w----  1 root   tty       4,  58 nov  2 17:50 4:58
+crw--w----  1 root   tty       4,  59 nov  2 17:50 4:59
+crw--w----  1 root   tty       4,   6 nov  2 17:50 4:6
+crw--w----  1 root   tty       4,  60 nov  2 17:50 4:60
+crw--w----  1 root   tty       4,  61 nov  2 17:50 4:61
+crw--w----  1 root   tty       4,  62 nov  2 17:50 4:62
+crw--w----  1 root   tty       4,  63 nov  2 17:50 4:63
+crw--w----  1 root   tty       4,   7 nov  2 17:50 4:7
+crw--w----  1 root   tty       4,   8 nov  2 17:50 4:8
+crw--w----  1 root   tty       4,   9 nov  2 17:50 4:9
+crw--w----  1 root   tty       4,  13 nov  2 17:50 4:13
+crw--w----  1 root   tty       4,  14 nov  2 17:50 4:14
+crw--w----  1 root   tty       4,  15 nov  2 17:50 4:15
+crw--w----  1 root   tty       4,  16 nov  2 17:50 4:16
+crw--w----  1 root   tty       4,  17 nov  2 17:50 4:17
+crw--w----  1 root   tty       4,  18 nov  2 17:50 4:18
+crw--w----  1 root   tty       4,  19 nov  2 17:50 4:19
+crw--w----  1 root   tty       4,  20 nov  2 17:50 4:20
+crw--w----  1 root   tty       4,  21 nov  2 17:50 4:21
+crw--w----  1 root   tty       4,  22 nov  2 17:50 4:22
+crw--w----  1 root   tty       4,  23 nov  2 17:50 4:23
+crw--w----  1 root   tty       4,  24 nov  2 17:50 4:24
+crw--w----  1 root   tty       4,  25 nov  2 17:50 4:25
+crw--w----  1 root   tty       4,  26 nov  2 17:50 4:26
+crw--w----  1 root   tty       4,  27 nov  2 17:50 4:27
+crw--w----  1 root   tty       4,  28 nov  2 17:50 4:28
+crw--w----  1 root   tty       4,  29 nov  2 17:50 4:29
+crw--w----  1 root   tty       4,  30 nov  2 17:50 4:30
+crw--w----  1 root   tty       4,  31 nov  2 17:50 4:31
+crw--w----  1 root   tty       4,  33 nov  2 17:50 4:33
+crw--w----  1 root   tty       4,  34 nov  2 17:50 4:34
+crw--w----  1 root   tty       4,  35 nov  2 17:50 4:35
+crw--w----  1 root   tty       4,  37 nov  2 17:50 4:37
+crw--w----  1 root   tty       4,   0 nov  2 17:50 4:0
+crw--w----  1 root   tty       4,  10 nov  2 17:50 4:10
+crw--w----  1 root   tty       4,  11 nov  2 17:50 4:11
+crw--w----  1 root   tty       4,  12 nov  2 17:50 4:12
+crw-rw----  1 root   disk     10, 237 nov  2 17:50 10:237
+crw-------  1 root   root    108,   0 nov  2 17:50 108:0
+crw-------  1 root   root     10,  56 nov  2 17:50 10:56
+crw-------  1 root   root     10, 223 nov  2 17:50 10:223
+crw-------  1 root   root     10, 227 nov  2 17:50 10:227
+crw-------  1 root   root     10,  63 nov  2 17:50 10:63
+crw-------  1 root   root     10,   1 nov  2 17:50 10:1
+crw-rw-rw-  1 root   root     10, 200 nov  2 17:50 10:200
+crw-------  1 root   root     10, 231 nov  2 17:50 10:231
+crw-rw-r--+ 1 root   netdev   10,  62 nov  2 17:50 10:62
+crw-------  1 root   root     10, 183 nov  2 17:50 10:183
+crw-------  1 root   root     10, 184 nov  2 17:50 10:184
+crw-------  1 root   root     10, 228 nov  2 17:50 10:228
+crw-rw-rw-  1 root   root     10, 229 nov  2 17:50 10:229
+crw-------  1 root   root     10, 236 nov  2 17:50 10:236
+crw-------  1 root   root     10,  57 nov  2 17:50 10:57
+crw-------  1 root   root     10,  58 nov  2 17:50 10:58
+crw-------  1 root   root     10,  59 nov  2 17:50 10:59
+crw-------  1 root   root     10,  60 nov  2 17:50 10:60
+crw-------  1 root   root     10,  61 nov  2 17:50 10:61
+crw-rw-rw-  1 root   root      1,   5 nov  2 17:50 1:5
+crw-r--r--  1 root   root     10, 235 nov  2 17:50 10:235
+crw-r-----  1 root   kmem      1,   1 nov  2 17:50 1:1
+crw-r--r--  1 root   root      1,  11 nov  2 17:50 1:11
+crw-rw-rw-  1 root   root      1,   3 nov  2 17:50 1:3
+crw-rw----  1 root   input    13,  63 nov  2 17:50 13:63
+crw-r-----  1 root   kmem      1,   4 nov  2 17:50 1:4
+crw-rw-rw-  1 root   root      1,   7 nov  2 17:50 1:7
+crw-rw-rw-  1 root   root      1,   8 nov  2 17:50 1:8
+crw-rw-rw-  1 root   root      1,   9 nov  2 17:50 1:9
+crw-rw----  1 root   dialout   4,  64 nov  2 17:50 4:64
+crw-------  1 root   root    249,   0 nov  2 17:50 249:0
+crw-rw----  1 root   dialout   4,  65 nov  2 17:50 4:65
+crw-rw----  1 root   disk     21,   0 nov  2 17:50 21:0
+crw-------  1 root   root    246,   0 nov  2 17:50 246:0
+crw-rw----  1 root   video    29,   0 nov  2 17:50 29:0
+crw-rw----  1 root   disk     21,   1 nov  2 17:50 21:1
+crw-rw----+ 1 root   cdrom    21,   2 nov  2 17:50 21:2
+crw-------  1 root   root    246,   1 nov  2 17:50 246:1
+crw-------  1 root   root    246,   2 nov  2 17:50 246:2
+crw-rw----  1 root   dialout   4,  67 nov  2 17:50 4:67
+crw-rw----  1 root   dialout   4,  68 nov  2 17:50 4:68
+crw-rw----  1 root   dialout   4,  69 nov  2 17:50 4:69
+crw-rw----  1 root   dialout   4,  70 nov  2 17:50 4:70
+crw-rw----  1 root   dialout   4,  71 nov  2 17:50 4:71
+crw-rw----  1 root   dialout   4,  72 nov  2 17:50 4:72
+crw-rw----  1 root   dialout   4,  73 nov  2 17:50 4:73
+crw-rw----  1 root   dialout   4,  75 nov  2 17:50 4:75
+crw-rw----  1 root   dialout   4,  85 nov  2 17:50 4:85
+crw-rw----  1 root   dialout   4,  86 nov  2 17:50 4:86
+crw-rw----  1 root   dialout   4,  87 nov  2 17:50 4:87
+crw-rw----  1 root   dialout   4,  89 nov  2 17:50 4:89
+crw-rw----  1 root   dialout   4,  91 nov  2 17:50 4:91
+crw-rw----  1 root   dialout   4,  93 nov  2 17:50 4:93
+crw-rw----  1 root   dialout   4,  94 nov  2 17:50 4:94
+crw-rw----  1 root   dialout   4,  95 nov  2 17:50 4:95
+crw-rw----  1 root   dialout   4,  66 nov  2 17:50 4:66
+crw-rw----  1 root   dialout   4,  74 nov  2 17:50 4:74
+crw-rw----  1 root   dialout   4,  76 nov  2 17:50 4:76
+crw-rw----  1 root   dialout   4,  77 nov  2 17:50 4:77
+crw-rw----  1 root   dialout   4,  78 nov  2 17:50 4:78
+crw-rw----  1 root   dialout   4,  79 nov  2 17:50 4:79
+crw-rw----  1 root   dialout   4,  80 nov  2 17:50 4:80
+crw-rw----  1 root   dialout   4,  81 nov  2 17:50 4:81
+crw-rw----  1 root   dialout   4,  82 nov  2 17:50 4:82
+crw-rw----  1 root   dialout   4,  83 nov  2 17:50 4:83
+crw-rw----  1 root   dialout   4,  84 nov  2 17:50 4:84
+crw-rw----  1 root   dialout   4,  88 nov  2 17:50 4:88
+crw-rw----  1 root   dialout   4,  90 nov  2 17:50 4:90
+crw-rw----  1 root   dialout   4,  92 nov  2 17:50 4:92
+crw-rw-r--  1 root   root    189, 128 nov  2 17:50 189:128
+crw-rw-r--  1 root   root    189, 512 nov  2 17:50 189:512
+crw-rw-r--  1 root   root    189,   0 nov  2 17:50 189:0
+crw-------  1 root   root    243,   1 nov  2 17:50 243:1
+crw-rw-r--  1 root   root    189, 640 nov  2 17:50 189:640
+crw-rw-r--  1 root   root    189, 768 nov  2 17:50 189:768
+crw-rw-r--  1 root   root    189, 896 nov  2 17:50 189:896
+crw-------  1 root   root    243,   0 nov  2 17:50 243:0
+crw-rw-r--  1 root   root    189, 256 nov  2 17:50 189:256
+crw-rw-r--  1 root   root    189, 384 nov  2 17:50 189:384
+crw-rw----+ 1 root   audio   116,   9 nov  2 17:42 116:9
+crw-rw-rw-  1 root   tty       5,   0 nov  2 17:29 5:0
+crw-rw----+ 1 root   audio   116,   3 nov  2 16:51 116:3
+crw-rw----+ 1 root   audio   116,   4 nov  2 16:51 116:4
+crw-rw----+ 1 root   audio   116,  11 nov  2 16:51 116:11
+crw-rw----+ 1 root   audio   116,  10 nov  2 16:51 116:10
+crw-rw----+ 1 root   audio   116,   8 nov  2 16:51 116:8
+
+/dev/input:
+total 0
+crw-rw---- 1 root input 13, 78 nov  2 17:50 event14
+crw-rw---- 1 root input 13, 76 nov  2 17:50 event12
+crw-rw---- 1 root input 13, 79 nov  2 17:50 event15
+crw-rw---- 1 root input 13, 77 nov  2 17:50 event13
+crw-rw---- 1 root input 13, 75 nov  2 17:50 event11
+crw-rw---- 1 root input 13, 70 nov  2 17:50 event6
+crw-rw---- 1 root input 13, 74 nov  2 17:50 event10
+crw-rw---- 1 root input 13, 72 nov  2 17:50 event8
+crw-rw---- 1 root input 13, 68 nov  2 17:50 event4
+crw-rw---- 1 root input 13, 69 nov  2 17:50 event5
+crw-rw---- 1 root input 13, 71 nov  2 17:50 event7
+crw-rw---- 1 root input 13, 73 nov  2 17:50 event9
+drwxr-xr-x 2 root root      80 nov  2 17:50 by-id
+drwxr-xr-x 2 root root     100 nov  2 17:50 by-path
+crw-rw---- 1 root input 13, 67 nov  2 17:50 event3
+crw-rw---- 1 root input 13, 66 nov  2 17:50 event2
+crw-rw---- 1 root input 13, 32 nov  2 17:50 mouse0
+crw-rw---- 1 root input 13, 64 nov  2 17:50 event0
+crw-rw---- 1 root input 13, 65 nov  2 17:50 event1
+crw-rw---- 1 root input 13, 63 nov  2 17:50 mice
+
+/dev/snd:
+total 0
+drwxr-xr-x  2 root root       80 nov  2 17:50 by-path
+crw-rw----+ 1 root audio 116,  7 nov  2 17:50 controlC1
+crw-rw----+ 1 root audio 116, 12 nov  2 17:50 hwC1D0
+crw-rw----+ 1 root audio 116,  2 nov  2 17:50 controlC0
+crw-rw----+ 1 root audio 116,  6 nov  2 17:50 hwC0D2
+crw-rw----+ 1 root audio 116,  5 nov  2 17:50 pcmC0D2c
+crw-rw----+ 1 root audio 116,  1 nov  2 17:50 seq
+crw-rw----+ 1 root audio 116, 33 nov  2 17:50 timer
+crw-rw----+ 1 root audio 116,  9 nov  2 17:42 pcmC1D7p
+crw-rw----+ 1 root audio 116,  4 nov  2 16:51 pcmC0D0c
+crw-rw----+ 1 root audio 116,  3 nov  2 16:51 pcmC0D0p
+crw-rw----+ 1 root audio 116, 11 nov  2 16:51 pcmC1D9p
+crw-rw----+ 1 root audio 116, 10 nov  2 16:51 pcmC1D8p
+crw-rw----+ 1 root audio 116,  8 nov  2 16:51 pcmC1D3p
+
+/dev/dri:
+total 0
+drwxr-xr-x  2 root root        80 nov  2 17:50 by-path
+crw-rw----+ 1 root video 226,   0 nov  2 17:50 card0
+crw-rw----+ 1 root video 226, 128 nov  2 17:50 renderD128
+
+/dev/vfio:
+total 0
+crw------- 1 root root 10, 196 nov  2 17:50 vfio
+
+/dev/hugepages:
+total 0
+
+/dev/bsg:
+total 0
+crw------- 1 root root 246, 3 nov  2 17:50 4:0:0:0
+crw------- 1 root root 246, 4 nov  2 17:50 4:0:0:1
+crw------- 1 root root 246, 5 nov  2 17:50 4:0:0:2
+crw------- 1 root root 246, 6 nov  2 17:50 4:0:0:3
+crw------- 1 root root 246, 0 nov  2 17:50 1:0:0:0
+crw------- 1 root root 246, 1 nov  2 17:50 1:0:1:0
+crw------- 1 root root 246, 2 nov  2 17:50 3:0:0:0
+
+/dev/disk:
+total 0
+drwxr-xr-x 2 root root 260 nov  2 17:50 by-path
+drwxr-xr-x 2 root root 460 nov  2 17:50 by-id
+drwxr-xr-x 2 root root  60 nov  2 17:50 by-label
+drwxr-xr-x 2 root root 180 nov  2 17:50 by-partuuid
+drwxr-xr-x 2 root root 160 nov  2 17:50 by-uuid
+
+/dev/usb:
+total 0
+crw------- 1 root root 180, 0 nov  2 17:50 hiddev0
+
+/dev/pts:
+total 0
+crw--w---- 1 alvise tty  136, 1 nov  2 18:24 1
+crw--w---- 1 alvise tty  136, 0 nov  2 18:23 0
+c--------- 1 root   root   5, 2 nov  2 17:50 ptmx
+
+/dev/cpu:
+total 0
+crw------- 1 root root 10, 184 nov  2 17:50 microcode
+
+/dev/mapper:
+total 0
+crw------- 1 root root 10, 236 nov  2 17:50 control
+
+/dev/bus:
+total 0
+drwxr-xr-x 10 root root 200 nov  2 17:50 usb
+
+/dev/net:
+total 0
+crw-rw-rw- 1 root root 10, 200 nov  2 17:50 tun
+
+/dev/lightnvm:
+total 0
+crw------- 1 root root 10, 60 nov  2 17:50 control
+
+/dev/mqueue:
+total 0
+
+/dev/block:
+total 0
+brw-rw----  1 root disk   7, 36 nov  2 17:50 7:36
+brw-rw----  1 root disk   7, 27 nov  2 17:50 7:27
+brw-rw----  1 root disk   7, 34 nov  2 17:50 7:34
+brw-rw----  1 root disk   7, 24 nov  2 17:50 7:24
+brw-rw----  1 root disk   7, 40 nov  2 17:50 7:40
+brw-rw----  1 root disk   7, 37 nov  2 17:50 7:37
+brw-rw----  1 root disk   7, 32 nov  2 17:50 7:32
+brw-rw----  1 root disk   7, 39 nov  2 17:50 7:39
+brw-rw----  1 root disk   7, 26 nov  2 17:50 7:26
+brw-rw----  1 root disk   7, 38 nov  2 17:50 7:38
+brw-rw----  1 root disk   7, 28 nov  2 17:50 7:28
+brw-rw----  1 root disk   7, 33 nov  2 17:50 7:33
+brw-rw----  1 root disk   7, 35 nov  2 17:50 7:35
+brw-rw----  1 root disk   7, 14 nov  2 17:50 7:14
+brw-rw----  1 root disk   7, 43 nov  2 17:50 7:43
+brw-rw----  1 root disk   7, 42 nov  2 17:50 7:42
+brw-rw----  1 root disk   7, 31 nov  2 17:50 7:31
+brw-rw----  1 root disk   7, 30 nov  2 17:50 7:30
+brw-rw----  1 root disk   7, 29 nov  2 17:50 7:29
+brw-rw----  1 root disk   8,  2 nov  2 17:50 8:2
+brw-rw----  1 root disk   7, 25 nov  2 17:50 7:25
+brw-rw----  1 root disk   8,  5 nov  2 17:50 8:5
+brw-rw----  1 root disk   7, 23 nov  2 17:50 7:23
+brw-rw----  1 root disk   7, 22 nov  2 17:50 7:22
+brw-rw----  1 root disk   8,  1 nov  2 17:50 8:1
+brw-rw----  1 root disk   7, 21 nov  2 17:50 7:21
+brw-rw----  1 root disk   7, 16 nov  2 17:50 7:16
+brw-rw----  1 root disk   7, 12 nov  2 17:50 7:12
+brw-rw----  1 root disk   7,  1 nov  2 17:50 7:1
+brw-rw----  1 root disk   7,  8 nov  2 17:50 7:8
+brw-rw----  1 root disk   8,  6 nov  2 17:50 8:6
+brw-rw----  1 root disk   7, 20 nov  2 17:50 7:20
+brw-rw----  1 root disk   7,  9 nov  2 17:50 7:9
+brw-rw----  1 root disk   8,  3 nov  2 17:50 8:3
+brw-rw----  1 root disk   7, 19 nov  2 17:50 7:19
+brw-rw----  1 root disk   7, 18 nov  2 17:50 7:18
+brw-rw----+ 1 root cdrom 11,  0 nov  2 17:50 11:0
+brw-rw----  1 root disk   7, 17 nov  2 17:50 7:17
+brw-rw----  1 root disk   7, 15 nov  2 17:50 7:15
+brw-rw----  1 root disk   7, 10 nov  2 17:50 7:10
+brw-rw----  1 root disk   7,  6 nov  2 17:50 7:6
+brw-rw----  1 root disk   7,  7 nov  2 17:50 7:7
+brw-rw----  1 root disk   7,  5 nov  2 17:50 7:5
+brw-rw----  1 root disk   7,  4 nov  2 17:50 7:4
+brw-rw----  1 root disk   8, 17 nov  2 17:50 8:17
+brw-rw----  1 root disk   8, 18 nov  2 17:50 8:18
+brw-rw----  1 root disk   7,  2 nov  2 17:50 7:2
+brw-rw----  1 root disk   7,  0 nov  2 17:50 7:0
+brw-rw----  1 root disk   8, 48 nov  2 17:50 8:48
+brw-rw----  1 root disk   8, 64 nov  2 17:50 8:64
+brw-rw----  1 root disk   8, 80 nov  2 17:50 8:80
+brw-rw----  1 root disk   8, 32 nov  2 17:50 8:32
+brw-rw----  1 root disk   8,  0 nov  2 17:50 8:0
+brw-rw----  1 root disk   8, 16 nov  2 17:50 8:16
+brw-rw----  1 root disk   7, 41 nov  2 16:56 7:41
+brw-rw----  1 root disk   7, 11 nov  2 16:56 7:11
+brw-rw----  1 root disk   7,  3 nov  2 16:54 7:3
+brw-rw----  1 root disk   7, 13 nov  2 16:54 7:13
+brw-rw----  1 root disk   7, 47 nov  2 16:53 7:47
+brw-rw----  1 root disk   7, 46 nov  2 16:53 7:46
+brw-rw----  1 root disk   7, 45 nov  2 16:51 7:45
+brw-rw----  1 root disk   7, 44 nov  2 16:51 7:44
