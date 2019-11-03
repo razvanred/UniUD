@@ -10,7 +10,7 @@ Nei periodi ipotetici zero è **sempre** possibile sostituire _if_ con _when_, p
 
 ## Funzione
 
-Il periodo ipotetico zero è usato per fare dichiarazioni sul mondo reale e spesso si riferisce a verità di carattere generale, come un fatto scientifico. In questi tipi di frasi, il tempo è adesso o sempre e la situazione è reale e possibile.
+Il periodo ipotetico zero è usato per fare dichiarazioni sul mondo reale e spesso si riferisce a verità di carattere generale, come un fatto scientifico. In questi tipi di frasi, il tempo è **adesso o sempre** e **la situazione è reale e possibile**.
 
 * If you heat ice, it melts.
 * Ice melts if you heat it.
