@@ -119,7 +119,7 @@ if (O == l) {
 }
 ```
 
-## Make Meaningful Distingtions
+## Make Meaningful Distintions
 
 Programmers create problem for themselves when they create code solely to satisfy the compiler; for example, because you can't use the same name to refer to two different things in the same scope, you might be tempted to change one name in an arbitrary way. It is not sufficient to add number series or noise numbers, even though the compiler is satisfied. **If name must be different, then they should also mean something different.**
 
