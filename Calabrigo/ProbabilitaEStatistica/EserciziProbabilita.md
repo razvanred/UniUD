@@ -164,7 +164,35 @@ x ∈ (−∞, 0], e zero altrove. Si determini il valore della costante c di mo
 che pX(x) sia effettivamente una funzione di densita di probabilita. Si calcolino
 P(0 ≤ X ≤ 2), P(−1 ≤ X ≤ 0.5) e P(X = −0.5). Infine, si ottenga il valore
 atteso di X.\
-integrale tra -infinito e +infinito di ce^x = integrale tra -infinito e 0 di ce^x = c*[e^x]0 - c*[e^x]-infinito = c - 0 = c ; Quindi c = 1
+1 = integrale tra -infinito e +infinito di ce^x = integrale tra -infinito e 0 di ce^x = c*[e^x]0 - c*[e^x]-infinito = c - 0 = c ; Quindi c = 1
 * P(0 ≤ X ≤ 2) = integrale da 0 a 2 di e^x = 0, perchè x ∈ (−∞, 0], l'unico punto papabile sarebbe lo zero, ma nelle v.c. continue la probabilità di un punto singolo è zero.
 * P(−1 ≤ X ≤ 0.5) = integrale tra -1  e 0.5 di e^x = 1 - integrale tra -1 e 0 di e^x = [e^x]0 - [e^x]-1 = e^0 - 1/e = 1 - 1/e = (e-1)/e = 63%
 * P(X = −0.5) = non lo calcolo xchè nelle v.c. continue la probabilità di un punto singolo è zero.
+
+# Capitolo 13
+
+Esercizio 13.2 Sia X ∼ Bi(2, 0.5) Si trovi il supporto e la f.m.p. di T = 2X.\
+ST = 2*2 = 4 = {0,1,2,3,4}\
+fY(y) = (2nx su 2x) * (p)^2n * (1-p)^(2nx - 2x) = (ny su y) * (p)^ny * (1-p)^(ny - y)
+
+Esercizio 13.3 Sia X ∼ Esp(1). Si ottengano supporto e f.r. di T = X2.\
+ST = [0, infinito]\
+g^-1(y) = y/2\
+fY(y) = d/dt(FX(g^-1(y)) = fX(x) * d/dt g^-1(y) =  lambda*e^(-lambda*(x)) * \/2 = 1/2*lambda*e^(-lambda*(y))
+
+Esercizio 13.4 Sia X ∼ Esp(λ), λ > 0. Per T =√X si ottengano ST e FT (t).\
+ST = (0, infinito)\
+g^-1(y) = y^2\
+fT(t) = fX(g^-1(t)) * d/dt g^-1(t) = λ*e^(-λt^2) * 2t
+FT(t) = 1 - P(T > t) = 1 - FT(g^-1(t)) = 1 - FT(t^2) = 1 - integrale fT(t) = 1 - 
+
+Esercizio 13.13 (compito del 16/06/17) Una apparecchiatura ha solo due
+componenti che si possono guastare. La vita operativa Xi (i = 1, 2) di ciascuna
+di esse ha distribuzione esponenziale con valore atteso pari a 10 anni, indipendentemente dalla durata di corretto funzionamento dell’altra. Quando entrambe
+sono guaste, l’apparecchiatura non e piu operativa. Sia T il tempo di corretto
+funzionamento dell’apparecchiatura. Si esprima T come funzione di X1, X2. Si
+dica qual `e il supporto di T. Si ottengano poi la funzione di ripartizione e la
+funzione di densita di probabilita di T, esplicitandole in tutti i loro tratti. Si
+calcolino la mediana di T (`e il quantile-p con p = 50/100) e P(T > 10).
+
+(vedi quaderno)
