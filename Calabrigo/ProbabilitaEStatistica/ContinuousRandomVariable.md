@@ -8,7 +8,8 @@ Questa legge sta dicendo che la probabilità di un punto x contenuto in un inter
 * Legge esponenziale -> `PX(x) = λ*e^-(λ*x) se x >= 0, altrimenti PX(x) = 0`;
 Le probabilità diventeranno sempre più piccole, al crescere di λ e di x. Si scrive `X ~ Esp(λ)`. La sua funzione di supporto è SX = [0,+infinito).\
 P(X > x) con x > 0 = integrale definito da x a infinito di λ*e^-(λ*x) = e^-(λx), viene chiamata funzione di sopravvivenza.\
-P(X <= x) con x > 0 = 1 - P(X > x), viene chiamata funzione di ripartizione.
+P(X <= x) con x > 0 = 1 - P(X > x), viene chiamata funzione di ripartizione.\
+N.B.: Con la funzione esponenziale X ~ Esp(λ), Se cerco P(X > 3), allora P(X > 3) = λ*e^-(3λ).
 ### v.c. bivariate continue
 Le v.c. bivariate continue lavorano su intervalli al posto che su valori discreti, quindi su spazio R^2, un intervallo possiamo immaginarcelo come un rettangolo, all'interno del quale la mia v.c. continua può assumere qualsiasi valore.\
 La somma di tutte le possibilità interne al rettangolo (l'intervallo), deve essere uguale a 1, e visto che abbiamo un rettangolo con punti infiniti al suo interno, dobbiamo integrare 2 volte. Perchè 2 volte? Immagina i vertici di un rettangolo, se conosciamo 2 lati (e quindi 3 vertici) possiamo disegnarlo; quando faccio un integrale definito ho bisogno di 2 punti (integrale da A a B(....)), quindi per disegnare il rettangolo mi serviranno i lati: [A,B] e [A,C], dove A,B,C sono i vertici. Ora posso scrivere l'integrale: `(integrale da A a B(integrale da A a C(PX,Y(x,y)) dx) dy)`.
