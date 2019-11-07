@@ -1,0 +1,85 @@
+\documentclass[11pt]{article}
+
+\begin{document}
+\title{Matematica in Latex}
+\author{Calabrigo Massimo}
+\date{\today}
+\maketitle
+
+Se voglio entrare in modalità matematica per scrivere delle formule, posso farlo scrivendo dollaro (x + 1) dollaro, e il risultato sarà: $ (x + 1) $\\
+Per scrivere una formula matematica in modalità display (ovvero mettere la formula a capo su una linea solo per lei, 
+senza il testo su quella linea), posso usare i doppi dollari: Questa formula calcola fibonacci $$ F(t) = F(t-1) + F(t-2) $$ in modalità ricorsiva.\\
+In Latex, nella notazione matematica, si usano le parentesi graffe al posto di quelle rotonde quando si devono passare argomenti ad una funzione, oppure raggruppare una formula. 
+Le tonde si usano invece per essere viste dall'utente, ma non vengono interpretate da Latex.
+Ora vediamo le notazioni matematiche più comuni:\\
+superscripts: Devo racchiudere tra parentesi graffe l'esponente di e, perchè altrimenti e prenderebbe come esponente solo il carattere immediatamente successivo 
+e scriverebbe i successivi come numeri che moltiplicano e. Questi sono giusti:
+$$ e^1 $$
+$$ e^{18} $$
+$$ e^{12+x^2} $$
+Questo è sbagliato:
+$$ e^16 $$
+Subscripts: Devo racchiudere tra parentesi graffe la stringa dei caratteri a pedice, che sarà separata, dalla stringa che stà sopra, da un underscore. Questi sono giusti:
+$$ x_1 $$
+$$ x_{32} $$
+$$ x_{76y+3} $$
+$$ {x_y}_1 $$
+Questo è sbagliato:
+$$ x_12 $$
+Lettere greche: si scrive un backslash, seguito dal nome della lettera greca.
+Esempio. La formula dell'area del cerchio è: $$ \pi r^2 $$
+Funzioni trigonometriche: si scrive backslash, seguito dal nome della funzione.
+$$ y=\sin{x}+3 $$
+Funzioni logaritmiche: si scrive backslash log.
+$$ \log{x} $$
+$$ \log_5{x} $$
+$$ \ln{x} $$
+Radici quadrate, cubiche, ...: si scrive backslash sqrt, e ha 2 parametri; il primo è il numero della radice (quadrato, cubo, ecc.), il secondo è la stringa sotto radice.\\
+Ecco una radice quadrata: $ \sqrt{x+1} $\\
+Ecco una radice ennesima: $ \sqrt[n]{{x+1}^2} $\\
+Frazioni: si scrive backslash, seguito da frac{numeratore}{denominatore}\\
+Questo bicchiere è pieno per $\frac{3}{4}$ della sua dimensione.\\
+Se voglio che 3/4 sembri più grande, posso usare il comando displaystyle:\\
+Questo bicchiere è pieno per $\displaystyle{\frac{3}{4}}$ della sua dimensione.\\
+
+Parentesi:
+
+Per scrivere le parentesi posso senplicente scriverle da tastiera senza comandi $(x[3y + 2])$. Se voglio 
+scrivere il dollaro o le parentesi graffe devo mettere un backslash prima dei simboli: $ \{1,2,3\} $.\\
+Se scrivo le parentesi tonde normalmente in una frazione mi esce questo risultato 
+$$ 3(\frac{3}{2}) $$ ma possiamo migliorare questa scrittura in modo che le parentesi contengano interamente la frazione: $$ 3\left(\frac{3}{2}\right) $$
+La stessa regola vale per tutti i simboli che racchiudono una frazione, per esempio se ho il valore assoluto devo fare $$ 3\left|\frac{2}{3}\right| $$
+Tabelle: La tabella inizia con begin(tabular){} e finisce con end(tabular). begin prende come argomento n lettere c (column), per esempio 
+se voglio una tabella con 5 colonne scriverei come input {ccccc}, separando le c con |, metto una linea di separazione tra quella colonna e la successiva.\\
+Dentro al tabular devo inserire per ogni riga un numero di parametri pari al numero di colonne, e i parametri devono essere divisi 
+da una \&. Ogni riga della tabella deve andare a capo, e se voglio mettere delle linee di separazione tra una riga e 
+un altra devo scrivere backslash hline \\
+\begin{tabular}{c|c|cc}
+$x$ & 1 & 2 & 3 \\ \hline
+$f(x)$ & 5 & 10 & 15 \\
+\end{tabular}\\
+Esempio di una tabella completa:\\
+\begin{tabular}{|c|c|c|c|c|}
+    \hline
+    $x$ & 1 & 2 & 3 & 4 \\ \hline
+    $f(x)$ & 10 & 20 & 30 & 40 \\ \hline
+\end{tabular}\\
+Serie di calcoli: Se ho bisogno di scrivere un'equazione con i relativi passaggi in ordine, posso usare una
+eqnarray. L'equation array inizia con begin(eqnarray) e finisce con end(eqnarray).\\
+\begin{eqnarray}
+4x^2 + 2 = 3x^2 + 3 + x\\
+x^2 = 1 + x\\
+x^2 - x = 1\\
+x(x-1) = 1\\
+x\approx\pm1.72
+\end{eqnarray}\\
+Se vogliamo allineare le equazioni sull'uguale, dobbiamo aggiungere delle \& prima e dopo ogni uguale, e se 
+vogliamo togliere i numeri a lato, al posto di eqnarray su begin e su end scriviamo eqnarray*:\\
+\begin{eqnarray*}
+    4x^2 + 2 &=& 3x^2 + 3 + x\\
+    x^2 &=& 1 + x\\
+    x^2 - x &=& 1\\
+    x(x-1) &=& 1\\
+    x&\approx&\pm1.72
+\end{eqnarray*}
+\end{document}

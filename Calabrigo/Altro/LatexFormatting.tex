@@ -1,0 +1,110 @@
+\documentclass[11pt]{article}
+\begin{document}
+\title{Formattazione di Latex}
+\author{Calabrigo Massimo}
+\date{\today}
+\maketitle
+
+\tableofcontents
+
+\section{Impostazione di un documento Latex}
+\subsection{Dichiarazione del documento e Creazione del body}
+N.B.: Tutti i comandi in Latex iniziano con un blackslash
+il comando documentclass[]{} deve essere insertito all'inizio di ogni documento,
+e come primo parametro ha la grandezza dei caratteri (11pt,12pt,...),
+come secondo parametro ha il tipo di documento (article).
+
+Sotto documentclass metto il body del testo, ovvero dove andrò a scrivere tutto il corpo del testo. Il body inizia da begin{document} e finisce a end{document}.\\
+\subsection{Andare a capo}
+Per andare a capo ci sono due modi:\\
+Usare un soft return scrivendo 2 backslash
+Usare un hard return lasciando una linea di testo vuota tra le 2 frasi che voglio separare.\\
+\subsection{Scrivere il titolo}
+Titolo e Headers: Possiamo scrivere titolo, autore e data; e avremmo bisogno di 4 righe di codice:\\
+\begin{enumerate}
+    \item title{titolo}(obbligatorio)
+    \item author{nomeAutore}
+    \item date
+    \item maketitle(obbligatorio)
+\end{enumerate}
+\section{Sintassi di formattazione del testo}
+\subsection{elenchi}
+Elenchi puntati/numerati: ci sono 2 tipologie di elenchi entrambi racchiusi tra begin e end, e dopo l'end non 
+bisogna mettere a capi:\\
+Gli elenchi numerati (enumerate) hanno questa struttura:\\
+\begin{enumerate}
+\item albero di mele
+    \begin{enumerate}
+        \item mela1
+        \item mela2
+        \item mela3
+        \begin{enumerate}
+            \item seme1
+            \item seme2
+        \end{enumerate}
+    \end{enumerate}
+\item albero di pere
+\item albero di banane
+\end{enumerate}
+E gli elenchi puntati (itemize), hanno questa struttura:\\
+\begin{itemize}
+    \item albero di mele
+        \begin{itemize}
+            \item mela1
+            \item mela2
+            \item mela3
+            \begin{itemize}
+                \item seme1
+                \item seme2
+            \end{itemize}
+        \end{itemize}
+    \item albero di pere
+    \item albero di banane
+\end{itemize}
+Le due tipologie di elenchi puntati possono essere mescolate.\\
+Posso anche scrivere delle stringhe al posto dei punti o dei numeri:\\
+\begin{enumerate}
+\item[Commutativa] $a+b=b+a$
+\item[Associativa] $(a+b)+c=a+(b+c)$
+\item[Distributiva] $a(b+c)=ab+ac$
+\end{enumerate}
+\subsection{Stile del testo}
+Stringhe in grassetto/corsivo.
+\begin{itemize}
+\item grassetto: Questo \textbf{testo} è in grassetto.
+\item corsivo: Questo \textit{testo} è in corsivo.
+\end{itemize}
+\subsection{Formattazione del testo}
+Posso posizionare del testo a sx, 
+in centro o a dx dando come input a begin-end rispettivamente i comandi flushleft, 
+center e flushright: 
+\\
+\begin{flushleft}
+    Testo a sinistra
+\end{flushleft}
+\begin{center}
+    testo in centro
+\end{center}
+\begin{flushright}
+    testo a destra
+\end{flushright}
+\section{sezioni/capitoli}
+Possiamo organizzare il testo tramite delle sezioni, come dei capitoli e con il comando backslash 
+tableofcontents possiamo mostrare l'indice di tutte le section e subsection:\\
+\section{Leggi di Newton}
+    \subsection{Prima legge di Newton}
+    Un oggetto che si muove di moto rettilineo uniforme in un sistema isolato, continuerà a muoversi di moto rettilineo uniforme.
+    \subsection{Seconda legge di Newton}
+    $F=mg$
+    \subsection{Terza legge di Newton}
+    Se un corpo A esercita una forza $F_{a,b}$ su di un corpo B, il corpo B eserciterà 
+    una forza uguale e contraria $F_{b,a}$, sul corpo A.
+\section{Cinematica}
+    \subsection{Moto rettilineo uniforme}
+    \subsection{Moto armonico}
+
+
+
+
+
+\end{document}
