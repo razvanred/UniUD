@@ -26,9 +26,9 @@ void parseArray(int **v, unsigned int *size, char s[]) {
   *v= malloc(*size * sizeof(int));
   for(unsigned int i= 0; i < *size; i++) {
     sscanf(s, "%d", &((*v)[i]));
-    for(; *s != 0 && *s != ' '; s+= sizeof(char))
+    for(; *s != 0 && *s != ' '; s++)
       ;
-    s+= sizeof(char);
+    s++;
   }
 }
 
