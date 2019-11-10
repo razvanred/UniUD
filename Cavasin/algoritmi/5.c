@@ -33,7 +33,7 @@ void parseArray(int **v, unsigned int *size, char s[]) {
 }
 
 int binarySearch(int v[], unsigned int p, unsigned int q, int k) {
-  int pivot= (p + q) / 2;
+  unsigned int pivot= (p + q) / 2;
 
   if(k == v[pivot]) {
     return pivot;
@@ -47,7 +47,8 @@ int binarySearch(int v[], unsigned int p, unsigned int q, int k) {
 }
 
 int main(int argc, char **argv) {
-  int *v, size, k;
+  unsigned int size;
+  int *v, k;
   char s[20];
 
   printf(">>");

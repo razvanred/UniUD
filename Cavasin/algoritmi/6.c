@@ -53,7 +53,7 @@ Indices poigs1(int v[], unsigned int size, int k) {
 
 // nlog(n)
 int binarySearch(int v[], unsigned int p, unsigned int q, int k) {
-  int pivot= (p + q) / 2;
+  unsigned int pivot= (p + q) / 2;
 
   if(k == v[pivot]) {
     return pivot;
@@ -97,7 +97,8 @@ Indices poigs3(int v[], unsigned int size, int k) {
 }
 
 int main(int argc, char **argv) {
-  int *v, size, k;
+  unsigned int size;
+  int *v, k;
   Indices d;
   char s[30];
 

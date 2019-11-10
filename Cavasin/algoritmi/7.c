@@ -43,8 +43,8 @@ Indices poimax1(int v[], unsigned int size) {
   d.j= 0;
   int t= v[d.j] - v[d.i];
 
-  for(int i= 0; i < size - 1; i++) {
-    for(int j= i; j < size; j++) {
+  for(unsigned int i= 0; i < size - 1; i++) {
+    for(unsigned int j= i; j < size; j++) {
       if(v[j] - v[i] > t) {
         t= v[j] - v[i];
         d.i= i;
@@ -60,11 +60,10 @@ Indices poimax2(int v[], unsigned int size) {
   Indices d;
   d.i= 0;
   d.j= size - 1;
-
-  int *iBuffer= malloc(size * sizeof(int)), *jBuffer= malloc(size * sizeof(int));
   Indices bufferSize;
   bufferSize.i= 1;
   bufferSize.j= 1;
+  int *iBuffer= malloc(size * sizeof(int)), *jBuffer= malloc(size * sizeof(int));
   iBuffer[0]= d.i;
   jBuffer[0]= d.j;
 
@@ -79,27 +78,29 @@ Indices poimax2(int v[], unsigned int size) {
     }
   }
 
-  for(int i= 0, j= 0, ts= v[jBuffer[j]] - v[iBuffer[i]]; j < bufferSize.j; j++) {
-    if(v[jBuffer[j]] < v[iBuffer[i]]) {
-      i= j;
-    }
-    if(v[jBuffer[j]] - v[iBuffer[i]] >= ts) {
-      ts= v[jBuffer[j]] - v[iBuffer[i]];
-      d.i= iBuffer[i];
-      d.j= jBuffer[j];
+  {
+    unsigned int i= 0, j= 0;
+    for(int ts= v[jBuffer[j]] - v[iBuffer[i]]; j < bufferSize.j; j++) {
+      if(v[jBuffer[j]] < v[iBuffer[i]]) {
+        i= j;
+      }
+      if(v[jBuffer[j]] - v[iBuffer[i]] >= ts) {
+        ts= v[jBuffer[j]] - v[iBuffer[i]];
+        d.i= iBuffer[i];
+        d.j= jBuffer[j];
+      }
     }
   }
 
   free(iBuffer);
   free(jBuffer);
-
   return d;
 }
 
 Indices poimax3(int v[], unsigned int size) {
   Indices d;
-
-  for(int i= 0, j= 0, s= v[j] - v[i]; j < size; j++) {
+  unsigned int i= 0, j= 0;
+  for(int s= v[j] - v[i]; j < size; j++) {
     if(v[j] < v[i])
       i= j;
     if(v[j] - v[i] >= s) {
@@ -112,7 +113,8 @@ Indices poimax3(int v[], unsigned int size) {
 }
 
 int main(int argc, char **argv) {
-  int *v, size;
+  unsigned int size;
+  int *v;
   Indices d;
   char s[20];
 

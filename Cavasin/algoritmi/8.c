@@ -41,17 +41,7 @@ Indices aigs1(int v[], unsigned int size, int k) {
   Indices d;
   d.i= 0;
   d.j= 0;
-  int t= v[d.j] - v[d.i];
 
-  for(int i= 0; i < size - 1; i++) {
-    for(int j= i; j < size; j++) {
-      if(v[j] - v[i] > t) {
-        t= v[j] - v[i];
-        d.i= i;
-        d.j= j;
-      }
-    }
-  }
   return d;
 }
 
@@ -60,7 +50,7 @@ Indices aigs2(int v[], unsigned int size, int k) {
   Indices d;
   d.i= 0;
   d.j= 0;
-  unsigned int t= v[d.i];
+  int t= v[d.i];
 
   while(d.j <= size) {
     if(t == k) {
@@ -79,7 +69,8 @@ Indices aigs2(int v[], unsigned int size, int k) {
 }
 
 int main(int argc, char **argv) {
-  int *v, size, k;
+  unsigned int size;
+  int *v, k;
   Indices d;
   char s[20];
 

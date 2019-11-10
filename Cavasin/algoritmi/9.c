@@ -52,7 +52,6 @@ int majority1(int v[], unsigned int size, char *status) {
 // linear
 int majority2(int v[], unsigned int size, char *status) {
   int t;
-
   for(unsigned int p= 0, i= 0; i < size; i++) {
     if(p == 0)
       t= v[i];
@@ -74,7 +73,8 @@ int majority2(int v[], unsigned int size, char *status) {
 }
 
 int main(int argc, char **argv) {
-  int *v, size;
+  unsigned int size;
+  int *v;
   char s[250];
 
   printf(">>");
