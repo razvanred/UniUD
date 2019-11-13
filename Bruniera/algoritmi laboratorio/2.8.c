@@ -17,14 +17,15 @@ int main(int argc, char** argv) {
     unsigned int size; 
     char str[1000];
     //struct Pair range;
+    //int **sums;
+    int relsum;
     
     readline(str, 1000);
     parseArray(&v, &size, str);
     
     scanf("%d", &sum);
     
-    int **sums;
-    sums = malloc(sizeof(int*) * size);
+    /*sums = malloc(sizeof(int*) * size);
     for(int i = 0; i < size; i++) {
     	sums[i] = malloc(sizeof(int) * (i + 1));
 	}
@@ -44,9 +45,29 @@ int main(int argc, char** argv) {
 		free(sums[i]);
 	}
 	free(sums);
+	*/
+	
+	relsum = v[0];
+	left = 0;
+	right = 0;
+	while(left < size && relsum != sum) {
+		if(relsum > sum || right == (size - 1)) {
+			relsum -= v[left];
+			left++;
+			//printf("a, %d\n", relsum);
+		} else {
+			right++;
+			relsum += v[right];
+			//printf("b, %d\n", relsum);
+		}
+	}
     
-    printf("%d %d\n", left, right);
-    
+    if(relsum != sum) {
+    	puts("-1 -1\n");
+	} else {
+		printf("%d %d\n", left, right);
+	}
+	
     free(v);
     return 0;
 }

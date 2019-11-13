@@ -70,6 +70,8 @@ int main(int argc, char** argv) {
 	println_array(v, 50);
 	heapsort(v, 50);
 	println_array(v, 50);
+
+	return 0;
 }
 
 
