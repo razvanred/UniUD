@@ -1,0 +1,1 @@
+# Favor composition over inheritance
