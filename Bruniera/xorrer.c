@@ -12,6 +12,8 @@
 
 
 //l'estensione originale era .mp4
+// ./xorrer <file> <file chiave> [c/d] <stato iniziale 0..255>
+//l'operazione è in-place (riscrive il file stesso), [c/d] indicano se cifrare o decifrare
 
 
 void read_key(char* file, uint8_t* key){
