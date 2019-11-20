@@ -1,0 +1,1 @@
+# Prefer interfaces to reflection
