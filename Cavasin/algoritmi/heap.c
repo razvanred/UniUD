@@ -1,6 +1,8 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
 
 typedef struct sHeap {
   int *v;
@@ -51,6 +53,13 @@ unsigned int heapParent(unsigned int i) {
   return i / 2;
 }
 
+unsigned int heapDepth(Heap h) {
+  unsigned int i= 0;
+  while(h.heapSize>>= 1)
+    i++;
+  return i;
+}
+
 void heapify(Heap h, unsigned int i) {
   unsigned int l= heapLeft(i), r= heapRight(i), n;
   if(l >= h.heapSize)
@@ -86,41 +95,66 @@ Heap generateHeap(int v[], unsigned int size) {
 }
 
 int pop(Heap *h) {
-  if((*h).heapSize > 0) {
-    (*h).heapSize--;
-    swap((*h).v, 0, (*h).heapSize);
-    heapify((*h), 0);
-    return (*h).v[(*h).heapSize];
+  if(h->heapSize > 0) {
+    h->heapSize--;
+    swap(h->v, 0, h->heapSize);
+    heapify(*h, 0);
+    return h->v[h->heapSize];
   } else
     return 0;
 }
 
 void push(Heap *h, int n) {
-  if((*h).heapSize < (*h).size) {
-    (*h).v[(*h).heapSize]= n;
-    for(unsigned int i= (*h).heapSize; i > 0 && (*h).v[i] > (*h).v[heapParent(i)];) {
-      swap((*h).v, i, heapParent(i));
+  if(h->heapSize < h->size) {
+    h->v[h->heapSize]= n;
+    for(unsigned int i= h->heapSize; i > 0 && h->v[i] > h->v[heapParent(i)];) {
+      swap(h->v, i, heapParent(i));
       i= heapParent(i);
     }
-    (*h).heapSize++;
+    h->heapSize++;
   }
 }
 
-void printHeap(Heap *h, unsigned int i) {
+void heapSort(int v[], unsigned int size) {
+  Heap h= generateHeap(v, size);
+  for(unsigned int i= size - 1; i > 0; i--) {
+    v[i]= pop(&h);
+  }
+}
+
+void printHeapRec(Heap h, unsigned int i, bool b[], unsigned int bSize) {
   unsigned int t;
-  // printf("size=%d\n", h.heapSize);
 
-  putchar('L');
-  for(unsigned j= 0; j < i; j++)
-    putchar('-');
-  printf("%d\n", (*h).v[i]);
-
-  t= heapLeft(i);
-  if(t < (*h).heapSize)
-    printHeap(h, t);
   t= heapRight(i);
-  if(t < (*h).heapSize)
-    printHeap(h, t);
+  if(t < h.heapSize) {
+    for(unsigned int j= 0; j < bSize; j++) {
+      b[j] ? printf("│   ") : printf("    ");
+    }
+    printf("├── %d\n", h.v[t]);
+    b[bSize]= 1;
+    printHeapRec(h, t, b, bSize + 1);
+  }
+  t= heapLeft(i);
+  if(t < h.heapSize) {
+    for(unsigned int j= 0; j < bSize; j++) {
+      b[j] ? printf("│   ") : printf("    ");
+    }
+    printf("└── %d\n", h.v[t]);
+    b[bSize]= 0;
+    printHeapRec(h, t, b, bSize + 1);
+  }
+}
+
+void printHeap(Heap h) {
+  if(h.heapSize > 0) {
+    unsigned int cp= GetConsoleCP();
+    bool *b= calloc(heapDepth(h), sizeof(bool));
+    printf("%d\n", h.v[0]);
+    SetConsoleOutputCP(65001);
+    printHeapRec(h, 0, b, 0);
+    SetConsoleOutputCP(cp);
+    free(b);
+  }
 }
 
 void test1() {
@@ -133,14 +167,33 @@ void test1() {
     int n= rand() % 201 - 100;
     printf("add(%d)\n", n);
     push(&h, n);
-    printHeap(&h, 0);
+    printHeap(h);
+    putchar('\n');
   }
   for(unsigned int i= 0; i < size; i++) {
-    printf("remove()\n");
-    pop(&h);
-    printHeap(&h, 0);
+    printf("remove(): %d\n", pop(&h));
+    printHeap(h);
+    putchar('\n');
   }
 
+  puts("\n---------------");
+}
+
+void test2() {
+  int *a= NULL, *b= NULL;
+  unsigned int size;
+
+  puts("HEAP SORT");
+
+  generateArray(&a, &size);
+  printArray(a, size);
+
+  copyArray(&b, a, size);
+  heapSort(b, size);
+  printArray(b, size);
+
+  free(a);
+  free(b);
   puts("\n---------------");
 }
 
@@ -150,6 +203,7 @@ int main() {
 
   while(1) {
     test1();
+    test2();
 
     getch();
   }
