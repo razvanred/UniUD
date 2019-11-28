@@ -49,14 +49,14 @@ int binarySearch(int v[], unsigned int p, unsigned int q, int k) {
 int main(int argc, char **argv) {
   unsigned int size;
   int *v, k;
-  char s[20];
+  char s[500];
 
   printf(">>");
-  readLine(s, 20);
+  readLine(s, 500);
   scanf("%d", &k);
   parseArray(&v, &size, s);
   printf("%d", binarySearch(v, 0, size, k));
-  // getch();
+  getch();
   free(v);
   return 0;
 }

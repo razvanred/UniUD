@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
   d= aigs2(v, size, k);
   printf("%d %d\n", d.i, d.j);
 
-  // getch();
+  getch();
   free(v);
   return 0;
 }

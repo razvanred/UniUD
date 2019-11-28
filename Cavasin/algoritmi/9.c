@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
       printf("No majority");
   }
 
-  //   getch();
+  getch();
   free(v);
   return 0;
 }

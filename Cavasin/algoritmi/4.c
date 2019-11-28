@@ -21,9 +21,9 @@ int main(int argc, char **argv) {
 
   printf(">>");
   readLine(s, 20);
-  for(unsigned int i= strlen(s) - 1; i >= 0; i--) {
-    printf("%s\n", s);
+  for(unsigned int i= strlen(s); i > 0; i--) {
     s[i]= 0;
+    printf("%s\n", s);
   }
   getch();
   return 0;

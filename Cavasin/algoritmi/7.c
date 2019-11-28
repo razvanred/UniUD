@@ -131,7 +131,7 @@ int main(int argc, char **argv) {
   d= poimax3(v, size);
   printf("%d %d\n", d.i, d.j);
 
-  // getch();
+  getch();
   free(v);
   return 0;
 }
