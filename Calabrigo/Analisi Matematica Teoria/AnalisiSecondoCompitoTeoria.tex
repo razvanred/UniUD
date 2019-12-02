@@ -1,0 +1,229 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+
+\begin{document}
+
+\title{Materiale per il secondo compitino di gorni}
+\author{Calabrigo Massimo}
+\date{\today}
+\maketitle
+
+\tableofcontents
+
+\section{Numeri non generabili da algoritmi}
+Non tutti i numeri reali possono essere generati da algoritmi; Per dimostrare ciò ci serve l' \textbf{argomento diagonale}.\\
+Rappresentiamo un elenco ordinato di tutti i numeri reali:
+\begin{enumerate}
+    \item $.............$
+    \item $0.11111111...$
+    \item $0.22222222...$
+    \item $3.76535435...$
+    \item $12.5454354...$
+    \item $76.8479634...$
+    \item $.............$
+\end{enumerate}
+e prendiamo una "foto" finita dell'insieme dei numeri reali infiniti:
+\begin{enumerate}
+    \item $0.11111$
+    \item $0.22222$
+    \item $3.76535$
+    \item $12.54543$
+    \item $76.84796$
+\end{enumerate}
+A questo punto prendiamo la n-esima cifra dopo la virgola alla n-esima riga, e diamogli un valore diverso da quella che ha:
+\begin{enumerate}
+    \item $0.|7|1111$
+    \item $0.2|5|222$
+    \item $3.76|8|35$
+    \item $12.545|3|3$
+    \item $76.8479|1|$
+\end{enumerate}
+Abbiamo appena creato un nuovo numero che non esisteva nell'elenco precedente.
+\begin{enumerate}
+    \item $0.11111$
+    \item $0.22222$
+    \item $0.75831$
+    \item $3.76535$
+    \item $12.54543$
+    \item $76.84796$
+\end{enumerate}
+Ora aggiungiamo una cifra decimale ad ogni riga e otteniamo un nuovo gruppo finito, e da esso 
+possiamo ricavare infiniti numeri che non facevano parte dell'elenco. La stessa cosa vale per l'insieme $R$ dei 
+numeri reali, poichè abbiamo un elenco con $n = +\infty$, perciò anche la diagonale e i numeri 
+da essa generati saranno infiniti, e non generabili da algoritmi.\\
+\begin{enumerate}
+    \item $0.111111$
+    \item $0.222222$
+    \item $0.758312$
+    \item $3.765353$
+    \item $12.545436$
+    \item $76.847968$
+\end{enumerate}
+N.B.: la diagonale è solo un esempio per dimostrare che un algoritmo non può generare tutti i numeri reali, 
+se al posto della diagonale, dicessimo di cambiare un valore casuale dopo la virgola per riga, ottenendo un nuovo numero, 
+otterremmo lo stesso risultato di dimostrare l'impossibilità di generare tutti i numeri reali con gli algoritmi.
+\section{Limiti con l'Hopital}
+L'Hopital serve a gestire forme di limite indeterminate, altrimenti non risolvibili.\\
+Possiamo risolvere le forme indeterminate: $\frac{\infty}{\infty}$ e $\frac{0}{0}$.\\
+\begin{enumerate}
+    \item se $lim_{x \rightarrow 0}f(x) = 0$ e $lim_{x \rightarrow 0}g(x) = 0$ e 
+    $\frac{lim_{x \rightarrow 0}f^{'}(x)}{lim_{x \rightarrow 0}g^{'}(x)} = L$,\\ allora 
+    $\frac{lim_{x \rightarrow 0}f(x)}{lim_{x \rightarrow 0}g(x)} = L$
+    \item se $lim_{x \rightarrow \infty}f(x) = 0$ e $lim_{x \rightarrow \infty}g(x) = 0$ e 
+    $\frac{lim_{x \rightarrow \infty}f^{'}(x)}{lim_{x \rightarrow \infty}g^{'}(x)} = L$,\\ allora 
+    $\frac{lim_{x \rightarrow \infty}f(x)}{lim_{x \rightarrow \infty}g(x)} = L$
+\end{enumerate}
+
+\subsection{Procedimento per affrontare i limiti con l'hopital}
+Quando affrontiamo i limiti con l'hopital, ci troveremo sempre davanti ad una situazione 
+$f(x)/g(x)$, nel caso non fosse cosi basterà ricondurci a quella situazione facendo un 
+denominatore comune.\\
+Risolvere per prima $g(x)$, poichè potrebbe aiutare a capire quante volte io debba applicare poi 
+l'hopital (per esempio se $g(x)$, si semplifica in $x^{3}$).\\
+Bisogna guardare se ci sono situazioni in cui il limite può tendere da destra o da sinistra, 
+e quindi fare i limiti $lim_{x->0^{+}}$ e $lim_{x->0^{-}}$.\\
+Il procedimento sotto illustrato contiene tutti i passi per la risoluzione di un limite in questa 
+forma, passi che devono essere eseguiti ricorsivamente, finchè non si arriva ad un risultato:\\
+\begin{enumerate}
+    \item Provare a sostituire il valore del limite;
+    \item Provare a semplificare $f(x)$ con $g(x)$
+    \item Provare a razionalizzare;
+    \item Cercare possibili trasformazioni trigonometriche;
+    \item Cercare possibili limiti notevoli;
+    \item Fare la derivata;
+\end{enumerate}
+
+\section{Limiti e derivate dei seni e dei coseni}
+
+\subsection{Derivate da ricordare}
+\begin{center}
+ \begin{tabular}{|c|c|c|}
+ \hline
+ Funzioni & Derivate:\\
+ \hline \hline
+ $arcSin(x)$ & $\frac{1}{\sqrt{1-x^{2}}}$\\
+ \hline
+ $arcCos(x)$ & $-\frac{1}{\sqrt{1-x^{2}}}$\\
+ \hline
+ $arcTan(x)$ & $\frac{1}{1+x^{2}}$\\
+ \hline
+ \end{tabular}
+\end{center}
+\subsection{Trasformazioni trigonometriche da ricordare}
+\begin{itemize}
+    \item $sin(2x) = 2*sin(x)*cos(x)$
+    \item $cos(2x) = sin^{2}x + cos^{2}x$
+    \item $tan(x) = \frac{sin(x)}{cos(x)}$
+    \item $sin^{2}x + cos^{2}x = 1$
+\end{itemize}
+\section{Teorema dell'esisistenza degli zeri e funzioni continue}
+\subsection{Funzioni continue}
+\textbf{Definizione di continuità}:\\
+$\forall \epsilon > 0$ e $\exists \delta > 0$ e $\forall x \in Dom(f)$
+then $$|x - x_{0}| < \epsilon \rightarrow |f(x) - f(x_{0}| < \delta$$.\\
+Quindi $f(x) = \frac{1}{x}$, è una funzione continua, perchè $x_{0} \notin Dom(f)$\\
+\textbf{Proprietà delle funzioni continue:} Se f è una funzione continua, allora: $$lim_{x \rightarrow 0}(f(g(x))) = f(lim_{x \rightarrow 0}(g(x)))$$
+Le combinazioni di funzioni continue danno origine a funzioni continue. \\\textbf{Esempio:} polinomi, esponenzioli, e funzioni trigonometriche 
+sono funzioni continue, quindi $\frac{sin(x^{3} + e^{x+2})}{x^{2}+1}$ è  continua.\\
+\subsection{Teorema dell'esisistenza degli zeri}
+Sia $[a,b]$ un intervallo chiuso, e $f: [a,b] \rightarrow R$, e sia che $f(a)$ e $f(b)$, abbiano segni opposti, 
+allora $\exists x_{s} \in [a,b]$ tale che $f(x_{s}) = 0$\\
+Per vedere se esiste uno zero, uso un algoritmo iterativo.\\
+Ci sono due casi di partenza
+\begin{enumerate}
+    \item $f(a_{0}) < 0$ e $f(b_{0}) > 0$
+    \item $f(a_{0}) > 0$ e $f(b_{0}) < 0$
+\end{enumerate}
+Analizziamo il primo caso:\\
+Troviamo un punto $c_{0} = \frac{a_{0} + b_{0}}{2}$. A questo punto vediamo i casi:
+\[
+  f(c_{i})=\begin{cases}
+               < 0 \rightarrow cerchiamo c_{i+1} a destra, I_{i+1} = [c_{i+1},b]\\
+               = 0 \rightarrow abbiamo finito\\
+               > 0 \rightarrow cerchiamo c_{i+1} a sinistra, I_{i+1} = [a,c_{i+1}]
+            \end{cases}
+\]
+Continuo a cercare $c_{i}$, dimezzando ogni volta l'intervallo e cercando a destra o a sinistra in base all'algoritmo 
+sovrastante, finche non trovo $f(c_{i}) = 0$; a quel punto ho trovato che esiste uno zero.\\
+
+\textbf{Per dimostrare il teorema mi manca una cosa però}, l'algoritmo potrebbe continuare all'infinito, 
+devo dimostrare quando e perchè non è cosi.\\
+Vado a vedere la lunghezza dell'intervallo $I_{i}$.Guardo alcuni casi:
+\begin{itemize}
+    \item $I_{0} = [a_{0},b_{0}]$ e quindi la lunghezza di $I_{0}$ è uguale a $\frac{b_{0} - a_{0}}{1}$
+    \item $I_{1} = [a_{1},b_{1}]$ e quindi la lunghezza di $I_{1}$ è uguale a $\frac{b_{0} - a_{0}}{2}$
+    \item $I_{2} = [a_{2},b_{2}]$ e quindi la lunghezza di $I_{2}$ è uguale a $\frac{b_{0} - a_{0}}{4}$
+    \item $I_{3}$ = ...
+    \item $I_{n} = [a_{n},b_{n}]$ e quindi la lunghezza di $I_{n}$ è uguale a $\frac{b_{0} - a_{0}}{2^{n}}$
+\end{itemize}
+Visto che $I_{n} = \frac{b_{0} - a_{0}}{2^{n}} = b_{n} - a_{n}$ possiamo riscriverlo come $b_{n} - a_{n} = \frac{b_{0} - a_{0}}{2^{n}}$\\
+Noi sappiamo che $a_{i} <= a_{i+1}$ sarà sempre vero, e allo stesso modo $b_{i} >= b_{i+1}$. Quindi possiamo concludere che 
+la successione $a_{n}$ è \textbf{debolmente crescente} (vuol dire che è non decrescente, ovvero che non cresce per forza sempre, ma può anche rimanere uguale)
+, mentre $b_{n}$ è \textbf{debolmente decrescente}.\\
+Sappiamo che le successione monotone hanno sempre un limite, quindi
+\begin{itemize}
+    \item $lim_{x \rightarrow \infty}(a_{n}) = a_{s}$
+    \item $lim_{x \rightarrow \infty}(b_{n}) = b_{s}$
+\end{itemize}
+$$a_{0} <= a_{s} <= b_{s} <= b_{0}$$
+Riassumiamo le Proprietà dell'intervallo:
+\begin{enumerate}
+    \item Visto che $I_{n} = \frac{b_{0} - a_{0}}{2^{n}}$, sappiamo che $I_{n}$ tende a zero.
+    \item $f(a_{i})$ e $f(b_{i})$ hanno segni opposti
+    \item $a_{n}$ è debolmente crescente
+    \item $b_{n}$ è debolmente decrescente
+    \item Esiste $lim_{x \rightarrow \infty}(a_{n}) = a_{s}$ ed è finito
+    \item Esiste $lim_{x \rightarrow \infty}(b_{n}) = b_{s}$ ed è finito
+\end{enumerate}
+Facciamo il limite di $b_{n} - a_{n} = \frac{b_{0} - a_{0}}{2^{n}}$, per trovare il nostro $x_{s}$:
+\begin{align}
+    &lim_{n \rightarrow \infty}(b_{n} - a_{n}) = lim_{n \rightarrow \infty}(\frac{b_{0} - a_{0}}{2^{n}})\\
+    &b_{s} - a_{s} = 0\\
+    &a_{s} = b_{s}
+\end{align}
+Poniamo $x_{s} = a_{s} = b_{s}$\\
+\textbf{Inizio parte facoltativa (serve per dimostrare che x tocca tutti gli intervalli $I_{i})$}\\
+Dobbiamo dimostrare che $a_{s} <= x_{s} <= b_{s}$.\\
+Io so che $a_{0} <= a_{1} <= ... <= a_{n} < b_{n} <= b_{n-1} <= ... <= b_{0}$.\\
+
+Preso $m < n$, allora $a_{0} <= a_{1} <= ... <= a_{m} <= ... <= a_{n} < b_{n} <= b_{n-1} <= ... <= b_{m} <= ... <= b_{0}$, 
+e quindi $$a_{m} < b_{n}$$
+Preso $m > n$, allora $a_{0} <= a_{1} <= ... <= a_{n} <= ... <= a_{m} < b_{m} <= b_{m-1} <= ... <= b_{n} <= ... <= b_{0}$, 
+e quindi $$a_{n} < b_{m}$$
+Considero $a_{n} < b_{m}$ (o anche l'altra, a scelta). Ora posso dire che:
+\begin{align}
+    &a_{n} < b_{m}\\
+    &lim_{n \rightarrow \infty}(a_{n}) <= b_{m}\\
+    &x_{s} <= b_{m}
+\end{align}
+\begin{center}
+    e
+\end{center}
+\begin{align}
+    &a_{n} < b_{m}\\
+    &a_{n} <= lim_{m \rightarrow \infty}(b_{m})\\
+    &a_{n} <= x_{s}
+\end{align}
+\textbf{Fine parte facoltativa}\\
+Ora che abbiamo dimostrato la formula possiamo usarla:
+\begin{align}
+    f(a_{n}) < 0\\
+    lim_{n \rightarrow \infty}(f(a_{n})) <= 0\\
+    f(x_{s}) <= 0
+\end{align}
+\begin{center}
+    e
+\end{center}
+\begin{align}
+    f(b_{n}) > 0\\
+    lim_{n \rightarrow \infty}(f(b_{n})) >= 0\\
+    f(x_{s}) >= 0
+\end{align}
+Quindi, grazie a $f(x_{s}) <= 0$ e $f(x_{s}) >= 0$, posso dire che 
+$$f(x_{s}) = 0$$
+\textbf{Quindi esiste uno zero della funzione}.
+\begin{center}
+   \textbf{FINE DIMOSTRAZIONE}
+\end{center}
+\end{document}

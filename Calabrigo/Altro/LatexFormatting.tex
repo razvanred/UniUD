@@ -1,4 +1,6 @@
 \documentclass[11pt]{article}
+\usepackage{amsmath}
+
 \begin{document}
 \title{Formattazione di Latex}
 \author{Calabrigo Massimo}
@@ -27,6 +29,20 @@ Titolo e Headers: Possiamo scrivere titolo, autore e data; e avremmo bisogno di 
     \item date
     \item maketitle(obbligatorio)
 \end{enumerate}
+\section{Inclusione di una libreria e lista di librerie}
+Si possono includere le librerie solo all'esterno del begin-end(document), sotto documentclass.\\
+Per includere una libreria, bisogna usare $\backslash$usepackage$\{nomePackage\}$.
+\subsection{amsmath}
+\textbf{amsmath} è una libreria matematica, che contiene operatori utili come cases e align.\\
+Una funzione utile di amsmath è il cases, che permette di fare:
+
+\[
+      f(x)=\begin{cases}
+                x\\
+                x + 3\\
+                x - 3
+            \end{cases}
+\]
 \section{Sintassi di formattazione del testo}
 \subsection{elenchi}
 Elenchi puntati/numerati: ci sono 2 tipologie di elenchi entrambi racchiusi tra begin e end, e dopo l'end non 
