@@ -177,11 +177,11 @@ Riassumiamo le Proprietà dell'intervallo:
     \item Esiste $lim_{x \rightarrow \infty}(b_{n}) = b_{s}$ ed è finito
 \end{enumerate}
 Facciamo il limite di $b_{n} - a_{n} = \frac{b_{0} - a_{0}}{2^{n}}$, per trovare il nostro $x_{s}$:
-\begin{align}
+\begin{align*}
     &lim_{n \rightarrow \infty}(b_{n} - a_{n}) = lim_{n \rightarrow \infty}(\frac{b_{0} - a_{0}}{2^{n}})\\
     &b_{s} - a_{s} = 0\\
     &a_{s} = b_{s}
-\end{align}
+\end{align*}
 Poniamo $x_{s} = a_{s} = b_{s}$\\
 \textbf{Inizio parte facoltativa (serve per dimostrare che x tocca tutti gli intervalli $I_{i})$}\\
 Dobbiamo dimostrare che $a_{s} <= x_{s} <= b_{s}$.\\
@@ -192,34 +192,34 @@ e quindi $$a_{m} < b_{n}$$
 Preso $m > n$, allora $a_{0} <= a_{1} <= ... <= a_{n} <= ... <= a_{m} < b_{m} <= b_{m-1} <= ... <= b_{n} <= ... <= b_{0}$, 
 e quindi $$a_{n} < b_{m}$$
 Considero $a_{n} < b_{m}$ (o anche l'altra, a scelta). Ora posso dire che:
-\begin{align}
+\begin{align*}
     &a_{n} < b_{m}\\
     &lim_{n \rightarrow \infty}(a_{n}) <= b_{m}\\
     &x_{s} <= b_{m}
-\end{align}
+\end{align*}
 \begin{center}
     e
 \end{center}
-\begin{align}
+\begin{align*}
     &a_{n} < b_{m}\\
     &a_{n} <= lim_{m \rightarrow \infty}(b_{m})\\
     &a_{n} <= x_{s}
-\end{align}
+\end{align*}
 \textbf{Fine parte facoltativa}\\
 Ora che abbiamo dimostrato la formula possiamo usarla:
-\begin{align}
+\begin{align*}
     f(a_{n}) < 0\\
     lim_{n \rightarrow \infty}(f(a_{n})) <= 0\\
     f(x_{s}) <= 0
-\end{align}
+\end{align*}
 \begin{center}
     e
 \end{center}
-\begin{align}
+\begin{align*}
     f(b_{n}) > 0\\
     lim_{n \rightarrow \infty}(f(b_{n})) >= 0\\
     f(x_{s}) >= 0
-\end{align}
+\end{align*}
 Quindi, grazie a $f(x_{s}) <= 0$ e $f(x_{s}) >= 0$, posso dire che 
 $$f(x_{s}) = 0$$
 \textbf{Quindi esiste uno zero della funzione}.
@@ -242,4 +242,210 @@ $$
     y = l
 \end{cases}
 $$
+Un \textbf{asintoto obliquio} è tale se, data la retta $y = mx + q$, allora vale il limite $lim_{x \rightarrow \infty}(f(x) - mx - q)$.\\
+Quando bisogna vedere se c'è un asintoto obliquo bisogna procedere in questo modo:\\
+\begin{enumerate}
+    \item dobbiamo calcolare $y = mx + q$, quindi calcoliamo $m = lim_{x \rightarrow \infty}(\frac{f(x)}{x})$; se $m \in R$, allora continuo (calcolo q), se $m = 0$ ho un asintoto orizzontale (calcolo q), altrimenti non ho un asintoto obliquo.
+    \item $q = lim_{x \rightarrow \infty}(f(x) - mx)$. Se $q \in R$ allora ho un asintoto obliquo.
+\end{enumerate}
+Esempio:$f(x) = \frac{x^{2}}{x-1}$, trova se esiste $y = mx + q$
+\begin{align*}
+    &m = lim_{x \rightarrow \infty}(f(x)/x)\\
+    &m = lim_{x \rightarrow \infty}(\frac{x^{2}}{x-1}/x)\\
+    &m = lim_{x \rightarrow \infty}(\frac{1}{(1-\frac{1}{x})}) = 1\\
+    &q = lim_{x \rightarrow \infty}(f(x) - mx)\\
+    &q = lim_{x \rightarrow \infty}(\frac{x^{2}}{x-1} - x)\\
+    &q = lim_{x \rightarrow \infty}(\frac{x}{x-1})\\
+    &q = lim_{x \rightarrow \infty}(\frac{1}{1 - \frac{1}{x}}) = 1\\
+    &y = mx + q = x + 1
+\end{align*}
+\subsection{Come affrontare una funzione con logaritmi o arctan e gli zeri della funzione}
+Affrontare questo tipo di funzioni non è poi tanto diverso dall'affrontare quelle polinomiali, ma con la differenza che bisogna stare più attenti sia 
+nella parte di studio della funzione di partenza e nel determinare il dominio, che nella successiva parte delle derivate.\\
+In questo tipo di esercizi, può essere chiesto di trovare gli zeri della funzione. Torna utile quindi il teorema di esistenza degli zeri.\\
+Come lo applico? Una volta che ho fatto la derivata prima, e lo studio della crescenza/descrescenza, posso controllare ogni intervallo uno ad uno, 
+e vedere se esiste uno zero. Ricorda che la funzione $f:[a,b] \rightarrow R$, deve essere continua nell'intervallo $[a,b]$. Per controllare posso usare 
+le conoscenze che ho già acquisito nei passi precedenti, infatti andrò a vedere cosa vale la mia funzione nel punto a e cosa vale nel punto b, e da questo posso concludere 
+se la funzione è passata per lo zero.\\
+Per esempio se la mia tabella di crescenza/descrescenza è:\\
+\begin{tabular}{|c|c|c|}
+    \hline
+    $0$ & $\sqrt{\frac{1}{2}}$ & $1$:\\
+    \hline \hline
+    $-$ & $-$ & $+$\\
+    \hline
+    $+$ & $+$ & $+$\\
+    \hline\hline
+    $-$ & $-$ & $+$\\
+    \hline
+\end{tabular}\\
+e conosco che in 1 c'è un asintoto verticale, allora potrò dire che nell'intervallo $[\sqrt{\frac{1}{2}},1]$ c'è uno zero:
+\begin{itemize}
+    \item $[-\infty,0]$ no
+    \item $[0,\sqrt{\frac{1}{2}}]$ no
+    \item $[\sqrt{\frac{1}{2}},1]$ si
+    \item $[1,\infty]$ no
+\end{itemize}
+\section{Primitive e integrali}
+\subsection{Primitive e tabella}
+L'operazione di antiderivazione è l'opposto della derivazione, $$\int(\frac{d}{dx}f(x)) = f(x)$$ Vediamo un paio di trasformazioni da $f(x)$ a $\int f(x)$:
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        $f(x)$ & $\int f(x)$\\
+        \hline\hline
+        $k$(costante) & $kx$\\
+        \hline
+        $x^{a}$ & $\frac{x^{a+1}}{a+1}$\\
+        \hline
+        $\frac{1}{x}$ & $ln(|x|)$\\
+        \hline
+        $sen(x)$ & $-cos(x)$\\
+        \hline
+        $cos(x)$ & $sin(x)$\\
+        \hline
+        $a^{x}$ & $\frac{a^{x}}{log(a)}$\\
+        \hline
+        $\frac{1}{1+x^{2}}$ & $arctg(x)$\\
+        \hline
+    \end{tabular}
+\end{center}
+Vediamo le proprietà delle operazioni tra integrali e le funzioni composte
+\begin{center}
+    \begin{itemize}
+        \item $\int(f(x) \pm g(x))dx = \int(f(x))dx \pm \int(g(x))dx$
+        \item $\int(k*f(x))dx = k*\int(f(x))dx$
+    \end{itemize}
+\end{center}
+Una regola fondamentale è quella che riguarda le funzioni composte:
+$$\int f^{'}(g(x)) * g^{'}(x) = f(g(x))$$
+Esempio:
+\begin{align*}
+    \int(3*x^{2} * sin(x^{3}))\\
+    g^{'}(x) * f^{'}(g(x))\\
+    -cos(x^{3}) + c
+\end{align*}
+Da questa regola ne derivano varie:\\
+\begin{tabular}{|c|c|}
+    \hline
+    Primitiva elementare & Primitiva composta\\
+    \hline\hline
+    $f(x) = \frac{1}{x}$ e $\int f(x)dx = ln(|x|) + c$ & $\int(\frac{g^{'}(x)}{g(x)}) = ln|g(x)| + c$\\
+    \hline
+    $f(x) = x^{n}$ e $\int f(x)dx = \frac{x^{n+1}}{n+1} + c$ & $\int(g^{'}(x)*g(x)^{n}) = \frac{g(x)^{n+1}}{n+1}  + c$\\
+    \hline
+    \dots & \dots\\
+    \hline
+\end{tabular}
+\subsection{Risoluzione delle primitive}
+Ci sono 4 tipi di primitive delle verifiche di gorni: 1 composta da polinomi, 2 composte da log(x), cos(x), sin(x), tan(x), arctan(x), ecc., e 1 per parti.\\
+Vediamo come risolvere queste tipologie separatamente.\\
+\textbf{Primitive composte da polinomi}\\
+Quando dobbiamo affrontare questo tipo di primitive, non possiamo partire in quarta e fare le primitive; prima bisogna fare la \textbf{Divisione del polinomio}. 
+Ora vedremo questo primo procedimento:\\
+\begin{enumerate}
+    \item Denominiamo $P(x)$ il polinomio numeratore e $D(x)$ il polinomio denominatore;
+    \item Scriviamo $P(x) | D(x)$;
+    \item Calcoliamo $gMax = \frac{termine di grado max di P(x)}{termine di grado massimo di D(x)}$;
+    \item Scriviamo
+    \begin{tabular}{c|c}
+        $P(x)$ & $D(x)$\\
+        \hline
+               & $gMax$
+    \end{tabular}
+    \item Moltiplichiamo gMax per ogni termine di P(x), e scriviamo i risultati, cambiati di segno, nella riga sotto P(x):\\
+    \begin{tabular}{c|c}
+        $P(x)$ & $D(x)$\\
+        \hline
+        $D(x)*gMax*(-1)$ & $gMax$
+    \end{tabular}
+    \item Sommiamo la riga $P(x)$ con la riga $P(x)*gMax*(-1)$ (somma termine per termine), e riportiamo il risultato nella riga sottostante:\\
+    \begin{tabular}{c|c}
+        $P(x)$ & $D(x)$\\
+        \hline
+        $D(x)*gMax*(-1)$ & $gMax$\\
+        \hline
+        $P(x) + D(x)*gMax*(-1)$
+    \end{tabular}
+    \item Continuo finchè non arrivo ad avere un grado zero in $Q(x)$:\\
+    \begin{tabular}{c|c}
+        $P1(x)$ & $D(x)$\\
+        \hline
+        $D(x)1*gMax1*(-1)$ & $Q(x) = gMax1$, $gMax2, \dots, gMaxN$\\
+        \hline
+        $P1(x) + D(x)1*gMax1*(-1)$\\
+        \hline
+        $D(x)*gMax2*(-1)$\\
+        \hline
+        $P2(x) + D2(x)*gMax2*(-1)$\\
+        \hline
+        $\dots$\\
+        \hline
+        $PN(x) = \dots$
+    \end{tabular}
+    \item Ora posso scrivere il risultato, che sarà $Q(x) + \frac{PN(x)}{D(x)}$
+\end{enumerate}
+Facciamo un esempio: $f(x) = \frac{3x^3-2x^2+x}{6x^2+5x+1}$\\
+$P(x) = 3x^3-2x^2+x$ e $D(x) = 6x^2+5x+1$.\\
+\begin{enumerate}
+    \item \begin{tabular}{c|c}
+        $3x^3-2x^2+x$ & $6x^2+5x+1$\\
+        \hline
+    \end{tabular}\\
+    \item \begin{tabular}{c|c}
+        $3x^3-2x^2+x$ & $6x^2+5x+1$\\
+        \hline
+                    & $\frac{x}{2}$\\
+        \hline
+    \end{tabular}\\
+    \item \begin{tabular}{c|c}
+        $3x^3-2x^2+x$ & $6x^2+5x+1$\\
+        \hline
+        $-3x^3 -\frac{5x^{2}}{2} - \frac{x}{2} + 0$ & $\frac{x}{2}$\\
+        \hline
+    \end{tabular}\\
+    \item \begin{tabular}{c|c}
+        $3x^3-2x^2+x$ & $6x^2+5x+1$\\
+        \hline
+        $-3x^3 -\frac{5x^{2}}{2} - \frac{x}{2} + 0$ & $\frac{x}{2}$\\
+        \hline
+        $0x^3 -\frac{9x^{2}}{2} + \frac{x}{2} + 0$ & \\
+        \hline
+    \end{tabular}\\
+    \item \begin{tabular}{c|c}
+        $3x^3-2x^2+x$ & $6x^2+5x+1$\\
+        \hline
+        $-3x^3 -\frac{5x^{2}}{2} - \frac{x}{2} + 0$ & $\frac{x}{2}$, $-\frac{3}{4}$\\
+        \hline
+        $0x^3 -\frac{9x^{2}}{2} + \frac{x}{2} + 0$ & \\
+        \hline
+    \end{tabular}\\
+    \item \begin{tabular}{c|c}
+        $3x^3-2x^2+x$ & $6x^2+5x+1$\\
+        \hline
+        $-3x^3 -\frac{5x^{2}}{2} - \frac{x}{2} + 0$ & $\frac{x}{2}$, $-\frac{3}{4}$\\
+        \hline
+        $0x^3 -\frac{9x^{2}}{2} + \frac{x}{2} + 0$ & \\
+        \hline
+        $0x^3 -\frac{18x^{2}}{4} + \frac{15x}{4} + 0$ & \\
+    \end{tabular}\\
+    \item \begin{tabular}{c|c}
+        $3x^3-2x^2+x$ & $6x^2+5x+1$\\
+        \hline
+        $-3x^3 -\frac{5x^{2}}{2} - \frac{x}{2} + 0$ & $\frac{x}{2}$, $-\frac{3}{4}$\\
+        \hline
+        $0x^3 -\frac{9x^{2}}{2} + \frac{x}{2} + 0$ & \\
+        \hline
+        $0x^3 -\frac{18x^{2}}{4} + \frac{15x}{4} + 0$ & \\
+        \hline
+        $0x^3 + 0x^{2} + \frac{17x}{4} + \frac{3}{4}$ & \\
+    \end{tabular}\\
+    \item $PN(x) = \frac{17x}{4} + \frac{3}{4}$ e $Q(x) = \frac{x}{2} - \frac{3}{4}$.\\
+    Quindi possiamo riscrivere
+    \begin{align*}
+        &f(x) = \frac{3x^3-2x^2+x}{6x^2+5x+1}\\
+        &f(x) = Q(x) + \frac{PN(x)}{D(x)}\\
+        &f(x) = \frac{x}{2} - \frac{3}{4} + \frac{\frac{17x}{4} + \frac{3}{4}}{6x^2+5x+1}
+    \end{align*} 
+\end{enumerate}
 \end{document}
