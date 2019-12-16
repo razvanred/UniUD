@@ -1,4 +1,5 @@
 \documentclass[11pt]{article}
+\DeclareUnicodeCharacter{030A}{}
 
 \usepackage{amsmath}
 
@@ -63,6 +64,71 @@ da essa generati saranno infiniti, e non generabili da algoritmi.\\
 N.B.: la diagonale è solo un esempio per dimostrare che un algoritmo non può generare tutti i numeri reali, 
 se al posto della diagonale, dicessimo di cambiare un valore casuale dopo la virgola per riga, ottenendo un nuovo numero, 
 otterremmo lo stesso risultato di dimostrare l'impossibilità di generare tutti i numeri reali con gli algoritmi.
+\section{Disuguaglianza di Bernoulli}
+La disuguaglianza di Bernoulli è una formula che aiuta a risolvere certe dimostrazioni per induzioni che usano i simboli $\ge$ e $\le$.\\
+La disuguaglianza di Bermoulli dice che: $$(1+x)^{n} \ge (1 + nx) ; \forall n \in N, \forall x \ge 0$$ Dimostriamolo per induzione:\\
+\begin{center}
+    $P(n) = ((1+x)^{n} \ge (1+nx)) ; \forall n \in N, \forall x \ge 0$\\
+    Caso Base:\\
+    $P(0) = 1 \ge 1$\\
+    Tesi induttiva:\\
+    $P(n+1) = ((1+x)^{n+1} \ge (1 + (n+1)x))$\\
+    Passo induttivo:\\
+    \begin{align*}
+        &(1+x)^{n}*(1+x) \ge (1 + (n+1)x)\\
+        &(1+nx)*(1+x) \ge (1 + (n+1)x)\\
+        &1+x+nx+nx^{2} \ge 1 + nx + x\\
+        &nx^{2} \ge 0\\
+    \end{align*}
+    $nx^{2} \ge 0$ è sempre vero $\forall n \in N, \forall x \in R$, quindi $(1+nx)*(1+x) \ge (1 + (n+1)x)$ è vero, e per 
+    la proprietà transitiva, detti $A = ((1+x)^{n}*(1+x))$, $B = ((1+nx)*(1+x))$ e $C = ((1 + (n+1)x))$ se $A \ge B \ge C$, allora $A \ge C$
+     per la proprietà transitiva.\\
+     \textbf{FINE DIMOSTRAZIONE}
+\end{center}
+\section{Teorema del limite della somma di 2 funzioni aventi limite finito}
+Il teorema dice che $$(lim_{x \rightarrow x_{0}}f(x) = m) + (lim_{x \rightarrow x_{0}}g(x) = n) = (lim_{x \rightarrow x_{0}}(f(x)+g(x)) = m+n)$$
+Dobbiamo dimostrarlo:\\
+Possiamo riscriverlo con i moduli $lim_{x \rightarrow x_{0}}f(x) = m$ è come scrivere $|f(x)-m| < \epsilon_{1}$ e $lim_{x \rightarrow x_{0}}g(x) = n$ è come scrivere $|f(x)-n| < \epsilon_{2}$.\\
+Quindi possiamo riscrivere $(lim_{x \rightarrow x_{0}}(f(x)+g(x)) = m+n)$ come $|f(x)+g(x)-m-n| < \epsilon_{1} + \epsilon_{2}$, che sarà la nostra ipotesi.\\
+Dimostrazione:\\
+\begin{align*}
+    &lim_{x \rightarrow x_{0}}f(x) + lim_{x \rightarrow x_{0}}g(x) = m + n\\
+    &|f(x)-m|<\epsilon_{1} , |g(x)-n|<\epsilon_{2}\\
+    &|f(x)+g(x)-m-n| < |f(x)-m| + |g(x)-n| < \epsilon_{1} + \epsilon_{2}\\
+    &|f(x)+g(x)-m-n| < \epsilon_{1} + \epsilon_{2}
+\end{align*}
+Quindi abbiamo dimostrato l'ipotesi.
+\begin{center}
+    \textbf{FINE DIMOSTRAZIONE}
+\end{center}
+\section{La successione fondamentale $(1+\frac{1}{x})^{x}$}
+\subsection{crescenza della successione fondamentale}
+La successione fondamentale $(1+\frac{1}{x})^{x}$ è crescente, dimostriamolo:\\
+Detto $a_{n} = (1+\frac{1}{x})^{x}$, scriviamo $a_{n} \le a_{n+1}$.\\
+Per motivi di calcoli, non dimostriamo la formula sovrastante, ma dimostriamo $a_{n-1} \le a_{n}$ e 
+riscriviamola come $\frac{a_{n}}{a_{n-1}} \ge 1$ e dimostriamola.\\
+\begin{align*}
+    &\frac{(1+\frac{1}{n})^{n}}{(1+\frac{1}{n-1})^{n-1}}\\
+    &\frac{(\frac{n+1}{n})^{n}}{(\frac{n}{n-1})^{n}} * \frac{n}{n-1}\\
+    &(\frac{n+1}{n}*\frac{n-1}{n})^{n}*\frac{n}{n-1}\\
+    &(\frac{n^{2}-1}{n^{2}})^{n}* \frac{n}{n-1}\\
+    &(1- \frac{1}{n^{2}})^{n}*\frac{n}{n+1}
+\end{align*}
+Ora uso Bernoulli $(x+1)^{n} \ge 1 +nx$, pongo $x = -\frac{1}{n^{2}}$:\\
+Per applicare Bernoulli devo rispettare le condizioni: $n \in N, x \ge 0$, quindi nel nostro caso abbiamo come 
+ipotesi iniziale $n \ge 2$, quindi sappiamo che $n \in N$, ora verifichiamo che $x \ge 0$, ovvero $-\frac{1}{n^{2}} \ge 0$.\\
+\begin{align*}
+    &-\frac{1}{n^{2}} \ge 0\\
+    &\frac{1}{n^{2}} \le 0\\
+    &n^{̊2} \ge 0 \forall n \in R
+\end{align*}
+Abbiamo verificato di rispettare le condizioni di Bernoulli, quindi possiamo scrivere: $1 - \frac{1}{x^{2}} \ge 1 - \frac{1}{n^{2}}*n = 1 - \frac{1}{n}$\\
+$(1 - \frac{1}{n})*(\frac{n}{n-1}) = \frac{n-1}{n}*\frac{n}{n-1} = 1$\\
+Quindi abbiamo ottenuto che $\frac{a_{n}}{a_{n-1}} \ge 1$ è uguale a $1 \ge 1$, ed è vero.\\
+Quindi abbiamo dimostrato il teorema\\
+\begin{center}
+    \textbf{FINE DIMOSTRAZIONE}
+\end{center}
 \section{Limiti con l'Hopital}
 L'Hopital serve a gestire forme di limite indeterminate, altrimenti non risolvibili.\\
 Possiamo risolvere le forme indeterminate: $\frac{\infty}{\infty}$ e $\frac{0}{0}$.\\
@@ -93,9 +159,12 @@ forma, passi che devono essere eseguiti ricorsivamente, finchè non si arriva ad
     \item Cercare possibili limiti notevoli;
     \item Fare la derivata;
 \end{enumerate}
-
 \section{Limiti e derivate dei seni e dei coseni}
-
+\subsection{Definizione Derivata}
+Una derivata è definita come il limite del rapporto incremenetale, e si scrive $$lim_{h \rightarrow 0}\frac{f(x+h)-f(x)}{h}$$ oppure 
+$$lim_{x \rightarrow x_{0}}\frac{f(x)-f(x_{0})}{x-x_{0}}$$
+Una funzione derivata è sempre continua, ma una funzione continua non è sempre derivabile; come esempio di funzione continua non derivabile abbiamo $f(x) = |x|$.\\
+In questo caso, nel punto $x=0$, derivata destra e sinistra differiscono, perciò la derivata non esiste.
 \subsection{Derivate da ricordare}
 \begin{center}
  \begin{tabular}{|c|c|c|}
@@ -113,7 +182,7 @@ forma, passi che devono essere eseguiti ricorsivamente, finchè non si arriva ad
 \subsection{Trasformazioni trigonometriche da ricordare}
 \begin{itemize}
     \item $sin(2x) = 2*sin(x)*cos(x)$
-    \item $cos(2x) = sin^{2}x + cos^{2}x$
+    \item $cos(2x) = cos^{2}x - sin^{2}x$
     \item $tan(x) = \frac{sin(x)}{cos(x)}$
     \item $sin^{2}x + cos^{2}x = 1$
 \end{itemize}
@@ -448,4 +517,101 @@ $P(x) = 3x^3-2x^2+x$ e $D(x) = 6x^2+5x+1$.\\
         &f(x) = \frac{x}{2} - \frac{3}{4} + \frac{\frac{17x}{4} + \frac{3}{4}}{6x^2+5x+1}
     \end{align*} 
 \end{enumerate}
+Ora abbiamo terminato con la prima semplificazione, se guardiamo il nostro esempio siamo nella situazione: $$f(x) = \frac{x}{2} - \frac{3}{4} + \frac{\frac{17x}{4} + \frac{3}{4}}{6x^2+5x+1}$$
+La seconda parte è ancora troppo complicata per noi però. Ora il nostro obiettivo è semplificare $\frac{\frac{17x}{4} + \frac{3}{4}}{6x^2+5x+1}$.\\
+Per farlo innanzitutto trasformiamo $6x^{2}+5x+1$ in una moltiplicazione di polinomi. Usando la formula per i polinomi $\frac{-b \pm \sqrt{b^{2}-4ac}}{2a}$, oppure ruffini scomponiamola.\\
+Qui salto i passaggi: $6x^{2}+5x+1 = (2x+1)(3x+1)$. Quindi dobbiamo semplificare $\frac{1}{4} * \frac{17x+3}{(2x+1)(3x+1)}$.\\
+Per farlo, suddivido la formula in questo modo, e risolvo il sistema:\\
+\begin{enumerate}
+    \item $\frac{A}{(2x+1)} + \frac{B}{(3x+1)}$\\
+    \item $\frac{A(3x+1)+B(2x+1)}{(2x+1)(3x+1)}$\\
+    \item $\frac{(3A+2B)x + (A+B)}{(2x+1)(3x+1)}$\\
+    \item Risolvo il sistema:\\
+    \begin{align*}
+        \begin{cases}
+            3A+2B = 17\\
+            A+B = 3
+        \end{cases}
+        \begin{cases}
+            A = 11\\
+            B = -8
+        \end{cases}
+    \end{align*}
+    \item Riscrivo l'equazione:\\
+    $f(x) = \frac{x}{2} - \frac{3}{4} + \frac{\frac{17x}{4} + \frac{3}{4}}{6x^2+5x+1}$ = $\frac{x}{2} - \frac{3}{4} + \frac{1}{4} * \left(\frac{11}{2x+1} - \frac{8}{3x+1}\right)$\\
+\end{enumerate}
+\subsection{Integrali per parti}
+Per risolvere un integrale per parti, uso questa formula $$\int(f(x)*g^{'}(x)) = f(x)*g(x) - \int(f^{'}(x)*g(x)) $$
+Gli integrali per parti possono essere particolarmente ostici, e richiedere trucchi aggiuntivi per essere risolti.\\
+Nei compitini gli integrali per parti saranno ciclici. Un integrale ciclico è un integrale $\int(f(x)*g^{'}(x))$, che dopo averlo integrato per parti, 
+fa arrivare ad una situazione $\int(f(x)*g^{'}(x)) = f(x)*g(x) + h(x)*k(x) - \int(f(x)*g^{'}(x))$.\\
+In questo caso abbiamo un integrale ciclico, perchè abbiamo riottenuto l'integrale originale, e per risolvere la situazione portiamo l'integrale che abbiamo ottenuto al primo membro e risolviamo. Ora vediamo un esempio:\\
+\begin{align*}
+    &\int(f(x)*g^{'}(x)) = f(x)*g(x) - \int(f^{'}(x)*g(x))\\
+    &f(x)*g(x) + h(x)*k(x) - \int(h^{'}(x)*k(x)) ; (h^{'}(x) = f^{'}(x) , k(x) = g(x))\\
+    &\int(f(x)*g^{'}(x)) = f(x)*g(x) + h(x)*k(x) - \int(f(x)*g^{'}(x))\\
+    &2*\int(f(x)*g^{'}(x)) = f(x)*g(x) + h(x)*k(x)\\
+    &\int(f(x)*g^{'}(x)) = \frac{f(x)*g(x) + h(x)*k(x)}{2}
+\end{align*}
+\subsection{Integrali per sostituzione}
+Per risolvere gli integrali per sostituzione usiamo la formula $$\int(f(g(x))*g^{'}(x)) = \int_{g(a)}^{g(b)}(f(y)dy)$$
+dove il punto del metodo per sotituzione è sostituire $x$ con $y$, eliminando i termini scomodi dalla formula per poter integrarla.\\
+Applicazione del metodo per sostituzione:\\
+\begin{enumerate}
+    \item Sostituzione della $x$: $x = g(y)$
+    \item Sostituzione della $dx$: $dx = \frac{d}{dy}(g(y))dy$
+    \item Sostituzione degli intervalli dell'integrale (se presenti): $\int_{a}^{b}(f(x)dx)$: $\int_{g(a)}^{g(b)}(f(y)dy)$
+\end{enumerate}
+\section{Teorema di Fermat - Derivata di Massimi e Minimi}
+\subsection{Punti interni di una funzione}
+Prima diamo la definizione di \textbf{punto interno}: un punto interno di una funzione è 
+un punto $x_{0} \in dom(f), \exists \delta > 0 : [x_{0} - \delta, x_{0} + \delta]$.\\
+Quindi un punto interno è un punto all'interno del dominio di una funzione, tale che se andiamo leggermente a dx o a sx nel dominio, rimaniamo ancora 
+nel dominio. Per esempio se il mio dominio è $dom(f) = [1,3]$, il valore $1.1$ è nel dominio perchè posso avere i valori $1.0$ e $1.2$, invece il valore 
+$1$, non è nel dominio poichè anche se posso avere il valore $1.1$, non posso avere $0.9$, o valori minori di $1$, poichè sarebbero fuori dal dominio.\\
+In breve possiamo riassumere i punti interni di una funzione come tutti quei punto che stanno dentro ai vari intervalli che compongono il dominio, e che 
+non sono gli estremi di nessun intervallo.\\
+\subsection{Teorema di Fermat}
+Dato un punto interno $x_{0}$ della funzione f, dove $x_{0}$ è un max/min locale, e $f^{'}(x_{0})$ esiste. Allora $f^{'}(x_{0}) = 0$.\\
+\textbf{DIMOSTRAZIONE}\\
+Faccio il caso in cui $x_{0}$ è un punto di max. Lo considero max globale quindi $\forall x, f(x) \le f(x_{0})$. Devo dimostrare $f^{'}(x_{0}) = 0$.\\
+Faccio la derivata come limite del rapporto incrementale: $lim_{x \rightarrow x_{0}}\frac{f(x)-f(x_{0})}{x-x_{0}}$, e provo a fare i limiti dx e sx per vedere come si comporta la derivata.\\
+Per dimostrare $lim_{x \rightarrow x_{0^{+}}}\frac{f(x)-f(x_{0^{+}})}{x-x_{0^{+}}}$, suppongo che $x > 0$, allora studio il segno di $g(x) = \frac{f(x)-f(x_{0})}{x-x_{0}}; x > x_{0}$ e ottengo che il numeratore è 
+maggiore di zero, mentre il denominatore è maggiore di zero, quindi la funzione è minore di zero: $g(x) <= 0$. Quindi anche il $lim_{x \rightarrow x_{0^{+}}} g(x_{0^{+}}) <= 0$\\
+Facendo la stessa cosa per il limite sx ottengo:\\
+\begin{itemize}
+    \item $lim_{x \rightarrow x_{0^{-}}} = \frac{f(x) - f(x_{0^{-}})}{x - x_{0^{-}}}$
+    \item $h(x) = \frac{f(x)-f(x_{0})}{x-x_{0}}; x < x_{0}$, quindi sia numeratore che denominatore sono negativi, e la funzione è positiva $h(x) >= 0$
+    \item Visto che $h(x) \ge 0$, allora anche $lim_{x \rightarrow x_{0^{-}}}g(x_{0^{-}}) \ge 0$ = $f^{'}(x_{0^{-}}) \ge 0$.
+\end{itemize}
+Quindi visto che $f^{'}(x_{0^{-}}) \ge 0$ e $f^{'}(x_{0^{+}}) \le 0$, allora abbiamo dimostrato che $f^{'}(x_{0}) = 0$.
+\begin{center}
+    \textbf{FINE DIMOSTRAZIONE}
+\end{center}
+\section{Teoremi del valore medio: Rolle e Lagrange}
+\subsection{Teorema di Rolle}
+Data una funzione f definita su di un intervallo $[a,b]$, e con le seguenti condizioni:\\
+\begin{itemize}
+    \item la funzione f è continua in $[a,b]$,
+    \item l'intervallo aperto $(a,b)$ è derivabile,
+    \item $f(a) = f(b)$.
+\end{itemize}
+Allora esiste almeno un punto $c \in (a,b)$, tale che $f^{'}(c) = 0$.\\
+Per dimostrare questo teorema ci serviremo del teorema dei valori estremi (teorema di weierstrass), e del teorema di Fermat.\\
+\begin{itemize}
+    \item Teorema dei valori estremi: se ho f continua, definita in un intervallo $[a,b]$, allora $\exists c, \exists d$, tale che 
+    $f(c) \ge f(x) \ge f(d)$ con $c,d \in [a,b]$. (in breve ci sono ed esistono i massimi e minimi in una funzione continua in $[a,b]$).
+    \item Teorema di Fermat: se ho f continua in $[a,b]$, preso un punto interno $x_{0}$ max o min locale/globale, allora $f^{'}(x_{0}) = 0$.
+\end{itemize}
+Dobbiamo verificare tre casi:\\
+\begin{enumerate}
+    \item se $f(x) = f(c) \forall x$, allora il grafico è una retta orizzontale, e ogni punto $f^{'}(c) = 0$.
+    \item se $f(x) > f(a)$ per qualche $x \in (a,b)$, e f è una funzione continua definita in un intervallo $[a,b]$, allora esiste un valore c, compreso tra $[a,b]$, ed
+    è un massimo. Ma visto che $f(x) > f(a)$ per qualche $x \in (a,b)$, allora $c \in (a,b)$ ed è un massimo. Se c è un massimo, allora per il teorema di Fermat, $f^{'}(c) = 0$.
+    \item se $f(x) < f(b)$ per qualche $x \in (a,b)$, e f è continua in $[a,b]$, allora esiste un valore $x = c$, tale che c è un minimo. Visto che 
+    $f(x) < f(b)$ per qualche $x \in (a,b)$, allora $c \in (a,b)$. Quindi per il teorema di Fermat, $f^{'}(c) = 0$, perchè c è un minimo.
+\end{enumerate}
+\begin{center}
+    \textbf{FINE DIMOSTRAZIONE}
+\end{center}
 \end{document}
