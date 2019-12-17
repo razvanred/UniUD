@@ -132,15 +132,26 @@ Quindi abbiamo dimostrato il teorema\\
 \section{Limiti con l'Hopital}
 L'Hopital serve a gestire forme di limite indeterminate, altrimenti non risolvibili.\\
 Possiamo risolvere le forme indeterminate: $\frac{\infty}{\infty}$ e $\frac{0}{0}$.\\
+Se esiste un intervallo $I \rightarrow R$, due funzioni f e g continue in I e derivabili nei punti interni di $I$, e $g^{'}(x) \neq 0$. Allora
 \begin{enumerate}
-    \item se $lim_{x \rightarrow 0}f(x) = 0$ e $lim_{x \rightarrow 0}g(x) = 0$ e 
-    $\frac{lim_{x \rightarrow 0}f^{'}(x)}{lim_{x \rightarrow 0}g^{'}(x)} = L$,\\ allora 
-    $\frac{lim_{x \rightarrow 0}f(x)}{lim_{x \rightarrow 0}g(x)} = L$
-    \item se $lim_{x \rightarrow \infty}f(x) = 0$ e $lim_{x \rightarrow \infty}g(x) = 0$ e 
-    $\frac{lim_{x \rightarrow \infty}f^{'}(x)}{lim_{x \rightarrow \infty}g^{'}(x)} = L$,\\ allora 
-    $\frac{lim_{x \rightarrow \infty}f(x)}{lim_{x \rightarrow \infty}g(x)} = L$
+    \item se $lim_{x \rightarrow x_{0}}f(x) = 0$ e $lim_{x \rightarrow x_{0}}g(x) = 0$ e 
+    $\frac{lim_{x \rightarrow x_{0}}f^{'}(x)}{lim_{x \rightarrow x_{0}}g^{'}(x)} = L$,\\ allora 
+    $\frac{lim_{x \rightarrow x_{0}}f(x)}{lim_{x \rightarrow x_{0}}g(x)} = L$
+    \item se $lim_{x \rightarrow x_{0}}f(x) = \infty$ e $lim_{x \rightarrow x_{0}}g(x) = \infty$ e 
+    $\frac{lim_{x \rightarrow x_{0}}f^{'}(x)}{lim_{x \rightarrow x_{0}}g^{'}(x)} = L$,\\ allora 
+    $\frac{lim_{x \rightarrow x_{0}}f(x)}{lim_{x \rightarrow x_{0}}g(x)} = L$
 \end{enumerate}
-
+Dimostrazione:\\
+Preso un intervallo I di questo tipo $[x_{0},\infty)$, per ipotesi $lim_{x \rightarrow x_{0}}f(x) = lim_{x \rightarrow x_{0}}g(x) = 0$, vediamo 2 casi.\\
+Se $x = x_{0}$, e x è estremo inferiore di I, allora $lim_{x \rightarrow x_{0}}f(x) = 0$, e visto che la funzione è continua nell'intervallo $lim_{x \rightarrow x_{0}}f(x) = f(x_{0}) = 0$, 
+lo stesso vale per $lim_{x \rightarrow x_{0}}g(x) = g(x_{0}) = 0$\\
+Se $x > x_{0}$, allora applico cauchy e dico che $\frac{f(x)}{g(x)} = \frac{f(x)-f(x_{0})}{g(x)-g(x_{0})} = \frac{f^{'}c(x)}{g^{'}}c(x)$.\\
+Ora vediamo che $x_{0} < c(x) < x$, e per x che tende a 0, allora anche $c(x)$ tende a 0.\\
+Quindi possiamo scrivere $lim_{x \rightarrow x_{0}}\frac{f^{'}c(x)}{g^{'}c(x)}$ con $t = c(x)$ e $c(x)$ che tende a zero, allora $lim_{t \rightarrow x_{0}}\frac{f^{'}(t)}{g^{'}(t)} = L$ per ipotesi, 
+quindi anche $lim_{x \rightarrow x_{0}}\frac{f(x)}{g(x)} = L$ e abbiamo dimostrato la tesi.\\
+\begin{center}
+    \textbf{FINE DIMOSTRAZIONE}
+\end{center}
 \subsection{Procedimento per affrontare i limiti con l'hopital}
 Quando affrontiamo i limiti con l'hopital, ci troveremo sempre davanti ad una situazione 
 $f(x)/g(x)$, nel caso non fosse cosi basterà ricondurci a quella situazione facendo un 
@@ -588,7 +599,7 @@ Quindi visto che $f^{'}(x_{0^{-}}) \ge 0$ e $f^{'}(x_{0^{+}}) \le 0$, allora abb
 \begin{center}
     \textbf{FINE DIMOSTRAZIONE}
 \end{center}
-\section{Teoremi del valore medio: Rolle e Lagrange}
+\section{Teoremi del valore medio: Rolle, Cauchy e Lagrange}
 \subsection{Teorema di Rolle}
 Data una funzione f definita su di un intervallo $[a,b]$, e con le seguenti condizioni:\\
 \begin{itemize}
@@ -611,6 +622,50 @@ Dobbiamo verificare tre casi:\\
     \item se $f(x) < f(b)$ per qualche $x \in (a,b)$, e f è continua in $[a,b]$, allora esiste un valore $x = c$, tale che c è un minimo. Visto che 
     $f(x) < f(b)$ per qualche $x \in (a,b)$, allora $c \in (a,b)$. Quindi per il teorema di Fermat, $f^{'}(c) = 0$, perchè c è un minimo.
 \end{enumerate}
+\begin{center}
+    \textbf{FINE DIMOSTRAZIONE}
+\end{center}
+\subsection{Teorema di Cauchy}
+Date due funzioni f e g, continue in un intervallo $[a,b]$, e derivabili in $(a,b)$, allora esiste almeno un punto interno $x_{0}$, tale che 
+$$[g(b)-g(a)]*f^{'}(x_{0}) = [f(b)-f(a)]*g^{'}(x_{0})$$
+Dimostrazione:\\
+Per prima cosa scriviamo $h(x) = [f(b)-f(a)]*g(x) - [g(b)-g(a)]*f(x)$, e valutiamo $h(a)$ e $h(b)$.\\
+\begin{align*}
+    &h(a) = g(a)*f(b) - g(a)*f(a) - f(a)*g(b) + f(a)*g(a)\\
+    &h(a) = g(a)*f(b) - f(a)*g(b)\\
+    &h(b) = g(b)*f(b) - g(b)*f(a) - f(b)*g(b) + f(b)*g(a)\\
+    &h(b) = g(b)*f(a) - f(b)*g(a)\\
+    &h(a) = h(b)
+\end{align*}
+Ora noi possiamo applicare il teorema di rolle, perchè rispettiamo le tre condizioni: continuità di f e g su $[a,b]$, derivabilità su $(a,b)$, e $h(a) = h(b)$.\\
+Quindi se facciamo la derivata di $h(x)$ otteniamo $$h^{'}(x) = [f(b)-f(a)]*g^{'}(x) - [g(b)-g(a)]*f^{'}(x)$$ e quindi se valutiamo la funzione h in $x_{0}$, possiamo dire:\\
+\begin{align*}
+    &h^{'}(x_{0}) = [f(b)-f(a)]*g^{'}(x_{0}) - [g(b)-g(a)]*f^{'}(x_{0})\\
+    &0 = [f(b)-f(a)]*g^{'}(x_{0}) - [g(b)-g(a)]*f^{'}(x_{0})\\
+    &[g(b)-g(a)]*f^{'}(x_{0}) = [f(b)-f(a)]*g^{'}(x_{0})
+\end{align*}
+Abbiamo ottenuto l'ipotesi iniziale, e dimostrato il teorema.
+\begin{center}
+    \textbf{FINE DIMOSTRAZIONE}
+\end{center}
+\subsection{Teorema di Lagrange}
+Date due funzioni f continua nell'intervallo $[a,b]$, e derivabili in $(a,b)$, allora esiste un valore $x_{0}$ interno, tale che $$f(b)-f(a) = f^{'}(x_{0})*[b-a]$$
+Per la dimostrazione usiamo la funzione ausiliaria $h(x) = f(x) - f(a)*-\frac{f(b)-f(a)}{b-a}*(x-a)$. Sappiamo che:\\
+\begin{itemize}
+    \item $f(x)$ è continua e derivabile
+    \item $f(a)$ è continua e derivabile perchè è una costante
+    \item $\frac{f(b)-f(a)}{b-a}$ è continua e derivabile perchè è una costante
+    \item $(x-a)$ è continua e derivabile perchè è un polinomio
+\end{itemize}
+Per dimostrare $h^{'}(x_{0}) = 0$, dimostriamo $h(a) = h(b)$:\\
+\begin{align*}
+    &h(a) = f(a) - f(a)*-\frac{f(b)-f(a)}{b-a}*(a-a) = 0\\
+    &h(b) = f(b) - f(a)*-\frac{f(b)-f(a)}{b-a}*(b-a) = 0\\
+    &h(a) = h(b) = 0
+\end{align*}
+Quindi per il teorema di Rolle, visto che h(x) è continua in $[a,b]$, derivabile in $(a,b)$ e $h(a) = h(b)$, allora esiste $x_{0}$ tale che $h^{'}(x_[0]) = 0$.\\
+Quindi se deriviamo $h^{'}(x)$, otteniamo $h^{'}(x) = f^{'}(x) - f^{'}(a)*-\frac{d}{dx}(\frac{f(b)-f(a)}{b-a}*(x-a))$, e sostituendo $x = x_{0}$, otteniamo $0 = f^{'}(x) -\frac{f(b)-f(a)}{b-a}$, 
+e quindi abbiamo dimostrato la tesi perchè $f^{'}(x) = \frac{f(b)-f(a)}{b-a}$.\\
 \begin{center}
     \textbf{FINE DIMOSTRAZIONE}
 \end{center}
