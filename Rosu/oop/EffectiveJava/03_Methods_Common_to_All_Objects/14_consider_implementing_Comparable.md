@@ -8,7 +8,7 @@ By implementing ```Comparable```, a class indicates that its instances have a _n
 Arrays.sort(a);
 ```
 
-By implementing ```Comparable```, you allow your class to interoperate with all of the may generic algorithms and collection implementations that depend on this interface. Virtually all of the value classes in the Java platform libraries, as well as [enum types](../06_Enums_and_Annotations/34_use_enums_instead_of_int_constants.md), implements ```Comparable```.
+By implementing ```Comparable```, you allow your class to interoperate with all of the many generic algorithms and collection implementations that depend on this interface. Virtually all of the value classes in the Java platform libraries, as well as [enum types](../06_Enums_and_Annotations/34_use_enums_instead_of_int_constants.md), implements ```Comparable```.
 
 ## Generic Contract of the ```compareTo``` method
 
