@@ -2,13 +2,13 @@
 
 # All hidden files
 .*
+*.class
 
 # Bruniera
 Bruniera/programmazione/esempi/1.2
 Bruniera/programmazione/esempi/*.bak
 Bruniera/**/*.exe
 Bruniera/**/*.java~
-Bruniera/**/*.class
 
 # Rosu
 Rosu/*.bak
