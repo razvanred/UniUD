@@ -7,13 +7,8 @@ public class Strategy {
     interface BillingStrategy {
         int calculatePrice(final int rawPrice);
 
-        static BillingStrategy happyHour() {
-            return (rawPrice) -> rawPrice / 2;
-        }
-
-        static BillingStrategy normal() {
-            return (rawPrice) -> rawPrice;
-        }
+        public static final BillingStrategy HAPPY_HOUR = (rawPrice) -> rawPrice / 2;
+        public static final BillingStrategy NORMAL = (rawPrice) -> rawPrice;
     }
 
     static class Customer {
@@ -49,11 +44,11 @@ public class Strategy {
     }
 
     public static void main(String[] args) {
-        final var customer = new Customer(BillingStrategy.normal());
+        final var customer = new Customer(BillingStrategy.NORMAL);
         customer.addDrink(4);
         customer.addDrink(4, 2);
 
-        customer.setBillingStrategy(BillingStrategy.happyHour());
+        customer.setBillingStrategy(BillingStrategy.HAPPY_HOUR);
         customer.addDrink(10, 2);
 
         customer.printBill();
