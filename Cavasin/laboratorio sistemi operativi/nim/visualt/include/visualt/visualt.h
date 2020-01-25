@@ -7,19 +7,17 @@
 // #define VISUALT_UNBUFFERED_PRINT
 
 #define VTSTR (const uint8_t *const)
-#define LTSTR VTSTR
-
-#define VTSTRS (const uint8_t *const *const)
-#define LTSTRS VTSTRS(const char *const [])
-
-#define VTSIZES (const unsigned int (*const)[2])
-#define LTSIZES VTSIZES(const unsigned int [][2])
 
 #define VTCHAR *(const uint32_t *const)
-#define LTCHAR VTCHAR
+
+#define VTSTRS (const uint8_t *const *)
+#define LTSTRS VTSTRS(const char *const [])
+
+#define VTSIZES (const unsigned int (*)[2])
+#define LTSIZES VTSIZES(const unsigned int [][2])
 
 #define VTOBJS (const struct Obj *const *)
-#define LTOBJS VTOBJS(const Obj *const [])
+#define LTOBJS VTOBJS(const struct Obj *const [])
 
 struct CharMap {
 	uint32_t *chars;
@@ -49,6 +47,7 @@ void cloneSprite(const struct Obj *dest, unsigned int spriteDest, const struct O
 void resize(struct Obj *canvas, unsigned int width, unsigned int height);
 //----REFRESH----
 void render(const struct Obj *canvas, unsigned int objsLength, const struct Obj *const *objs);
+void stamp(const struct Obj *canvas, unsigned int objsLength, const struct Obj *const *objs);
 void print(const struct Obj *canvas, bool border);
 unsigned int printToString(const struct Obj *canvas, bool border, uint8_t **utf8String);
 //----TEXT----
@@ -64,7 +63,6 @@ unsigned int height(const struct Obj *obj);
 void clear(const struct Obj *canvas);
 void fill(const struct Obj *canvas, uint32_t fillChar);
 void overlay(const struct Obj *dest, unsigned int spriteDest, const struct Obj *src, unsigned int spriteSrc);
-void stamp(const struct Obj *canvas, const struct Obj *obj);
 void printAxes(const struct Obj *canvas);
 //----OBJ----
 bool visible(const struct Obj *obj);
@@ -79,9 +77,9 @@ void setPenChar(struct Obj *obj, uint32_t penChar);
 //----MOVE----
 int xPosition(const struct Obj *obj);
 int yPosition(const struct Obj *obj);
-void moveTo(const struct Obj *canvas, struct Obj *obj, int x, int y);
-void setX(const struct Obj *canvas, struct Obj *obj, int x);
-void setY(const struct Obj *canvas, struct Obj *obj, int y);
+void gotoXY(const struct Obj *canvas, struct Obj *obj, int x, int y);
+void gotoX(const struct Obj *canvas, struct Obj *obj, int x);
+void gotoY(const struct Obj *canvas, struct Obj *obj, int y);
 void changeX(const struct Obj *canvas, struct Obj *obj, int x);
 void changeY(const struct Obj *canvas, struct Obj *obj, int y);
 void align(struct Obj *obj, unsigned char position);

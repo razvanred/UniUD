@@ -3,11 +3,7 @@
 #include "threads.h"
 #include "common.h"
 
-#define SOCK_PATH "echo_socket"
-
-#define sendStructBoth(SERVERMATCH, STRUCT) sendStruct((SERVERMATCH)->serverPlayerA.sck, (STRUCT)); \
-                                            sendStruct((SERVERMATCH)->serverPlayerB.sck, (STRUCT))
-;
+#define sendStructBoth(SERVERMATCH, STRUCT) sendStruct((SERVERMATCH)->serverPlayerA.sck, (STRUCT)) + sendStruct((SERVERMATCH)->serverPlayerB.sck, (STRUCT))
 
 typedef struct {
 	Player player;
@@ -15,90 +11,143 @@ typedef struct {
 } ServerPlayer;
 
 typedef struct {
-	pthread_t thr;
 	pthread_mutex_t *undertakerLock, *matchesLock;
 	pthread_cond_t *undertakerCond;
+	struct ServerMatch **undertakerBuffer;
+} Synchronized;
+
+typedef struct ServerMatch {
+	pthread_t thr;
+	unsigned int thrId;
+	Synchronized synchronized;
 	ServerPlayer serverPlayerA, serverPlayerB;
 } ServerMatch;
 
-ServerMatch initializeMatch(pthread_mutex_t *const undertakerLock, pthread_mutex_t *const matchesLock, pthread_cond_t *const undertakerCond, const ServerPlayer playerA, const ServerPlayer playerB) {
-	return (ServerMatch){.undertakerLock = undertakerLock, .matchesLock = matchesLock, .undertakerCond = undertakerCond, .serverPlayerA = playerA, .serverPlayerB = playerB,};
-}
+void *matchRoutine(ThrArgs *const thrArgs) {
+	unpackThrArgs(ServerMatch, allocatedServerMatch);
+	printf("spawned match %d\n", thrId);
 
-void *matchRoutine(ServerMatch *serverMatch) {
-	serverMatch->serverPlayerA.player.id = true;
-	serverMatch->serverPlayerB.player.id = false;
-	sendStruct(serverMatch->serverPlayerA.sck, &serverMatch->serverPlayerB.player);
-	sendStruct(serverMatch->serverPlayerB.sck, &serverMatch->serverPlayerA.player);
+	allocatedServerMatch->thrId = thrId;
+	allocatedServerMatch->thr = threadSelf();
+	allocatedServerMatch->serverPlayerA.player.id = true;
+	allocatedServerMatch->serverPlayerB.player.id = false;
+	sendStruct(allocatedServerMatch->serverPlayerA.sck, &allocatedServerMatch->serverPlayerB.player);
+	sendStruct(allocatedServerMatch->serverPlayerB.sck, &allocatedServerMatch->serverPlayerA.player);
+	printf("match %d started between \"%s\" and \"%s\"\n", thrId, allocatedServerMatch->serverPlayerA.player.name, allocatedServerMatch->serverPlayerB.player.name);
 
 	MatchStatus matchStatus = {
-			.tower1Height=getRand(5, 15),
-			.tower2Height=getRand(5, 15),
+			.tower1Height=getRand(4, TOWERSMAXHEIGHT-2),
+			.tower2Height=getRand(4, TOWERSMAXHEIGHT-2),
 			.turn=getRand(0, 1)
 	};
 	Move move;
 
 	do {
-		sendStructBoth(serverMatch, &matchStatus);
-		if(matchStatus.turn) {
-			receiveStruct(serverMatch->serverPlayerA.sck, &move);
-		} else {
-			receiveStruct(serverMatch->serverPlayerB.sck, &move);
+		breakIfFalse(sendStructBoth(allocatedServerMatch, &matchStatus))
+		if(matchStatus.tower1Height == TOWERSMAXHEIGHT && matchStatus.tower2Height == TOWERSMAXHEIGHT) {
+			break;
 		}
-		if(move.amount <= (move.tower ? matchStatus.tower1Height : matchStatus.tower2Height)) {
+		if(matchStatus.turn) {
+			breakIfFalse(receiveStruct(allocatedServerMatch->serverPlayerA.sck, &move))
+		} else {
+			breakIfFalse(receiveStruct(allocatedServerMatch->serverPlayerB.sck, &move))
+		}
+		if(move.amount+(move.tower ? matchStatus.tower1Height : matchStatus.tower2Height) <= TOWERSMAXHEIGHT && move.amount > 0) {
 			if(move.tower) {
-				matchStatus.tower1Height -= move.amount;
+				matchStatus.tower1Height += move.amount;
 			} else {
-				matchStatus.tower2Height -= move.amount;
+				matchStatus.tower2Height += move.amount;
 			}
+			matchStatus.turn = !matchStatus.turn;
 		}
 	} while(1);
+	printf("match %d ended\n", thrId);
+	lock(allocatedServerMatch->synchronized.matchesLock);
+	lock(allocatedServerMatch->synchronized.undertakerLock);
+
+	*(allocatedServerMatch->synchronized.undertakerBuffer) = allocatedServerMatch;
+
+	signal(allocatedServerMatch->synchronized.undertakerCond);
+	unlock(allocatedServerMatch->synchronized.undertakerLock);
+	return NULL;
 }
 
-void startMatch(ServerMatch serverMatch) {
-	createThread(NULL, NULL, (void *(*)(void *))&matchRoutine, &serverMatch);
+void startMatch(ServerMatch *const allocatedServerMatch) {
+	createThread(NULL, NULL, (void *(*)(void *))&matchRoutine, allocatedServerMatch);
 }
 
-void undertaker() {
+ServerMatch *allocateMatch(const Synchronized synchronized, const ServerPlayer serverPlayerA, const ServerPlayer serverPlayerB) {
+	ServerMatch *const serverMatch = malloc(sizeof(ServerMatch));
+	*serverMatch = (ServerMatch){.synchronized=synchronized, .serverPlayerA = serverPlayerA, .serverPlayerB = serverPlayerB};
+	return serverMatch;
 }
 
-void matchMaker(const int serverSck, pthread_mutex_t *const undertakerLock, pthread_mutex_t *const matchesLock, pthread_cond_t *const undertakerCond) {
-	SckAttr clientSckAttr;
-	ServerPlayer playerA, playerB;
+void matchMaker(const int bindedSck, const Synchronized synchronized) {
+	ServerPlayer serverPlayerA, serverPlayerB;
 
+	puts("served started");
 	while(1) {
-		puts("Waiting for player A...");
-		acceptConnection(serverSck, &playerA.sck, &clientSckAttr);
-		receiveStruct(playerA.sck, &playerA.player);
-		printf("Connected to \"%s\"\n", playerA.player.name);
-		printSckAttr(clientSckAttr);
-		putchar('\n');
+		acceptConnection(bindedSck, &serverPlayerA.sck);
+		receiveStruct(serverPlayerA.sck, &serverPlayerA.player);
+		printf("matchMaker: connected to player A \"%s\"\n", serverPlayerA.player.name);
 
-		puts("Waiting for player B...");
-		acceptConnection(serverSck, &playerB.sck, &clientSckAttr);
-		receiveStruct(playerB.sck, &playerB.player);
-		printf("Connected to \"%s\"\n", playerB.player.name);
-		printSckAttr(clientSckAttr);
-		putchar('\n');
+		acceptConnection(bindedSck, &serverPlayerB.sck);
+		receiveStruct(serverPlayerB.sck, &serverPlayerB.player);
+		printf("matchMaker: connected to player B \"%s\"\n", serverPlayerB.player.name);
 
-		startMatch(initializeMatch(undertakerLock, matchesLock, undertakerCond, playerA, playerB));
+		startMatch(allocateMatch(synchronized, serverPlayerA, serverPlayerB));
 	}
 }
 
-int main(int argc, const char *argv[]) {
-	int serverSck;
-	SckAttr serverSckAttr;
+void *undertaker(ThrArgs *const thrArgs) {
+	unpackThrArgs(Synchronized, synchronized);
+	printf("undertaker ID %d\n", thrId);
+	ServerMatch *allocatedServerMatch;
+	unsigned int deadThrId;
+
+	while(1) {
+		lock(synchronized->undertakerLock);
+		while(!*(synchronized->undertakerBuffer)) {
+			wait(synchronized->undertakerCond, synchronized->undertakerLock);
+		}
+
+		allocatedServerMatch = *synchronized->undertakerBuffer;
+		deadThrId = allocatedServerMatch->thrId;
+		joinThread(allocatedServerMatch->thr);
+		closeSocket(&allocatedServerMatch->serverPlayerA.sck);
+		closeSocket(&allocatedServerMatch->serverPlayerB.sck);
+		free(allocatedServerMatch);
+		*synchronized->undertakerBuffer = NULL;
+
+		unlock(synchronized->undertakerLock);
+		unlock(synchronized->matchesLock);
+
+		printf("undertaker: deleted thread %d\n", deadThrId);
+	}
+}
+
+int main(/*int argc, const char *argv[]*/) {
+	int bindedSck;
+	SckAttr bindedSckAttr;
 	pthread_mutex_t undertakerLock = PTHREAD_MUTEX_INITIALIZER, matchesLock = PTHREAD_MUTEX_INITIALIZER;
 	pthread_cond_t undertakerCond = PTHREAD_COND_INITIALIZER;
+	ServerMatch *undertakerBuffer = NULL;
+	Synchronized synchronized = {
+			.undertakerLock=&undertakerLock,
+			.matchesLock = &matchesLock,
+			.undertakerCond = &undertakerCond,
+			.undertakerBuffer=&undertakerBuffer
+	};
+	initializeRand();
 
-	initializeSocket(&serverSck);
-	initializeSocketAttr(&serverSckAttr, SOCK_PATH);
-	bindSocket(serverSck, &serverSckAttr);
-	printSckAttr(serverSckAttr);
+	initializeSocket(&bindedSck);
+	initializeSocketAttr(&bindedSckAttr, SCK_PATH);
+	bindSocket(bindedSck, &bindedSckAttr);
+	printSckAttr(bindedSckAttr);
 
-	listenSocket(serverSck, 100);
+	listenSocket(bindedSck, 100);
 
-	matchMaker(serverSck, &undertakerLock, &matchesLock, &undertakerCond);
-
+	createdReservedThread(NULL, 0, (void *(*)(void *))&undertaker, &synchronized);
+	matchMaker(bindedSck, synchronized);
 	return 0;
 }

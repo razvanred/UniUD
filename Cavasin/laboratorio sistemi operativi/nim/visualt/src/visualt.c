@@ -28,7 +28,7 @@ typedef struct BoolMap {
 #define vtInitializeObj(OBJ)  (OBJ)->x = 0;           \
                               (OBJ)->y = 0;           \
                               (OBJ)->visible = true;  \
-                              (OBJ)->penSize = 1;     \
+                              (OBJ)->penSize = 0;     \
                               (OBJ)->penChar = '#';   \
                               (OBJ)->currentSprite = (OBJ)->sprites
 
@@ -46,7 +46,6 @@ typedef struct BoolMap {
 
 #define vtNormalizePosition(CHARMAP, SPRITE, SPRITEX, SPRITEY, X, Y)  (X) = (int)((CHARMAP)->width/2-(SPRITE)->width/2+(SPRITEX));  \
                                                                       (Y) = (int)((CHARMAP)->height/2-(SPRITE)->height/2-(SPRITEY))
-;
 
 static void vtInitializeStringCharMap(CharMap *const charMap, const uint8_t *const utf8Text) {
 	unsigned int charMapWidth = 1, charMapHeight = 1;
@@ -325,8 +324,10 @@ static void vtMask(const BoolMap *const boolMap, const CharMap *const sprite, in
 	}
 }
 
-static void vtRender(const CharMap *const charMap, const unsigned int objLength, const Obj *const *const objs) {
-	vtClearCharMap(charMap);
+static void vtRender(const CharMap *const charMap, const unsigned int objLength, const Obj *const *const objs, bool clearCharmap) {
+	if(clearCharmap) {
+		vtClearCharMap(charMap);
+	}
 	for(unsigned int i = 0; i < objLength; i++) {
 		if(objs[i]->visible) {
 			vtStamp(charMap, objs[i]->currentSprite, objs[i]->x, objs[i]->y);
@@ -507,7 +508,11 @@ void resize(Obj *const canvas, const unsigned int width, const unsigned int heig
 
 //----REFRESH----
 void render(const Obj *const canvas, const unsigned int objsLength, const Obj *const *const objs) {
-	vtRender(canvas->currentSprite, objsLength, objs);
+	vtRender(canvas->currentSprite, objsLength, objs, true);
+}
+
+void stamp(const Obj *const canvas, const unsigned int objsLength, const Obj *const *const objs) {
+	vtRender(canvas->currentSprite, objsLength, objs, false);
 }
 
 void print(const Obj *const canvas, const bool border) {
@@ -578,10 +583,6 @@ void overlay(const Obj *const dest, const unsigned int spriteDest, const Obj *co
 	}
 }
 
-void stamp(const Obj *const canvas, const Obj *const obj) {
-	vtStamp(canvas->currentSprite, obj->currentSprite, obj->x, obj->y);
-}
-
 void printAxes(const Obj *const canvas) {
 	uint32_t *const chars = canvas->currentSprite->chars;
 	const unsigned int width = canvas->currentSprite->width, height = canvas->currentSprite->height;
@@ -642,7 +643,7 @@ int yPosition(const Obj *const obj) {
 	return obj->y;
 }
 
-void moveTo(const Obj *const canvas, Obj *const obj, const int x, const int y) {
+void gotoXY(const Obj *const canvas, Obj *const obj, const int x, const int y) {
 	if(canvas) {
 		vtLine(canvas->currentSprite, obj->penSize, obj->penChar, obj->x, obj->y, x, y);
 	}
@@ -650,14 +651,14 @@ void moveTo(const Obj *const canvas, Obj *const obj, const int x, const int y) {
 	obj->y = y;
 }
 
-void setX(const Obj *const canvas, Obj *const obj, int x) {
+void gotoX(const Obj *const canvas, Obj *const obj, const int x) {
 	if(canvas) {
 		vtLine(canvas->currentSprite, obj->penSize, obj->penChar, obj->x, obj->y, x, obj->y);
 	}
 	obj->x = x;
 }
 
-void setY(const Obj *const canvas, Obj *const obj, int y) {
+void gotoY(const Obj *const canvas, Obj *const obj, const int y) {
 	if(canvas) {
 		vtLine(canvas->currentSprite, obj->penSize, obj->penChar, obj->x, obj->y, obj->x, y);
 	}
