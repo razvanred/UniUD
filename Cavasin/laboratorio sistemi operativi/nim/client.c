@@ -176,7 +176,7 @@ void moveMatch(const MatchStatus *const matchStatus, Move *const move) {
 
 	moveLayout(matchStatus);
 	while(1) {
-		switch(getKeyPress(false)) {
+		switch(getLastKeyPress(false)) {
 			case 'A':
 				if(move->amount+(move->tower ? matchStatus->tower1Height : matchStatus->tower2Height) < TOWERSMAXHEIGHT) {
 					move->amount++;
@@ -220,8 +220,9 @@ void playMatch(const ClientMatch *const clientMatch) {
 			break;
 		}
 		if(matchStatus.turn == clientMatch->playerA.id) {
-			discardInput();
+			rawMode(true);
 			moveMatch(&matchStatus, &move);
+			rawMode(false);
 			breakIfFalse(sendStruct(clientMatch->clientSck, &move))
 		} else {
 			opponentLayout();
@@ -233,7 +234,6 @@ void playMatch(const ClientMatch *const clientMatch) {
 		refresh(objs.canvas);
 	} else {
 		endgame(matchStatus.turn != clientMatch->playerA.id);
-		discardInput();
 	}
 }
 
@@ -250,7 +250,6 @@ void initializeMatch(ClientMatch *const clientMatch) {
 	logString("match started with %.19s", clientMatch->playerB.name)
 	logWrite("press any key to continue", 1);
 	refresh(objs.canvas);
-	discardInput();
 	getch();
 }
 
@@ -298,12 +297,15 @@ int main(/*int argc, const char *argv[]*/) {
 	objLoader();
 	clearScreen();
 	askName(&clientMatch);
+	echo(false);
 	connectToServer(&clientMatch);
 	initializeMatch(&clientMatch);
 	playMatch(&clientMatch);
 
 	closeSocket(&clientMatch.clientSck);
 	objUnloader();
+	echo(true);
+	discardInput();
 
 	return 0;
 }

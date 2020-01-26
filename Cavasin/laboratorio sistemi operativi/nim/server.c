@@ -101,7 +101,7 @@ void matchMaker(const int bindedSck, const Synchronized synchronized) {
 
 void *undertaker(ThrArgs *const thrArgs) {
 	unpackThrArgs(Synchronized, synchronized);
-	printf("undertaker ID %d\n", thrId);
+	printf("undertaker id %d\n", thrId);
 	ServerMatch *allocatedServerMatch;
 	unsigned int deadThrId;
 

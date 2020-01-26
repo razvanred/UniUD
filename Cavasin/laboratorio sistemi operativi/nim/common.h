@@ -41,45 +41,65 @@ void initializeRand() {
 }
 
 unsigned int getRand(unsigned int minInc, unsigned int maxInc) {
-	return rand()%(maxInc+1-minInc)+minInc; // NOLINT(cert-msc30-c)
+	return rand()%(maxInc+1-minInc)+minInc; // NOLINT(cert-msc30-c,cert-msc50-cpp)
 }
 
-int getch() {
-	struct termios oldt, newt;
-	int c;
+void echo(bool echo) {
+	struct termios tAttr;
+	tcgetattr(STDIN_FILENO, &tAttr);
 
-	tcgetattr(STDIN_FILENO, &oldt);
-	newt = oldt;
-	newt.c_lflag &= ~(ICANON|ECHO); // NOLINT(hicpp-signed-bitwise)
-	tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-	c = getchar();
-	tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-	return c;
+	if(echo) {
+		tAttr.c_lflag |= ECHO; // NOLINT(hicpp-signed-bitwise)
+	} else {
+		tAttr.c_lflag &= ~ECHO; // NOLINT(hicpp-signed-bitwise)
+	}
+	tcsetattr(STDIN_FILENO, TCSANOW, &tAttr);
 }
+
+void discardInput() {
+	// tell the C library not to buffer any data from/to the stream
+	setvbuf(stdin, NULL, _IONBF, 0);
+	// discard all unread input in the system buffer
+	tcflush(STDIN_FILENO, TCIOFLUSH);
+}
+
+void rawMode(bool rawMode) {
+	static struct termios old;
+
+	if(rawMode) {
+		discardInput();
+		tcgetattr(STDIN_FILENO, &old);
+		struct termios raw = old;
+		// disable "canonical" mode
+		raw.c_lflag &= ~ICANON; // NOLINT(hicpp-signed-bitwise)
+		// in non-canonical mode, we can set whether getc() returns immediately
+		// when there is no data, or whether it waits until there is data
+		raw.c_cc[VMIN] = 1;
+		raw.c_cc[VTIME] = 0;
+		tcsetattr(STDIN_FILENO, TCSANOW, &raw);
+	} else {
+		// discard all unread input in the system buffer
+		tcflush(STDIN_FILENO, TCIOFLUSH);
+		tcsetattr(STDIN_FILENO, TCSANOW, &old);
+	}
+}
+
+// requires unbuffered
 
 unsigned int kbhit() {
-	static bool initialized = false;
-
-	if(!initialized) {
-		struct termios term;
-		tcgetattr(STDIN_FILENO, &term);
-		term.c_lflag &= ~(ICANON|ECHO);
-		tcsetattr(STDIN_FILENO, TCSANOW, &term);
-		setbuf(stdin, NULL);
-		initialized = true;
-	}
 	int bytesWaiting;
 	ioctl(STDIN_FILENO, FIONREAD, &bytesWaiting);
 	return bytesWaiting;
 }
 
-void discardInput() {
-	while(kbhit()) {
-		getchar();
-	}
+int getch() {
+	rawMode(true);
+	int c = getchar();
+	rawMode(false);
+	return c;
 }
 
-int getKeyPress(bool keepEscapes) {
+int getLastKeyPress(bool keepEscapes) {
 	int c = 0;
 
 	while(kbhit()) {
