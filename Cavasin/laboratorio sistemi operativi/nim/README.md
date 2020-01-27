@@ -37,33 +37,33 @@ Before exiting, every match thread will lock on a mutex (`matchesLock`) to preve
 ---
 ## nimClient
 
-The `nimClient` program allows players to connect to a `NIMTowers` server to play a match, and provvides the user with an "ANSI art" interface.
+The `nimClient` program allows players to connect to a `NIMTowers` server to play a match, and provides the user with an "ANSI art" interface.
 
 ### communication with server
 
-When the program is launched it asks the player for a name (Max lenght 19 characters + 1 terminator). Then the program connects to the server using a socket and the address defined by the macro `SCK_PATH`. The name and a placeholder id are sent to the server. When the match starts the client will receive the opponents name and it's actual id from the server. There are only two possible ids (true/false) so the players id is calculated from the opponents id.
+When the program is launched, it asks the player for a name (Max length 19 characters + 1 terminator). Then the program connects to the server using a socket and the address defined by the macro `SCK_PATH`. The name and a placeholder id are sent to the server. When the match start, the client will receive the opponents name and his actual id from the server. There are only two possible ids (true/false) so the players id is calculated from the opponents id.
 
-At each round the client will receive a struct (`matchStatus`) containing the current heigts of the towers and the id of who's making the move . If it's the player's turn the program will ask the player for the move, and send it to the server in a struct (`move`) containing an identifier of the tower, and the number of new floors. If it's the opponent turn, the client will prompt a waiting screen and wait for the opponent's move. When a player send an invalid move the server will simply send the same status to both clients.
+At each round the client will receive a struct (`matchStatus`) containing the current heights of the towers and the id of who is making the move . If it is the player's turn, the program will ask the player for the move, and send it to the server in a struct (`move`) containing an identifier of the tower, and the number of new floors. If it is the opponent turn, the client will prompt a waiting screen and wait for the opponent's move. When a player sends an invalid move, the server will simply send the same status to both clients.
 
-When the heights contained in `matchStatus` are both 15 the match is over, and the status will contain the id of the loosing player. At this point the client will stop looping and will close the socket and inform the user of his either victory or defeat.
+When the heights contained in `matchStatus` are both 15 the match is over, and the status will contain the id of the losing player. At this point the client will stop looping and will close the socket and inform the user of his either victory or defeat.
 
-When an error occours while comunicating with server the program will stop looping, close the socket, and exit. Also this time the the `MSG_NOSIGNAL` flag is used to allow error handling.
+When an error occurs while communicating with server the program will stop looping, close the socket, and exit. Also this time the `MSG_NOSIGNAL` flag is used to allow error handling.
 
-To check if the loop stopped because of an error or because of the end of the match, the ammount of floor for the last move us used as a flag. Normally the amount will always be greater than 0, so when the match ends, before breaking the loop, the amount will be set to 0.
+To check if the loop stopped because of an error or because of the end of the match, the amount of floor for the last move is used as a flag. Normally the amount will always be greater than 0, so when the match ends, before breaking the loop, the amount will be set to 0.
 
 ### Graphichs
 
 The program offers an "ANSI art" interface. A text-based graphic library, called [`VisualT`](https://github.com/Lucide/VisualT) and written by Riccardo Cavasin, was used for the realization of the interface. This library allowed us to import sprites for every object of the interface (title, background images, prompts, etc), and to easily position them on the screen.
 
-The towers are printed on the screen by stamping the same section of the tower  (`towerSection`) each time changing it's vertical position. The "preview" of the new floors is printed in the same way, but the blinking effect is obtained by switching the section sprite at every refresh of the screen.  In order to get a refresh rate [non-blocking input](#Input) is used.
+The towers are printed on the screen by stamping the same section of the tower  (`towerSection`) each time changing its vertical position. The "preview" of the new floors is printed in the same way, but the blinking effect is obtained by switching the section sprite at every refresh of the screen.  In order to get a refresh rate [non-blocking input](#Input) is used.
 
-The animation for the winning/loosing screen is obtained by printing the entire towers and the line between them, then updating the position of the funanbulist sprite at every refresh.
+The animation for the winning/loosing screen is obtained by printing the entire towers and the line between them, then updating the position of the funambulist’s sprite at every refresh.
 
-The sprites are desined using the program [REXPaint](https://www.gridsagegames.com/rexpaint/), a powerful and user-friendly ASCII art editor.
+The sprites are designed using the program [REXPaint](https://www.gridsagegames.com/rexpaint/), a powerful and user-friendly ASCII art editor.
 
 ### Input
 
-Non blocking input is necessary to get a refresh rate, it allows to check input at every frame without waiting for the user to give an input. This behaviour is obtained by checking if an input is present before trying to read it, and only read it if it's actually present. It's also necessary to have the terminal not to print the input and to not wait for a new line when reading a character from input. The `termios`'s and `ioctl`'s functions were used to control the terminal's behaviour. Another problem was to discard inputs given when the user where waiting for his opponent, or else at the next turn those inputs could lead to an unwanted move. This was also taken care of using termios an ioctl.
+Non-blocking input is necessary to get a refresh rate, it allows to check input at every frame without waiting for the user to give an input. This behaviour is obtained by checking if an input is present before trying to read it, and only read it if it is actually present. It is also necessary to have the terminal not to print the input and not to wait for a new line when reading a character from input. The `termios`'s and `ioctl`'s functions were used to control the terminal's behaviour. Another problem was to discard inputs given when the user was waiting for his opponent, or else at the next turn those inputs could lead to an unwanted move. This was also dealt with using termios an ioctl.
 
 ---
 ## Environment information
