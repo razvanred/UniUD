@@ -131,7 +131,7 @@ void disconnection() {
 }
 
 void endgame(bool won) {
-	setPenChar(objs.log, VTCHAR "¯");
+	setPenChar(objs.log, LTCHAR "¯");
 	gotoXY(NULL, objs.log, 22, TOWERSOFFSET+TOWERSMAXHEIGHT);
 	gotoX(objs.tCanvas, objs.log, -22);
 	setSprite(objs.towerSection, 0);

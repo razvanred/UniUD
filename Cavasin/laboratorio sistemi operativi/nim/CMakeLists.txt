@@ -28,8 +28,3 @@ target_link_libraries(nimServer PRIVATE threads sockets common visualt GNUWarnin
 add_executable(nimClient client.c)
 target_compile_features(nimClient PRIVATE c_std_99)
 target_link_libraries(nimClient PRIVATE sockets common visualt GNUWarnings)
-
-# tests
-add_executable(tests tests.c)
-target_compile_features(tests PRIVATE c_std_99)
-#target_link_libraries(tests PRIVATE visualt)

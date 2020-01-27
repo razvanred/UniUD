@@ -8,7 +8,7 @@
 
 #define VTSTR (const uint8_t *const)
 
-#define VTCHAR *(const uint32_t *const)
+#define LTCHAR *(const uint32_t *const)
 
 #define VTSTRS (const uint8_t *const *)
 #define LTSTRS VTSTRS(const char *const [])

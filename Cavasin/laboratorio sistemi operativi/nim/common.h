@@ -60,7 +60,7 @@ void discardInput() {
 	// tell the C library not to buffer any data from/to the stream
 	setvbuf(stdin, NULL, _IONBF, 0);
 	// discard all unread input in the system buffer
-	tcflush(STDIN_FILENO, TCIOFLUSH);
+	tcflush(STDIN_FILENO, TCIFLUSH);
 }
 
 void rawMode(bool rawMode) {
@@ -76,11 +76,11 @@ void rawMode(bool rawMode) {
 		// when there is no data, or whether it waits until there is data
 		raw.c_cc[VMIN] = 1;
 		raw.c_cc[VTIME] = 0;
-		tcsetattr(STDIN_FILENO, TCSANOW, &raw);
+		tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 	} else {
 		// discard all unread input in the system buffer
-		tcflush(STDIN_FILENO, TCIOFLUSH);
-		tcsetattr(STDIN_FILENO, TCSANOW, &old);
+		tcflush(STDIN_FILENO, TCIFLUSH);
+		tcsetattr(STDIN_FILENO, TCSAFLUSH, &old);
 	}
 }
 
