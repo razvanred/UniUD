@@ -22,9 +22,9 @@ add_library(common INTERFACE)
 # server
 add_executable(nimServer server.c)
 target_compile_features(nimServer PRIVATE c_std_99)
-target_link_libraries(nimServer PRIVATE threads sockets common visualt GNUWarnings)
+target_link_libraries(nimServer PRIVATE common threads sockets GNUWarnings)
 
 # client
 add_executable(nimClient client.c)
 target_compile_features(nimClient PRIVATE c_std_99)
-target_link_libraries(nimClient PRIVATE sockets common visualt GNUWarnings)
+target_link_libraries(nimClient PRIVATE common sockets visualt GNUWarnings)

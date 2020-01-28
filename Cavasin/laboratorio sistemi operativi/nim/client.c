@@ -21,9 +21,9 @@ Objs objs;
 void objLoader() {
 	initializeBlankObj(objs.canvas, 1, LTSIZES{{77, 21}});
 	initializeStringObj(objs.splashTowers, 1, LTSTRS{"\v\v\v\v\v\v\v\v\v│\n\v\v\v\v\v\v╓──┴──┐\v\v╓──┼─┐\n\v\v\v\v\v\v║▓▓│▒▒│\v\v║▓▓│▒▒╕\n\v\v\v\v\v\v║▓▓│▒▒│\v\v║▓▓│▒▒│\n\v\v\v\v\v\v║▓▓│▒▒│\v\v║▓▓│▒▒│\n\v\v\v\v\v\v║▓▓│▒││\v\v║▓▓│▒▒│\n\v\v\v\v\v\v║▓▓│▒││\v\v║▓▓│▒▒│\n____\v\v║▓▓│▒▓│\v╓▓▓▓│__│\n▒▒│▒__▓▓▓││▓│╤║▓▓▓▒▒│▒│\n▓▓│▒▒│▓█▓▒│▓││║▓▓▓▓▒│▒│\n▓▓│▒▒│▓██│▒│││║▓██▓▒▓▒│\n▓▓│▒▒│██▓│▒│││║▓██▓_▓__\n▓▓││_▓▓█▓│▒││██▓▓██████"});
-	initializeStringObj(objs.splashCityline, 1, LTSTRS{"\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v│\n\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v┌┴┐\n\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v│▒│\v\v\v\v\v\v\v\v\v\v\v\v┌────┐\v\v\v\v\v┌─┐\v\v\v\v┌┐\v\v\v\v\v\v\v\v\v\v\v┌───┐\n\v\v\v\v\v\v\v\v\v\v\v\v\v\v┌───┐\v\v\v\v│▒│\v\v\v\v\v\v\v┌─┐\v\v│▒░░░│\v\v┌──┘░│\v\v\v┌┘└┐\v\v\v\v\v\v┌───┤▒░░│\n\v\v\v\v\v┌─┐\v\v\v\v┌─┘▒░░└─┐\v┌┘▒│\v\v\v\v\v┌─┘░│\v\v│▒░░░│┌─┘░░░░│\v\v\v│▒▒│\v\v\v\v\v┌┘░░░│▒░░│\n\v\v\v\v┌┘░│\v┌──┘▒▒▒░░░░├─┘▒▒└───┐\v│▒▒░│\v\v│▒░░░││▒▒░░░░│\v\v\v│▒▒│\v\v\v\v┌┘▒░░░│▒░░│\n\v\v\v\v│▒░│\v│▒▒▒▒▒▒░░░░│▒▒▒▒░░░░│\v│▒▒░│\v┌┘▒░░░││▒▒░░░░├───┘▒▒└──┐\v│▒▒░░░└┐░░│\n\v┌──┘▒░│\v│▒▒▒▒▒▒░░░░│▒▒▒▒░░░░│\v│▒▒░│\v│▒▒░░░││▒▒░░░░│▒▒▒▒▒▒░░░│\v│▒▒░░░░│░░│\v"});
+	initializeStringObj(objs.splashCityline, 1, LTSTRS{"\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v│\n\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v┌┴┐\n\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v│▒│\v\v\v\v\v\v\v\v\v\v\v\v┌────┐\v\v\v\v\v┌─┐\v\v\v\v┌┐\v\v\v\v\v\v\v\v\v\v\v┌───┐\n\v\v\v\v\v\v\v\v\v\v\v\v\v\v┌───┐\v\v\v\v│▒│\v\v\v\v\v\v\v┌─┐\v\v│▒░░░│\v\v┌──┘░│\v\v\v┌┘└┐\v\v\v\v\v\v┌───┤▒░░│\n\v\v\v\v\v┌─┐\v\v\v\v┌─┘▒░░└─┐\v┌┘▒│\v\v\v\v\v┌─┘░│\v\v│▒░░░│┌─┘░░░░│\v\v\v│▒▒│\v\v\v\v\v┌┘░░░│▒░░│\n\v\v\v\v┌┘░│\v┌──┘▒▒▒░░░░├─┘▒▒└───┐\v│▒▒░│\v\v│▒░░░││▒▒░░░░│\v\v\v│▒▒│\v\v\v\v┌┘▒░░░│▒░░│\n\v\v\v\v│▒░│\v│▒▒▒▒▒▒░░░░│▒▒▒▒░░░░│\v│▒▒░│\v┌┘▒░░░││▒▒░░░░├───┘▒▒└──┐\v│▒▒░░░└┐░░│\n\v┌──┘▒░│\v│▒▒▒▒▒▒░░░░│▒▒▒▒░░░░│\v│▒▒░│\v│▒▒░░░││▒▒░░░░│▒▒▒▒▒▒░░░│\v│▒▒░░░░│░░│"});
 	initializeStringObj(objs.title, 1, LTSTRS{"██████\v\v\v\v\v\v███╔═╦═╗╔═══╗╥\v\v\v╥╔═══╡╔═══╗╔═══╡\n█████████\v\v\v███║\v║\v║║\v\v\v║║\v\v\v║║\v\v\v\v║\v\v\v║║\n███\v\v\v\v████\v███╨\v║\v╨║\v\v\v║║\v\v\v║║\v\v\v\v║\v\v\v║║\n███\v\v\v\v\v\v██████\v\v║\v\v║\v\v\v║║\v\v\v║║\v\v\v\v║\v\v\v║║\n▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓\v\v║\v\v║\v\v\v║║\v\v\v║║\v\v\v\v╠══╦╝║\n\v\v\v\v\v\v▓▓▓\v\v\v\v\v\v\v\v║\v\v║\v\v\v║║\v╥\v║╠══╡\v║\v\v║\v╚═══╗\n\v\v\v\v\v\v▓▓▓\v\v\v\v\v\v\v\v║\v\v║\v\v\v║║\v║\v║║\v\v\v\v║\v\v║\v\v\v\v\v║\n▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓\v\v║\v\v║\v\v\v║║\v║\v║║\v\v\v\v║\v\v╚╗\v\v\v\v║\n█████\v\v\v\v\v█████\v\v║\v\v║\v\v\v║║\v║\v║║\v\v\v\v║\v\v\v║\v\v\v\v║\n██████\v\v\v██████\v\v║\v\v║\v\v\v║║\v║\v║║\v\v\v\v║\v\v\v║\v\v\v\v║\n███\v███████\v███\v\v║\v\v║\v\v\v║║\v║\v║║\v\v\v\v║\v\v\v║\v\v\v\v║\n███\v\v\v███\v\v\v███\v\v║\v\v╚═══╝╚═╩═╝╚═══╡╨\v\v\v╨╞═══╝"});
-	initializeStringObj(objs.prompt, 6, LTSTRS{"Enter\vyour\vname:\n\n•\v\v\v\v\v\v\v\v\v\v\v\v\v\v•\n\n\nAlvise\v\vBruniera\nRiccardo\vCavasin",
+	initializeStringObj(objs.prompt, 6, LTSTRS{"Enter\vyour\vname:\n\n•\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v•\n\n\nAlvise\v\vBruniera\nMassimo\vCalabrigo\nRiccardo\vCavasin",
 																						 "┌───────────────────┤•··├───────────────────┐\n┴\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v┴\n\n\n\n\n\n\n\n┬\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v┬\n└───────────────────┤•··├───────────────────┘",
 																						 "┌───────────────────┤·•·├───────────────────┐\n┴\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v┴\n\n\n\n\n\n\n\n┬\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v┬\n└───────────────────┤·•·├───────────────────┘",
 																						 "┌───────────────────┤··•├───────────────────┐\n┴\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v┴\n\n\n\n\n\n\n\n┬\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v\v┬\n└───────────────────┤··•├───────────────────┘",
@@ -52,7 +52,11 @@ void logWrite(const char *s, const unsigned short offset) {
 }
 
 void logSection(const unsigned short section) {
-	gotoXY(NULL, objs.prompt, xPosition(objs.title), yPosition(objs.title)+1);
+	if(section < 3) {
+		gotoXY(NULL, objs.prompt, 12, 4);
+	} else {
+		gotoXY(NULL, objs.prompt, 0, 6);
+	}
 	setSprite(objs.prompt, 1+section);
 	stamp(objs.canvas, 1, VTOBJS&objs.prompt);
 }
@@ -64,7 +68,7 @@ void logSection(const unsigned short section) {
                               }
 
 void splashLayout() {
-	gotoXY(NULL, objs.title, 12, 3);
+	gotoXY(NULL, objs.title, 14, 3);
 	gotoXY(NULL, objs.splashTowers, -37, -10);
 	align(objs.splashTowers, 2);
 	gotoXY(NULL, objs.splashCityline, 37, -10);
@@ -75,9 +79,14 @@ void splashLayout() {
 
 void printName(const char *s) {
 	char string[100];
-	sprintf(string, "Enter\vyour\vname:\n\n•%-14.14s•\n\n\nAlvise\v\vBruniera\nRiccardo\vCavasin", s);
+	sprintf(string, "Enter\vyour\vname:\n\n•%-15.15s•\n\n\nAlvise\v\vBruniera\nMassimo\vCalabrigo\nRiccardo\vCavasin", s);
 	setSpriteText(objs.prompt, VTSTR string);
 	render(objs.canvas, 3, LTOBJS{objs.splashCityline, objs.splashTowers, objs.prompt});
+}
+
+void connectLayout() {
+	logSection(0);
+	gotoXY(NULL, objs.log, xPosition(objs.prompt), yPosition(objs.prompt)+3);
 }
 
 void playLayout(const ClientMatch *const clientMatch) {
@@ -117,16 +126,15 @@ void printPreview(const MatchStatus *const matchStatus, const Move *const move) 
 	}
 }
 
-//}
+//}}
+
 void opponentLayout() {
 	logSection(3);
-	gotoXY(NULL, objs.prompt, 0, 6);
 	render(objs.canvas, 3, LTOBJS{objs.title, objs.prompt, objs.log});
 }
 
 void disconnection() {
 	logSection(4);
-	gotoXY(NULL, objs.prompt, 0, 6);
 	render(objs.canvas, 2, LTOBJS{objs.title, objs.prompt});
 }
 
@@ -168,7 +176,8 @@ void endgame(bool won) {
 	render(objs.canvas, 4, LTOBJS{objs.tCanvas, objs.log, objs.splashCityline, objs.title});
 	refresh(objs.canvas);
 }
-//}}
+
+//}
 
 
 void moveMatch(const MatchStatus *const matchStatus, Move *const move) {
@@ -258,8 +267,7 @@ void connectToServer(ClientMatch *const clientMatch) {
 	initializeSocket(&clientMatch->clientSck);
 	initializeSocketAttr(&bindedSckAttr, SCK_PATH);
 
-	logSection(0);
-	gotoXY(NULL, objs.log, xPosition(objs.prompt), yPosition(objs.prompt)+3);
+	connectLayout();
 	logWrite("trying to connect", 1);
 	refresh(objs.canvas);
 
@@ -276,7 +284,7 @@ void askName(ClientMatch *const clientMatch) {
 	splashLayout();
 	refresh(objs.canvas);
 
-	moveCursor(10, 5);
+	moveCursor(10, 4);
 	scanf("%19s", clientMatch->playerA.name);
 	printName(clientMatch->playerA.name);
 }
