@@ -1,24 +1,33 @@
 # NIMTowers
 
-`NIMTowers` is a version of the strategy game NIM. The game is inspired by the achievement of Philippe Petit, who, in 1974, walked on a rope suspended at more than 400 metres above the ground, between the newborn towers of the World Trade Center. The goal is to complete the towers allowing your funambulist to make his walk between the two towers. At each round a player will choose a tower and how many floors to build on that tower. By rules the player can build only on one tower per round, he cannot build less than 1 floor and he cannot build higher than the tower's height limit.
+`NIMTowers` is a reinterpretation of the strategy game NIM, inspired by the achievement of high wire artist [Philippe Petit](https://en.wikipedia.org/wiki/Philippe_Petit), who, in 1974, walked on a tightrope wire between the newborn towers of the World Trade Center, at 400m above the ground.
 
+The goal of the game is to be the first to complete the towers, allowing your funambulist to make his walk on the wire. At each round the player will choose a tower and how many floors to build. By rules the player can build only on one tower per round, and he can't build less than 1 floor, or build higher than the tower's height limit.
 
-At the beginning of a match each tower starts with a random initial height between 4 and 13 floors, 2 floors less than the height limit. The beginner is also chosen randomly. The match ends when both towers reach the height of 15 floors and the winner is the player who buils the last floor. The winner will see his high-wire walker complete his walk between the towers, the loser will see him fall half way through the walk.
+At the beginning of a match, each tower starts with a random amount of floors between 4 and 13, out of a maximum height of 15. The player that gets to make the first move is also chosen randomly. The match ends when both towers reach maximum height, so who builds the last floors wins. The winner will see his high-wire walker complete his stunt, the loser will see him fall to his doom.
 
 ---
 ## nimServer
 
-The `nimServer` program is responsible for managing the matches. It accepts the players and starts their match, it arbitrates victory and ends the match when either a player wins or he disconnects from the server.
+The `nimServer` program is responsible for managing matches. It accepts new players and starts new games, besides arbitrating victories and ending matches when either player wins or disconnects.
 
 ### Starting and matchMaking
 
-When launched, `nimServer` creates a UNIX domain socket and binds it to an address in the file system, at the path specified by the macro `SCK_PATH` defined in the `common.h` file. Before waiting for players the programm starts the thread [`undertaker`](#undertaker) passing to it some synchronization variables and the pointer to a buffer inside of a `Synchronized` struct. This thread will take care of ending the matches.
+When launched, `nimServer` creates a UNIX domain socket and binds it to an address in the file system, at the path specified by the macro `SCK_PATH` defined in the `common.h` file.\
+Before starting to wait for new players, program starts the thread [`undertaker`](#undertaker), which has the task of disposing of 'dead' matches.
 
-Now the main thread can start waiting for players. When the first player connects the program will wait for a second one. The server will receive a `Player` struct from each player and start a match between the two on a separate [thread](#matchRoutine). The main thread will also pass to the match thread a `ServerMatch` struct containing a generated thread id used for logging, the structs of the two player and and their sockets, and a copy of the `Synchronized` struct used to synchronize the interaction with the `undertaker` thread.
+When the first player connects, the program will wait for a second one. A `Player` struct containing the player's name will be received from each player, and used to create a `ServerMatch`.\
+A `ServerMatch` contains:
+* a `pthread_t` object
+* a generated thread id (`thrId`)
+* two `ServerPlayer` structs, which contain a `Player` with the respective socket each
+* a copy of the `Synchronized` struct used to synchronize the interactions with the `undertaker` thread
+ 
+The struct is then passed to a new [`matchRoutine()`](#matchRoutine) thread, and the main thread can go back to waiting for two new players. This process is repeated whenever a new match can be created.
 
-At this point the main thread can get back to waiting for other two players. If the connection is aborted by the client while accepting the server will wait for another player. Other errors that can occur are caused by system limitation and will cause the program to exit.
+If the connection gets interrupted while accepting a new player, the server will resume waiting for another player. Other errors that could occur are assumed to be caused by more serious and unrecoverable system errors, thus the program will just terminate.
 
-To send messages to the clients the `MSG_NOSIGNAL` flag is set to prevent sending errors can exit the program, allowing for error handling (ending the match).
+The `MSG_NOSIGNAL` flag has been set for the `send()` call to prevent forwarding errors to crash the program, allowing for error handling (e.g. by ending the match).
 
 ### matchRoutine
 
