@@ -5,7 +5,7 @@
 #include <stropts.h>
 #include <asm/ioctls.h>
 
-#define SCK_PATH "/home/nemo/nim/socket"
+#define SCK_PATH "socket"
 #define TOWERSMAXHEIGHT 15
 
 // GRAPHICS

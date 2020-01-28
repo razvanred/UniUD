@@ -1,6 +1,7 @@
-# NIMTowers
+# [NIMTowers](https://github.com/razvanred99/UniUD/tree/master/Cavasin/laboratorio%20sistemi%20operativi/nim)
+##### Authors *(in Alphabetical order)* Alvise Bruniera, Massimo Calabrigo, Riccardo Cavasin
 
-`NIMTowers` is a reinterpretation of the strategy game NIM, inspired by the achievement of high wire artist [Philippe Petit](https://en.wikipedia.org/wiki/Philippe_Petit), who, in 1974, walked on a tightrope wire between the newborn towers of the World Trade Center, at 400m above the ground.
+[`NIMTowers`](https://github.com/razvanred99/UniUD/tree/master/Cavasin/laboratorio%20sistemi%20operativi/nim) is a reinterpretation of the strategy game NIM, inspired by the achievement of high wire artist [Philippe Petit](https://en.wikipedia.org/wiki/Philippe_Petit), who, in 1974, walked on a tightrope wire between the newborn towers of the World Trade Center, at 400m above the ground.
 
 The goal of the game is to be the first to complete the towers, allowing your funambulist to make his walk on the wire. At each round the player will choose a tower and how many floors to build. By rules the player can build only on one tower per round, and he can't build less than 1 floor, or build higher than the tower's height limit.
 
@@ -83,6 +84,7 @@ One of the hardest task was to create a reliable way to discard inputs from the 
 ## Environment information
 
 * `tested operating systems`:
-    * WSL 1
+    * WSL with Ubuntu: if running under WSL, avoid using DrvFS paths, as mentioned [here](https://devblogs.microsoft.com/commandline/windowswsl-interop-with-af_unix/)
+    >If the Unix socket path is a DrvFS path (i.e your system volumes mounted within WSL, ex: `/mnt/c`, `/mnt/d` etc.) then it can only communicate to a Windows Unix socket. If the path is a LxFS path (i.e Linux mounted volume within WSL, ex: `/home`, `/var`, `/usr` etc.) then it can only communicate with WSL Unix sockets.
     * Ubuntu
 * `compiler`: gcc
