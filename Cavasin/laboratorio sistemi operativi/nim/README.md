@@ -1,20 +1,20 @@
 # [NIMTowers](https://github.com/razvanred99/UniUD/tree/master/Cavasin/laboratorio%20sistemi%20operativi/nim)
 ##### Authors *(in Alphabetical order)* Alvise Bruniera, Massimo Calabrigo, Riccardo Cavasin
 
-[`NIMTowers`](https://github.com/razvanred99/UniUD/tree/master/Cavasin/laboratorio%20sistemi%20operativi/nim) is a reinterpretation of the strategy game NIM, inspired by the achievement of high wire artist [Philippe Petit](https://en.wikipedia.org/wiki/Philippe_Petit), who, in 1974, walked on a tightrope wire between the newborn towers of the World Trade Center, at 400m above the ground.
+[NIMTowers](https://github.com/razvanred99/UniUD/tree/master/Cavasin/laboratorio%20sistemi%20operativi/nim) is a reinterpretation of the strategy game NIM, inspired by the achievement of high wire artist [Philippe Petit](https://en.wikipedia.org/wiki/Philippe_Petit), who, in 1974, walked on a tightrope wire between the newborn towers of the World Trade Center, at 400m above the ground.
 
 The goal of the game is to be the first to complete the towers, allowing your funambulist to make his walk on the wire. At each round the player will choose a tower and how many floors to build. By rules the player can build only on one tower per round, and he can't build less than 1 floor, or build higher than the tower's height limit.
 
 At the beginning of a match, each tower starts with a random amount of floors between 4 and 13, out of a maximum height of 15. The player that gets to make the first move is also chosen randomly. The match ends when both towers reach maximum height, so who builds the last floors wins. The winner will see his high-wire walker complete his stunt, the loser will see him fall to his doom.
 
 ---
-## `nimServer`
+## nimServer
 
-The `nimServer` program is responsible for managing matches. It accepts new players and starts new games, besides arbitrating victories and ending matches when either player wins or disconnects.
+The **nimServer** program is responsible for managing matches. It accepts new players and starts new games, besides arbitrating victories and ending matches when either player wins or disconnects.
 
 ### startup and matchMaking
 
-When launched, `nimServer` creates a UNIX domain socket and binds it to an address in the file system, at the path specified in the `SCK_PATH` macro in the `common.h` file. The [`undertaker()`](#undertaker) thread is then started, which has the task of disposing of 'dead' matches.
+When launched, **nimServer** creates a UNIX domain socket and binds it to an address in the file system, at the path specified in the `SCK_PATH` macro in the `common.h` file. The [`undertaker()`](#undertaker) thread is then started, which has the task of disposing of 'dead' matches.
 
 When the first player connects, the program will wait for a second one. Both players will then send a `Player` struct containing their respective `name` (and an uninitialized `id` field), used to create a new `ServerMatch` struct.\
 A `ServerMatch` contains:
@@ -48,9 +48,9 @@ All this synchronizing-related data is stored in the `Synchronized` struct, avai
 At last, `undertaker()` unlocks `matchesLock`, allowing for other *dying* [`matchRoutine()`](#matchRoutine)s to access `undertakerBuffer`, and the process repeats.
 
 ---
-## `nimClient`
+## nimClient
 
-The `nimClient` program allows players to connect to a `nimServer` and play, and provides the user with an ANSI Art-like interface.
+The **nimClient** program allows players to connect to a **nimServer** and play, and provides the user with an ANSI Art-like interface.
 
 ### communication with server
 
@@ -67,7 +67,7 @@ To track if the main loop stopped naturally or because of a connection error, th
 
 ### Graphics
 
-The program offers an interactive ANSI Art-like interface. In order to compose the UI as quickly as possible, we used a text-based graphic library called [`VisualT`](https://github.com/Lucide/VisualT), previously written by one of us. This library allowed us to import sprites for every object of the interface (title, background images, prompts, etc), and to easily position them on the screen.
+The program offers an interactive ANSI Art-like interface. In order to compose the UI as quickly as possible, we used a text-based graphic library called [VisualT](https://github.com/Lucide/VisualT), previously written by one of us. This library allowed us to import sprites for every object of the interface (title, background images, prompts, etc), and to easily position them on the screen.
 
 The towers are printed on the screen by 'stamping' the same section of the tower (`towerSection`) repeatedly, changing its vertical position each time. The "preview" of the new floors is generated in the same way, but the blinking effect is obtained by switching `towerSection`'s sprite at every refresh of the screen. In order to get a proper 'refresh rate', [non-blocking input](#Input) is used.
 
