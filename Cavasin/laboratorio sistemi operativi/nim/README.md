@@ -1,7 +1,7 @@
 # [NIMTowers](https://github.com/razvanred99/UniUD/tree/master/Cavasin/laboratorio%20sistemi%20operativi/nim)
 ##### Authors *(in Alphabetical order)* Alvise Bruniera, Massimo Calabrigo, Riccardo Cavasin
 
-[NIMTowers](https://github.com/razvanred99/UniUD/tree/master/Cavasin/laboratorio%20sistemi%20operativi/nim) is a reinterpretation of the strategy game NIM, inspired by the achievement of high wire artist [Philippe Petit](https://en.wikipedia.org/wiki/Philippe_Petit), who, in 1974, walked on a tightrope wire between the newborn towers of the World Trade Center, at 400m above the ground.
+[**NIMTowers**](https://github.com/razvanred99/UniUD/tree/master/Cavasin/laboratorio%20sistemi%20operativi/nim) is a reinterpretation of the strategy game NIM, inspired by the achievement of high wire artist [Philippe Petit](https://en.wikipedia.org/wiki/Philippe_Petit), who, in 1974, walked on a tightrope wire between the newborn towers of the World Trade Center, at 400m above the ground.
 
 The goal of the game is to be the first to complete the towers, allowing your funambulist to make his walk on the wire. At each round the player will choose a tower and how many floors to build. By rules the player can build only on one tower per round, and he can't build less than 1 floor, or build higher than the tower's height limit.
 
