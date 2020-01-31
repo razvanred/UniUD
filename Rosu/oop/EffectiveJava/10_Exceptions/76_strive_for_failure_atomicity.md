@@ -1,0 +1,1 @@
+# Strive for failure atomicity
