@@ -3,6 +3,9 @@
 * `ls` stampa il contenuto della working directory
   * `-l` (long) stampa i permessi e altre info di ogni file nella working directory
   * `-a` (all) stampa anche i file nascosti
+  * `-t` serve ad ordinare i file in base alla data di ultima modifica
+* `ln [dir] [new_dir]` serve per creare hard links
+  * `-s` al posto di creare un hard link, creo un soft link
 * `du {p}` (disk usage) stampa il numero di blocchi di memoria che occupano gli elementi `p`
   * `-h` (hooman) misura in kB/mB/gB/..., al posto che a blocchi
   * `-b` (byte) misura in byte
@@ -11,8 +14,11 @@
   * `-c` accoda la dimensione totale
 * `cd [p]` cambia la working directory al percorso `p`, che può essere relativo o assoluto 
 * `mkdir [dir]` crea una directory `dir`
+* `rmdir [dir]` elimina una directory `dir`
+* `rm [file]` elimina un file
+  * `-r` elimina una cartella e tutto il suo contenuto al posto di un file
 * `touch [file]` crea un file `file`
-* `find {p}` stampa il contenuto di `p` ricorsivamente, segue i link
+* `find {p}` stampa il contenuto di `p` ricorsivamente, segue i link, quindi stampa cartelle e sottocartelle
   * `-name '[regex]'` filtra i nomi degli elementi in base a `regex`, non cerca all'interno dei file.
   * `-print` stampa i file trovati
 * `chmod [nnn] [p]` cambia i permessi del file nel percorso `p`\
