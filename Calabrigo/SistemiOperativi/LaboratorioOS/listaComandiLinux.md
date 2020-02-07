@@ -87,6 +87,16 @@
   * `-A [n]` (after) mostra anche le `n` righe successive
   * `-C [n]` (context) mostra anche `n` righe tra precedenti e successive
   * `-F` (fixed) (equivalente a `fgrep`) cerca una lista di stringhe in `regex` separate da `|` (non accetta regex)
+* `sort file1` ordina file1
+  * `-b` ignora eventuali spazi presenti nelle chiavi di ordinamento
+  * `-f` ignora le distinzioni fra lettere maiuscole e minuscole
+  * `-n` considera numerica (invece che testuale) la chiave di ordinamento
+  * `-r` ordina in modo decrescente
+  * `-o file` invia l’output al file file invece che allo standard output
+  * `-t s` usa s come separatore di campo
+  * `-k s1,s2` usa i campi da s1 a s2 come chiavi di ordinamento
+ed eventualmente i successivi (fino a fine linea)
+in caso di 'pareggio'
 * `tr [set1] {set2}` sostituisce le occorrenze dei caratteri in `set1`, con i corrispondenti in `set2` - `tr A-Z a-z`, sostituisce le lettere maiuscole con quelle minuscole
   * `-s` (squeeze) sostituisce ogni sequenza di un carattere in `set1` ripetuto, con una singola occorrenza di quel carattere - `tr -s ' '` elimina tutti gli spazi multipli consecutivi
 * `sed "[action1;action2;...]" {p1...}` esegue le `action`s consecutivamente per ogni riga di ogni `p`
