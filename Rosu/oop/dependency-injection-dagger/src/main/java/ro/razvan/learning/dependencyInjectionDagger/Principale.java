@@ -7,11 +7,12 @@ import java.util.Scanner;
 public class Principale {
 
     public static void main(String[] args) {
-        final @NotNull Scanner scanner = new Scanner(System.in);
-        final @NotNull CommandProcessor processor = CommandProcessorFactory.create().processor();
+        try (final Scanner scanner = new Scanner(System.in)) {
+            final @NotNull CommandProcessor processor = CommandProcessorFactory.create().processor();
 
-        while (scanner.hasNextLine()) {
-            processor.process(scanner.nextLine());
+            while (scanner.hasNextLine()) {
+                processor.process(scanner.nextLine());
+            }
         }
     }
 }

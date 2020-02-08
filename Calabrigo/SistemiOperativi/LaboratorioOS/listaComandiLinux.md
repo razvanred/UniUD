@@ -1,42 +1,50 @@
 # Comandi Linux
 * `pwd` stampa il percorso della working directory
-* `ls` stampa il contenuto della working directory
-  * `-l` (long) stampa i permessi e altre info di ogni file nella working directory
-  * `-a` (all) stampa anche i file nascosti
-* `du {p}` (disk usage) stampa il numero di blocchi di memoria che occupano gli elementi `p`
-  * `-h` (hooman) misura in kB/mB/gB/..., al posto che a blocchi
-  * `-b` (byte) misura in byte
-  * `-k` (kB) misura in kB
-  * `-m` (mB) misura in mB
-  * `-c` accoda la dimensione totale
-* `cd [p]` cambia la working directory al percorso `p`, che può essere relativo o assoluto 
-* `mkdir [dir]` crea una directory `dir`
-* `touch [file]` crea un file `file`
-* `find {p}` stampa il contenuto di `p` ricorsivamente, segue i link
-  * `-name '[regex]'` filtra i nomi degli elementi in base a `regex`, non cerca all'interno dei file.
-  * `-print` stampa i file trovati
-* `chmod [nnn] [p]` cambia i permessi del file nel percorso `p`\
+* `ls [p]` stampa il contenuto della cartella `p`\il nome del file `p`
+  * `-l` (long) stampa i permessi e altre info di ogni file
+  * `-a` [all] stampa anche i file nascosti
+  * `-t` (time) ordina per la data di ultima modifica, in ordine decrescente
+* `du [p]` (disk usage) stampa il numero di blocchi di memoria che occupano gli elementi `p`
+  * `-h` [human-readable] misura in kB\mB\gB\\..., al posto che a blocchi
+  * `-b` [bytes] misura in byte
+  * `-k` [block-size=1K] misura in kB
+  * `-m` [block-size=1M] misura in mB
+  * `-c` [total] accoda la dimensione totale
+* `cd [dir]` sposta la working directory su `dir` 
+* `mkdir [dir]` crea `dir`
+* `rmdir [dir]` elimina `dir`
+* `rm [p]` elimina il file `p`
+  * `-r` [recursive] elimina la cartella `p` ricorsivamente
+* `touch [file]` crea il file `file`
+* `find [dir]` stampa il contenuto di `dir` ricorsivamente, segue i link
+  * `-name '[regex]'` filtra i nomi degli elementi in base a `regex`, non cerca all'interno dei file
+* `chmod [nnn] [p]` cambia i permessi del file `p`\
   i tre numeri `nnn` rappresentano rispettivamente i permessi per l'utente proprietario (`owner`) di `p`, il gruppo a cui appartiene `p`, e tutti gli altri utenti\
   ogni `n` rappresenta una bitmask di 3b `rwx` convertita in numero decimale, ad esempio, per assegnare `rwx r-x --x` (111 101 001) scriveremmo `chmod 751 [p]`
-  * `-R` (recursive) applica ricorsivamente
+  * `-R` [recursive] applica ricorsivamente sulla cartella `p`
 * `chown [user]` assegna `user` come utente di `p`
-  * `:{group} [p]` assegna `group` come gruppo di `p`
-  * `-R` (recursive) applica ricorsivamente
-* `cp [p1] [p2]` copia un file da `p1` a `p2`
-  * `-r` (recurse) copia ricorsivamente tutti i contenuti di `p2`
-  * `-l` (link) copia `p1` come hardlink
-  * `-s` (symlink) copia `p1` come symlink
-* `mv [p1] [p2]` sposta il file da `p1` a `p2`\
-(`mv` e `cp` possono avere come parametri più file da copiare in una cartella - `mv [p1a...] [p2]`)
-* `ln [p1] [p2]` crea un hardlink `p2` a `p1`; crea una entry `p2` che punta allo stesso INode di `p1`
-  * `-s` (symlink) crea un simlink invece che un hardlink; un file `p2` che punta al file `p1`
+  * `:(group) [p]` assegna `group` come gruppo di `p`
+  * `-R` [recursive] applica ricorsivamente
+* `cp [p1a...] [p2]` copia il file\i file `[p1a...]` come file\nella cartella `p2`
+  * `-r` [recursive] copia ricorsivamente la cartella `p1`
+  * `-l` [link] copia il\i file `p1` come hardlink
+  * `-s` [symbolic-link] copia il\i file  `p1` come symlink
+* `mv [p1a...] [p2]` sposta il file\i file `[p1a...]` come file\nella cartella `p2`
+* `ln [p1a...] [p2]` crea un hardlink nella cartella `p2` per ogni file `p1`\ crea un hardlink `p2` che punta al file `p1`
+  * `-s` [symbolic] crea un symlink nella cartella `p2` per ogni elemento `p1`\ crea un symlink `p2` che punta all'elemento `p1`
+    * `-r` [relative] crea symlink relativi alla cartella `p2`
 * `echo [str]` stampa la stringa `str`
 * `cat {p1...}` stampa uno o più file, per reindirizzare l'output su file si può usare `cat [p1a...] > [p2]`
 * `uniq {p}` elimina le ripetizioni adiacenti delle righe in `p`
-* `tail [p]` stampa le ultime 10 righe di `p`
+  * `-c` [count] prefissa ogni riga col numero di occorrenze
+  * `-d` [repeated] stampa solo le righe duplicate
+  * `-D` stampa tutte le righe duplicate
+  * `-u` [unique] stampa solo le righe uniche
+  * `-i` [ignore-case] il confronto tra le righe è case insensitive
+* `tail {p}` stampa le ultime 10 righe di `p`
   * `-n [k]` stampa le ultime `k` righe di `p`
   * `-n +[k]` stampa a partire dalla riga `k` esclusa
-* `head [p]` stampa le prime 10 righe di `p`
+* `head {p}` stampa le prime 10 righe di `p`
   * `-n [k]` stampa le prime `k` righe di `p`
   * `-n -[k]` stampa a salire dalla riga `k` esclusa
 * `more {p}` stampa una pagina di `p` e poi una riga per volta
@@ -45,7 +53,7 @@
 * `cut {str}` taglia e stampa una porzione della stringa `str` - `cut lorem&ipsum&dolor -d'&' -f2` -> `ipsum`
   * `-d'[c]' -fn` (delimiter) usa `c` come carattere separatore
   * `-f[n]` (field) stampa solo il campo numero `n`
-* `paste [p1...]` affianca riga per riga i `p` separati da `TAB`
+* `paste {p1...}` affianca riga per riga i `p` separati da `TAB`
   * `-d "str"` usa a rotazione i caratteri di `str` come separatori
 * `wc {p}` stampa il numero di righe, parole, e caratteri in `p`
   * `-c` (count) mostra numero di byte
@@ -53,7 +61,7 @@
   * `-w` (words) mostra solo numero di parole
   * `-m` numero di caratteri
   * `-L` (length) lunghezza della riga più lunga
-* `grep [regex] {p}` cerca le occorrenze in `p` in base a `regex`
+* `grep [regex] {pa...}` cerca le occorrenze in `p` in base a `regex`
   * sintassi di `regex`:
     * `^` (B) inizio della linea
     * `$` (B) fine della linea
@@ -81,7 +89,17 @@
   * `-A [n]` (after) mostra anche le `n` righe successive
   * `-C [n]` (context) mostra anche `n` righe tra precedenti e successive
   * `-F` (fixed) (equivalente a `fgrep`) cerca una lista di stringhe in `regex` separate da `|` (non accetta regex)
-* `tr [set1] {set2}` sostituisce le occorrenze dei caratteri in `set1`, con i corrispondenti in `set2` - `tr A-Z a-z`, sostituisce le lettere maiuscole con quelle minuscole
+* `sort {filea...}` ordina il contenuto dei `file` concatenati
+  * `-b` (blanks) ignora eventuali spazi presenti nelle chiavi di ordinamento
+  * `-f` (fold) abilita la case insensitiveness
+  * `-n` considera numerica (invece che testuale) la chiave di ordinamento
+  * `-r` ordina in modo decrescente
+  * `-o file` invia l’output al file file invece che allo standard output
+  * `-t s` usa s come separatore di campo
+  * `-k s1,s2` usa i campi da s1 a s2 come chiavi di ordinamento
+ed eventualmente i successivi (fino a fine linea)
+in caso di 'pareggio'
+* `tr [set1] (set2)` sostituisce le occorrenze dei caratteri in `set1`, con i corrispondenti in `set2` - `tr A-Z a-z`, sostituisce le lettere maiuscole con quelle minuscole
   * `-s` (squeeze) sostituisce ogni sequenza di un carattere in `set1` ripetuto, con una singola occorrenza di quel carattere - `tr -s ' '` elimina tutti gli spazi multipli consecutivi
 * `sed "[action1;action2;...]" {p1...}` esegue le `action`s consecutivamente per ogni riga di ogni `p`
   * sintassi di `action`:
@@ -92,7 +110,7 @@
         * `d` (delete) elimina
         * `q` (quit) chiude il programma
         * `p` (print) stampa
-  * `-i{suffix}` (in-place) modifica direttamente `p` o una copia con suffisso `suffix`
+  * `-i(suffix)` (in-place) modifica direttamente `p` o una copia con suffisso `suffix`
   * `-s` (separate) elabora i file separatamente
   * `-f [p2]` (file-script) prende le `action`s da `p2`
 * `date` stampa la data
@@ -102,7 +120,7 @@
   * `-m [month]` stampa il calendario di `month`
 * `history` stampa gli ultimi 500 comandi
   * `[n]` stampa gli ultimi `n` comandi
-  * sintassi per l'espansione della history: `[command]:{filter}`
+  * sintassi per l'espansione della history: `[command]:(filter)`
     * sintassi di `command`
       * `![n]` richiama l'`n`-esimo comando
       * `!-[n]` richiama l'`n`-ultimo comando
@@ -120,7 +138,7 @@
   * `-a` (all) rimuove tutti gli alias
 * `bg %[n]` manda l'`n`esimo job in esecuzione in background finché non richiede un input (l'output viene mostrato sul terminale)
 * `fg %[n]` riporta l'`n`esimo job in esecuzione in foreground
-* `kill  [pid\%n]` invia segnale 15 al processo con quel `pid`\all'`n`esimo job in esecuzione sulla shell (se è sospeso raccoglie il segnale quando torna in esecuzione)
+* `kill [pid\%n]` invia segnale 15 al processo con quel `pid`\all'`n`esimo job in esecuzione sulla shell (se è sospeso raccoglie il segnale quando torna in esecuzione)
   * `-[signal]` invia il segnale `signal`:
     * `9` termina forzatamente
     * `15` chiede la terminazione

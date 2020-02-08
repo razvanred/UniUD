@@ -130,6 +130,7 @@ Quindi abbiamo dimostrato il teorema\\
     \textbf{FINE DIMOSTRAZIONE}
 \end{center}
 \section{Limiti con l'Hopital}
+\subsection{Dimostrazione Hopital}
 L'Hopital serve a gestire forme di limite indeterminate, altrimenti non risolvibili.\\
 Possiamo risolvere le forme indeterminate: $\frac{\infty}{\infty}$ e $\frac{0}{0}$.\\
 Se esiste un intervallo $I \rightarrow R$, due funzioni f e g continue in I e derivabili nei punti interni di $I$, e $g^{'}(x) \neq 0$. Allora
@@ -145,6 +146,7 @@ Dimostrazione:\\
 Preso un intervallo I di questo tipo $[x_{0},\infty)$, per ipotesi $lim_{x \rightarrow x_{0}}f(x) = lim_{x \rightarrow x_{0}}g(x) = 0$, vediamo 2 casi.\\
 Se $x = x_{0}$, e x è estremo inferiore di I, allora $lim_{x \rightarrow x_{0}}f(x) = 0$, e visto che la funzione è continua nell'intervallo $lim_{x \rightarrow x_{0}}f(x) = f(x_{0}) = 0$, 
 lo stesso vale per $lim_{x \rightarrow x_{0}}g(x) = g(x_{0}) = 0$\\
+Allora se $x = x_{0}$ hopital non può essere vero perchè nell'ipotesi ho $g(x) \neq 0$, mentre qui ho ottenuto $g(x_{0}) = 0$.\\
 Se $x > x_{0}$, allora applico cauchy e dico che $\frac{f(x)}{g(x)} = \frac{f(x)-f(x_{0})}{g(x)-g(x_{0})} = \frac{f^{'}c(x)}{g^{'}}c(x)$.\\
 Ora vediamo che $x_{0} < c(x) < x$, e per x che tende a 0, allora anche $c(x)$ tende a 0.\\
 Quindi possiamo scrivere $lim_{x \rightarrow x_{0}}\frac{f^{'}c(x)}{g^{'}c(x)}$ con $t = c(x)$ e $c(x)$ che tende a zero, allora $lim_{t \rightarrow x_{0}}\frac{f^{'}(t)}{g^{'}(t)} = L$ per ipotesi, 
@@ -666,6 +668,44 @@ Per dimostrare $h^{'}(x_{0}) = 0$, dimostriamo $h(a) = h(b)$:\\
 Quindi per il teorema di Rolle, visto che h(x) è continua in $[a,b]$, derivabile in $(a,b)$ e $h(a) = h(b)$, allora esiste $x_{0}$ tale che $h^{'}(x_[0]) = 0$.\\
 Quindi se deriviamo $h^{'}(x)$, otteniamo $h^{'}(x) = f^{'}(x) - f^{'}(a)*-\frac{d}{dx}(\frac{f(b)-f(a)}{b-a}*(x-a))$, e sostituendo $x = x_{0}$, otteniamo $0 = f^{'}(x) -\frac{f(b)-f(a)}{b-a}$, 
 e quindi abbiamo dimostrato la tesi perchè $f^{'}(x) = \frac{f(b)-f(a)}{b-a}$.\\
+\begin{center}
+    \textbf{FINE DIMOSTRAZIONE}
+\end{center}
+\section{Formula di Taylor ed $e$ numero irrazionale}
+\subsection{Polinomio e formula di Taylor}
+\textbf{Polinomio di Taylor}
+\begin{align*}
+    &f(x) = \frac{f^{0}(x)}{0!}*(x-x_{0})^{0} + \frac{f^{1}(x)}{1!}*(x-x_{0})^{1} + \dots + \frac{f^{n}(x)}{n!}*(x-x_{0})^{n}\\
+    &f(x) = 1 + f^{1}(x)*(x-x_{0})^{1} + \dots + \frac{f^{n}(x)}{n!}*(x-x_{0})^{n}
+\end{align*}
+\textbf{Formula di Taylor}
+Presa una funzione f continua su un intervallo I e derivabile nei punti interni di I, allora preso un punto interno $x_{0}$, vale la formula:\\
+$f(x) = $ polinomio di taylor $+ o(x-x_{0})^{n+1}$\\
+oppure\\
+$f(x) = $ polinomio di taylor $+ \frac{f^{n+1}(c)}{(n+1)!}*(x-x_{0})^{n+1}$\\
+\subsection{Dimostrazione di $e$ irrazionale}
+Prendo $f(x) = e^x$, e lo scrivo come formula di taylor.\\
+$e^x = 1 + \frac{x}{1!} + \frac{x^{2}}{2!} + \dots + \frac{x^{n}}{n!} + \frac{f^{n+1}(c)}{(n+1)!}*x^{n+1}$.\\
+Ora pongo $x = 1$ e lo sostituisco alla formula sovrastante, ottenendo:\\
+\begin{align*}
+    &e^x = 1 + \frac{1}{1!} + \frac{1^{2}}{2!} + \dots + \frac{1^{n}}{n!} + \frac{f^{n+1}(c)}{(n+1)!}*1^{n+1}\\
+    &e^x = 1 + \frac{1}{1!} + \frac{1}{2!} + \dots + \frac{1}{n!} + \frac{f^{n+1}(c)}{(n+1)!}
+\end{align*}
+Ora esamino la formula che ho ottenuto. Suppongo che $e^x$ sia razionale, se lo fosse sarebbe esprimibile come $e^x = e^x = \frac{p}{q}$, con $p \ge 1$ e $q \ge 2$.\\
+Riscrivo la formula con $e^x = \frac{p}{q}$: $\frac{p}{q} = 1 + \frac{1}{1!} + \frac{1}{2!} + \dots + \frac{1}{q!} + \frac{f^{q+1}(c)}{(q+1)!}$.\\
+Faccio alcuni passaggi per semplificare la formula:\\
+\begin{align*}
+    &\frac{p}{q} = 1 + \frac{1}{1!} + \frac{1}{2!} + \dots + \frac{1}{q!} + \frac{f^{q+1}(c)}{(q+1)!}\\
+    &\frac{p}{q} = 1 + \frac{1}{1!} + \frac{1}{2!} + \dots + \frac{1}{q!} + \frac{e^c}{(q+1)!}\\
+    &q!*\frac{p}{q} = q! + \frac{q!}{1!} + \frac{q!}{2!} + \dots + \frac{q!}{q!} + \frac{e^c*q!}{(q+1)!}\\
+    &q!*\frac{p}{q} = q! + \frac{q!}{1!} + \frac{q!}{2!} + \dots + 1 + \frac{e^c}{(q+1)}
+\end{align*}
+Analizziamo la formula, perchè sia valida dobbiamo avere solo numeri interi sia a dx che a sx. 
+Notiamo che tutti i termini della funzione sembrano interi tranne l'ultimo: $\frac{e^c}{(q+1)}$. Quindi ci chiediamo se anche quest'ultimo sia intero.\\
+Ora io so che $x_{0} < c < x$, e con $x_{0} = 0$ e $x = 1$, allora $0 < c < 1$. Quindi $1 < e^c < e < 3$, quindi $1 < e^c < 3$.\\
+Io so anche che $q \ge 2$, quindi $q+1 \ge 3$. Quindi $\frac{e^c}{(q+1)}$ si può esprimere come: qualcosa positivo minore di 3, fratto qualcosa positivo maggiore di 3, che 
+da come risultato qualcosa compreso tra zero e uno. Quindi $0 < \frac{e^c}{(q+1)} < 1$. Visto che non esistono numeri naturali compresi tra zero ed uno, allora 
+la formula non è valida e quindi $e$ è irrazionale.
 \begin{center}
     \textbf{FINE DIMOSTRAZIONE}
 \end{center}
