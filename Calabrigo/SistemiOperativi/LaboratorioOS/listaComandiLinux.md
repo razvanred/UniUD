@@ -1,41 +1,39 @@
 # Comandi Linux
 * `pwd` stampa il percorso della working directory
 * `ls` stampa il contenuto della working directory
-  * `-l` (long) stampa i permessi e altre info di ogni file nella working directory
-  * `-a` (all) stampa anche i file nascosti
-  * `-t` serve ad ordinare i file in base alla data di ultima modifica
-* `ln [dir] [new_dir]` serve per creare hard links
-  * `-s` al posto di creare un hard link, creo un soft link
+  * `[dir]` stampa il contenuto di `dir`
+  * `-l` (long) stampa i permessi e altre info di ogni file
+  * `-a` [all] stampa anche i file nascosti
+  * `-t` (time) ordina per la data di ultima modifica, in ordine decrescente
 * `du {p}` (disk usage) stampa il numero di blocchi di memoria che occupano gli elementi `p`
-  * `-h` (hooman) misura in kB/mB/gB/..., al posto che a blocchi
-  * `-b` (byte) misura in byte
-  * `-k` (kB) misura in kB
-  * `-m` (mB) misura in mB
-  * `-c` accoda la dimensione totale
-* `cd [p]` cambia la working directory al percorso `p`, che può essere relativo o assoluto 
-* `mkdir [dir]` crea una directory `dir`
-* `rmdir [dir]` elimina una directory `dir`
-* `rm [file]` elimina un file
-  * `-r` elimina una cartella e tutto il suo contenuto al posto di un file
-* `touch [file]` crea un file `file`
-* `find {p}` stampa il contenuto di `p` ricorsivamente, segue i link, quindi stampa cartelle e sottocartelle
-  * `-name '[regex]'` filtra i nomi degli elementi in base a `regex`, non cerca all'interno dei file.
-  * `-print` stampa i file trovati
-* `chmod [nnn] [p]` cambia i permessi del file nel percorso `p`\
+  * `-h` [human-readable] misura in kB\mB\gB\\..., al posto che a blocchi
+  * `-b` [bytes] misura in byte
+  * `-k` [block-size=1K] misura in kB
+  * `-m` [block-size=1M] misura in mB
+  * `-c` [total] accoda la dimensione totale
+* `cd [dir]` sposta la working directory su `dir` 
+* `mkdir [dir]` crea `dir`
+* `rmdir [dir]` elimina `dir`
+* `rm [p]` elimina il file `p`
+  * `-r` [recursive] elimina la cartella `p` ricorsivamente
+* `touch [file]` crea il file `file`
+* `find {dir}` stampa il contenuto di `dir` ricorsivamente, segue i link
+  * `-name '[regex]'` filtra i nomi degli elementi in base a `regex`, non cerca all'interno dei file
+* `chmod [nnn] [p]` cambia i permessi del file `p`\
   i tre numeri `nnn` rappresentano rispettivamente i permessi per l'utente proprietario (`owner`) di `p`, il gruppo a cui appartiene `p`, e tutti gli altri utenti\
   ogni `n` rappresenta una bitmask di 3b `rwx` convertita in numero decimale, ad esempio, per assegnare `rwx r-x --x` (111 101 001) scriveremmo `chmod 751 [p]`
-  * `-R` (recursive) applica ricorsivamente
+  * `-R` [recursive] applica ricorsivamente sulla cartella `p`
 * `chown [user]` assegna `user` come utente di `p`
   * `:{group} [p]` assegna `group` come gruppo di `p`
-  * `-R` (recursive) applica ricorsivamente
-* `cp [p1] [p2]` copia un file da `p1` a `p2`
-  * `-r` (recurse) copia ricorsivamente tutti i contenuti di `p2`
-  * `-l` (link) copia `p1` come hardlink
-  * `-s` (symlink) copia `p1` come symlink
-* `mv [p1] [p2]` sposta il file da `p1` a `p2`\
-(`mv` e `cp` possono avere come parametri più file da copiare in una cartella - `mv [p1a...] [p2]`)
-* `ln [p1] [p2]` crea un hardlink `p2` a `p1`; crea una entry `p2` che punta allo stesso INode di `p1`
-  * `-s` (symlink) crea un simlink invece che un hardlink; un file `p2` che punta al file `p1`
+  * `-R` [recursive] applica ricorsivamente
+* `cp [p1a...] [p2]` copia il file\i file `[p1a...]` come file\nella cartella `p2`
+  * `-r` [recursive] copia ricorsivamente la cartella `p1`
+  * `-l` [link] copia il\i file `p1` come hardlink
+  * `-s` [symbolic-link] copia il\i file  `p1` come symlink
+* `mv [p1a...] [p2]` sposta il file\i file `[p1a...]` come file\nella cartella `p2`
+* `ln [p1a...] [p2]` crea un hardlink nella cartella `p2` per ogni file `p1`\ crea un hardlink `p2` che punta al file `p1`
+  * `-s` [symbolic] crea un symlink nella cartella `p2` per ogni elemento `p1`\ crea un symlink `p2` che punta all'elemento `p1`
+    * `-r` [relative] crea symlink relativi alla cartella `p2`
 * `echo [str]` stampa la stringa `str`
 * `cat {p1...}` stampa uno o più file, per reindirizzare l'output su file si può usare `cat [p1a...] > [p2]`
 * `uniq {p}` elimina le ripetizioni adiacenti delle righe in `p`
@@ -87,9 +85,9 @@
   * `-A [n]` (after) mostra anche le `n` righe successive
   * `-C [n]` (context) mostra anche `n` righe tra precedenti e successive
   * `-F` (fixed) (equivalente a `fgrep`) cerca una lista di stringhe in `regex` separate da `|` (non accetta regex)
-* `sort file1` ordina file1
-  * `-b` ignora eventuali spazi presenti nelle chiavi di ordinamento
-  * `-f` ignora le distinzioni fra lettere maiuscole e minuscole
+* `sort [file]` ordina il contenuto di `file`
+  * `-b` (blanks) ignora eventuali spazi presenti nelle chiavi di ordinamento
+  * `-f` (fold) abilita la case insensitiveness
   * `-n` considera numerica (invece che testuale) la chiave di ordinamento
   * `-r` ordina in modo decrescente
   * `-o file` invia l’output al file file invece che allo standard output
