@@ -7,7 +7,7 @@ Metacaratteri = caratteri che la shell riconosce. Per far vedere un metacaratter
 * `[]` indica un singolo carattere tra quelli elencati tra parentesi.
 Esempio: ls /dev/tty[234]. Es: ls [a-zA-Z].bak
 * `{}` indica una sequenza di stringhe. Es: ls -l {file1,files}.bak
-* `~user` indica la home, è come scrivere `/home/user/`
+* `~` indica la home, è come scrivere `/home/`
 ### Redirizione Input/Output
 * A `>>` B e A `>` B redirezione dell'output da A a B. append e non append. Es: `echo ciao >> file`
 * A `<<` B e A `<` B redirezione dell'input da B a A. Es: `wc < file`
@@ -47,7 +47,7 @@ cut prende una colonna di un file (le colonne vengono scelte tramite delimitator
 cut -d: -f1 /etc/passwd\
 -d: dice che : è il delimitatore, e -f1, dice di prendere la prima colonna rispetto a quel delimitatore.\
 Paste, invece, serve a combinare le colonne di 2 file, mettendole una affianco all'astra, separate da uno slash /.
-# sed
+### sed
 Il comando sed serve a modificare i file, sostituendo le stringhe in base a certi criteri.\
 Sed prevede una o più azioni. Un'azione ha questa sintassi: s/expr/str/flags dove:
 * s/ indica che il carattere separatore dell'azione è /
@@ -66,5 +66,31 @@ sostituisce in tutte le righe che contengono la stringa sh il
 carattere : con il carattere _ ed il carattere 0 con il carattere %.\
 sed s/'ciao'/'villain'/g file\
 sostituisce tutte le occorrenze ciao in file con villain.\
+
+# Script
+Per avviare uno script scrivo ./nomeScript\
+Per visualizzare i comandi nella shell mentre vengono eseguiti, metto come prima riga dello script set -v.
+### variabili
+non hanno dichiarazione di tipo, si dichiarano e assegnano nello stesso momento. x = 'cose', x = y.\
+Per chiamare il valore di una variabile si usa il $: $x.\
+Variabili globali: export x.\
+Variabili di ambiente (sono variabili globali):
+* PS1 prompt della shell
+* PS2 secondo prompt della shell; utilizzato per esempio in caso di
+* ridirezione dell’input dalla linea di comando
+* PWD pathname assoluto della directory corrente
+* UID ID dello user corrente
+* PATH lista di pathname di directory in cui la shell cerca i comandi
+* HOME pathanme assoluto della home directory
+### Parametri e variabili di stato
+$1,$2,...,$9 sono variabili associate ai primi 9 parametri che vengono passati alla shell in input.\
+Esempio:\
+cat > copy\
+mkdir $1\
+cp $2,$1\
+CTRL-d\
+./copy folder file\
+la variabile $? ritorna il codice di errore dell'ultima operazione eseguita.\
+la variabile $$ ritorna il PID della shell corrente.
 
 
