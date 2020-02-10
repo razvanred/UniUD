@@ -94,3 +94,107 @@ la variabile $? ritorna il codice di errore dell'ultima operazione eseguita.\
 la variabile $$ ritorna il PID della shell corrente.
 
 
+### if/else e test
+if condizione
+then\
+    successCond\
+else\
+    failureCond\
+fi
+
+La condizione nell'if è un qualsiasi comando che poi darà un codice di errore, se il codice di errore è zero allora eseguo la successCond, altrimenti eseguo la failureCond.\
+In alternativa posso usare il comando test [expression].\
+espressioni che controllano se un file possiede certi attributi:\
+* -e f restituisce vero se f esiste;
+* -f f restituisce vero se f esiste ed è un file ordinario;
+* -d f restituisce vero se f esiste ed è una directory;
+* -r f restituisce vero se f esiste ed è leggibile dall’utente;
+* -w f restituisce vero se f esiste ed è scrivibile dall’utente;
+* -x f restituisce vero se f esiste ed è eseguibile dall’utente;
+
+espressioni su stringhe:
+* -z str restituisce vero se str `e di lunghezza zero;
+* -n str restituisce vero se str non `e di lunghezza zero;
+* str1 = str2 restituisce vero se str1 `e uguale a str2;
+* str1 != str2 restituisce vero se str1 `e diversa da str2;
+
+I espressioni su valori numerici:
+* num1 -eq num2 restituisce vero se num1 `e uguale a num2;
+* num1 -ne num2 restituisce vero se num1 non `e uguale a num2;
+* num1 -lt num2 restituisce vero se num1 `e minore di num2;
+* num1 -gt num2 restituisce vero se num1 `e maggiore di num2;
+* num1 -le num2 restituisce vero se num1 `e minore o uguale a num2;
+* num1 -ge num2 restituisce vero se num1 `e maggiore o uguale a num2
+
+Esempio:\
+x=2\
+if test $x -eq 2\
+then\
+echo uguale\
+else\
+echo diverso\
+fi\
+exit 0\
+Ctrl-d
+### cicli
+Ciclo tradizionale, commands vengono eseguiti finchè la condition_command è vera.\
+while condition_command\
+do\
+    commands\
+done\
+Esempio ciclo while con contatore k fino a 10:\
+k=0\
+while test k -lt 10\
+do\
+echo $k\
+k = $((k+1))\
+done\
+
+Ciclo until, continua ad eseguire commands finchè condition_command è falsa.\
+until condition_command\
+do\
+commands\
+done
+
+Ciclo for, continua ad eseguire il ciclo per tutti gli elementi in wordlist (è tipo un foreach)\
+for var in wordlist\
+do\
+commands\
+done\
+Esempio:\
+for i in 1 2 3 4 5\
+do\
+echo the value of i is $i\
+done
+
+Case selection, è come lo switch case\
+case $# in\
+1)\ #case 1
+cat >>$1\
+;;\
+2)\ #case 2
+cat >>$1 <$2\
+;;\
+*)\ #default
+echo "usage: append out_file [in_file]"\
+;;\
+esac\
+exit 0
+### Command Sobstitution
+Il meccanismo di command substitution permette di sostituire ad un comando o pipeline quanto stampato sullo standard output da quest’ultimo.
+Esempi:\
+date\
+Tue Nov 19 17:50:10 2002\
+vardata=‘date‘\
+echo $vardata\
+Tue Nov 19 17:51:28 2002
+
+# Syntax
+Per applicare un comando ad ogni file di una directory, uso il simbolo /*.\
+Per esempio: wc -c directory/*\
+Se devo fare un test per più cose, per esempio vedere se un file è ordinario (-f) e leggibile (-r) devo usare -a per verificare entrambe. Esempio:\
+if test -r $i -a -f $i # sarebbe come scrivere test -e -f $i, ma per la sintassi cosi non funziona.\
+N.B.: Quando si fanno le operazioni tra interi, bisogna metterele sotto doppia parentesi tonda con il $. Esempio:\
+k=0\
+k=$((k+5)) #k=5\
+k+=5 #k=05
