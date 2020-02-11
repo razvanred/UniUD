@@ -6,6 +6,11 @@
 * putChar(char c) // stampa un carattere sul terminale
 * printf("%d",num) // stampa un numero %d, carattere %c, float %f ecc.
 * scanf("%d",$num) // legge un valore dallo std input. Ritorna il numero di argomenti letti.
+* FILE *f = fopen("path", mode). Apre un file.
+  * "r" (lettura)
+  * "w" (scrittura)
+  * "a" (append)
+* int fclose(FILE *fp). Chiude un file.
 * fscanf(fd, "ciao");
 * sscanf(fd, "%d", &var);
 * feof(fd);
@@ -53,9 +58,66 @@ Esempio: int *vec = malloc(5*sizeof(int)); // per creare un vettore di 5 posizio
 * write(fd, &val, sizeof(int)).
 * lseek(fd, offset, SEEK_?). Come per fseek.
 * close(fd).
-* open(fd, O_CREAT | O_RDONLY | ecc.)
+* open(fd, O_CREAT | O_RDONLY | ecc.).
+* int chdir(const char *path). Cambia la directory di lavoro corrente da quella attuale (ovvero ./), a quella indicata nel path. Cosi la prossima volta che scriverò ./ sarà come scrivere path.
+* int pipe(int *filedes). Crea una pipe. Filedes deve puntare ad un array di due interi, che conterranno i file descriptor dei due capi della pipe.
+    * Il primo, filedes[0], serve a leggere dalla pipe.
+    * Il secondo, filedes[1], serve a scrivervi.\
+    * N.B: quando creo la pipe non devo inserire io in filesdes i pid dei processi figlio e padre, invece filesdes verrà passato come vettore vuoto (int filesdes[2]  {}), che verrà riempito dal metodo: pipe(filesdes), con gli fd del lato lettura della pipe (filedes[0]) e scrittura (filesdes[1]).
+* getpid(). Ritorna il pid del processo corrente.
+* getppid(). Ritorna il pid del processo padre.
 
 #include< fcntl.h >: per usare O_RDONLY, O_CREAT, , O_RDWR, ecc.
+
+#include< sys/wait.h >: per usare wait
+* wait(NULL). Il processo che chiama wait mette in pausa la sua esecuzione finchè non avrann terminato tutti i figli.
+
+#include< stdlib.h >. Serve per usare NULL.
+
+#include < sys/types.h >:serve per i socket\
+#include < signal.h >:serve per i socket
+* alarm(unsigned int secs). Manda un segnale SIGALRM dopo un tempo specificato (secs).
+* signal(sig, nomeFunzione). Il processo che usa signal fa in modo che se dovesse arrivargli il segnale sig (specificato nella funzione), al posto di terminare il processo verrà eseguita la funzione nomeFunzione. Esempio: 
+  * void fun(){printf("do not terminate");}
+  * int main(){
+  * signal(SIGINT, fun);//setto fun come funzione da eseguire in caso di ricezione di SIGINT
+  * return 0;}
+* int kill(int pid, int sig). Serve a killare un processo. Devi dargli in input un pid e un segnale sig:
+    * 1 SIGHUP terminal line hangup
+    * 2 SIGINT interrupt program
+    * 3 SIGQUIT quit program
+    * 4 SIGILL illegal instruction
+    * 5 SIGTRAP trace trap
+    * 6 SIGABRT abort program (formerly SIGIOT)
+    * 7 SIGEMT emulate instruction executed
+    * 8 SIGFPE floating-point exception
+    * 9 SIGKILL kill program
+    * 10 SIGBUS bus error
+    * 11 SIGSEGV segmentation violation
+    * 12 SIGSYS non-existent system call invoked
+    * 13 SIGPIPE write on a pipe with no reader
+    * 14 SIGALRM real-time timer expired
+    * 15 SIGTERM software termination signal
+    * 16 SIGURG urgent condition present on socket
+    * 17 SIGSTOP stop (cannot be caught or ignored)
+    * 18 SIGTSTP stop signal generated from keyboard
+    * 19 SIGCONT continue after stop
+    * 20 SIGCHLD child status has changed
+    * 21 SIGTTIN background read from control terminal
+    * 22 SIGTTOU background write to control terminal
+    * 23 SIGIO I/O is possible on a descriptor
+    * 24 SIGXCPU cpu time limit exceeded
+    * 25 SIGXFSZ file size limit exceeded
+    * 26 SIGVTALRM virtual time alarm
+    * 27 SIGPROF profiling timer alarm
+    * 28 SIGWINCH Window size change
+    * 29 SIGINFO status request from keyboard
+    * 30 SIGUSR1 User defined signal 1
+    * 31 SIGUSR2 User defined signal 2
+
+#include < sys/types.h >: server per usare le funzioni dei socket
+#include< sys/socket.h >: server per usare le funzioni dei socket
+* int fd = socket(AF_LOCAL, SOCK_STREAM, 0). Crea un socket UNIX_DOMAIN.
 ### costanti
 #define VAR 10: definisco una costante VAR=10
 
@@ -115,6 +177,36 @@ Sintassi: (*p).x è lo stesso di p->x
     * int main(){\
     * printf("3 + 4 = %d\n", add(3,4));\
     * return 0;}
+# processi
+int pid = fork(). Crea un processo figlio e ne ritorna il pid.\
+Al genitore viene restituito il PID del figlio, mentre al figlio viene restituito 0, in questo modo li posso riconoscere.\
+int execl(const char *path, const char *arg0, ...). Serve a cambiare l'eseguibile del processo che chiama questa istruzione, in pratica cambio il processo.
+*  L’argomento path è l’eseguibile che si vuole lanciare
+* Gli argomenti successivi sono gli argomenti da riga di
+comando che si vogliono passare al programma, terminati da
+un puntatore nullo.
 
+Esempio:\
+int pid = fork();\
+if(pid == 0){//se sono il figlio\
+    execl("/bin/ls", "ls", "-l", NULL); //sostituisco il mio eseguibile con quello in "/bin/ls".\
+}
 
+### Come passare parametri al figlio durante la sua creazione: variabili d'ambiente
+int main(int argc, char **argv, char **envp); // envp è un vettore di stringhe, il cui ultimo elemento è NULL.\
+Per passare dei parametri al figlio, devo usare: execve(path, argv, envp);\
+Esempio:\
+int main(int arc, char **argv){\
+char *envp[3] = { "var1=valore1", "var2=valore2", NULL };\
+execve("./env2", argv, envp);\
+perror("execve fallita");\
+return 1;}\
+N.B: envp deve sempre avere NULL come ultimo elemento.
 
+# socket
+Funzioni dei socket:
+* socket() Crea il file descriptor di un capo della connessione entrambi.Server e client
+* bind() Lega il socket ad un indirizzo specifico server.Solo server
+* listen() Blocca il processo in ascolto sul socket server.Solo server
+* accept() Accetta una connessione in arrivo server.Solo server
+* connect() Connette un socket ad un altro socket in ascolto client.Solo client
