@@ -37,14 +37,14 @@ public List<int[]> getThem() {
 There are no complex expressions here:
 
 - Reasonable spacing and indentation;
-- only three variables and two constants mentioned (```list1```, ```x```, ```theList```, 0, 2);
+- only three variables and two constants mentioned (```list1```, ```x```, ```theList```, ```0```, ```2```);
 - no fancy classes or polimorphic methods.
 
 The problem here is not the simplicity of the code, but the __implicity__ of the code. The code implicitly requires that we already know the answers to questions such as:
 
 1. What kind of things are in ```theList```?
 2. What is the significance of the zeroth subscript of an item in ```theList```?
-3. What is the significance of the value 4?
+3. What is the significance of the value ```4```?
 4. How would I use the list being returned?
 
 What we found out about the project above:
@@ -104,10 +104,10 @@ public List<Cell> getFlaggedCells() {
 
 - Programmers must avoid leaving false clues that obscure the meaning of the code.
 - Even if you are coding an hypotenuse and ```hp``` looks like a good abbreviation, it could be disinformative.
-- Do not refer to a grouping of accounts as an ```accountList``` unless it's actuallu a ```List``` (```bunchOfAccounts```, ```accountGroup``` or just plain ```accounts``` would be better).
+- Do not refer to a grouping of accounts as an ```accountList``` unless it's actually a ```List``` (```bunchOfAccounts```, ```accountGroup``` or just plain ```accounts``` would be better).
 - Beware of using names which vary in small ways (spot the difference between ```XYZControllerForEfficientHandlingOfStrings``` and ```XYZControllerForEfficientStorageOfStrings```).
 - Spelling similar concepts similarly is _information_. Using inconsistent spelling is _disinformation_.
-- Besides the fact that are disinformative names, Do NOT use as variable names (especially in combination) the lower-case L or the upper-case O:
+- Besides the fact that are disinformative names, **Do NOT** use as variable names (especially in combination) the lower-case L or the upper-case O:
 
 ```java
 int O, O1, l;
@@ -119,7 +119,7 @@ if (O == l) {
 }
 ```
 
-## Make Meaningful Distintions
+## Make Meaningful Distinctions
 
 Programmers create problem for themselves when they create code solely to satisfy the compiler; for example, because you can't use the same name to refer to two different things in the same scope, you might be tempted to change one name in an arbitrary way. It is not sufficient to add number series or noise numbers, even though the compiler is satisfied. **If name must be different, then they should also mean something different.**
 
@@ -186,7 +186,7 @@ If a variable or constant might be seen or used in multiple places in a body of 
 Compare
 
 ```java
-for(int j = 0; j<34; j++){
+for(int j = 0; j < 34; j++){
     s += (t[j] * 4) / 5;
 }
 ```
