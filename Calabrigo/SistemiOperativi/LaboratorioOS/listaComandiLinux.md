@@ -112,7 +112,7 @@
 * `sed "[action1;action2;...]" {p1...}` esegue le `action`s consecutivamente per ogni riga di ogni `p`
   * sintassi di `action`:
     * `s/[regex]/[str]/` sostituisce la prima occorrenza di `regex`  con `str`
-      * `g` (global) ripete per tutte le righe
+      * `g` (global) sostituisce tutte le occorrenze in ogni riga
     * `[n\/regex/]/[command]` esegue `command` sulla riga `n`\sulle righe che contengono `regex`
       * sintassi di `command`
         * `d` (delete) elimina
@@ -151,6 +151,8 @@
     * `9` termina forzatamente
     * `15` chiede la terminazione
 * `jobs` elenca i processi in background sulla shell corrente
+* `who` stampa gli utenti loggati nel sistema
+  * `-a` [all] stampa anche gli utenti dei processi di sistema
 * `ps` stampa la lista dei processi generati dalla shell
   * `-u [userlist]` [user] mostra solo i processi degli utenti in `userlist`
   * `-e\A` (everything) mostra tutti i processi
