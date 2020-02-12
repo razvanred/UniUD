@@ -2,7 +2,7 @@
 .data
 .text
 main:
-    mov r2, #8
-    lsr r2, #2
+    mov r2, #0x10
+    mov r2, r2, asr #0x2
     swi 0x11
 .end

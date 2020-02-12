@@ -2,7 +2,9 @@
 .data
 .text
 main:
-    mov r1, #16
-    mov r2, r1, lsr #1
-    add r1, r2, r2, lsr #1
+    mov r2, #0x10
+    mov r1, r2
+    add r1, r1, r1, asl #0x1
+    mov r1, r1, asr #0x2
+    swi 0x11
 .end

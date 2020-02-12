@@ -43,7 +43,7 @@ Le istruzioni Assembly fanno riferimento a un modello di memoria formato da:
 
 La memoria principale è composta da 2^32 locazioni dalla dimensione di 1 byte. Ogni locazione è individuata da un indirizzo di **32 bit**.
 
-Dopodiché si dispone di 16 registri generici di 32 bit (4byte) (registri del processore). I registri r0...12 sono general porpouse,  e ci sono alcuni registri speciali, tra cui:
+Dopodiché si dispone di 16 registri generici di 32 bit (4byte) (registri del processore). I registri r0...12 sono general porpouse, e ci sono alcuni registri speciali, tra cui:
 
 * **r13** contiene l'indirizzo della cima dello stack (stack pointer)
 * **r14** contiene l'indirizzo di ritorno di una procedura (link register)
@@ -169,9 +169,9 @@ Specificano il tipo di dati da inserire in memoria:
 
 In Assembly i meccanismi di controllo di flusso sono elementari:
 
-* salto **incondizionato** (vedi saltoIncondizionato.s)
+* salto **incondizionato** (vedi il programma [saltoIncondizionato](./saltoIncondizionato.s))
 * salto **condizionato**
-  * la condizione dipende da 4 bit contenuti nel registro di stato cprs
+  * la condizione dipende da 4 bit contenuti nel registro di stato ```cprs```
   * inserendo il suffisso s al nome dell'istruzione il registro di stato viene modificato a seguito della sua esecuzione
   * la condizione viene specifica da un ulteriore suffisso di 2 lettere. Alcune condizioni:
     * **ne** not equal to zero
