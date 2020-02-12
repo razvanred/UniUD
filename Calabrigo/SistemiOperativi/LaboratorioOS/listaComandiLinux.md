@@ -52,48 +52,48 @@
   * `-u` [unique] stampa solo le righe uniche
   * `-i` [ignore-case] il confronto tra le righe è case insensitive
 * `tail {p}` stampa le ultime 10 righe di `p`
-  * `-n [k]` stampa le ultime `k` righe di `p`
-  * `-n +[k]` stampa a partire dalla riga `k` inclusa
+  * `-n [k]` [lines=] stampa le ultime `k` righe di `p`
+  * `-n +[k]` [lines=+] stampa a partire dalla riga `k` inclusa
 * `head {p}` stampa le prime 10 righe di `p`
-  * `-n [k]` stampa le prime `k` righe di `p`
-  * `-n -[k]` stampa a salire dalla riga `k` inclusa
+  * `-n [k]` [lines] stampa le prime `k` righe di `p`
+  * `-n -[k]` [lines=-] stampa a salire dalla riga `k` inclusa
 * `more {p}` stampa una pagina di `p` e poi una riga per volta
   * `-[n]` usa `n` come dimensione della pagina
   * `+[n]` mostra a partire dalla linea `n` inclusa
 * `cut {filea...}` taglia e stampa una porzione di ogni riga in `file` - `cut lorem&ipsum&dolor -d'&' -f2` -> `ipsum`
-  * `-f[n1a-n1b],..` (field) stampa solo i campi da `na` a `nb`
-  * `-d"[s]"` (delimiter) usa `s` come stringa separatrice, di default è `\t`
+  * `-f[n1a-n1b],..` [fields=] stampa solo i campi da `na` a `nb`
+  * `-d"[s]"` [delimiter=] usa `s` come stringa separatrice, di default è `\t`
   * `--output-delimiter=[str]` usa `s` come stringa separatrice per l'output, di default è `\t`
 * `paste {p...}` affianca riga per riga i `p` separati da `TAB`
-  * `-d "str"` usa a rotazione i caratteri di `str` come separatori
+  * `-d "str"` [delimiters=] usa a rotazione i caratteri di `str` come separatori
 * `wc {p}` stampa il numero di righe, parole, e caratteri in `p`
-  * `-c` (count) mostra numero di byte
-  * `-l` (lines) numero di righe
-  * `-w` (words) mostra solo numero di parole
-  * `-m` numero di caratteri
-  * `-L` (length) lunghezza della riga più lunga
+  * `-c` [bytes] mostra numero di byte
+  * `-l` [lines] numero di righe
+  * `-w` [words] mostra solo numero di parole
+  * `-m` [chars] numero di caratteri
+  * `-L` [max-line-length] lunghezza della riga più lunga
 * `grep [regex] {pa...}` cerca le occorrenze in `p` in base a `regex`
-  * `-E` (extended) (equivalente a `egrep`) abilita la sintassi estesa per `regex`
-  * `-w` (words) richiede il match per parole intere
-  * `-i` (insensitive) abilita la case insensitiveness
-  * `-n` mostra il numero della riga
-  * `-r` (recursive) ricerca ricorsiva, permette di passare una cartella come `p`
-  * `-l` (list) mostra i file che contengono `regex`
-  * `-c` (count) mostra i file che contengono `regex` e numero di occorrenze
-  * `-B [n]` (before) mostra anche le `n` righe precedenti
-  * `-A [n]` (after) mostra anche le `n` righe successive
-  * `-C [n]` (context) mostra anche `n` righe tra precedenti e successive
-  * `-F` (fixed) (equivalente a `fgrep`) cerca una lista di stringhe in `regex` separate da `|` (non accetta regex)
+  * `-E` [extended-regexp] (equivalente a `egrep`) abilita la sintassi estesa per `regex`
+  * `-w` [word-regexp] richiede il match per parole intere
+  * `-i` [ignore-case] abilita la case insensitiveness
+  * `-n` [line-number] mostra il numero della riga
+  * `-r` [recursive] ricerca ricorsiva, permette di passare una cartella come `p`
+  * `-l` [files-with-matches] mostra i file che contengono `regex`
+  * `-c` [count] mostra i file che contengono `regex` e numero di occorrenze
+  * `-B [n]` [before-context=] mostra anche le `n` righe precedenti
+  * `-A [n]` [after-context=] mostra anche le `n` righe successive
+  * `-C [n]` [context=] mostra anche `n` righe tra precedenti e successive
+  * `-F` [fixed-strings] (equivalente a `fgrep`) cerca una lista di stringhe in `regex` separate da `|` (non accetta regex)
 * `sort {filea...}` ordina il contenuto dei `file` concatenati
-  * `-t [s]` usa `s` come separatore di campo
-  * `-k [n1],[n2]n\d` usa i campi da `n1` a `n2` come chiavi di ordinamento numerico\alfabetico
+  * `-t [s]` usa `s` [field-separator=] come separatore di campo
+  * `-k [n1],[n2]n\d` [key=] usa i campi da `n1` a `n2` come chiavi di ordinamento numerico\alfabetico
   * `-b` [ignore-leading-blanks] ignora eventuali spazi iniziali e finali presenti nelle chiavi di ordinamento
   * `-f` [ignore-case] abilita la case insensitiveness
   * `-n` [numeric-sort] considera numeriche le chiavi di ordinamento di tipo non specificato
   * `-r` [reverse] ordina in modo decrescente
   * `-o [file]` [output=] stampa l'output su `file` ed eventualmente i successivi (fino a fine linea) in caso di 'pareggio'
 * `tr [set1] (set2)` sostituisce le occorrenze dei caratteri in `set1`, con i corrispondenti in `set2` - `tr A-Z a-z`, sostituisce le lettere maiuscole con quelle minuscole
-  * `-s` (squeeze) sostituisce ogni sequenza di un carattere in `set1` ripetuto, con una singola occorrenza di quel carattere - `tr -s ' '` elimina tutti gli spazi multipli consecutivi
+  * `-s` [squeeze-repeats] sostituisce ogni sequenza di un carattere in `set1` ripetuto, con una singola occorrenza di quel carattere - `tr -s ' '` elimina tutti gli spazi multipli consecutivi
 * `sed "[action1;action2;...]" {p1...}` esegue le `action`s consecutivamente per ogni riga di ogni `p`
   * sintassi di `action`:
     * `s/[regex]/[str]/` sostituisce la prima occorrenza di `regex`  con `str`
@@ -103,9 +103,9 @@
         * `d` (delete) elimina
         * `q` (quit) chiude il programma
         * `p` (print) stampa
-  * `-i(suffix)` (in-place) modifica direttamente `p` o una copia con suffisso `suffix`
-  * `-s` (separate) elabora i file separatamente
-  * `-f [p2]` (file-script) prende le `action`s da `p2`
+  * `-i(suffix)` [in-place(=)] modifica direttamente `p` o una copia con suffisso `suffix`
+  * `-s` [separate] elabora i file separatamente
+  * `-f [p2]` [file=] prende le `action`s da `p2`
 * `date` stampa la data
 * `cal` stampa il calendario del mese
   * `-y` (year) stampa il calendario dell'anno corrente
