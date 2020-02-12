@@ -151,8 +151,6 @@
     * `9` termina forzatamente
     * `15` chiede la terminazione
 * `jobs` elenca i processi in background sulla shell corrente
-* `who` stampa gli utenti loggati nel sistema
-  * `-a` [all] stampa tutti gli utenti
 * `ps` stampa la lista dei processi generati dalla shell
   * `-u [userlist]` [user] mostra solo i processi degli utenti in `userlist`
   * `-e\A` (everything) mostra tutti i processi
