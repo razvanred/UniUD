@@ -1,6 +1,5 @@
-## Concetti utili
-
-### metacaratteri
+# Teoria Shell
+## metacaratteri
 Metacaratteri = caratteri che la shell riconosce. Per far vedere un metacarattere come un carattere normale devo usare il backslash. Esempio: ls `file\?`\
 * `*` indica una stringa di 0 o + caratteri
 * `?` indica un carattere
@@ -8,19 +7,22 @@ Metacaratteri = caratteri che la shell riconosce. Per far vedere un metacaratter
 Esempio: ls /dev/tty[234]. Es: ls [a-zA-Z].bak
 * `{}` indica una sequenza di stringhe. Es: ls -l {file1,files}.bak
 * `~` indica la home, è come scrivere `/home/`
-### Redirizione Input/Output
+## Redirizione Input/Output
 * A `>>` B e A `>` B redirezione dell'output da A a B. append e non append. Es: `echo ciao >> file`
 * A `<<` B e A `<` B redirezione dell'input da B a A. Es: `wc < file`
 * `|` l'output del comando precedente viene usato come input per il comando successivo.Es: `ls | more`.
 * `||` esecuzione condizionale, esegue il prox comando se questo fallisce `cd dir1 || mkdir dir1`
 * `&&` esecuzione condizionale, esegue il prox comando se questo ha successo `touch file.txt && echo ciao >> file.txt`
 * `;` esegue un comando dopo l'altro. Es: `ls -l;cd dir;pwd`
-### find
+## find
 Il find serve a stampare a video una cartella e tutte le sue sottocartelle\
 find . -name `*.c` -print\
 cerca ricorsivamente a partire dalla directory corrente tutti i
 file con estensione c e li stampa a video.
-### grep/fgrep/egrep
+find /etc -type d -ls
+cerca ricorsivamente a partire dalla directory /etc tutte e solo
+le sottodirectory, applicando il comando ls ad ognuna.
+## grep/fgrep/egrep
 grep cerca delle occorrenze all'interno di un file e le stampa a video\
 fgrep rossi /etc/passwd\
 fornisce in output le linee del file /etc/passwd che
@@ -32,22 +34,22 @@ contengono la parola intera print.\
  fornisce in output le linee del file doc.txt che contengono
 una stringa che ha un prefisso di lunghezza non nulla,
 costituito solo da lettere a, b, c, seguito da una z.\
-### sort
+## sort
 serve per ordinare le linee all'interno di un file.
-Esempio: file
-v:b:4
+Esempio: file\
+v : b:4\
+e:g:98\
+d:h:3\
+sort -t: -k3,3 -n /etc/passwd , e diventa:\
+d:h:3\
+v : b:4\
 e:g:98
-d:h:3
-sort -t: -k3,3 -n /etc/passwd , e diventa:
-d:h:3
-v:b:4
-e:g:98
-### cut e paste
+## cut e paste
 cut prende una colonna di un file (le colonne vengono scelte tramite delimitatore), e la stampa a video.\
 cut -d: -f1 /etc/passwd\
 -d: dice che : è il delimitatore, e -f1, dice di prendere la prima colonna rispetto a quel delimitatore.\
 Paste, invece, serve a combinare le colonne di 2 file, mettendole una affianco all'astra, separate da uno slash /.
-### sed
+## sed
 Il comando sed serve a modificare i file, sostituendo le stringhe in base a certi criteri.\
 Sed prevede una o più azioni. Un'azione ha questa sintassi: s/expr/str/flags dove:
 * s/ indica che il carattere separatore dell'azione è /
@@ -65,12 +67,37 @@ sed /sh/y/:0/_%/ /etc/passwd\
 sostituisce in tutte le righe che contengono la stringa sh il
 carattere : con il carattere _ ed il carattere 0 con il carattere %.\
 sed s/'ciao'/'villain'/g file\
-sostituisce tutte le occorrenze ciao in file con villain.\
+sostituisce tutte le occorrenze ciao in file con villain.
+
+Esempio:\
+cat /etc/passwd | sed ’s?/bin/.*sh$ ?/usr/local&?’\
+cerca tutte le righe in input in cui compare la stringa corrispondente
+all’espressione regolare /bin/.*sh$ (ad esempio /bin/bash) e
+sostituisce quest’ultima con la stringa corrispondente a
+/usr/local/bin/.*sh$ (ad esempio /usr/local/bin/bash). Si
+noti che, siccome il carattere separatore di sed compare nella
+stringa da cercare, si `e usato il carattere ? come separatore. Inoltre
+il carattere & viene rimpiazzato automaticamente da sed con la
+stringa cercata (corrispondente a /bin/.*sh$).
+
+Esempio:\
+sed ’/^root/,/^bin/s/: x :/::/w disabled.txt’ /etc/passwd\
+sostituisce la password criptata (rappresentata dalla x) con la
+stringa vuota nelle righe in input comprese fra quella che inizia con
+root e quella che inizia con bin; tali righe sono poi accodate nel
+file disabled.txt.
+
+Esempio:\
+sed "s?//?linea di commento del file $1:?w $2" -n $1\
+Scrivere uno script che estragga soltanto i commenti dal file con estensione
+java fornito come primo argomento, sostituendo // con la stringa linea
+di commento del file <nome del file>:. Inoltre i commenti estratti
+devono essere salvati nel file fornito come secondo argomento.
 
 # Script
 Per avviare uno script scrivo ./nomeScript\
 Per visualizzare i comandi nella shell mentre vengono eseguiti, metto come prima riga dello script set -v.
-### variabili
+## variabili
 non hanno dichiarazione di tipo, si dichiarano e assegnano nello stesso momento. x = 'cose', x = y.\
 Per chiamare il valore di una variabile si usa il $: $x.\
 Variabili globali: export x.\
@@ -82,7 +109,7 @@ Variabili di ambiente (sono variabili globali):
 * UID ID dello user corrente
 * PATH lista di pathname di directory in cui la shell cerca i comandi
 * HOME pathanme assoluto della home directory
-### Parametri e variabili di stato
+## Parametri e variabili di stato
 $1,$2,...,$9 sono variabili associate ai primi 9 parametri che vengono passati alla shell in input.\
 Esempio:\
 cat > copy\
@@ -92,9 +119,20 @@ CTRL-d\
 ./copy folder file\
 la variabile $? ritorna il codice di errore dell'ultima operazione eseguita.\
 la variabile $$ ritorna il PID della shell corrente.
+## read
+La variabile restofline è un variabile di default, ed è un vettore di stringhe.\
+Il comando read legge una linea dello stdin e prende come parametri n variabili e restofline. Si comporta come uno scanf che legge una riga e la mette in un vettore di stringhe.\
+Esempio:
 
+shell:\
+./esempio.sh\
+ciao sono tizio
 
-### if/else e test
+esempio .sh:\
+read var1 restofline\
+echo $var1 #ciao\
+echo $restofline #sono tizio
+## if/else e test
 if condizione
 then\
     successCond\
@@ -136,7 +174,7 @@ echo diverso\
 fi\
 exit 0\
 Ctrl-d
-### cicli
+## cicli
 Ciclo tradizionale, commands vengono eseguiti finchè la condition_command è vera.\
 while condition_command\
 do\
@@ -180,7 +218,7 @@ echo "usage: append out_file [in_file]"\
 ;;\
 esac\
 exit 0
-### Command Sobstitution
+## Command Sobstitution
 Il meccanismo di command substitution permette di sostituire ad un comando o pipeline quanto stampato sullo standard output da quest’ultimo.
 Esempi:\
 date\
@@ -193,8 +231,36 @@ Tue Nov 19 17:51:28 2002
 Per applicare un comando ad ogni file di una directory, uso il simbolo /*.\
 Per esempio: wc -c directory/*\
 Se devo fare un test per più cose, per esempio vedere se un file è ordinario (-f) e leggibile (-r) devo usare -a per verificare entrambe. Esempio:\
-if test -r $i -a -f $i # sarebbe come scrivere test -e -f $i, ma per la sintassi cosi non funziona.\
-N.B.: Quando si fanno le operazioni tra interi, bisogna metterele sotto doppia parentesi tonda con il $. Esempio:\
+if test -r $i -a -f $i # sarebbe come scrivere test -e -f $i, ma per la sintassi cosi non funziona.
+
+N.B.: Quando si fanno le operazioni tra interi, bisogna metterele sotto doppia parentesi tonda con il dollaro. Esempio:\
 k=0\
 k=$((k+5)) #k=5\
 k+=5 #k=05
+
+N.B.: quando faccio un for in una directory, devo scrivere vettore/*\
+Esempio:\
+for i in /home/*\
+do\
+...\
+done
+
+N.B.: quando scrivo un comando c='cat file | cut -d: -f2', che ritorna un vettore di stringhe, posso iterarlo facendo:\
+for i in c*\
+do\
+...\
+done
+
+N.B: tutti i comandi si trovano nella cartella /bin/
+
+N.B: se in uno SCRIPT ricevi degli input ricorda di controllare sia il numero di parametri, che il contenuto dei singolo parametri:\
+if test $# -ne 1\
+then\
+echo ...\
+exit 1\
+fi\
+if ! test -d $1 #se $1 non è una cartella\
+then\
+echo ...\
+exit 1\
+fi

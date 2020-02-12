@@ -1,18 +1,30 @@
-# Cose Utili C
+# Teoria C
 
-### librerie
+## librerie
+* #include < stdio.h >: per printf e scanf, e file
+* #include < stdbool.h >: per usare bool
+* #include < string.h >: per usare le funzioni delle stringhe
+* #include< stdlib.h >: per usare malloc
+* #include< unistd.h >: per usare le funzioni posix
+* #include< fcntl.h >: per usare O_RDONLY, O_CREAT, , O_RDWR, ecc.
+* #include< sys/wait.h >: per usare wait
+* #include < sys/types.h >:serve per i socket
+* #include < signal.h >:serve per i socket
+* #include < pthread.h >. Per usare le funzione dei threads.
+
 #include < stdio.h >: per printf e scanf
 * getChar() // prende un carattere dal terminale
 * putChar(char c) // stampa un carattere sul terminale
 * printf("%d",num) // stampa un numero %d, carattere %c, float %f ecc.
-* scanf("%d",$num) // legge un valore dallo std input. Ritorna il numero di argomenti letti.
+* scanf("%d",$num) // legge un valore dallo std input. Ritorna il numero di argomenti letti. Puoi usare lo scanf per leggere stringhe dal formato strano. Esempio:\
+scanf("%d - %d", &var1, &var2);// legge una stringa del tipo 3 - 4, e inserisce i numeri in var1 e var2.
 * FILE *f = fopen("path", mode). Apre un file.
   * "r" (lettura)
   * "w" (scrittura)
-  * "a" (append)
+  * "a" (append)\
+N.B: open(...) ritorna NULL se non esiste nessun file "path".
 * int fclose(FILE *fp). Chiude un file.
-* fscanf(fd, "ciao");
-* sscanf(fd, "%d", &var);
+* fscanf(fd, "%d", &var);
 * feof(fd);
 * fseek(fd, offset, SEEK_?);
   * SEEK_SET: Inizio del file
@@ -46,7 +58,7 @@ Esempio:
 
 #include< stdlib.h >: per usare malloc
 * malloc(unsigned n). Alloca una zona contigua in memoria, il parametro n indica il numero di byte.\
-Esempio: int *vec = malloc(5*sizeof(int)); // per creare un vettore di 5 posizioni.
+Esempio: int *vec = (int *) malloc(5*sizeof(int)); // per creare un vettore di 5 posizioni.
     * La funzione accetta come argomento il numero di byte di memoria di cui si ha bisogno.
     * Alloca una zona di memoria contigua della dimensione richiesta e restituisce un puntatore all’inizio di tale zona.
     * Il tipo di ritorno void * è un puntatore ad un tipo qualsiasi.
@@ -71,9 +83,6 @@ Esempio: int *vec = malloc(5*sizeof(int)); // per creare un vettore di 5 posizio
 
 #include< sys/wait.h >: per usare wait
 * wait(NULL). Il processo che chiama wait mette in pausa la sua esecuzione finchè non avrann terminato tutti i figli.
-
-#include< stdlib.h >. Serve per usare NULL.
-
 #include < sys/types.h >:serve per i socket\
 #include < signal.h >:serve per i socket
 * alarm(unsigned int secs). Manda un segnale SIGALRM dopo un tempo specificato (secs).
@@ -118,6 +127,19 @@ Esempio: int *vec = malloc(5*sizeof(int)); // per creare un vettore di 5 posizio
 #include < sys/types.h >: server per usare le funzioni dei socket
 #include< sys/socket.h >: server per usare le funzioni dei socket
 * int fd = socket(AF_LOCAL, SOCK_STREAM, 0). Crea un socket UNIX_DOMAIN.
+#include < pthread.h >. Per usare le funzione dei threads.
+* int pthread_create(pthread_t *thread, pthread_attr_t *attr,
+void * (*start_routine)(void *), void *arg). Crea un thread.
+    * ritorno: Il valore di ritorno in assenza di errori è 0.
+* pthread_join(pthread_t, (void *)). Il thread corrente aspetta la fine dell'esecuzione di pthread_t prima di continuare, e mette il valore di ritorno di pthread_t nel secondo parametro di pthead_join(...).
+* pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER. Crea un mutex.
+  * Esempio:\
+  pthread_mutex_lock(&mutex);\
+// sezione critica\
+pthread_mutex_unlock(&mutex);
+* pthread_cond_t cond = PTHREAD_COND_INITIALIZER; Crea una cond.
+* pthread_cond_signal(&cond). risveglia un thread che è andato in wait con una determinata cond
+* pthread_cond_wait(&cond, &mutex). mette un thread in wait, finchè non verrà sbloccato da un signal.
 ### costanti
 #define VAR 10: definisco una costante VAR=10
 
@@ -203,10 +225,33 @@ perror("execve fallita");\
 return 1;}\
 N.B: envp deve sempre avere NULL come ultimo elemento.
 
-# socket
+### socket
 Funzioni dei socket:
 * socket() Crea il file descriptor di un capo della connessione entrambi.Server e client
 * bind() Lega il socket ad un indirizzo specifico server.Solo server
 * listen() Blocca il processo in ascolto sul socket server.Solo server
 * accept() Accetta una connessione in arrivo server.Solo server
 * connect() Connette un socket ad un altro socket in ascolto client.Solo client
+
+### threads
+Per i threads devo includere la libreria threads.h.\
+Per identificare un thread scrivo: pthread_t thread1;\
+Quando creo un thread devo fare:
+
+#include< thread.h >\
+void *fun(void *msg){//codice del thread\
+printf("%s", (char *) msg);\
+return NULL;\
+}\
+int main(){\
+pthread_t t1;//dichiaro l'identificatore del thread\
+pthread_create(&t1, NULL, fun, (void* ) msg);\
+//creo un nuovo thread, li passo fun = codice che thread deve eseguire, e poi i parametri di fun sotto forma di puntatore a void\
+pthread_join(t1, NULL);\
+//blocco il thread corrente (il main) finchè non finisce thread. Il valore di ritorno di thread viene scritto nel secondo argomento di pthread_join(...)\
+return 0}
+
+### mutex e condition variables
+Un mutex garantisce l'accesso ad una zona di memoria ad un processo per volta, quando un processo mette un mutex in lock solo lui può accedervi.
+
+Una condition variable è legata strettamente a un wait e un signal. Un processo va in wait(&mutex, &cond), e quando un altro processo farà signal(&cond), allora il processo che era andato in wait, usando la condition variable cond andrà in stato ready.
