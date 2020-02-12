@@ -1,9 +1,13 @@
 # Comandi Linux
 * `pwd` stampa il percorso della working directory
 * `ls [p]` stampa il contenuto della cartella `p`\il nome del file `p`
+  * `-R` [recursive] stampa il contenuto della cartella `p` ricorsivamente
   * `-l` (long) stampa i permessi e altre info di ogni file
   * `-a` [all] stampa anche i file nascosti
   * `-t` (time) ordina per la data di ultima modifica, in ordine decrescente
+  * `-d` [directory] se `p` è una cartella stampa solo la cartella e non il suo contenuto
+  * `-i` [inode] stampa il numero di inode per ogni elemento
+  * `-s` [size] stampa la dimensione in blocchi di ogni elemento
 * `du [p]` (disk usage) stampa il numero di blocchi di memoria che occupano gli elementi `p`
   * `-h` [human-readable] misura in kB\mB\gB\\..., al posto che a blocchi
   * `-b` [bytes] misura in byte
@@ -15,9 +19,15 @@
 * `rmdir [dir]` elimina `dir`
 * `rm [p]` elimina il file `p`
   * `-r` [recursive] elimina la cartella `p` ricorsivamente
+  * `-f` [force] disabilita la richiesta di conferma
+  * `-i` (interactive) richiede conferma per ogni elemento
 * `touch [file]` crea il file `file`
 * `find [dir]` stampa il contenuto di `dir` ricorsivamente, segue i link
   * `-name '[regex]'` filtra i nomi degli elementi in base a `regex`, non cerca all'interno dei file
+  * `-exec [command] {} ;` esegue `command` per ogni file trovato, le parentesi graffe `{}` vengono sostituite con il nome del file. Potrebbe servire fare l'escaping di `;` o delle `{}`
+  * `-execdir [command] {} ;` esegue `command` per ogni cartella trovata, le parentesi graffe `{}` vengono sostituite con il nome della cartella. Potrebbe servire fare l'escaping di `;` o delle `{}`
+  * `-exec [command] {} +` esegue `command` per ogni file trovato, le parentesi graffe `{}` vengono sostituite con il nome di tutti i file trovati. Potrebbe servire fare l'escaping di `;` o delle `{}`
+  * `-execdir [command] {} +` esegue `command` per ogni cartella trovata, le parentesi graffe `{}` vengono sostituite con il nome di tutte le cartelle trovate. Potrebbe servire fare l'escaping di `;` o delle `{}`
 * `chmod [nnn] [p]` cambia i permessi del file `p`\
   i tre numeri `nnn` rappresentano rispettivamente i permessi per l'utente proprietario (`owner`) di `p`, il gruppo a cui appartiene `p`, e tutti gli altri utenti\
   ogni `n` rappresenta una bitmask di 3b `rwx` convertita in numero decimale, ad esempio, per assegnare `rwx r-x --x` (111 101 001) scriveremmo `chmod 751 [p]`
@@ -43,17 +53,17 @@
   * `-i` [ignore-case] il confronto tra le righe è case insensitive
 * `tail {p}` stampa le ultime 10 righe di `p`
   * `-n [k]` stampa le ultime `k` righe di `p`
-  * `-n +[k]` stampa a partire dalla riga `k` esclusa
+  * `-n +[k]` stampa a partire dalla riga `k` inclusa
 * `head {p}` stampa le prime 10 righe di `p`
   * `-n [k]` stampa le prime `k` righe di `p`
-  * `-n -[k]` stampa a salire dalla riga `k` esclusa
+  * `-n -[k]` stampa a salire dalla riga `k` inclusa
 * `more {p}` stampa una pagina di `p` e poi una riga per volta
   * `-[n]` usa `n` come dimensione della pagina
   * `+[n]` mostra a partire dalla linea `n` inclusa
 * `cut {str}` taglia e stampa una porzione della stringa `str` - `cut lorem&ipsum&dolor -d'&' -f2` -> `ipsum`
-  * `-d'[c]' -fn` (delimiter) usa `c` come carattere separatore
-  * `-f[n]` (field) stampa solo il campo numero `n`
-* `paste {p1...}` affianca riga per riga i `p` separati da `TAB`
+  * `-f[n1a-n1b],..` (field) stampa solo i campi da `na` a `nb`
+    * `-d"[s]"` (delimiter) usa `s` come stringa separatrice, di default è `\t`
+* `paste {p...}` affianca riga per riga i `p` separati da `TAB`
   * `-d "str"` usa a rotazione i caratteri di `str` come separatori
 * `wc {p}` stampa il numero di righe, parole, e caratteri in `p`
   * `-c` (count) mostra numero di byte
@@ -90,15 +100,13 @@
   * `-C [n]` (context) mostra anche `n` righe tra precedenti e successive
   * `-F` (fixed) (equivalente a `fgrep`) cerca una lista di stringhe in `regex` separate da `|` (non accetta regex)
 * `sort {filea...}` ordina il contenuto dei `file` concatenati
-  * `-b` (blanks) ignora eventuali spazi presenti nelle chiavi di ordinamento
-  * `-f` (fold) abilita la case insensitiveness
-  * `-n` considera numerica (invece che testuale) la chiave di ordinamento
-  * `-r` ordina in modo decrescente
-  * `-o file` invia l’output al file file invece che allo standard output
-  * `-t s` usa s come separatore di campo
-  * `-k s1,s2` usa i campi da s1 a s2 come chiavi di ordinamento
-ed eventualmente i successivi (fino a fine linea)
-in caso di 'pareggio'
+  * `-t [s]` usa `s` come separatore di campo
+  * `-k [n1],[n2]n\d` usa i campi da `n1` a `n2` come chiavi di ordinamento numerico\alfabetico
+  * `-b` [ignore-leading-blanks] ignora eventuali spazi iniziali e finali presenti nelle chiavi di ordinamento
+  * `-f` [ignore-case] abilita la case insensitiveness
+  * `-n` [numeric-sort] considera numeriche le chiavi di ordinamento di tipo non specificato
+  * `-r` [reverse] ordina in modo decrescente
+  * `-o [file]` [output=] stampa l'output su `file` ed eventualmente i successivi (fino a fine linea) in caso di 'pareggio'
 * `tr [set1] (set2)` sostituisce le occorrenze dei caratteri in `set1`, con i corrispondenti in `set2` - `tr A-Z a-z`, sostituisce le lettere maiuscole con quelle minuscole
   * `-s` (squeeze) sostituisce ogni sequenza di un carattere in `set1` ripetuto, con una singola occorrenza di quel carattere - `tr -s ' '` elimina tutti gli spazi multipli consecutivi
 * `sed "[action1;action2;...]" {p1...}` esegue le `action`s consecutivamente per ogni riga di ogni `p`
@@ -143,10 +151,13 @@ in caso di 'pareggio'
     * `9` termina forzatamente
     * `15` chiede la terminazione
 * `jobs` elenca i processi in background sulla shell corrente
+* `who` stampa gli utenti loggati nel sistema
+  * `-a` [all] stampa tutti gli utenti
 * `ps` stampa la lista dei processi generati dalla shell
-  * `-u` (userlist) mostra il nome utente effettivo (l'utente le cui autorizzazioni di accesso ai file sono utilizzate dal processo)
+  * `-u [userlist]` [user] mostra solo i processi degli utenti in `userlist`
   * `-e\A` (everything) mostra tutti i processi
-  * `-l` (long format) mostra più informazioni, ad esempio lo user ID (UID)
+  * `-f` mostra più informazioni, ad esempio lo user ID (UID)
+  * `-l` (long format) mostra ancora più informazioni
 * `top` visualizza le informazioni di riepilogo del sistema così come un elenco di processi o thread
   * `-b` (batch mode) esegue in modalità batch, utile per ridirezionare l'output
   * `-n [n]` stampa `n` riepiloghi
