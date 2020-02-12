@@ -45,10 +45,10 @@
     * `-r` [relative] crea symlink relativi alla cartella `p2`
 * `echo [str]` stampa la stringa `str`
 * `cat {p1...}` stampa uno o più file, per reindirizzare l'output su file si può usare `cat [p1a...] > [p2]`
-* `uniq {p}` elimina le ripetizioni adiacenti delle righe in `p`
+* `uniq {p}` elimina le righe adiacenti ripetute in `p`
   * `-c` [count] prefissa ogni riga col numero di occorrenze
   * `-d` [repeated] stampa solo le righe duplicate
-  * `-D` stampa tutte le righe duplicate
+  * `-D` (duplicated) stampa tutte le righe duplicate
   * `-u` [unique] stampa solo le righe uniche
   * `-i` [ignore-case] il confronto tra le righe è case insensitive
 * `tail {p}` stampa le ultime 10 righe di `p`
@@ -60,9 +60,10 @@
 * `more {p}` stampa una pagina di `p` e poi una riga per volta
   * `-[n]` usa `n` come dimensione della pagina
   * `+[n]` mostra a partire dalla linea `n` inclusa
-* `cut {str}` taglia e stampa una porzione della stringa `str` - `cut lorem&ipsum&dolor -d'&' -f2` -> `ipsum`
+* `cut {filea...}` taglia e stampa una porzione di ogni riga in `file` - `cut lorem&ipsum&dolor -d'&' -f2` -> `ipsum`
   * `-f[n1a-n1b],..` (field) stampa solo i campi da `na` a `nb`
-    * `-d"[s]"` (delimiter) usa `s` come stringa separatrice, di default è `\t`
+  * `-d"[s]"` (delimiter) usa `s` come stringa separatrice, di default è `\t`
+  * `--output-delimiter=[str]` usa `s` come stringa separatrice per l'output, di default è `\t`
 * `paste {p...}` affianca riga per riga i `p` separati da `TAB`
   * `-d "str"` usa a rotazione i caratteri di `str` come separatori
 * `wc {p}` stampa il numero di righe, parole, e caratteri in `p`
@@ -72,22 +73,6 @@
   * `-m` numero di caratteri
   * `-L` (length) lunghezza della riga più lunga
 * `grep [regex] {pa...}` cerca le occorrenze in `p` in base a `regex`
-  * sintassi di `regex`:
-    * `^` (B) inizio della linea
-    * `$` (B) fine della linea
-    * `\<` (B) inizio di una parola
-    * `\>` (B) fine di una parola
-    * `.` (B) un singolo carattere (qualsiasi)
-    * `[str]` (B) un qualunque carattere in `str`
-    * `[^str]` (B) un qualunque carattere non in `str`
-    * `[a-z]` (B) un qualunque carattere tra `a` e `z`
-    * `\` (B) inibisce l'interpretazione del metacarattere che segue
-    * `*` (B) zero o più ripetizioni dell'elemento precedente
-    * `+` (E) una o più ripetizioni dell'elemento precedente
-    * `?` (E) zero od una ripetizione dell'elemento precedente
-    * `{j,k}` (E) un numero di ripetizioni compreso tra `j` e `k` dell'elemento precedente
-    * `s|t` (E) l'elemento `s` oppure l'elemento `t`
-    * `(exp)` (E) raggruppamento di `exp` come singolo elemento
   * `-E` (extended) (equivalente a `egrep`) abilita la sintassi estesa per `regex`
   * `-w` (words) richiede il match per parole intere
   * `-i` (insensitive) abilita la case insensitiveness
@@ -162,3 +147,24 @@
   * `-b` (batch mode) esegue in modalità batch, utile per ridirezionare l'output
   * `-n [n]` stampa `n` riepiloghi
   * `-d [n]` aggiorna ogni `n` secondi
+
+---
+
+sintassi di `regex`:
+| comando  | disponibilità | significato                                                              |
+| :------- | :-----------: | :----------------------------------------------------------------------- |
+| `^`      |       B       | inizio della linea                                                       |
+| `$`      |       B       | fine della linea                                                         |
+| `\<`     |       B       | inizio di una parola                                                     |
+| `\>`     |       B       | fine di una parola                                                       |
+| `.`      |       B       | un singolo carattere (qualsiasi)                                         |
+| `[str]`  |       B       | un qualunque carattere in `str`                                          |
+| `[^str]` |       B       | un qualunque carattere non in `str`                                      |
+| `[a-z]`  |       B       | un qualunque carattere tra `a` e `z`                                     |
+| `\`      |       B       | inibisce l'interpretazione del metacarattere che segue                   |
+| `*`      |       B       | zero o più ripetizioni dell'elemento precedente                          |
+| `+`      |       E       | una o più ripetizioni dell'elemento precedente                           |
+| `?`      |       E       | zero od una ripetizione dell'elemento precedente                         |
+| `{j,k}`  |       E       | un numero di ripetizioni compreso tra `j` e `k` dell'elemento precedente |
+| `s|t`    |       E       | l'elemento `s` oppure l'elemento `t`                                     |
+| `(exp)`  |       E       | raggruppamento di `exp` come singolo elemento                            |
