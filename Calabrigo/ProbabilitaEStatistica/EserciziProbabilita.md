@@ -194,5 +194,3 @@ funzionamento dell’apparecchiatura. Si esprima T come funzione di X1, X2. Si
 dica qual `e il supporto di T. Si ottengano poi la funzione di ripartizione e la
 funzione di densita di probabilita di T, esplicitandole in tutti i loro tratti. Si
 calcolino la mediana di T (`e il quantile-p con p = 50/100) e P(T > 10).
-
-(vedi quaderno)
