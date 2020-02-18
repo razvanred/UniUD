@@ -42,8 +42,10 @@ B dato A = P(B intersecato A) / P(A) = (1/30) / (1/3) =  1/10 -> prendendo a cas
 Se volessi trovare gli uomini alcolizzati farei: C = "sono uomini" (2/3). P(B | C) = P(B intersecato C) / P(C) = (visto che B e C sono eventi indipendenti) = (P(B) * P(C)) / P(C) = P(B) = 1/10
 
 # Formula della probabilità totale
-
+La formula della probabilità totale dice che P(A U B) = P(A) + P(B) - P(A intersecato B).
 
 
 
 # Formula di bayes
+La formula di bayes serve per calcolare B|A avendo A|B:\
+P(B|A) = P(A|B) * P(B) / sum(P(A|Ai) * P(Ai)), dove Ai sono tutti gli eventi dipendenti da A.
