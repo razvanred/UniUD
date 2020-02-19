@@ -357,9 +357,9 @@ Variables have context:
 
 ```java
 public final class GuessStatisticsMessage {
-    private final String number;
-    private final String verb;
-    private final String pluralModifier;
+    private String number;
+    private String verb;
+    private String pluralModifier;
 
     public String make(final char candidate, int count) {
         createPluralDependentMessageParts(count);
