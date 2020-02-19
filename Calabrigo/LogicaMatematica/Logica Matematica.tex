@@ -1,0 +1,341 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+
+\begin{document}
+\title{Logica Matematica}
+\author{Calabrigo Massimo}
+\date{\today}
+\maketitle
+
+\tableofcontents
+
+\section{Linguaggio Proposizionale}
+\subsection{Cos'è il linguaggio proposizionale - Formule}
+Il linguaggio proposizionale è un linguaggio, ovvero l'insieme di tutte le possibili combinazioni di formule proposizionali. Il linguaggio proposizionale è formato da:\\
+\begin{itemize}
+    \item Connettori: $'\land' , '\lor', '\neg', '\rightarrow'$
+    \item elementi sintattici: $'(',')'$
+    \item lettere proposizionali: $'p', 'q', ...$
+\end{itemize}
+Priorità dei connettivi logici:\\
+\begin{enumerate}
+    \item $\neg(A)$
+    \item $A \land B$
+    \item $A \lor B$
+    \item $A \rightarrow B$
+\end{enumerate}
+Una formula può essere:\\
+\begin{itemize}
+    \item negazione: $\neg(a)$
+    \item congiunzione:$a \land b$
+    \item disgiunzione:$a \lor b$
+    \item implicazione:$a \rightarrow b$
+\end{itemize}
+Una \textbf{sottoformula} è una sottostringa di una formula, che è anch'essa una formula.\\
+\subsection{Equivalenza e Conseguenza Logica}
+Due formule A e B sono logicamente equivalenti $A \equiv B$ quando A e B hanno gli stessi output.\\
+B è conseguenza logica di A,$A \vdash B$, quando se A è vero anche B deve essere vero, e se B è falso, anche A deve essere falso.\\
+Esempio: $p \land q \vdash p$ = $G \vdash F$\\
+\begin{tabular}{|c|c|c|c|}
+    \hline
+    $F$ & $F$ & $F$ & $F$\\
+    \hline\hline
+    $F$ & $F$ & $F$ & $V$\\
+    \hline
+    $F$ & $V$ & $V$ & $F$\\
+    \hline
+    $V$ & $V$ & $V$ & $V$\\
+    \hline
+\end{tabular}
+\subsection{DeMorgan}
+\begin{itemize}
+    \item $\neg(F \land G)$ = $\neg(F) \lor \neg(G)$
+    \item $F \rightarrow G$ = $\neg(F) \lor G$
+    \item $F \land (G \lor H)$ = $(F \land G) \lor (F \land H)$
+\end{itemize}
+\subsection{Validità, Soddisfacibilità e insoddisfacibilità}
+Detta F una formula:
+\begin{enumerate}
+    \item F è valida se v(F) = vero, per ogni valutazione v
+    \item F è soddisfacibile se v(F) = vero, per almeno una valutazione v
+    \item F è insoddisfacibile se v(F) = falso, per ogni valutazione v
+\end{enumerate}
+\textbf{Lemma}: Siano F e G formule:
+\begin{itemize}
+    \item se $F \vdash G$, allora $F \rightarrow G$ è valida
+    \item se $F \neg\vdash G$, allora $F \land \neg(G)$ è soddisfacibile
+\end{itemize}
+N.B: Vediamo che per verificare la conseguenza logica è necessaria la validità, mentre per confutarla è sufficiente la soddisfacibilità.\\
+Per i tableaux varrà la stessa cosa. Al posto di cercare se $F \vdash G$ è valido, possiamo cercare se $F \neg\vdash G$ è insoddisfacibile, se fosse soddisfacibile, sapremmo che $F \vdash G$ non potrebbe essere valida.
+\subsection{FNC e FND}
+Teo: Una qualsiasi formula F può essere trasformata in una funzione in Forma Normale Congiuntiva (G1) e/o in una funzione in Forma Normale Disgiuntiva (G2).\\
+Una formula in FNC è composta da un insieme di sottoformule $(H_{1},H_{2},...,H_{n})$ messe tutte in congiunzione $\land$ tra loro. Ogni formula $H_{i}$, invece, è formata da lettere proposizionali (tipo variabili booleane) messe tutte in disgiunzione $\lor$ tra loro.\\
+Esempio: K = $(p \lor t) \land (p \lor n)$, dove K è in FNC.\\
+Scambiando gli or con gli and ottengo una formula in Forma Normale Disgiuntiva.\\
+S = ((p and t) or (p and n)), dove S è in FND.\\
+\textbf{N.B}: le formule K e S non sono le stesse, una volta ottenuta una formula FNC K non basta scambiare and e or per ottenere una formula FND S.
+\subsection{Algoritmo di FNC e FND}
+L'algoritmo serve a trasformare una qualunque funzione F in una funzione K in FNC o FND. Lo scopo è semplificare lo studio della formula e avere certi vantaggi. Per esempio in una sottofunzione di una funzione FND sappiamo che se ci sono due lettere proposizionali complementari, quella formula darà sempre falso.\
+Esempio: $((p \land \neg(p) \land q \land z \land \neg(i) \land j) \lor (...))$, sappiamo che la prima sottoformula è falsa.\\
+
+L'algoritmo (per FNC) esegue un numero di passi sulla funzione in input F, e smette quando K = FNC(F), altrimenti eseguo l'algoritmo su la sua prima sottoformula G. In questo caso so che G non è un letterale, quindi posso procedere in questi modi:
+\begin{itemize}
+    \item se G è una doppia negazione, allora rimpiazzo G con il suo ridotto (se G = not(not(N))), allora rimpiazzo G con N
+    \item se G è una beta-formula, rimpiazzo G con i suoi ridotti
+    \item se G è una alpha-formula, ovvero visto che siamo in FNC se mi trovo in questa situazione: $<[A \land B]$, $[C]>$, uso DeMorgan (vedi sotto).
+\end{itemize}
+Esempio:
+\begin{center}
+    \begin{align*}
+        <[(A \land B)], [C]>\\
+        ((A \land B) \lor 0) \land C\\
+        (C \lor (A \land B)) \land (C \lor 0)\\
+        (C \lor (A \land B))\\
+        (C \lor A) \land (C \lor B)\\
+        <[A,C],[A,B]>
+    \end{align*}
+\end{center}
+
+Alpha-formule:\\
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        Alpha-formule & ridotti\\
+        \hline
+        $F \land G$ & $F,G$\\
+        \hline
+        $\neg(F \lor G)$ & $\neg(F),\neg(G)$\\
+        \hline
+        $\neg(F \rightarrow G)$ & $F,\neg(G)$\\
+        \hline
+    \end{tabular}
+\end{center}
+Beta-formule:\\
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        Beta-formule & ridotti\\
+        \hline
+        $F \lor G$ & $F,G$\\
+        \hline
+        $\neg(F \land G)$ & $\neg(F),\neg(G)$\\
+        \hline
+        $F \rightarrow G$ & $\neg(F),G$\\
+        \hline
+    \end{tabular}
+\end{center}
+
+
+Introduciamo una nuova notazione per l'algoritmo:
+\begin{itemize}
+    \item $[p,q,w]$ = $p \lor q \lor w$
+    \item $<p,q>$ = $p \land q$
+\end{itemize}
+Esempio: $((p \lor t) \land (p \lor n))$ diventa $<[p,t],[p,n]>$.\\
+
+Vediamo un esempio significativo di applicazione dell'FNC:\\
+
+INIZIO\
+\begin{enumerate}
+\item \textbf{F = `$((r \land \lnot(s)) \lor \lnot(p \rightarrow q))$`}\\
+Per prima cosa cambiamo la sintassi della funzione per usare l'algoritmo, qui potrei decidere di trovare $<[..]>$, e in questo caso troverei la FNC, oppure $[<..>]$, per trovare la FND. Noi scegliamo la prima:\\
+\item \textbf{`$<[((r \land \lnot(s)) \lor \lnot(p \rightarrow q))]>$`}\\
+Abbiamo due grandi sottoformule: $G = (r \land \neg(s))$ e $H = \neg(p \rightarrow q)$. G e H sono messe in $\lor$, questo corrisponde alla prima beta-formula, quindi riscriviamo i ridotti:\\
+\item \textbf{`$<[((r \land \lnot(s)) , \lnot(p \rightarrow q))]>$`}\\
+Ora guardiamo la sottoformula a $G = ((r \land \lnot(s))$. Corrisponde alla prima alpha-formula F and G dove F = $r$ e G = $\lnot(s)$. Ora viene un passaggio bastardo, perchè non basta sostituire i ridotti ma bisogna usare la formula di DeMorgan sovracitata $(F \lor (G \land H))$ = $((F \lor G) \land (F \lor H))$, dove F = $\lnot(p \rightarrow q)$, G = $r$, e H = $\lnot(s)$. Quindi riscriviamo:\\
+\item \textbf{`$<[\lnot(p \rightarrow q),r],[\lnot(p \rightarrow q),\lnot(s)]>$`}\\
+Rimaniamo un attimo su questo passaggio, perchè lo abbiamo fatto e non abbiamo solo scritto i ridotti? Beh noi abbiamo $<[((r \land \lnot(s)) , \lnot(p \rightarrow q))]>$, utilizzando gli assegnamenti per F,G e H di prima avremmo: $<[(G \land H) , F]>$, possiamo ignorare l'and $<>$, e quindi, se sostituiamo le $[,]$ otteniamo: $(G \land H) \lor F$. Ora se sotituissimo $(G \land H)$ con i ridotti nella alpha-formula otterrei $(G, H) \lor F$. Ora sostituiamo i valori a G e H e rimettiamo le parentesi: $(G, H) \lor F$ diventa $(r \lor \lnot(s)) \lor \lnot(p \rightarrow q)$, che diventa $<[(r \lor \lnot(s)) , \lnot(p \rightarrow q)]>$. Abbiamo ottenuto una formula sbagliata perchè $<[(r \lor \lnot(s)) , \lnot(p \rightarrow q)]>$ è diversa da $<[(r and \lnot(s)) , \lnot(p \rightarrow q)]>$. Questo dimostra che se sto cercando una FNC, allora quando applico le alpha-formule devo usare anche la formula di De Morgan, se sto cercando le FND, invece, funziona al contrario (alpha-formule solo ridotti, e beta-formule ridotti + De Morgan).\\
+A questo punto possiamo continuare, abbiamo una alpha-formula $[\lnot(p \rightarrow q)] \lor r$, ridotta diventa $(p \land \lnot(q)) \lor r$, e poi applichiamo DeMorgan:\\
+\item \textbf{`$<[p,r],[\lnot(q),r],[not(p \rightarrow q),\lnot(s)]>$`}\\
+A questo punto abbiamo la stessa alpha-formula, con $\lnot(p \rightarrow q) \lor \lnot(s)$ che diventa $(p \land \lnot(q)) \lor \lnot(s)$:\\
+\item \textbf{`$<[p,r],[\lnot(q),r],[p,\lnot(s)],[\lnot(q),\lnot(s)]>$`}\\
+Bene abbiamo ottenuto un K che sia in FNC, dove ogni disgiunto di ogni congiunto è un letterale. Ora togliamo la sintassi scomoda e abbiamo finito:\\
+\item \textbf{K = `$((p \lor r) \land (\lnot(q) \lor r) \land (p \lor \lnot(s)) \land (\lnot(q) \lor \lnot(s)))$`}\\
+\end{enumerate}
+FINITO
+\subsection{Rango di una Funzione}
+Il rango di una funzione F, rg(F), esprime una misura di complessità di F:
+\begin{itemize}
+    \item se F è un letterale, $rg(F) = 1$
+    \item se F è una doppia negazione $F = \lnot(\lnot(G))$, allora $rg(F) = rg(G) + 1$
+    \item se F è una alpha o beta-formula $F = (G \lor H)$, $rg(F) = rg(G) + rg(H) + 1$
+\end{itemize}
+
+\section{Tableaux}
+\subsection{Cos'è un tableaux e algoritmo}
+Il tableau è un albero i cui nodi sono formule, ed è costituito per gradi $t_{1},...,t_{n}$, dove ogni grado aggiunge uno o due nodi. Il tableau segue le regole dell'FNC e FND per scomporre una formula in letterali. $E(n)$ dove n è un nodo indica l'insieme che etichetta n. Alla fine di un tableau, ovvero quando si è scomposto in letterali, bisogna dire se le varie formule scomposte siano impossibili o compatibili, e in questo ultimo caso, anche dire per che valori siano compatibili.\\
+\textbf{Lemma}: Se un albero binario è infinito, allora ha un ramo infinito.\\
+\textbf{Teorema}: L'algoritmo di costruzione dei tableau ha terminazione forte, ovvero termina sempre.\\
+Un tableau è chiuso se ha letterali complementari in tutte le sue foglie, altrimenti è aperto.\\
+Se un tableau è chiuso, F è insoddisfacibile, e viceversa.\\
+\textbf{L'ALGORITMO}
+Quando si risolve un tableaux, lo si fa usando l'algoritmo della FNC. Ogni volta che ci troviamo in una foglia di un tableaux, possiamo:
+\begin{itemize}
+    \item se la foglia è una congiunzione di disgiunti elementari $(s \lor k) \land (s \lor n)$, allora se non ci sono complementari $w \land (q \lor a)$, la foglia è aperta, altrimenti se ci sono complementari $(w \land \neg(w)$, la foglia è chiusa.
+    \item se la foglia è una congiunzione di disgiunti non elementari $(d \rightarrow k \lor k) \land (s \rightarrow n \lor n)$, e se la foglia è una beta-formula, allora l'albero ha un nodo, se la foglia è una alpha-formula, l'albero ha 2 nodi.
+\end{itemize}
+
+I tableaux si possono usare per verificare l'equivalenza logica:\\
+Se abbiamo $F \vdash G$, per vedere se è valida dobbiamo dimostrare $F \rightarrow G$ sia valida, ma con i tableaux posso solo verificare la Soddisfacibilità/insoddisfacibilità, quindi, posso verificare che $\neg(F \rightarrow G)$ = $F \land \neg(G)$ sia insoddisfacibile.\\
+Quindi dovrò verificare se $F,\neg(G)$ in FNC, sia insoddisfacibile oppure soddisfacibile.
+
+\subsection{Insiemi di Hintikka}
+Un insieme di hintikka è un insieme i cui elementi sono le funzioni di un ramo di un tableaux, con la condizione che questi sia aperto e che rispetti certe condizioni:\\
+\begin{enumerate}
+    \item se H è chiuso (contiene letterali complementari), H non è un insieme di hintikka.
+    \item se $G \in H$, allora H è una doppia negazione con ridotto G.
+    \item se $G \in H$ è una alpha-formula, allora $G_{0} \in H$ e $G_{1} \in H$.
+    \item se $G \in H$ è una beta-formula, allora $G_{0} \in H$ oppure $G_{1} \in H$ (è possibile che sia $G_{0}$, che $G_{1}$ appartengano ad H).
+\end{enumerate}
+Esempio: Date $F_{0}$= $\neg(p \rightarrow q \lor \neg(r))$ e $F_{1}$ = $\neg(p) \lor (r \rightarrow q)$, trova $H_{0}$ e $H_{1}$:\\
+$H_{0} = \{\neg(p \rightarrow q \lor \neg(r)), \neg(\neg(p)), \neg(q), \neg(\neg(r)), p, r\}$\\
+$H_{1} = \{\neg(p) \lor (r \rightarrow q), r \rightarrow q, q\}$
+
+
+\textbf{Lemma}: Ogni insieme di Hintikka è soddisfacibile. (perchè? perchè non hai letterali complementari).\\
+Per dimostrarlo prendiamo come esempio $H_{1}$, creaiamo una valutazione v tale che:\\
+\begin{itemize}
+    \item v(p) = vero se $p \in H_{1}$, dove p sono i letterali in $H_{1}$
+    \item v(p) = falso se $p \notin H_{1}$
+\end{itemize}
+allora $\forall$ formula $G \in H_{1}$, abbiamo v(G) = vero, di conseguenza $H_{1}$ è soddisfacibile.\\
+Come esempio prova ad applicare la valutazione v: v(p)=vero, v(r)=falso, v(q)=falso; all'insieme $H_{1}$, il risultato sarà che ogni formula $G \in H_{1}$ è vera.
+\textbf{Lemma}: Se r è un ramo aperto in un tableau, allora l'unione di tutte le funzioni dei nodi figli di r, compreso r, sono un insieme di hintikka.\\
+
+\textbf{In breve, cos'è un insieme di Hintikka?}\\
+E' un insieme, un'unione di funzioni, che sono tutte soddisfacibili. Viene usato in combo con i tableau, dai quali si possono creare insiemi di Hintikka a patto che i tableau siano aperti; gli insiemi di Hintikka si possono creare anche da rami di tableau, ma devono essere aperti.
+
+\section{Deduzione naturale}
+\subsection{Cos'è la deduzione naturale?}
+La deduzione naturale è una tecnica utilizzata per trovare la conseguenza logica tra due formule A e B, 
+e nella deduzione si scrive come $A \triangleright B$, oppure A deduce B.\\
+Una tecnica utile per risolvere esercizi della deduzione naturale, in una formula $A \triangleright B$
+ è quella di procedere dalla tesi B alle ipotesi A, in modo da capire di cosa si ha bisogno per arrivare alla fine, e "ricorsivamente" 
+ costruire l'albero, ovviamente bisogna tener conto anche delle ipotesi, e quindi il modo 
+ giusto di risolvere gli esercizi è:
+ \begin{enumerate}
+     \item Guardare le ipotesi iniziali e tenerle a mente
+     \item Guardare la tesi e vedere come si può scomporre al livello sovrastante
+     \item Continuare a scomporre le ipotesi finche si riesce, e quando ci si sente sicuri provare a 
+     sviluppare le ipotesi per ottenere le parti scomposte della tesi
+     \item Aggiungere, se servono, ipotesi che verranno successivamente scaricate, in modo da ottenere le parti scomposte della tesi, 
+     e quando si deve decidere che ipotesi aggiungere, chiedersi sempre se poi queste ipotesi potranno essere scaricate.
+     \item Fare in ogni momento un \textbf{elenco delle ipotesi da scaricare}. Se si riesce arrivare alla fine dell'esercizio con "ipotesi infinite",
+      e poi fare un elenco di tutte le ipotesi e vedere se l'esercizio può funzionare, o ha bisogno di modifiche.
+     \item Finito
+ \end{enumerate}
+\subsection{Formule della deduzione naturale}
+\textbf{Formule normali}
+\begin{enumerate}
+    \item $ F,G | F \land G$; ($\land$ i)
+    \item $F \land G|F$; ($\land$ e.1)
+    \item $F \land G|G$; ($\land$ e.2)
+    \item $F|F \lor G$; ($\lor$ i.1)
+    \item $G|F \lor G$; ($\lor$ i.2)
+    \item $T,[F] \triangleright G|F \rightarrow G$; ($\rightarrow$ i)
+    \item $F,F \rightarrow G| G$; ($\rightarrow$ e)
+    \item $F, \neg F| \bot$ ($\neg$ e)
+    \item $[F],[G] \triangleright (F \land G, H, H)| H$; ($\lor$ e)
+    \item $[F] \triangleright \bot | \neg F$; ($\neg$ i)
+    \item $\neg \neg F| F$; ($\neg \neg$ e)
+\end{enumerate}
+\textbf{Formule speciali}
+\begin{enumerate}
+    \item $T \triangleright \bot| F$
+    \item $[F \lor \neg F]$
+    \item $T,[F] \triangleright \bot| \neg F$
+    \item $F \rightarrow G, \neg G| \neg F$
+\end{enumerate}
+\subsection{Dettagli utili per la deduzione naturale, e cose poco intuitive}
+\begin{enumerate}
+    \item Quando sono in una situazione di ($i \Rightarrow$ ), 
+    dove normalmente la regola sarebbe $$T,F \triangleright G|(F \rightarrow G)$$ 
+    se ho già scaricato F da un altra parte allora posso fare direttamente 
+    $$G|(F \rightarrow G)$$ senza rifare lo scaricamento (ma devo comunque segnare 
+    affianco all linea tra $G| G \rightarrow F$, che sto facendo uno scaricamento
+    mettendo il solito numeretto).
+    \item Quando sono in una situazione di \textbf{ex-falso}, con una formula del tipo
+    $$ T \triangleright \bot|F $$ significa che avendo un falso, da esso posso
+    dedurre qualsiasi formula.
+    \item Nella regola ($\lor$ e), si puà usare come primo campo $F or \neg F$, che poi verrà automaticamente scaricato.
+\end{enumerate}
+\section{Linguaggio Predicativo}
+\subsection{Variabile Libera}
+Una variabile libera è una variabile che non è legata ai quantificatori ($\exists$ e $\forall$).\\
+Quindi, se abbiamo una formula del tipo $\forall x(r(x, y))$, allora $y$ sarà una variabile libera, mentre $x$ sarà una variabile legata.
+Possiamo pensare più facilmente ad $y$ come una variabile vera e propria, alla quale posso sostituire qualsiasi valore io voglia (presente nel dominio), mentre
+per quanto riguarda la $x$, è una valore al quale dobbiamo sostituire, uno alla volta, tutti i valori del dominio.
+\subsection{Sostituzione di termini e/o formule}
+La scrittura $r(f(x)) \{x/t\} = r(f(t))$, significa che devi sostituire alla variabile x, il termine t.\\
+La scrittura $r(f(x)) \{x/f(x)\} = r(f(f(x)))$, significa che devo sostituire alla variabile x, il termine f(x).\\
+Per poter fare una sostituzione, devo essere sicuro che la variabile che sostituisco sia una variabile libera, 
+inoltre devo accertarmi che, dopo averla sostituita, essa rimanga ancora libera.Esempio:
+$$\forall x(r(x,y)) \{x/w\}$$
+Nella formula sovrastante ci sono 2 variabili: $x$ e $y$. $x$ è legata (dal quantificatore $\forall x$) mentre $y$ è libera, e visto 
+che io sto cercando di sostituire $w$ ad $x$, e che dopo aver sostituito $w$, quest'ultima sarà comunque una variabile libera, poichè 
+non è legata a nessun quantificatore, allora posso effettuare la sostituzione.
+\subsection{Interpretazione di una formula}
+Cos'è un linguaggio?\\
+Un linguaggio è composto da simboli di costante, di relazione e di funzione, oltre che a quantificatori e connettivi logici.\\
+Un linguaggio può anche essere definito come insieme di formule.\\
+Cos'è l'interpretazione di una formula?\\
+L'interpretazione è il valore che assume quella formula, al variare dello stato (vedi dopo) a cui è associata. Si scrive $I, \sigma$ soddisfa $F$, 
+dove F è la formula e $\sigma$ è lo stato.\\
+Per trovare l'interpretazione di una formula, dobbiamo avere l'interpretazione di un linguaggio, per esempio se dovessimo avere un 
+linguaggio $L_{0}$, con 1 simbolo di costante c, un simbolo di relazione binario r e un simbolo di funzione f, 
+una interpretazione possibile potrebbe essere:
+\begin{itemize}
+    \item $ D = \{0,1,2\}$
+    \item $c^{I} = 1$
+    \item $f(0) = 1, f(1)=2,f(2)=3$
+    \item $r^{I} = \{(0,0),(1,2),(2,2)\}$
+\end{itemize}
+\subsection{Stato di una formula}
+Lo stato associato ad una formula, è una funzione che manda da una qualsiasi variabile, ad un elemento
+ del dominio: $\sigma : Var \to D^{I}$.\\
+Lo stato si scrive in coppia con l'interpretazione, e li si usano per vedere se una determinata formula F, possa far parte dell'insieme 
+delle formule T del linguaggio $L_{0}$. Si scrive $I, \sigma$ soddisfa $F$. E si legge l'interpretazione con stato sigma, soddisfa F.\\
+Uno stato possibile potrebbe essere:
+\begin{itemize}
+    \item $\sigma(x) = 0$
+    \item $\sigma(y) = 1$
+    \item $\sigma(w) = 2$ (con $w \neq x,y$)
+\end{itemize}
+Il sigma può essere usato su qualsiasi termine, ma avrà effetti diversi:
+\begin{itemize}
+    \item (termine) $\sigma(variabile) \to \sigma(x)$, per i $\sigma(Var)$ definiti nello stato (esempio sopra)
+    \item (termine) $\sigma(costante) \to \sigma(c^{I})$
+    \item (termine) $\sigma(simbolo di funzione) \to f(\sigma(t_1),\sigma(t_2), ... ,\sigma(t_n))$
+    \item (formula) $\sigma(simbolo di relazione) \to$ risolvo i sigma, e vedo se $p(0,1,3)$ appartiene a $p^{I}\{(1,2,3),(3,6,8), ... ,(2,8,34)\}$. Se 
+    appartiene allora $I, \sigma $ soddisfa $p(0,1,3)$, altrimenti no.
+    \item (formula) Per tutti i tipi di formule composte da connettivi logici, tranne i quantificatori, il soddisfa funziona in modo analogo alla soffisfazione del connettivo scelto, 
+    per esempio se ho $I, \sigma $ soddisfa F or G, deve valere $I, \sigma $ soddisfa F oppure $I, \sigma $ soddisfa G.
+    \item (formula) Per le formule con un quantificatore devo fare:
+    \begin{itemize}
+        \item Quantificatore Esistenziale: $D^{I} = \{0,1,2\}$ ($\forall x (r(x,y)$)), devo controllare che $I, \sigma$ soddisfi 
+        $r(x,y)$, per almeno un valore di x, quindi devo verificare:
+        \begin{enumerate}
+            \item $I, \sigma[x/0]$ soddisfa $r(x,y)$ oppure
+            \item $I, \sigma[x/1]$ soddisfa $r(x,y)$ oppure
+            \item $I, \sigma[x/2]$ soddisfa $r(x,y)$
+        \end{enumerate}
+        \item Quantificatore Per ogni: $D^{I} = \{0,1,2\}$ ($\forall x (r(x,y)$)), devo controllare che $I, \sigma$ soddisfi 
+        $r(x,y)$, per tutti i valori di x, quindi devo verificare:
+        \begin{enumerate}
+            \item $I, \sigma[x/0]$ soddisfa $r(x,y)$ e
+            \item $I, \sigma[x/1]$ soddisfa $r(x,y)$ e
+            \item $I, \sigma[x/2]$ soddisfa $r(x,y)$
+        \end{enumerate}
+    \end{itemize}
+\end{itemize}
+\subsection{Metodologia da seguire per l'intepretazione di una formula}
+Dati Una formula F, uno stato $\sigma$ e un'interpretazione I, bisogna trovare se $I, \sigma$ soddisfi F. Vedi i punti sovrastanti, 
+c'è scritto cosa fare ad ogni passo!
+\subsection{Equivalenza e Conseguenza Logica}
+Due formule A e B sono logicamente equivalenti $A \equiv B$, se per ogni interpretazione I, 
+e ogni stato $\sigma$: $I, \sigma$ soddisfa $A$ se e solo se $I, \sigma$ soddisfa $B$.\\
+Date 2 formule A e B, B è conseguenza logica di A se per ogni interpretazione I, 
+e ogni stato $\sigma$: $I, \sigma$ soddisfa $A$ si ha $I, \sigma$ soddisfa $B$
+
+\end{document}
