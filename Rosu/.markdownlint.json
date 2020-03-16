@@ -1,6 +1,6 @@
 {
     "MD033": {
-        "allowed_elements": ["mark"]
+        "allowed_elements": ["mark", "sup"]
     },
     "MD013": false
 }
