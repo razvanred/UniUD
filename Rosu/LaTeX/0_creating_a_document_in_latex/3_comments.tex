@@ -1,0 +1,32 @@
+% Document before the preamble
+% Beginning of the preamble
+\documentclass[12pt, letterpaper, twoside]{article}
+
+% Definition of the packages
+\usepackage[utf8]{inputenc}
+\usepackage{comment}
+
+% Document info
+\title{Comments Document}
+\author{Razvan Rosu \thanks{Helped by his PC}}
+\date{\today}
+% End of the preamble
+
+% Here begins the body of the document
+\begin{document}
+	
+	\begin{titlepage}
+		\maketitle
+	\end{titlepage}
+
+	This document contains a lot of comments, none of them will appear here, only this text.
+	
+	This document contains a lot of comments, none of them will appear here, only this text.
+	
+	Printing \%
+	
+	\begin{comment}
+		This text won't show up in the compiled pdf, this is just a multi=line comment. Useful to, for instance, comment out slow-rendering parts while working on a draft.
+	\end{comment}
+	
+\end{document}
