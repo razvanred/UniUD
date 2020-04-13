@@ -4,13 +4,7 @@
 
 void readline(char s[], unsigned int size);
 void parseArray(int **v, unsigned int *size, char s[]);
-void swap(int array[], int first, int second);
 int heap_select(int array[], int size, int k);
-void heapify_min(int array[], int size, int root);
-void heapify_max(int array[], int size, int root);
-int left(int root);
-int right(int root);
-int parent(int root);
 
 int main(int argc, char** argv) {
 	/*printf("%d %d %d %d\n", parent(1), parent(2), left(0), right(0));
@@ -19,23 +13,23 @@ int main(int argc, char** argv) {
 	printf("%d %d %d %d\n", parent(13), parent(14), left(6), right(6));
 	printf("%d %d %d %d\n", parent(11), parent(12), left(5), right(5));*/
 	
-	Vector v = int_vector_new(5);
-	v.set(&v, 0, (void*)5);
-	v.set(&v, 1, (void*)6);
-	v.set(&v, 2, (void*)7);
-	v.set(&v, 3, (void*)8);
-	v.set(&v, 4, (void*)5);
-	int test1 = v.compare(&v, 0, 1);
+	/*Vector v = int_vector_new(5);
+	v.set(&v, 0, 5);
+	v.set(&v, 1, 6);
+	v.set(&v, 2, 7);
+	v.set(&v, 3, 8);
+	v.set(&v, 4, 5);
+	/*int test1 = v.compare(&v, 0, 1);
 	int test2 = v.compare(&v, 0, 4);
 	int test3 = v.compare(&v, 1, 0);
 	v.swap(&v, 1, 3);
-	int a = (int)v.get(&v, 0);
-	int b = (int)v.get(&v, 1);
-	int c = (int)v.get(&v, 2);
-	int d = (int)v.get(&v, 3);
-	int e = (int)v.get(&v, 4);
+	int a = v.get(&v, 0);
+	int b = v.get(&v, 1);
+	int c = v.get(&v, 2);
+	int d = v.get(&v, 3);
+	int e = v.get(&v, 4);
 	
-	Vector i = index_vector_new(2, (int*)v.data);
+	Vector i = index_vector_new(2, v.data);
 	i.set(&i, 0, 3);
 	i.set(&i, 1, 4);
 	int test4 = i.compare(&i, 0, 1);
@@ -43,15 +37,46 @@ int main(int argc, char** argv) {
 	int test5 = i.compare(&i, 0, 1);
 	i.set(&i, 1, 0);
 	int test6 = i.compare(&i, 0, 1);
-	int f = (int)i.get(&i, 0);
-	int g = (int)i.get(&i, 1);
+	int f = i.get(&i, 0);
+	int g = i.get(&i, 1);
+	printf("%d %d %d\n%d %d %d %d %d\n%d %d %d\n%d %d\n", test1, test2, test3, a, b, c, d, e, test4, test5, test6, f, g);*/
 	
-	index_vector_delete(&i);
-	int_vector_delete(&v);
+	/*Heap h = maxheap_from(&v);
 	
-	printf("%d %d %d\n%d %d %d %d %d\n%d %d %d\n%d %d\n", test1, test2, test3, a, b, c, d, e, test4, test5, test6, f, g);
+	int a = v.get(&v, 0);
+	int b = v.get(&v, 1);
+	int c = v.get(&v, 2);
+	int d = v.get(&v, 3);
+	int e = v.get(&v, 4);
 	
-	/*int *v;
+	printf("%d %d %d %d %d\n", a, b, c, d, e);
+	
+	a = h.pop(&h);
+	b = h.pop(&h);
+	c = h.pop(&h);
+	d = h.pop(&h);
+	e = h.pop(&h);
+	
+	printf("pop: %d %d %d %d %d\n", a, b, c, d, e);
+	
+	printf("%d %d %d %d %d\n", v.get(&v, 0), v.get(&v, 1), v.get(&v, 2), v.get(&v, 3), v.get(&v, 4));
+	
+	h.push(&h, 1);
+	printf("1: %d %d %d %d %d\n", v.get(&v, 0), v.get(&v, 1), v.get(&v, 2), v.get(&v, 3), v.get(&v, 4));
+	h.push(&h, 7);
+	printf("7: %d %d %d %d %d\n", v.get(&v, 0), v.get(&v, 1), v.get(&v, 2), v.get(&v, 3), v.get(&v, 4));
+	h.push(&h, 3);
+	printf("3: %d %d %d %d %d\n", v.get(&v, 0), v.get(&v, 1), v.get(&v, 2), v.get(&v, 3), v.get(&v, 4));
+	h.push(&h, 5);
+	printf("5: %d %d %d %d %d\n", v.get(&v, 0), v.get(&v, 1), v.get(&v, 2), v.get(&v, 3), v.get(&v, 4));
+	h.push(&h, 2);
+	printf("2: %d %d %d %d %d\n", v.get(&v, 0), v.get(&v, 1), v.get(&v, 2), v.get(&v, 3), v.get(&v, 4));
+	
+	v.delete(&v);
+	h.delete(&h);*/
+	//i.delete(&i);
+	
+	int *v;
     unsigned int size; 
     char str[10000];
     unsigned int k;
@@ -59,24 +84,33 @@ int main(int argc, char** argv) {
 	readline(str, 10000);
     parseArray(&v, &size, str);
     scanf("%d", &k);
-    printf("%d\n", heap_select(v, size, k - 1));*/
+    printf("%d\n", heap_select(v, size, k - 1));
     return 0;
 }
 
-/*void heapify_maxheap(struct Heap* heap, int root) {
-	int max = root;
-	if(left_child(root) <= heap->heapsize && get(heap, max) < get(heap, left_child(root))) { 
-		max = left_child(root);
-	}
-	if(right_child(root) <= heap->heapsize && get(heap, max) < get(heap, right_child(root))) {
-		max = right_child(root);
+int heap_select(int array[], int size, int k) {
+	Vector primary = int_vector_from(array, size);
+	Vector secondary = index_vector_new(k + 1, array);
+	Heap heap = minheap_from(&primary);
+	Heap ref = minheap_with(&secondary);
+	
+	ref.push(&ref, 0);
+	
+	for(; k > 0; k--) {
+		int temp = ref.pop(&ref);
+		ref.push(&ref, heap_left(temp));
+		ref.push(&ref, heap_right(temp));
 	}
 	
-	if(max != root) {
-		swap_heap(heap, root, max);
-		heapify_maxheap(heap, max);
-	}
-}*/
+	int ret = primary.get(&primary, secondary.get(&secondary, 0));
+	
+	primary.delete(&primary);
+	secondary.delete(&secondary);
+	heap.delete(&heap);
+	ref.delete(&ref);
+	
+	return ret;
+}
 
 void readline(char s[], unsigned int size) {
   unsigned int i= 0;
@@ -113,15 +147,5 @@ void parseArray(int **v, unsigned int *size, char s[]) {
     for(; *s != 0 && *s != ' '; s+= sizeof(char));
     s+= sizeof(char);
   }
-}
-
-void swap(int array[], int first, int second) {
-	int temp = array[first];
-	array[first] = array[second];
-	array[second] = temp;
-}
-
-int heap_select(int array[], int size, int k) {
-	return 0;
 }
 
