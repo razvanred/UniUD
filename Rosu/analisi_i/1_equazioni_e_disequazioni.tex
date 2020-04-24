@@ -1,6 +1,8 @@
 \documentclass[12pt, letterpaper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amssymb, amsmath, amsfonts}
+\usepackage{tcolorbox}
+\usepackage{commath}
 
 \newtheorem{definition}{Definizione}[section]
 \newtheorem{principle}{Principio}
@@ -136,5 +138,31 @@
 	\end{definition}
 	
 	Le \textbf{soluzioni} del sistema sono quei numeri reali che soddisfano \textit{contemporaneamente} tutte le disequazioni.
+	
+	\section{Le equazioni e le disequazioni con valore assoluto}
+	
+	Il valore assoluto di un numero è uguale al numero stesso se il numero è positivo o nullo, è l'opposto del numero se il numero è negativo. In generale:
+	
+	\begin{tcolorbox}
+			\[
+			\abs{x} = 
+			\begin{cases}
+				x, & \mbox{ se } x >= 0\\
+				-x, & \mbox{ se } x < 0
+			\end{cases}
+			\]
+	\end{tcolorbox}
+	
+	Alcune proprietà del valore assoluto:
+	
+	\begin{enumerate}
+		\item $\abs{x} = \abs{-x} \qquad \forall x \in \mathbb{R}$
+		\item $\abs{x * y}=\abs{x} * \abs{y} \qquad \forall x, y \in \mathbb{R}$
+		\item $\abs{\frac{x}{y}} = \frac{\abs{x}}{\abs{y}} \qquad \forall x, y \in\mathbb{R}, y \neq 0$
+		\item $\abs{x} = \abs{y} \quad \Leftrightarrow \quad x = \pm{y} \qquad \forall x, y \in \mathbb{R}$
+		\item $\abs{x} <= \abs{y} \quad \Leftrightarrow \quad x^2 \leq y^2 \qquad \forall x, y \in \mathbb{R}$
+		\item $\sqrt{x^2} = \abs{x} \qquad \forall x \in \mathbb{R}$
+	\end{enumerate}
+		
 	
 \end{document}
