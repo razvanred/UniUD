@@ -164,5 +164,75 @@
 		\item $\sqrt{x^2} = \abs{x} \qquad \forall x \in \mathbb{R}$
 	\end{enumerate}
 		
+	\section{Le equazioni e le disequazioni irrazionali}
+	
+	\begin{definition}
+		Un'\textbf{equazione} o \textbf{disequazione} è \textbf{irrazionale} se in essa ci sono radicali contenenti l'incognita.
+	\end{definition}
+
+	\subsection{Le equazioni irrazionali}
+	
+	Se $n$ è pari, l'equazione $\sqrt[n]{A(x)} = B(x)$ è equivalente al sistema:
+	
+	\[
+	\begin{cases}
+		
+		A(x) \geq 0 \\
+		B(x) \geq 0 \\
+		A(x) = [B(x)]^n
+		
+	\end{cases}
+	\]
+	
+	Poiché un radicale con indice pari è sempre uguale a un numero positivo o nullo, affinché sia vera l'uguaglianza deve essere positivo o nullo anche il secondo membro.
+	
+	\subsection{Le disequazioni irrazionali}
+	
+	\begin{itemize}
+		\item Se $n$ è dispari,
+		
+		\[
+			\sqrt[n]{A(x)} < B(x) \Leftrightarrow A(x) < [B(x)]^n
+		\]
+		\[
+			\sqrt[n]{A(x)} > B(x) \Leftrightarrow A(x) > [B(x)]^n
+		\]
+		
+		\item Se $n$ è pari, consideriamo il caso $n = 2$ e applichiamo il seguente principio:
+		
+		\textbf{Se $a$ e $b$ sono due numeri reali positivi o nulli, la relazione di disuguaglianza che c'è fra i due numeri è la stessa che c'è fra i loro quadrati: }
+		
+		\[
+			\forall a, b \geq 0 ~ \Rightarrow a < b ~ \Leftrightarrow ~ a^2 < b^2
+		\]
+		
+		\textbf{Le disequazioni del tipo $\sqrt{A(x)} < B(x)$}
+		
+		La disequazione $\sqrt{A(x)} < B(x)$ è equivalente al sistema:
+		
+		\[
+			\begin{cases}
+				A(x) \geq 0 \\
+				B(x) > 0 \\
+				A(x) < [B(x)]^2
+			\end{cases}
+		\]
+		
+		\textbf{Le disequazioni del tipo $\sqrt{A(x)} > B(x)$}
+		
+		L'insieme delle soluzioni della disequazione $\sqrt{A(x)} > B(x)$ è l'unione delle soluzioni dei due sistemi:
+		
+		\[
+			\begin{cases}
+				A(x) \geq 0 \\
+				B(x) < 0 
+			\end{cases} ~~ \lor ~~ \begin{cases}
+				B(x) \geq 0 \\
+				A(x) > [B(x)]^2
+			\end{cases}
+		\]
+		
+	\end{itemize}
+	
 	
 \end{document}
