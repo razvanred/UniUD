@@ -1,0 +1,238 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb, amsmath, amsfonts}
+\usepackage{tcolorbox}
+\usepackage{commath}
+
+\newtheorem{definition}{Definizione}[section]
+\newtheorem{principle}{Principio}
+
+\title{Analisi Matematica 1}
+\author{Razvan Rosu}
+\date{\today}
+
+\begin{document}
+
+	\begin{titlepage}
+		\maketitle
+	\end{titlepage}
+
+	\section{Equazioni e Disequazioni}
+	
+	\begin{definition}[Disequazione]
+		Una disequazione è una disuguaglianza in cui compaiono espressioni letterali per le quali cerchiamo i valori di una o più lettere che rendono la disuguaglianza vera.
+	\end{definition}
+	
+	Le lettere per i quali si cercano i valori sono le \textbf{incognite}. I valori delle incognite che rendono vera la disequazione sono le \textbf{soluzioni} della disequazione. \par
+	Una disequazione è
+	
+	\begin{itemize}
+		\item \textbf{numerica} se nell'equazione non compaiono altre lettere all'incognita
+		\item \textbf{letterale} se contiene altre lettere, che possono essere chiamati anche \textit{parametri}.
+		\item \textbf{intera} se l'incognita compare soltanto nei numeratori delle eventuali frazioni presenti nella disequazione
+		\item \textbf{fratta} se l'incognita è contenuta nel denominatore di qualche frazione
+	\end{itemize}
+
+	\subsection{Gli intervalli}
+	
+	Spesso gli insiemi di soluzioni delle disequazioni sono particolari sottoinsiemi di $\mathbb{R}$ chiamati \textbf{intervalli}.
+	
+	\begin{definition}[Intervallo limitato]
+		Dati due numeri reali $a$ e $b$, con $a < b$, si chiama intervallo limitato l'insieme dei numeri reali $x$ compresi tra $a$ e $b$. 
+	\end{definition}
+
+	\begin{definition}[Intervallo illimitato]
+		Dato un numero reale $a$, si chiama intervallo illimitato l'insieme dei numeri reali $x$ che precedono $a$, oppure l'insieme dei numeri reali $x$ che seguono $a$.
+	\end{definition}
+
+	\subsection{Le disequazioni equivalenti}
+	
+	\begin{definition}[Disequazioni equivalenti]
+		Due disequazioni si dicono equivalenti se hanno lo stesso insieme di soluzioni.
+	\end{definition}
+
+	Valgono i seguenti principi.
+	
+	\begin{principle}[Primo principio di equivalenza]
+		Data una disequazione, si ottiene una disequazione ad essa equivalente aggiungendo ad entrambi i membri uno stesso numero o espressione.
+	\end{principle}
+
+	In questo senso, possiamo dire che \textbf{un termine può essere trasportato da un membro all'altro della disequazione cambiandogli il segno}.
+	
+	\begin{principle}[Secondo principio di equivalenza]
+		
+		Data una disequazione, si ottiene una disequazione ad essa equivalente:
+		
+		\begin{itemize}
+			\item moltiplicando o dividendo entrambi i membri per uno stesso numero (o espressione) \textit{positivo}.
+			\item moltiplicando o dividendo entrambi i membri per un numero (o espressione) \textit{negativo} e \textit{cambiando il verso} della disuguaglianza.
+		\end{itemize}
+	
+	\end{principle}
+	
+	In particolare, \textbf{se si cambia il segno di tutti i termini di una disequazione e si inverte il verso della diseguaglianza, si ottiene una disequazione equivalente}.
+	
+	\section{Le disequazioni di primo grado}
+	
+	Le disequazioni intere di primo grado possono sempre essere scritte in una delle seguenti forme, dopo aver opportunamente applicato i principi di equivalenza:
+	
+	\begin{center}
+		$ax > b$ ~ $ax >= b$ ~ $ax < b$ ~ con $a, b \in \mathbb{R}$
+	\end{center}
+
+	Risolvendo $ax > b$, otteniamo, a seconda dei valori di $a$:
+	
+	\begin{itemize}
+		\item se $a > 0$, ~ $x > \tfrac{b}{a}$;
+		\item se $a = 0$
+		\begin{itemize}
+			\item se $b > 0$, ~ $S = \O$
+			\item se $b = 0$, ~ $S = \O$
+			\item se $b < 0$, ~ $S = \mathbb{R}$
+		\end{itemize}
+		\item se $a < 0$, ~ $x < \tfrac{b}{a}$
+	\end{itemize}
+
+	Discutere le soluzioni di una disequazione letterale permette di ottenere le soluzioni di infinite disequazioni numeriche, quelle che si hanno sostituendo nell'equazione data valori particolari alla lettera (o alle lettere).
+	
+	\subsection{Lo studio del segno di un prodotto}
+	
+	Consideriamo una disequazione costituita da un prodotto di binomi di primo grado messo a confronto con il numero 0, per esempio
+	
+	\[
+		(x - 1)(3x + 2)(x + 4) > 0.
+	\]
+	
+	Per risolverla possiamo \textbf{studiare il segno} del prodotto al variare di $x$.
+	
+	\[x - 1 > 0 ~ \rightarrow ~ x > 1\]
+	
+	\[3x + 2 > 0 ~ \rightarrow ~ x > -\frac{2}{3}\]
+	
+	\[x + 4 > 0 ~ \rightarrow ~ x > -4\]
+	
+	La disequazione richiede che il prodotto sia positivo, quindi l'insieme delle soluzioni è:
+	
+	\[-4 < x < -\frac{2}{3} ~ \lor ~ x > 1\]
+	
+	\section{Le disequazioni di grado superiore al secondo e le disequazioni fratte}
+	
+	\subsection{Le disequazioni di grado superiore al secondo}
+	Dato un polinomio $P(x)$ di grado maggiore di 2, le disequazioni del tipo $P(x)<0$ o $P(x)>0$ sono di grado superiore al secondo e possono essere risolte scomponendo in fattori di primo e secondo grado il polinomio $P(x)$ e studiando il segno del prodotto di polinomi che si ottiene.
+	
+	\subsection{Le disequazioni fratte}
+	Una disequazione è \textbf{fratta} se contiene l'incognita al denominatore. Può essere sempre trasformata in una disequazione del tipo
+	
+	\[
+		\frac{A(x)}{B(x)} > 0
+	\]
+	
+	o in altre analoghe con i diversi segni della disuguaglianza.
+	
+	Per risolvere una disequazione fratta dobbiamo studiare il segno della frazione $\frac{A(x)}{B(x)}$, esaminando quelli di $A(x)$ e di $B(x)$. Dobbiamo imporre $B(x) != 0$ per la condizione di esistenza della frazione.
+	
+	\section{I sistemi di disequazioni}
+	
+	\begin{definition}[Sistema di disequazioni]
+		Un sistema di disequazioni è un insieme di più disequazioni nella stessa incognita, per le quali cerchiamo le soluzioni comuni.
+	\end{definition}
+	
+	Le \textbf{soluzioni} del sistema sono quei numeri reali che soddisfano \textit{contemporaneamente} tutte le disequazioni.
+	
+	\section{Le equazioni e le disequazioni con valore assoluto}
+	
+	Il valore assoluto di un numero è uguale al numero stesso se il numero è positivo o nullo, è l'opposto del numero se il numero è negativo. In generale:
+	
+	\begin{tcolorbox}
+			\[
+			\abs{x} = 
+			\begin{cases}
+				x, & \mbox{ se } x >= 0\\
+				-x, & \mbox{ se } x < 0
+			\end{cases}
+			\]
+	\end{tcolorbox}
+	
+	Alcune proprietà del valore assoluto:
+	
+	\begin{enumerate}
+		\item $\abs{x} = \abs{-x} \qquad \forall x \in \mathbb{R}$
+		\item $\abs{x * y}=\abs{x} * \abs{y} \qquad \forall x, y \in \mathbb{R}$
+		\item $\abs{\frac{x}{y}} = \frac{\abs{x}}{\abs{y}} \qquad \forall x, y \in\mathbb{R}, y \neq 0$
+		\item $\abs{x} = \abs{y} \quad \Leftrightarrow \quad x = \pm{y} \qquad \forall x, y \in \mathbb{R}$
+		\item $\abs{x} <= \abs{y} \quad \Leftrightarrow \quad x^2 \leq y^2 \qquad \forall x, y \in \mathbb{R}$
+		\item $\sqrt{x^2} = \abs{x} \qquad \forall x \in \mathbb{R}$
+	\end{enumerate}
+		
+	\section{Le equazioni e le disequazioni irrazionali}
+	
+	\begin{definition}
+		Un'\textbf{equazione} o \textbf{disequazione} è \textbf{irrazionale} se in essa ci sono radicali contenenti l'incognita.
+	\end{definition}
+
+	\subsection{Le equazioni irrazionali}
+	
+	Se $n$ è pari, l'equazione $\sqrt[n]{A(x)} = B(x)$ è equivalente al sistema:
+	
+	\[
+	\begin{cases}
+		
+		A(x) \geq 0 \\
+		B(x) \geq 0 \\
+		A(x) = [B(x)]^n
+		
+	\end{cases}
+	\]
+	
+	Poiché un radicale con indice pari è sempre uguale a un numero positivo o nullo, affinché sia vera l'uguaglianza deve essere positivo o nullo anche il secondo membro.
+	
+	\subsection{Le disequazioni irrazionali}
+	
+	\begin{itemize}
+		\item Se $n$ è dispari,
+		
+		\[
+			\sqrt[n]{A(x)} < B(x) \Leftrightarrow A(x) < [B(x)]^n
+		\]
+		\[
+			\sqrt[n]{A(x)} > B(x) \Leftrightarrow A(x) > [B(x)]^n
+		\]
+		
+		\item Se $n$ è pari, consideriamo il caso $n = 2$ e applichiamo il seguente principio:
+		
+		\textbf{Se $a$ e $b$ sono due numeri reali positivi o nulli, la relazione di disuguaglianza che c'è fra i due numeri è la stessa che c'è fra i loro quadrati: }
+		
+		\[
+			\forall a, b \geq 0 ~ \Rightarrow a < b ~ \Leftrightarrow ~ a^2 < b^2
+		\]
+		
+		\textbf{Le disequazioni del tipo $\sqrt{A(x)} < B(x)$}
+		
+		La disequazione $\sqrt{A(x)} < B(x)$ è equivalente al sistema:
+		
+		\[
+			\begin{cases}
+				A(x) \geq 0 \\
+				B(x) > 0 \\
+				A(x) < [B(x)]^2
+			\end{cases}
+		\]
+		
+		\textbf{Le disequazioni del tipo $\sqrt{A(x)} > B(x)$}
+		
+		L'insieme delle soluzioni della disequazione $\sqrt{A(x)} > B(x)$ è l'unione delle soluzioni dei due sistemi:
+		
+		\[
+			\begin{cases}
+				A(x) \geq 0 \\
+				B(x) < 0 
+			\end{cases} ~~ \lor ~~ \begin{cases}
+				B(x) \geq 0 \\
+				A(x) > [B(x)]^2
+			\end{cases}
+		\]
+		
+	\end{itemize}
+	
+	
+\end{document}

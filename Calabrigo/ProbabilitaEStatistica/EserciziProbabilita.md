@@ -191,8 +191,175 @@ componenti che si possono guastare. La vita operativa Xi (i = 1, 2) di ciascuna
 di esse ha distribuzione esponenziale con valore atteso pari a 10 anni, indipendentemente dalla durata di corretto funzionamento dell’altra. Quando entrambe
 sono guaste, l’apparecchiatura non e piu operativa. Sia T il tempo di corretto
 funzionamento dell’apparecchiatura. Si esprima T come funzione di X1, X2. Si
-dica qual `e il supporto di T. Si ottengano poi la funzione di ripartizione e la
+dica qual e il supporto di T. Si ottengano poi la funzione di ripartizione e la
 funzione di densita di probabilita di T, esplicitandole in tutti i loro tratti. Si
-calcolino la mediana di T (`e il quantile-p con p = 50/100) e P(T > 10).
+calcolino la mediana di T (e il quantile-p con p = 50/100) e P(T > 10).
 
-(vedi quaderno)
+Xi(i=1,2) = Esp(1/10)\
+T = max(X1,X2)\
+ST=[0, infinito)\
+FT(t)=?, fT(t)=?\
+secondo quantile=?\
+P(T>10)=?
+
+La nostra funzione di ripartizione indica la probabilità che la macchina non si guasti\
+Notiamo che nel testo se tutte le resistenze sono guaste, si guasta anche la macchina. Allora per trovare la funzione di ripartizione devo fare P(X < t)
+FT(t) =
+* P(T <= t)
+* P(X1 < t, X2 < t)
+* P(X1 < t) * (X2 < t)
+* (1 - e^(-lambda*x)) * (1 - e^(-lambda*x))
+* (1 - e^(-x/10))^2
+
+FT(t) =
+* 0                     se x < 0
+* (1 - e^(-x/10))^2     se x >= 0
+
+fT(t) = 
+* 0                                 se x < 0
+* (1 - e^(-x/10))*(1/5)*e^(-x/5)   se x >= 0
+
+secondo quantile =
+* FT(t) = 0.50
+* (1 - e^(-x/10))^2 = 0.50
+* (1 - e^(-x/10)) = sqrt(0.50)
+* e^(-x/10) = 1 - sqrt(0.50)
+* -x/10 = log(1 - sqrt(0.50))
+* x = -10*log(1 - sqrt(0.50))
+* x = 12.2795
+
+P(T > 10) = 
+* e^(-10/10)
+* e^(-1) = 0.36787
+
+
+Una apparecchiatura dispone di due resistenze. La vita operativa Xi (i = 1, 2) di ciascuna di esse ha distribuzione esponenziale con valore
+atteso pari a 2 anni, indipendentemente dalla durata di corretto funzionamento
+dell’altra resistenza. Quando almeno una delle due resistenze e guasta, l’apparecchiatura non e piu operativa. Si supponga, per semplicita, che le resistenze
+siano le uniche componenti soggette a guasto. Sia T il tempo di corretto funzionamento dell’apparecchiatura. Si esprima T come funzione di X1, X2. Si dica
+qual `e il supporto di T. Si ottengano poi la funzione di ripartizione e la funzione
+di densita di probabilita di T, esplicitandole in tutti i loro tratti. Si calcolino il
+primo quartile di T (e il quantile-p con p = 1/4) e la probabilita condizionale
+P(T > 3|T > 2).
+
+Xi(i=1,2) ~ Esp(1/2).\
+E(X) = 1/2\
+T=min(X1,X2)\
+St = [0, +inf)\
+FT(t)=?,fT(t)=?\
+primo quartile=?, P(T > 3| T > 2)=?
+
+
+La nostra funzione di ripartizione indica la probabilità che la macchina non si guasti\
+Notiamo che nel testo se una delle due resistenze si guasta, si guasta anche la macchina. Allora per trovare la funzione di ripartizione devo fare 1 - P(X1 > t) * P(X2 > t). Arriviamoci.\
+* FT(t)
+* P(T <= t)
+* 1 - P(T > t)
+* 1 - P(X1 > t,X2 > t)
+* 1 - P(X1 > t) * P(X2 > t)
+* 1 - e^(-lambda * t) * e^(-lambda * t)
+* 1 - e^(-t/2) * e^(-t/2)
+* 1 - e^(-t)
+
+FT(t) = 
+* 0             se x < 0
+* 1 - e^(-t)    se x >= 0
+
+fT(t) = 
+* 0             se x < 0
+* e^-t          se x >= 0
+
+primo quartile
+* FT(t) = 0.25
+* 1 - e^(-t) = 0.25
+* e^(-t) = 0.75
+* -t = log(0.75)
+* t = -log(0.75)
+* t = 0.287682
+
+
+P(T > 3 | T > 2) = 
+* P(T > 3) / P(T > 2)
+* e^-3 / e^-2
+* 0.36787 
+
+Una apparecchiatura dispone di tre resistenze. La vita operativa Xi (i = 1, 2, 3) di ciascuna di esse ha distribuzione uniforme continua in (0, b),
+dove b > 0, con valore atteso pari a 5 anni, indipendentemente dalla durata di
+corretto funzionamento delle altre resistenze. Quando tutte le tre resistenze sono guaste, l’apparecchiatura non e piu operativa. Si supponga, per semplicita,
+che le resistenze siano le uniche componenti soggette a guasto. Sia T il tempo
+di corretto funzionamento dell’apparecchiatura. Si esprima T come funzione
+di X1, X2, X3. Si dica qual e il supporto di T. Si ottenga poi la funzione di
+ripartizione di T, esplicitandola in tutti i suoi tratti. Si calcolino le probabilita
+P(0 ≤ T ≤ 3) e P(T > 8).
+
+Xi(i=1,2,3) ~ U(0, b)\
+E(X) = 5\
+T = max(X1,X2,X3)\
+ST = (0, 10)\
+FT(t)=?\
+P(0<= T <= 3)=? e P(T > 8)=?
+
+E(X) = (a+b)/2
+* 5 = (0+b)/2
+* b = 10
+
+P(X1 <= t)
+* integrale tra a e x di (1/(b-a))
+*  x/(b-a) - a/(b-a)
+*  (x-a)/(b-a)
+
+FT(t) = P(T <= t)
+* P(T <= t) = P(X1 <= t, X2 <= t, X3 <= t)
+* P(X1 <= t) * (X2 <= t) * (X3 <= t)
+* (t-a)^3/(b-a)^3
+* (t^3)/(1000)
+
+FT(t) = 
+* 0                 se x <= 0
+* (t^3)/(1000)      se 0 < x < 10
+* 1                 se x >= 10
+
+P(0 ≤ T ≤ 3) =
+* P(T <= 3) - P(T <= 0)
+* (3^3)/(1000) - (0^3)/(1000)
+* 27/1000 - 0
+* 0.027
+
+P(T > 8) =
+* 1 - (8^3)/(1000)
+* 1 - (t^3)/(1000)
+* 1 - 512/1000
+* 0.488
+
+# capitolo 18
+
+Se la variabile casuale multivariata (Y1, . . . , Yn) ha componenti
+indipendenti e identicamente distribuite con legge marginale normale, e in particolare Y1 ∼ N(3, 2), la variabile casuale media campionaria Y¯n =Pni=1 Yi/n ha legge normale, Y¯n ∼ N(3, 2/n). Sia n = 50. Si calcolino P(Y¯50 > 3.4) eP(Y¯50 < 2.8). Si ottenga infine il cinquantesimo percentile di Y¯50 (`e il quantilep con p = 50/100).
+
+Y1 ~ N(3,2)\
+Yn ~ N(3,2/n)\
+n=50\
+P(Y50 > 3.4)=?, P(Y50 < 2.8)=?\
+Si ottenga infine il cinquantesimo percentile di Y¯50\
+Si mostri che Yn ha legge normale
+
+MYn(t) =
+* E(e^t*Yn)
+* E(e^t*(sum(Yi)/n))
+* E(e^sum((t/n) * Yi))
+* E(mul(e^(t/n) * Yi))
+* E(mul(e^(t/n) * Y1)) // perchè Yi i.d.d
+* mul(E(e^(t/n) * Y1))
+* mul(MY1(t/n))
+* MY1(t/n)^n
+* exp(3*(t/n) + 0.5 * sqrt(2)^2 * (t/n)^2)^n
+* e^((3*(t/n) + 0.5 * sqrt(2)^2 * (t/n)^2)*n)
+* e^(3*t + 0.5 * sqrt(2)^2 * (t^2/n))
+
+MYn(t) ~ N(mu, (sigma^2)/n) ~ N(3, 2/n)
+
+P(Y50 > 3.5)= 1 - f((3.4 - 3)/1/5) = f(2) = 0.02275
+P(Y50 < 2.8) = f((2.8 - 3)/1/5) = f(-1) = 1 - f(1) = 0.15866
+
+xp = mu + sigma*zp\
+xp = 3 + 1/5*z50 = 3 + 1/5 * 0 = 3
