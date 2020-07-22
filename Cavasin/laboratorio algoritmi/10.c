@@ -1,10 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct sIndices {
-  unsigned int i, j;
-} Indices;
-
 void readLine(char s[], unsigned int size) {
   unsigned int i= 0;
   char c;
@@ -36,56 +32,27 @@ void parseArray(int **v, unsigned int *size, char s[]) {
   }
 }
 
-// nlog(n)
-Indices aigs1(int v[], unsigned int size, int k) {
-  Indices d;
-  d.i= 0;
-  d.j= 0;
-
-  return d;
-}
-
-// linear
-Indices aigs2(int v[], unsigned int size, int k) {
-  Indices d;
-  d.i= 0;
-  d.j= 0;
-  int t= v[d.i];
-
-  while(d.j <= size) {
-    if(t == k) {
-      return d;
-    } else if(t > k) {
-      t-= v[d.i];
-      d.i++;
-    } else {
-      d.j++;
-      t+= v[d.j];
-    }
+void printArray(int v[], int size) {
+  printf("{");
+  for(int i= 0; i < size; i++) {
+    printf(" %d", v[i]);
   }
-  d.i= -1;
-  d.j= -1;
-  return d;
+  puts(" }");
 }
 
 int main(int argc, char **argv) {
   unsigned int size;
-  int *v, k;
-  Indices d;
+  int *v;
   char s[20];
 
   printf(">>");
   readLine(s, 20);
-  scanf("%d", &k);
   parseArray(&v, &size, s);
 
   // d= aigs1(v, size);
   // printf("%d %d\n", d.i, d.j);
 
-  d= aigs2(v, size, k);
-  printf("%d %d\n", d.i, d.j);
-
-  getch();
+  // getch();
   free(v);
   return 0;
 }
