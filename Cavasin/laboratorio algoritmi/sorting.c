@@ -10,7 +10,15 @@ void printArray(int v[], unsigned int size) {
   puts(" }");
 }
 
-generateArray(int **v, unsigned int *size) {
+void printDoubleArray(double v[], unsigned int size) {
+  printf("{");
+  for(unsigned int i= 0; i < size; i++) {
+    printf(" %f", v[i]);
+  }
+  puts(" }");
+}
+
+void generateArray(int **v, unsigned int *size) {
   *size= rand() % 50 + 1;
   free(*v);
   *v= malloc(sizeof(int) * *size);
@@ -19,11 +27,26 @@ generateArray(int **v, unsigned int *size) {
   }
 }
 
-int *copyArray(int **t, int v[], unsigned int size) {
-  free(*t);
-  *t= malloc(sizeof(int) * size);
-  memcpy(*t, v, sizeof(int) * size);
-  return *t;
+int *copyArray(int **dest, int src[], unsigned int size) {
+  free(*dest);
+  *dest= malloc(sizeof(int) * size);
+  memcpy(*dest, src, sizeof(int) * size);
+  return *dest;
+}
+
+double *copyAsDoubleArray(double **dest, int src[], unsigned int size) {
+  free(*dest);
+  *dest= malloc(sizeof(double) * size);
+  for(unsigned int i= 0; i < size; i++) {
+    (*dest)[i]= src[i];
+  }
+  return *dest;
+}
+
+void swap(int *a, int *b) {
+  int t= *a;
+  *a= *b;
+  *b= t;
 }
 
 unsigned int commonElements(int **c, int a[], unsigned int sizeA, int b[], unsigned int sizeB) {
@@ -53,7 +76,8 @@ void insertionSort(int v[], unsigned int size) {
   int t;
   for(unsigned int i, j= 1; j < size; j++) {
     t= v[j];
-    for(i= j; i > 0 && v[i - 1] > t; i--) v[i]= v[i - 1];
+    for(i= j; i > 0 && v[i - 1] > t; i--)
+      v[i]= v[i - 1];
     v[i]= t;
   }
 }
@@ -66,9 +90,7 @@ void selectionSort(int v[], unsigned int size) {
       }
     }
     if(iMin != s) {
-      v[iMin]+= v[s];
-      v[s]= v[iMin] - v[s];
-      v[iMin]-= v[s];
+      swap(&v[iMin], &v[s]);
     }
   }
 }
@@ -107,9 +129,7 @@ void bubbleSort(int v[], unsigned int size) {
     flag= 0;
     for(unsigned int i= 1; i < size; i++) {
       if(v[i - 1] > v[i]) {
-        v[i]+= v[i - 1];
-        v[i - 1]= v[i] - v[i - 1];
-        v[i]-= v[i - 1];
+        swap(&v[i], &v[i - 1]);
         flag= 1;
       }
     }
@@ -127,9 +147,7 @@ unsigned int median(int v[], unsigned int p, unsigned int q) {
         iMin= i;
     }
     if(iMin != s) {
-      t[iMin]+= t[s];
-      t[s]= t[iMin] - t[s];
-      t[iMin]-= t[s];
+      swap(&t[iMin], &t[s]);
     }
   }
   for(size= p; t[s - 1] != v[size]; size++)
@@ -171,9 +189,7 @@ unsigned int partition(int v[], unsigned int p, unsigned int q) {
     if(v[j] <= pivot) {
       i++;
       if(i != j) {
-        v[j]+= v[i];
-        v[i]= v[j] - v[i];
-        v[j]-= v[i];
+        swap(&v[j], &v[i]);
       }
     }
   }
@@ -193,44 +209,96 @@ void countingSort(int v[], unsigned int size) {
   unsigned int tSize= 0, *t;
 
   for(unsigned int i= 0; i < size; i++) {
+    if(v[i] < offset) {
+      offset= v[i];
+    }
+    if(v[i] > v[tSize]) {
+      tSize= i;
+    }
+  }
+  tSize= v[tSize] - offset + 1;
+  t= calloc(tSize, sizeof(unsigned int));
+  for(unsigned int i= 0; i < size; i++) {
+    v[i]-= offset;
+    t[v[i]]++;
+  }
+  for(unsigned int inc, prec= 0, i= 0; i < tSize; i++) {
+    inc= t[i];
+    t[i]= prec;
+    prec+= inc;
+  }
+  r= calloc(size, sizeof(int));
+  for(unsigned int i= 0; i < size; i++) {
+    r[t[v[i]]]= v[i] + offset;
+    t[v[i]]++;
+  }
+  free(t);
+  memcpy(v, r, size * sizeof(int));
+  free(r);
+}
+
+void numericCountingSort(int v[], unsigned int size) {
+  int offset= 0, *r;
+  unsigned int tSize= 0, *t;
+
+  for(unsigned int i= 0; i < size; i++) {
     if(v[i] < offset)
       offset= v[i];
     if(v[i] > v[tSize])
       tSize= i;
   }
-  for(unsigned int i= 0; i < size; i++) {
-    v[i]-= offset;
-  }
-  tSize= v[tSize] + 1;
+  tSize= v[tSize] - offset + 1;
   t= calloc(tSize, sizeof(unsigned int));
   for(unsigned int i= 0; i < size; i++) {
+    v[i]-= offset;
     t[v[i]]++;
   }
-  for(unsigned int i= 1; i < tSize; i++) {
-    t[i]+= t[i - 1];
-  }
-  r= calloc(size, sizeof(int));
-  for(unsigned int i= size - 1; i != (unsigned int)-1; i--) {
-    r[t[v[i]] - 1]= v[i];
-    t[v[i]]--;
+  for(unsigned int i= 0, j= 0; i < tSize;) {
+    if(t[i] == 0) {
+      i++;
+    } else {
+      v[j]= i + offset;
+      t[i]--;
+      j++;
+    }
   }
   free(t);
-  for(unsigned int i= 0; i < size; i++) {
-    v[i]= r[i] + offset;
-  }
-  free(r);
 }
 
 void radixSort(int v[], unsigned int size) {
   for(unsigned int i= 0; i < size; i++) {
+    // ---
   }
+}
+
+void scale(double peak, double v[], unsigned int size) {
+  double offset= 0, max= 0;
+
+  for(unsigned int i= 0; i < size; i++) {
+    if(v[i] < offset) {
+      offset= v[i];
+    }
+    if(v[i] > v[(unsigned int)max]) {
+      max= i;
+    }
+  }
+  max= v[(unsigned int)max] - offset;
+  for(unsigned int i= 0; i < size; i++) {
+    v[i]= (v[i] - offset) / max * peak;
+  }
+}
+
+void bucketSort(double v[], unsigned int size) {
+  scale(1, v, size);
+  // ---
 }
 
 void test1() {
   int *a= NULL, *b= NULL;
+  double *c= NULL;
   unsigned int size;
 
-  puts("SORTING: INSERTION SORT, MERGE SORT, SELECTION SORT, BUBBLE SORT, QUICK SORT WITH MEDIAN, COUNTING SORT");
+  puts("SORTING: INSERTION SORT, MERGE SORT, SELECTION SORT, BUBBLE SORT, QUICK SORT WITH MEDIAN, COUNTING SORT, NUMERIC COUNTING SORT, BUCKET SORT");
 
   generateArray(&a, &size);
   printArray(a, size);
@@ -259,8 +327,17 @@ void test1() {
   countingSort(b, size);
   printArray(b, size);
 
+  copyArray(&b, a, size);
+  numericCountingSort(b, size);
+  printArray(b, size);
+
+  copyAsDoubleArray(&c, a, size);
+  bucketSort(c, size);
+  printDoubleArray(c, size);
+
   free(a);
   free(b);
+  free(c);
   puts("\n---------------");
 }
 

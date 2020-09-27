@@ -103,7 +103,7 @@
         * `d` (delete) elimina
         * `q` (quit) chiude il programma
         * `p` (print) stampa
-  * `-i(suffix)` [in-place(=)] modifica direttamente `p` o una copia con suffisso `suffix`
+  * `-i[suffix]` [in-place=] modifica direttamente `p` o una copia con suffisso `suffix`
   * `-s` [separate] elabora i file separatamente
   * `-f [p2]` [file=] prende le `action`s da `p2`
 * `date` stampa la data

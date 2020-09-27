@@ -83,8 +83,8 @@ One of the hardest task was to create a reliable way to discard inputs from the 
 ---
 ## Environment information
 
-* `tested operating systems`:
+* **tested operating systems**:
     * WSL with Ubuntu: if running under WSL, avoid using DrvFS paths, as mentioned [here](https://devblogs.microsoft.com/commandline/windowswsl-interop-with-af_unix/)
     >If the Unix socket path is a DrvFS path (i.e your system volumes mounted within WSL, ex: `/mnt/c`, `/mnt/d` etc.) then it can only communicate to a Windows Unix socket. If the path is a LxFS path (i.e Linux mounted volume within WSL, ex: `/home`, `/var`, `/usr` etc.) then it can only communicate with WSL Unix sockets.
     * Ubuntu
-* `compiler`: gcc
+* **compiler**: gcc
