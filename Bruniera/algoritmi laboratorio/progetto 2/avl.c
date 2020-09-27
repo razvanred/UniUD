@@ -3,56 +3,53 @@
 #include <stdbool.h>
 #include <string.h>
 
-struct Node {
+//struttura del nodo dell'albero avl
+struct AvlNode {
     int key;
     char *val;
     int height;
-    struct Node *left;
-    struct Node *right;
+    struct AvlNode *left;
+    struct AvlNode *right;
 };
 
-typedef struct Node Node;
+typedef struct AvlNode AvlNode;
 
-void show(Node *tree);
-void insert(int key, char* val, Node **tree);
-void clear(Node *tree);
-char *find(Node *tree, int key);
-void remove_node(Node **tree, int key);
-void swap_remove_successor(Node **tree, Node *cur);
-int height(Node *tree);
-void rebalance(Node **tree);
+void avl_show(AvlNode *tree);
+void avl_insert(int key, char* val, AvlNode **tree);
+void avl_clear(AvlNode *tree);
+char *avl_find(AvlNode *tree, int key);
+int height(AvlNode *tree);
+void rebalance(AvlNode **tree);
 int max(int a, int b);
-void rotate_left(Node **tree);
-void rotate_right(Node **tree);
-void ready_left(Node **tree);
-void ready_right(Node **tree);
-void update_height(Node *tree);
+void avl_rotate_left(AvlNode **tree);
+void avl_rotate_right(AvlNode **tree);
+void ready_left(AvlNode **tree);
+void ready_right(AvlNode **tree);
+void update_height(AvlNode *tree);
 
 int main(int argc, char** argv) {
     char command[10];
     char val[50];
     int key;
     bool run = true;
-    Node *tree;
+    AvlNode *tree;
     tree = NULL;
     
+    //parsing ed esecuzione del comando, ogni comando corrisponde ad una sola funzione (escluso l'eventuale tree=NULL)
     while(run){
         scanf("%s", (char*)&command);
         
         if(strcmp(command, "insert") == 0) {
             scanf("%d %s", &key, (char*)&val);
-            insert(key, val, &tree);
+            avl_insert(key, val, &tree);
         } else if(strcmp(command, "clear") == 0) {
-            clear(tree);
+            avl_clear(tree);
             tree = NULL;
-        } else if(strcmp(command, "remove") == 0) {
-            scanf("%d", &key);
-            remove_node(&tree, key);
         } else if(strcmp(command, "find") == 0) {
             scanf("%d", &key);
-            printf("%s\n", find(tree, key));
+            printf("%s\n", avl_find(tree, key));
         } else if(strcmp(command, "show") == 0) {
-            show(tree);
+            avl_show(tree);
             puts("");
         } else if(strcmp(command, "height") == 0) {
             printf("%d\n", height(tree));
@@ -64,26 +61,30 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-void update_height(Node *tree) {
+//calcola l'altezza del nodo da quella dei due figli
+void update_height(AvlNode *tree) {
     if(tree != NULL){
         tree->height=max(height(tree->left),height(tree->right))+1;
     }
 }
 
-void ready_right(Node **tree) {
+//se l'albero a sinistra è più alto che a destra, ruota a destra bilanciarlo
+void ready_right(AvlNode **tree) {
     if(height((*tree)->left) > height((*tree)->right)) {
-        rotate_right(tree);
+        avl_rotate_right(tree);
     }
 }
 
-void ready_left(Node **tree) {
+//se l'albero a destra è più alto che a sinistra, ruota a sinistra bilanciarlo
+void ready_left(AvlNode **tree) {
     if(height((*tree)->right) > height((*tree)->left)) {
-        rotate_left(tree);
+        avl_rotate_left(tree);
     }
 }
 
-void rotate_right(Node **tree) {
-    Node *temp = (*tree)->left;
+//ruota l'albero a destra ed aggiorna le altezze dei nodi modificati
+void avl_rotate_right(AvlNode **tree) {
+    AvlNode *temp = (*tree)->left;
     (*tree)->left = temp->right;
     temp->right = *tree;
     *tree = temp;
@@ -92,8 +93,9 @@ void rotate_right(Node **tree) {
     update_height(*tree);
 }
 
-void rotate_left(Node **tree) {
-    Node *temp = (*tree)->right;
+//ruota l'albero a sinistra ed aggiorna le altezze dei nodi modificati
+void avl_rotate_left(AvlNode **tree) {
+    AvlNode *temp = (*tree)->right;
     (*tree)->right = temp->left;
     temp->left = *tree;
     *tree = temp;
@@ -102,114 +104,85 @@ void rotate_left(Node **tree) {
     update_height(*tree);
 }
 
+//massimo di due interi
 int max(int a, int b) {
     return (a > b)?a:b;
 }
 
-void rebalance(Node **tree) {
+//ribilancia un nodo dell'albero
+void rebalance(AvlNode **tree) {
     int left = height((*tree)->left);
     int right = height((*tree)->right);
     
+    //se destra o sinistra sono troppo alte ruoto nell'altra direzione per bilanciare
     if(left > right + 1) {
         ready_left(&((*tree)->left));
-        rotate_right(tree);
+        avl_rotate_right(tree);
     } else if(right > left + 1) {
         ready_right(&((*tree)->right));
-        rotate_left(tree);
+        avl_rotate_left(tree);
     } else {
+    	//altrimenti aggiorno l'altezza
         update_height(*tree);
     }
 }
 
-int height(Node *tree) {
+//restituisce l'altezza dell'albero, se vuoto ha altezza 0
+int height(AvlNode *tree) {
     return (tree == NULL)?0:tree->height;
 }
 
-void swap_remove_successor(Node **tree, Node *cur) {
-    if((*tree)->left == NULL) {
-        cur->key = (*tree)->key;
-        free(cur->val);
-        cur->val = (*tree)->val;
-        Node *temp;
-        temp = *tree;
-        *tree = temp->right;
-        free(temp);
-    } else {
-        swap_remove_successor(&((*tree)->left), cur);
-        rebalance(tree);
-    }
-}
-
-void remove_node(Node **tree, int key) {
-    if(key == (*tree)->key) {
-        if((*tree)->right == NULL) {
-            Node *cur;
-            cur = *tree;
-            *tree = cur->left;
-            free(cur->val);
-            free(cur);
-        } else if((*tree)->left == NULL) {
-            Node *cur;
-            cur = *tree;
-            *tree = cur->right;
-            free(cur->val);
-            free(cur);
-        } else {
-            swap_remove_successor(&((*tree)->right), *tree);
-            rebalance(tree);
-        }
-    } else if(key < (*tree)->key) {
-        remove_node(&((*tree)->left), key);
-        rebalance(tree);
-    }else {
-        remove_node(&((*tree)->right), key);
-        rebalance(tree);
-    }
-}
-
-char *find(Node *tree, int key) {
+//ricerca classica del nodo. Quando trova il nodo restituisce l'indirizzo al valore, NULL altrimenti
+char *avl_find(AvlNode *tree, int key) {
     if(key == tree->key) {
         return tree->val;
     } else if(key < tree->key) {
-        return find(tree->left, key);
+        return avl_find(tree->left, key);
     }else {
-        return find(tree->right, key);
+        return avl_find(tree->right, key);
     }
 }
 
-void clear(Node *tree) {
+//scorre tutto l'albero e elimina valori e nodi in post-order
+void avl_clear(AvlNode *tree) {
     if(tree != NULL) {
-        clear(tree->left);
-        clear(tree->right);
+        avl_clear(tree->left);
+        avl_clear(tree->right);
         free(tree->val);
         free(tree);
     }
 }
 
-void insert(int key, char* val, Node **tree) {
+void avl_insert(int key, char* val, AvlNode **tree) {
+	//cerco uno spazio libero
     if(*tree == NULL){
-        *tree = malloc(sizeof(Node));
+    	//alloco il nodo
+        *tree = malloc(sizeof(AvlNode));
         (*tree)->key = key;
+        //alloco e copio il valore
         (*tree)->val = malloc(strlen(val));
         strcpy((*tree)->val, val);
         (*tree)->left = NULL;
         (*tree)->right = NULL;
     } else {
+    	//altrimenti continuo a cercare
         if(key > (*tree)->key) {
-            insert(key, val, &((*tree)->right));
+            avl_insert(key, val, &((*tree)->right));
         } else {
-            insert(key, val, &((*tree)->left));
+            avl_insert(key, val, &((*tree)->left));
         }
     }
+    //risalendo le chiamate mi assicuro che l'albero sia bilanciato e l'altezza corretta
     rebalance(tree);
 }
 
-void show(Node *tree) {
+//scorro l'albero e stampo in pre-order
+void avl_show(AvlNode *tree) {
     if(tree == NULL) {
         printf("NULL ");
     } else {
         printf("%d:%s:%d ", tree->key, tree->val, tree->height);
-        show(tree->left);
-        show(tree->right);
+        avl_show(tree->left);
+        avl_show(tree->right);
     }
 }
