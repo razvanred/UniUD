@@ -93,7 +93,7 @@ void rbt_fix(RbtNode *tree, RbtNode **root) {
 				}
 			} else {
 				//altrimenti, dato che il padre è rosso, il sinistro è lo zio
-				if(rbt_color(father->right) == RED) {
+				if(rbt_color(father->left) == RED) {
 					//se il figlio rosso del padre (quindi il nodo) è a destra
 					//caso quasi fortunato
 					rbt_rotate_right(father, root);
@@ -120,6 +120,9 @@ void rbt_rotate_right(RbtNode *tree, RbtNode **root) {
     tree->left->father = tree->father;
     tree->father = tree->left;
     tree->left = temp;
+    if(temp != NULL) {
+    	temp->father = tree;
+	}
     if(tree->father->father != NULL) {
     	if(tree->father->father->right == tree) {
     		tree->father->father->right = tree->father;
@@ -138,6 +141,9 @@ void rbt_rotate_left(RbtNode *tree, RbtNode **root) {
     tree->right->father = tree->father;
     tree->father = tree->right;
     tree->right = temp;
+    if(temp != NULL) {
+    	temp->father = tree;
+	}
     if(tree->father->father != NULL) {
     	if(tree->father->father->right == tree) {
     		tree->father->father->right = tree->father;
