@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include "heap.h"
 
 
@@ -17,114 +18,198 @@ void timespec_dif(const struct timespec *a, const struct timespec *b, struct tim
 void timespec_sum(const struct timespec *a, const struct timespec *b, struct timespec *result);
 void timespec_mul(const struct timespec *a,  int b, struct timespec *result);
 void timespec_div(const struct timespec *a,  int b, struct timespec *result);
+void timespec_getres(struct timespec *res);
 
 int main(int argc, char** argv) {
-    long int n = 5000000;//2147483647;
-    int* i;
-    struct timespec result, start, end, res;
-	/*clock_getres(CLOCK_MONOTONIC, &res);
-    printf("%ld,%09ld\n", res.tv_sec, res.tv_nsec);
-    long int a,b;
-    int times = 100000;
+    int *array, counter;
+    struct timespec result, start, end, threshold, sum, sum2, *time_array;
+    long double deviation;
+    //seed random
+    srand(time(NULL));
+	//calcolo la soglia per avere un errore massimo del 0.01% dalla risoluzione reale
+	timespec_getres(&result);
+	//printf("%ld.%09ld\n", result.tv_sec, result.tv_nsec);
+	timespec_mul(&result, 100, &threshold);
+	//printf("%ld.%09ld\n\n", threshold.tv_sec, threshold.tv_nsec);
+	
+	for(int order = 100; order > 0; order *= 10) {
+		for(int n = order, c = 0; n <= 5000000 && c < 10; n += order, c++) {
+			//alloco memoria
+			if((array = malloc(n * sizeof(int))) == 0) {
+				exit(1);
+			}
+			if((time_array = malloc(100 * sizeof(struct timespec))) == 0) {
+				exit(1);
+			}
+			//inizio con quick_select
+			//print N K resetto i contatori
+			printf("%d %d ", n, n / 4);
+			sum2.tv_nsec = 0;
+			sum2.tv_sec = 0;
+			for(int j = 0; j < 100; j++) {
+				//resetto altri contatori
+				sum.tv_nsec = 0;
+				sum.tv_sec = 0;
+				counter = 0;
+				do {
+					//randomizzo l-array
+					for(int i = 0; i < n ; i++){
+			    		array[i] = rand();
+					}
+					//parte il timer e lancio la funzione
+					clock_gettime(CLOCK_MONOTONIC, &start);
+					quick_select(array, 0, n-1, n/4);
+					//fermo il timer e calcolo la differenza
+					clock_gettime(CLOCK_MONOTONIC, &end);
+					timespec_dif(&end, &start, &result);
+					//aumento i contatori
+					start = sum;
+					timespec_sum(&start, &result, &sum);
+					counter++;
+					//ripeto se ci ha messo troppo poco
+			    } while(sum.tv_sec < threshold.tv_sec || (sum.tv_sec == threshold.tv_sec && sum.tv_nsec < threshold.tv_nsec));
+			    //finito calcolo il tempo medio delle ripetizioni
+			    timespec_div(&sum, counter, &result);
+			    //incremento il contatore dei campioni e salvo il campione
+			    sum = sum2;
+			    timespec_sum(&sum, &result, &sum2);
+			    time_array[j] = result;
+			}
+			//calcolo la media dei campioni
+			timespec_div(&sum2, 100, &result);
+			deviation = 0;
+			//calcolo la somma degli scarti al quadrato
+			for(int j = 0; j < 100; j++) {
+				timespec_dif(&time_array[j], &result, &sum);
+				long double partial = (long double) sum.tv_nsec;
+				partial = partial / 1000000000;
+				partial += sum.tv_sec;
+				partial = partial * partial;
+				deviation += partial;
+			}
+			//stampo i valori
+		    printf("%ld.%09ld %lf ", result.tv_sec, result.tv_nsec, sqrt(deviation / 100));
+		    
+		    //ripeto per heap_select
+		    //resetto i contatori
+		    sum2.tv_nsec = 0;
+			sum2.tv_sec = 0;
+			for(int j = 0; j < 100; j++) {
+				//resetto altri contatori
+				sum.tv_nsec = 0;
+				sum.tv_sec = 0;
+				counter = 0;
+				do {
+					//randomizzo l-array
+					for(int i = 0; i < n ; i++){
+			    		array[i] = rand();
+					}
+					//parte il timer e lancio la funzione
+					clock_gettime(CLOCK_MONOTONIC, &start);
+					heap_select(array, n, n/4);
+					//fermo il timer e calcolo la differenza
+					clock_gettime(CLOCK_MONOTONIC, &end);
+					timespec_dif(&end, &start, &result);
+					//aumento i contatori
+					start = sum;
+					timespec_sum(&start, &result, &sum);
+					counter++;
+					//ripeto se ci ha messo troppo poco
+			    } while(sum.tv_sec < threshold.tv_sec || (sum.tv_sec == threshold.tv_sec && sum.tv_nsec < threshold.tv_nsec));
+			    //finito calcolo il tempo medio delle ripetizioni
+			    timespec_div(&sum, counter, &result);
+			    //incremento il contatore dei campioni e salvo il campione
+			    sum = sum2;
+			    timespec_sum(&sum, &result, &sum2);
+			    time_array[j] = result;
+			}
+			//calcolo la media dei campioni
+			timespec_div(&sum2, 100, &result);
+			deviation = 0;
+			//calcolo la somma degli scarti al quadrato
+			for(int j = 0; j < 100; j++) {
+				timespec_dif(&time_array[j], &result, &sum);
+				long double partial = (long double) sum.tv_nsec;
+				partial = partial / 1000000000;
+				partial += sum.tv_sec;
+				partial = partial * partial;
+				deviation += partial;
+			}
+			//stampo i valori
+		    printf("%ld.%09ld %lf ", result.tv_sec, result.tv_nsec, sqrt(deviation / 100));
+		    
+		    //ripeto per median_of_medians_select
+		    sum2.tv_nsec = 0;
+			sum2.tv_sec = 0;
+			for(int j = 0; j < 100; j++) {
+				//resetto altri contatori
+				sum.tv_nsec = 0;
+				sum.tv_sec = 0;
+				counter = 0;
+				do {
+					//randomizzo l-array
+					for(int i = 0; i < n ; i++){
+			    		array[i] = rand();
+					}
+					//parte il timer e lancio la funzione
+					clock_gettime(CLOCK_MONOTONIC, &start);
+					median_of_medians_select(array, 0, n-1, n/4);
+					//fermo il timer e calcolo la differenza
+					clock_gettime(CLOCK_MONOTONIC, &end);
+					timespec_dif(&end, &start, &result);
+					//aumento i contatori
+					start = sum;
+					timespec_sum(&start, &result, &sum);
+					counter++;
+					//ripeto se ci ha messo troppo poco
+			    } while(sum.tv_sec < threshold.tv_sec || (sum.tv_sec == threshold.tv_sec && sum.tv_nsec < threshold.tv_nsec));
+			    //finito calcolo il tempo medio delle ripetizioni
+			    timespec_div(&sum, counter, &result);
+			    //incremento il contatore dei campioni e salvo il campione
+			    sum = sum2;
+			    timespec_sum(&sum, &result, &sum2);
+			    time_array[j] = result;
+			}
+			//calcolo la media dei campioni
+			timespec_div(&sum2, 100, &result);
+			deviation = 0;
+			//calcolo la somma degli scarti al quadrato
+			for(int j = 0; j < 100; j++) {
+				timespec_dif(&time_array[j], &result, &sum);
+				long double partial = (long double) sum.tv_nsec;
+				partial = partial / 1000000000;
+				partial += sum.tv_sec;
+				partial = partial * partial;
+				deviation += partial;
+			}
+			//stampo i valori
+		    printf("%ld.%09ld %lf\n", result.tv_sec, result.tv_nsec, sqrt(deviation / 100));
+		    
+		    //libero gli array
+		    free(array);
+		    free(time_array);
+		}
+	}
+}
+
+//calcolo la reale risoluzione del timer
+void timespec_getres(struct timespec *res) {
+	struct timespec result, start, end;
+	res->tv_nsec = 0;
+    res->tv_sec = 0;
+    int times = 10000;
     for(int j=0; j < times; j++) {
 	    clock_gettime(CLOCK_MONOTONIC, &start);
-		clock_gettime(CLOCK_MONOTONIC, &end);
-	    timespec_dif(&end, &start, &result);
-		printf("%ld,%ld\n", result.tv_sec, result.tv_nsec);	
-		a += result.tv_sec;
-		b += result.tv_nsec;
+		do {
+			clock_gettime(CLOCK_MONOTONIC, &end);
+	    	timespec_dif(&end, &start, &result);
+	    } while(result.tv_sec == 0 && result.tv_nsec == 0);
+		//printf("%ld.%09ld %ld.%09ld\n", result.tv_sec, result.tv_nsec, res.tv_sec, res.tv_nsec);
+	    start = *res;
+		timespec_sum(&start, &result, res);
 	}
-	printf("%ld,%09ld\n", a/times, b/times);*/	
-   
-	
-    if((i = malloc(n*sizeof(int)))){
-    	srand(time(NULL));
-    	puts("a");
-    	for(int j=0; j<n; j++){
-    		i[j] = rand();
-		}
-		puts("c");
-    	clock_gettime(CLOCK_MONOTONIC, &start);
-    	
-		quick_select(i, 0, n-1, n/4);
-    	clock_gettime(CLOCK_MONOTONIC, &end);
-    	timespec_dif(&end, &start, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	start = result;
-    	timespec_sum(&start, &start, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	end = result;
-    	timespec_dif(&end, &start, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	puts("");
-    	timespec_mul(&start, 2, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	timespec_mul(&start, 3, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	start = result;
-    	timespec_div(&start, 3, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	timespec_div(&start, 2, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	puts("\n");
-    	
-    	clock_gettime(CLOCK_MONOTONIC, &start);
-		heap_select(i, n, n/2);
-    	clock_gettime(CLOCK_MONOTONIC, &end);
-    	timespec_dif(&end, &start, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-		start = result;
-    	timespec_sum(&start, &start, &result);
-		printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	end = result;
-    	timespec_dif(&end, &start, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	puts("");
-    	timespec_mul(&start, 2, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	timespec_mul(&start, 3, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	start = result;
-    	timespec_div(&start, 3, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	timespec_div(&start, 2, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	puts("\n");
-    	
-    	clock_gettime(CLOCK_MONOTONIC, &start);
-		median_of_medians_select(i, 0, n-1, n/4);
-    	clock_gettime(CLOCK_MONOTONIC, &end);
-    	timespec_dif(&end, &start, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	start = result;
-    	timespec_sum(&start, &start, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	end = result;
-    	timespec_dif(&end, &start, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	puts("");
-    	timespec_mul(&start, 2, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	timespec_mul(&start, 3, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	start = result;
-    	timespec_div(&start, 3, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	timespec_div(&start, 2, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	puts("\n");
-    	puts("b");
-    	start.tv_sec = 1;
-    	start.tv_nsec = 765305600;
-    	printf("%ld,%09ld\n", start.tv_sec, start.tv_nsec);
-    	timespec_div(&start, 3, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	timespec_mul(&start, 133, &result);
-    	printf("%ld,%09ld\n", result.tv_sec, result.tv_nsec);
-    	timespec_div(&result, 133, &start);
-    	printf("%ld,%09ld\n", start.tv_sec, start.tv_nsec);
-    } else { puts("bruh"); }
-    free(i);
+	start = *res;
+	timespec_div(&start, times, res);
 }
 
 //leggo la riga come stringa
@@ -354,7 +439,7 @@ void timespec_sum(const struct timespec *a, const struct timespec *b, struct tim
 
 //moltiplicazione per intero di timespec. (a+b/1E9)*c = c*a+cb/1E9
 void timespec_mul(const struct timespec *a, int b, struct timespec *result) {
-	long long temp = (long long) b * (long long) a->tv_nsec;
+    long long temp = (long long) b * (long long) a->tv_nsec;
     result->tv_sec = (a->tv_sec * b) + (temp / 1000000000LL);
     result->tv_nsec = temp % 1000000000LL;
 }
