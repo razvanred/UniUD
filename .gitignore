@@ -8,6 +8,11 @@
 Bruniera/programmazione/esempi/1.2
 Bruniera/programmazione/esempi/*.bak
 Bruniera/**/*.exe
+Bruniera/algoritmi laboratorio/**/*.csv
+Bruniera/algoritmi laboratorio/**/*.xlsx
+Bruniera/algoritmi laboratorio/**/*.txt
+Bruniera/algoritmi laboratorio/**/*.docx
+Bruniera/algoritmi laboratorio/**/*.pdf
 Bruniera/**/*.java~
 
 # Rosu

@@ -4,7 +4,6 @@
 #include <math.h>
 #include "heap.h"
 
-
 void readline(char s[], unsigned int size);
 void parseArray(int **v, unsigned int *size, char s[]);
 int partition(int array[], int lower, int upper);
@@ -20,9 +19,55 @@ void timespec_mul(const struct timespec *a,  int b, struct timespec *result);
 void timespec_div(const struct timespec *a,  int b, struct timespec *result);
 void timespec_getres(struct timespec *res);
 
+#define try_select(select) ({\
+			/*resetto il contatore*/\
+			sum.tv_nsec = 0;\
+			sum.tv_sec = 0;\
+			for(int j = 0; j < 100; j++) {\
+				/*resetto altri contatori*/\
+				counter = 0;\
+				/*randomizzo l-array*/\
+				for(int i = 0; i < n ; i++){\
+		    		array[i] = rand();\
+				}\
+				/*parte il timer e lancio la funzione*/\
+				clock_gettime(CLOCK_MONOTONIC, &start);\
+				do {\
+					select;\
+					/*fermo il timer e calcolo la differenza*/\
+					clock_gettime(CLOCK_MONOTONIC, &end);\
+					timespec_dif(&end, &start, &result);\
+					/*aumento i contatori*/\
+					counter++;\
+					/*ripeto se ci ha messo troppo poco*/\
+			    } while(result.tv_sec < threshold.tv_sec || (result.tv_sec == threshold.tv_sec && result.tv_nsec < threshold.tv_nsec));\
+			    /*finito calcolo il tempo medio delle ripetizioni*/\
+			    start = result;\
+			    timespec_div(&start, counter, &result);\
+			    /*incremento il contatore dei campioni e salvo il campione*/\
+			    time_array[j] = result;\
+			    start = sum;\
+			    timespec_sum(&start, &result, &sum);\
+			}\
+			/*calcolo la media dei campioni*/\
+			timespec_div(&sum, 100, &result);\
+			deviation = 0;\
+			/*calcolo la somma degli scarti al quadrato*/\
+			for(int j = 0; j < 100; j++) {\
+				timespec_dif(&time_array[j], &result, &sum);\
+				long double partial = (long double) sum.tv_nsec;\
+				partial = partial / 1000000000;\
+				partial += sum.tv_sec;\
+				partial = partial * partial;\
+				deviation += partial;\
+			}\
+			/*stampo i valori*/\
+		    printf("%ld.%09ld %Lg ", result.tv_sec, result.tv_nsec, sqrt(deviation / 100));\
+})
+
 int main(int argc, char** argv) {
     int *array, counter;
-    struct timespec result, start, end, threshold, sum, sum2, *time_array;
+    struct timespec result, start, end, threshold, sum, *time_array;
     long double deviation;
     //seed random
     srand(time(NULL));
@@ -33,7 +78,7 @@ int main(int argc, char** argv) {
 	//printf("%ld.%09ld\n\n", threshold.tv_sec, threshold.tv_nsec);
 	
 	for(int order = 100; order > 0; order *= 10) {
-		for(int n = order, c = 0; n <= 5000000 && c < 10; n += order, c++) {
+		for(int n = order, c = 0; n <= 5000000 && c < 9; n += order, c++) {
 			//alloco memoria
 			if((array = malloc(n * sizeof(int))) == 0) {
 				exit(1);
@@ -41,150 +86,21 @@ int main(int argc, char** argv) {
 			if((time_array = malloc(100 * sizeof(struct timespec))) == 0) {
 				exit(1);
 			}
-			//inizio con quick_select
-			//print N K resetto i contatori
+			//print N K
 			printf("%d %d ", n, n / 4);
-			sum2.tv_nsec = 0;
-			sum2.tv_sec = 0;
-			for(int j = 0; j < 100; j++) {
-				//resetto altri contatori
-				sum.tv_nsec = 0;
-				sum.tv_sec = 0;
-				counter = 0;
-				do {
-					//randomizzo l-array
-					for(int i = 0; i < n ; i++){
-			    		array[i] = rand();
-					}
-					//parte il timer e lancio la funzione
-					clock_gettime(CLOCK_MONOTONIC, &start);
-					quick_select(array, 0, n-1, n/4);
-					//fermo il timer e calcolo la differenza
-					clock_gettime(CLOCK_MONOTONIC, &end);
-					timespec_dif(&end, &start, &result);
-					//aumento i contatori
-					start = sum;
-					timespec_sum(&start, &result, &sum);
-					counter++;
-					//ripeto se ci ha messo troppo poco
-			    } while(sum.tv_sec < threshold.tv_sec || (sum.tv_sec == threshold.tv_sec && sum.tv_nsec < threshold.tv_nsec));
-			    //finito calcolo il tempo medio delle ripetizioni
-			    timespec_div(&sum, counter, &result);
-			    //incremento il contatore dei campioni e salvo il campione
-			    sum = sum2;
-			    timespec_sum(&sum, &result, &sum2);
-			    time_array[j] = result;
-			}
-			//calcolo la media dei campioni
-			timespec_div(&sum2, 100, &result);
-			deviation = 0;
-			//calcolo la somma degli scarti al quadrato
-			for(int j = 0; j < 100; j++) {
-				timespec_dif(&time_array[j], &result, &sum);
-				long double partial = (long double) sum.tv_nsec;
-				partial = partial / 1000000000;
-				partial += sum.tv_sec;
-				partial = partial * partial;
-				deviation += partial;
-			}
-			//stampo i valori
-		    printf("%ld.%09ld %lf ", result.tv_sec, result.tv_nsec, sqrt(deviation / 100));
+			
+			//inizio con quick_select
+			try_select(quick_select(array, 0, n-1, n/4));
+			
 		    
 		    //ripeto per heap_select
-		    //resetto i contatori
-		    sum2.tv_nsec = 0;
-			sum2.tv_sec = 0;
-			for(int j = 0; j < 100; j++) {
-				//resetto altri contatori
-				sum.tv_nsec = 0;
-				sum.tv_sec = 0;
-				counter = 0;
-				do {
-					//randomizzo l-array
-					for(int i = 0; i < n ; i++){
-			    		array[i] = rand();
-					}
-					//parte il timer e lancio la funzione
-					clock_gettime(CLOCK_MONOTONIC, &start);
-					heap_select(array, n, n/4);
-					//fermo il timer e calcolo la differenza
-					clock_gettime(CLOCK_MONOTONIC, &end);
-					timespec_dif(&end, &start, &result);
-					//aumento i contatori
-					start = sum;
-					timespec_sum(&start, &result, &sum);
-					counter++;
-					//ripeto se ci ha messo troppo poco
-			    } while(sum.tv_sec < threshold.tv_sec || (sum.tv_sec == threshold.tv_sec && sum.tv_nsec < threshold.tv_nsec));
-			    //finito calcolo il tempo medio delle ripetizioni
-			    timespec_div(&sum, counter, &result);
-			    //incremento il contatore dei campioni e salvo il campione
-			    sum = sum2;
-			    timespec_sum(&sum, &result, &sum2);
-			    time_array[j] = result;
-			}
-			//calcolo la media dei campioni
-			timespec_div(&sum2, 100, &result);
-			deviation = 0;
-			//calcolo la somma degli scarti al quadrato
-			for(int j = 0; j < 100; j++) {
-				timespec_dif(&time_array[j], &result, &sum);
-				long double partial = (long double) sum.tv_nsec;
-				partial = partial / 1000000000;
-				partial += sum.tv_sec;
-				partial = partial * partial;
-				deviation += partial;
-			}
-			//stampo i valori
-		    printf("%ld.%09ld %lf ", result.tv_sec, result.tv_nsec, sqrt(deviation / 100));
+		    try_select(heap_select(array, n, n/4));
 		    
 		    //ripeto per median_of_medians_select
-		    sum2.tv_nsec = 0;
-			sum2.tv_sec = 0;
-			for(int j = 0; j < 100; j++) {
-				//resetto altri contatori
-				sum.tv_nsec = 0;
-				sum.tv_sec = 0;
-				counter = 0;
-				do {
-					//randomizzo l-array
-					for(int i = 0; i < n ; i++){
-			    		array[i] = rand();
-					}
-					//parte il timer e lancio la funzione
-					clock_gettime(CLOCK_MONOTONIC, &start);
-					median_of_medians_select(array, 0, n-1, n/4);
-					//fermo il timer e calcolo la differenza
-					clock_gettime(CLOCK_MONOTONIC, &end);
-					timespec_dif(&end, &start, &result);
-					//aumento i contatori
-					start = sum;
-					timespec_sum(&start, &result, &sum);
-					counter++;
-					//ripeto se ci ha messo troppo poco
-			    } while(sum.tv_sec < threshold.tv_sec || (sum.tv_sec == threshold.tv_sec && sum.tv_nsec < threshold.tv_nsec));
-			    //finito calcolo il tempo medio delle ripetizioni
-			    timespec_div(&sum, counter, &result);
-			    //incremento il contatore dei campioni e salvo il campione
-			    sum = sum2;
-			    timespec_sum(&sum, &result, &sum2);
-			    time_array[j] = result;
-			}
-			//calcolo la media dei campioni
-			timespec_div(&sum2, 100, &result);
-			deviation = 0;
-			//calcolo la somma degli scarti al quadrato
-			for(int j = 0; j < 100; j++) {
-				timespec_dif(&time_array[j], &result, &sum);
-				long double partial = (long double) sum.tv_nsec;
-				partial = partial / 1000000000;
-				partial += sum.tv_sec;
-				partial = partial * partial;
-				deviation += partial;
-			}
-			//stampo i valori
-		    printf("%ld.%09ld %lf\n", result.tv_sec, result.tv_nsec, sqrt(deviation / 100));
+		    try_select(median_of_medians_select(array, 0, n-1, n/4));
 		    
+		    //a capo
+		    puts("");
 		    //libero gli array
 		    free(array);
 		    free(time_array);
