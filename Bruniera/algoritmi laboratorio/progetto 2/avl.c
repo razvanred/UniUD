@@ -134,7 +134,9 @@ int height(AvlNode *tree) {
 
 //ricerca classica del nodo. Quando trova il nodo restituisce l'indirizzo al valore, NULL altrimenti
 char *avl_find(AvlNode *tree, int key) {
-    if(key == tree->key) {
+	if (tree == NULL) {
+		return NULL;
+	} else if(key == tree->key) {
         return tree->val;
     } else if(key < tree->key) {
         return avl_find(tree->left, key);

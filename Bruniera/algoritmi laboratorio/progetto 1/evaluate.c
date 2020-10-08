@@ -4,8 +4,6 @@
 #include <math.h>
 #include "heap.h"
 
-void readline(char s[], unsigned int size);
-void parseArray(int **v, unsigned int *size, char s[]);
 int partition(int array[], int lower, int upper);
 void swap(int array[], int first, int second);
 int quick_select(int array[], int lower, int upper, int k);
@@ -19,11 +17,11 @@ void timespec_sum(const struct timespec *a, const struct timespec *b, struct tim
 void timespec_mul(const struct timespec *a,  int b, struct timespec *result);
 void timespec_div(const struct timespec *a,  int b, struct timespec *result);
 void timespec_getres(struct timespec *res);
-void try_select(int (* select)(int*, int, int, int), int array[], int n, int k, struct timespec threshold, struct timespec time_array[]);
+void try_select(int (* select)(int*, int, int, int), int array[], int n, int k, struct timespec threshold);
 
 int main(int argc, char** argv) {
     int *array;
-    struct timespec result, threshold, *time_array;
+    struct timespec result, threshold;
     //seed random
     srand(time(NULL));
 	//calcolo la soglia per avere un errore massimo del 0.01% dalla risoluzione reale
@@ -38,68 +36,64 @@ int main(int argc, char** argv) {
 			if((array = malloc(n * sizeof(int))) == 0) {
 				exit(1);
 			}
-			if((time_array = malloc(100 * sizeof(struct timespec))) == 0) {
-				exit(1);
-			}
 			//print N K
 			printf("%d %d ", n, n / 4);
 			
 			//inizio con quick_select
-			try_select(&quick_select, array, n, n/4, threshold, time_array);
+			try_select(&quick_select, array, n, n/4, threshold);
 			
 		    
 		    //ripeto per heap_select
-			try_select(&heap_select_standardize, array, n, n/4, threshold, time_array);
+			try_select(&heap_select_standardize, array, n, n/4, threshold);
 		    
 		    //ripeto per median_of_medians_select
-			try_select(&median_of_medians_select, array, n, n/4, threshold, time_array);
+			try_select(&median_of_medians_select, array, n, n/4, threshold);
 		    
 		    //a capo
 		    puts("");
 		    //libero gli array
 		    free(array);
-		    free(time_array);
 		}
 	}
 }
 
-void try_select(int (* select)(int*, int, int, int), int array[], int n, int k, struct timespec threshold, struct timespec time_array[]) {
-    struct timespec start, end, result, sum;
+void try_select(int (* select)(int*, int, int, int), int array[], int n, int k, struct timespec threshold) {
+    struct timespec start, end, result, sum, time_array[100];
     int counter;
     long double deviation;
-	/*resetto il contatore*/
+	//resetto il contatore
 	sum.tv_nsec = 0;
 	sum.tv_sec = 0;
 	for(int j = 0; j < 100; j++) {
-		/*resetto altri contatori*/
+		//resetto altri contatori
 		counter = 0;
-		/*randomizzo l-array*/
+		//randomizzo l-array
 		for(int i = 0; i < n ; i++){
     		array[i] = rand();
 		}
-		/*parte il timer e lancio la funzione*/
+		//parte il timer e lancio la funzione
 		clock_gettime(CLOCK_MONOTONIC, &start);
 		do {
 			select(array, 0, n - 1, k);
-			/*fermo il timer e calcolo la differenza*/
+			//fermo il timer e calcolo la differenza
 			clock_gettime(CLOCK_MONOTONIC, &end);
 			timespec_dif(&end, &start, &result);
-			/*aumento i contatori*/
+			//aumento i contatori
 			counter++;
-			/*ripeto se ci ha messo troppo poco*/
+			//ripeto se ci ha messo troppo poco
 	    } while(result.tv_sec < threshold.tv_sec || (result.tv_sec == threshold.tv_sec && result.tv_nsec < threshold.tv_nsec));
-	    /*finito calcolo il tempo medio delle ripetizioni*/
+	    //finito calcolo il tempo medio delle ripetizioni
 	    start = result;
 	    timespec_div(&start, counter, &result);
-	    /*incremento il contatore dei campioni e salvo il campione*/
+	    //incremento il contatore dei campioni e salvo il campione
 	    time_array[j] = result;
 	    start = sum;
 	    timespec_sum(&start, &result, &sum);
 	}
-	/*calcolo la media dei campioni*/
+	//calcolo la media dei campioni
 	timespec_div(&sum, 100, &result);
 	deviation = 0;
-	/*calcolo la somma degli scarti al quadrato*/
+	//calcolo la somma degli scarti al quadrato
 	for(int j = 0; j < 100; j++) {
 		timespec_dif(&time_array[j], &result, &sum);
 		long double partial = (long double) sum.tv_nsec;
@@ -108,7 +102,7 @@ void try_select(int (* select)(int*, int, int, int), int array[], int n, int k, 
 		partial = partial * partial;
 		deviation += partial;
 	}
-	/*stampo i valori*/
+	//stampo i valori
     printf("%ld.%09ld %Lg ", result.tv_sec, result.tv_nsec, sqrt(deviation / 100));
 }
 
@@ -134,45 +128,6 @@ void timespec_getres(struct timespec *res) {
 	}
 	start = *res;
 	timespec_div(&start, times, res);
-}
-
-//leggo la riga come stringa
-void readline(char s[], unsigned int size) {
-  unsigned int i= 0;
-  char c;
-  size--;
-  for(c= getchar(); c != '\n';) {
-    if(i < size) {
-      s[i]= c;
-      i++;
-    }
-    c= getchar();
-  }
-  if(i >= 0){
-    s[i]= 0;
-    i--;
-  }
-  
-  while(s[i] == ' ') {
-    s[i] = 0;
-    i--;
-  }
-}
-
-//produco un vettore dalla stringa
-void parseArray(int **v, unsigned int *size, char s[]) {
-  *size= 0;
-  for(unsigned int i= 0; s[i] != 0; i++) {
-    if(s[i] == ' ')
-      (*size)++;
-  }
-  (*size)++;
-  *v= malloc(*size * sizeof(int));
-  for(unsigned int i= 0; i < *size; i++) {
-    sscanf(s, "%d", &((*v)[i]));
-    for(; *s != 0 && *s != ' '; s+= sizeof(char));
-    s+= sizeof(char);
-  }
 }
 
 int partition(int array[], int lower, int upper) {	
@@ -339,7 +294,6 @@ int median_of_medians(int array[], int lower, int upper) {
 	//restituisco il mediano
 	return array[upper];
 }
-
 
 //funzione per la sottrazione tra timespec adattata dalla macro timeval_diff_macro in sys/time.h
 void timespec_dif(const struct timespec *a, const struct timespec *b, struct timespec *result) {
