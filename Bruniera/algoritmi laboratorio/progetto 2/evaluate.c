@@ -14,8 +14,9 @@ void timespec_sum(const struct timespec *a, const struct timespec *b, struct tim
 void timespec_mul(const struct timespec *a,  int b, struct timespec *result);
 void timespec_div(const struct timespec *a,  int b, struct timespec *result);
 void timespec_getres(struct timespec *res);
-void try_tree(void (* insert)(int, char*, void**), char *(* find)(void*, int), void (* clear)(void*), void  **tree, int n, struct timespec threshold);
+void try_tree(void (* insert)(long, char*, void**), char *(* find)(void*, long), void (* clear)(void*), void  **tree, int n, struct timespec threshold);
 void clear_all(void (* clear)(void*), clear_stack *stack);
+long rand_plus();
 
 int main(int argc, char** argv) {
 	srand(time(NULL));
@@ -53,9 +54,10 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-void try_tree(void (* insert)(int, char*, void**), char *(* find)(void*, int), void (* clear)(void*), void  **tree, int n, struct timespec threshold) {
+void try_tree(void (* insert)(long, char*, void**), char *(* find)(void*, long), void (* clear)(void*), void  **tree, int n, struct timespec threshold) {
     struct timespec start, end, result, sum, time_array[100];
-    int counter, key, m;
+    int counter, m;
+    long key;
     long double deviation;
     char placeholder[] = "a";
 	clear_stack *head, *temp;
@@ -71,7 +73,7 @@ void try_tree(void (* insert)(int, char*, void**), char *(* find)(void*, int), v
 		clock_gettime(CLOCK_MONOTONIC, &start);
 		do {
 			for(int i = 0; i < n; i++) {
-				key = rand();
+				key = rand_plus();
 				if(find(*tree, key) == NULL) {
 					m++;
 					insert(key, placeholder, tree);
@@ -117,11 +119,18 @@ void try_tree(void (* insert)(int, char*, void**), char *(* find)(void*, int), v
     printf("%ld.%09ld %Lg ", result.tv_sec, result.tv_nsec, sqrt(deviation / 100));
 }
 
+long rand_plus() {
+	long a = rand();
+	long b = rand();
+	return (((a * 31) * b) * 31) ^ a ^ (b << 16);
+}
+
 //libera lo stack di alberi
 void clear_all(void (* clear)(void*), clear_stack *stack) {
 	if (stack != NULL) {
 		clear(stack->tree);
 		clear_all(clear, stack->next);
+		free(stack);
 	}
 }
 

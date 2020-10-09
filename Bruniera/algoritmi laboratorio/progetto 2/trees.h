@@ -9,7 +9,7 @@ typedef unsigned char color;
 
 //struttura del nodo dell'albero
 struct Node {
-    int key;
+    long key;
     char *val;
     struct Node *left;
     struct Node *right;
@@ -19,9 +19,9 @@ typedef struct Node Node;
 
 //struttura del nodo dell'albero avl
 struct AvlNode {
-    int key;
+    long key;
     char *val;
-    int height;
+    long height;
     struct AvlNode *left;
     struct AvlNode *right;
 };
@@ -30,7 +30,7 @@ typedef struct AvlNode AvlNode;
 
 //struttura del nodo dell'albero
 struct RbtNode {
-    int key;
+    long key;
     char *val;
     color col;
     struct RbtNode *father;
@@ -42,18 +42,18 @@ typedef struct RbtNode RbtNode;
 
 //BST
 void show(Node *tree);
-void insert(int key, char* val, Node **tree);
+void insert(long key, char* val, Node **tree);
 void clear(Node *tree);
-char *find(Node *tree, int key);
+char *find(Node *tree, long key);
 
 //AVL
 void avl_show(AvlNode *tree);
-void avl_insert(int key, char* val, AvlNode **tree);
+void avl_insert(long key, char* val, AvlNode **tree);
 void avl_clear(AvlNode *tree);
-char *avl_find(AvlNode *tree, int key);
-int height(AvlNode *tree);
+char *avl_find(AvlNode *tree, long key);
+long height(AvlNode *tree);
 void rebalance(AvlNode **tree);
-int max(int a, int b);
+long max(long a, long b);
 void avl_rotate_left(AvlNode **tree);
 void avl_rotate_right(AvlNode **tree);
 void ready_left(AvlNode **tree);
@@ -62,10 +62,10 @@ void update_height(AvlNode *tree);
 
 //RBT
 void rbt_show(RbtNode *tree);
-void rbt_insert(int key, char* val, RbtNode **tree);
-void rbt_insert_rec(int key, char* val, RbtNode *father, RbtNode **tree, RbtNode **root);
+void rbt_insert(long key, char* val, RbtNode **tree);
+void rbt_insert_rec(long key, char* val, RbtNode *father, RbtNode **tree, RbtNode **root);
 void rbt_clear(RbtNode *tree);
-char *rbt_find(RbtNode *tree, int key);
+char *rbt_find(RbtNode *tree, long key);
 void rbt_rotate_left(RbtNode *tree, RbtNode **root);
 void rbt_rotate_right(RbtNode *tree, RbtNode **root);
 color rbt_color(RbtNode *tree);
@@ -75,7 +75,7 @@ void rbt_fix(RbtNode *tree, RbtNode **root);
 //BST
 
 //ricerca classica del nodo. Quando trova il nodo restituisce l'indirizzo al valore, NULL altrimenti
-char *find(Node *tree, int key) {
+char *find(Node *tree, long key) {
     if(tree == NULL) {
     	return NULL;
 	} else if(key == tree->key) {
@@ -97,7 +97,7 @@ void clear(Node *tree) {
     }
 }
 
-void insert(int key, char* val, Node **tree) {
+void insert(long key, char* val, Node **tree) {
 	//cerco uno spazio libero
     if(*tree == NULL){
     	//alloco il nodo
@@ -176,14 +176,14 @@ void avl_rotate_left(AvlNode **tree) {
 }
 
 //massimo di due interi
-int max(int a, int b) {
+long max(long a, long b) {
     return (a > b)?a:b;
 }
 
 //ribilancia un nodo dell'albero
 void rebalance(AvlNode **tree) {
-    int left = height((*tree)->left);
-    int right = height((*tree)->right);
+    long left = height((*tree)->left);
+    long right = height((*tree)->right);
     
     //se destra o sinistra sono troppo alte ruoto nell'altra direzione per bilanciare
     if(left > right + 1) {
@@ -199,12 +199,12 @@ void rebalance(AvlNode **tree) {
 }
 
 //restituisce l'altezza dell'albero, se vuoto ha altezza 0
-int height(AvlNode *tree) {
+long height(AvlNode *tree) {
     return (tree == NULL)?0:tree->height;
 }
 
 //ricerca classica del nodo. Quando trova il nodo restituisce l'indirizzo al valore, NULL altrimenti
-char *avl_find(AvlNode *tree, int key) {
+char *avl_find(AvlNode *tree, long key) {
 	if (tree == NULL) {
 		return NULL;
 	} else if(key == tree->key) {
@@ -226,7 +226,7 @@ void avl_clear(AvlNode *tree) {
     }
 }
 
-void avl_insert(int key, char* val, AvlNode **tree) {
+void avl_insert(long key, char* val, AvlNode **tree) {
 	//cerco uno spazio libero
     if(*tree == NULL){
     	//alloco il nodo
@@ -358,7 +358,7 @@ void rbt_rotate_left(RbtNode *tree, RbtNode **root) {
 }
 
 //ricerca classica del nodo. Quando trova il nodo restituisce l'indirizzo al valore, NULL altrimenti
-char *rbt_find(RbtNode *tree, int key) {
+char *rbt_find(RbtNode *tree, long key) {
     if(tree == NULL) {
     	return NULL;
 	} else if(key == tree->key) {
@@ -381,12 +381,12 @@ void rbt_clear(RbtNode *tree) {
 }
 
 //funzione d'appoggio, dichiarata inline per suggerire al compilatore di espanderla come una macro
-void inline rbt_insert(int key, char* val, RbtNode **tree) {
+void inline rbt_insert(long key, char* val, RbtNode **tree) {
 	//richiama la funzione ricorsiva passando il valore iniziale NULL come indirizzo del padre
 	rbt_insert_rec(key, val, NULL, tree, tree);
 }
 
-void rbt_insert_rec(int key, char* val, RbtNode *father, RbtNode **tree, RbtNode **root) {
+void rbt_insert_rec(long key, char* val, RbtNode *father, RbtNode **tree, RbtNode **root) {
 	//cerco uno spazio libero
     if(*tree == NULL){
     	//alloco il nodo
