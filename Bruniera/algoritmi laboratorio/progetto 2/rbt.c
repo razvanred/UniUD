@@ -9,7 +9,7 @@ typedef unsigned char color;
 
 //struttura del nodo dell'albero
 struct RbtNode {
-    int key;
+    long key;
     char *val;
     color col;
     struct RbtNode *father;
@@ -20,10 +20,10 @@ struct RbtNode {
 typedef struct RbtNode RbtNode;
 
 void rbt_show(RbtNode *tree);
-void rbt_insert(int key, char* val, RbtNode **tree);
-void rbt_insert_rec(int key, char* val, RbtNode *father, RbtNode **tree, RbtNode **root);
+void rbt_insert(long key, char* val, RbtNode **tree);
+void rbt_insert_rec(long key, char* val, RbtNode *father, RbtNode **tree, RbtNode **root);
 void rbt_clear(RbtNode *tree);
-char *rbt_find(RbtNode *tree, int key);
+char *rbt_find(RbtNode *tree, long key);
 void rbt_rotate_left(RbtNode *tree, RbtNode **root);
 void rbt_rotate_right(RbtNode *tree, RbtNode **root);
 color rbt_color(RbtNode *tree);
@@ -32,7 +32,7 @@ void rbt_fix(RbtNode *tree, RbtNode **root);
 int main(int argc, char** argv) {
     char command[7];
     char val[256];
-    int key;
+    long key;
     bool run = true;
     RbtNode *tree;
     tree = NULL;
@@ -42,13 +42,13 @@ int main(int argc, char** argv) {
         scanf("%s", (char*)&command);
         
         if(strcmp(command, "insert") == 0) {
-            scanf("%d %s", &key, (char*) val);
+            scanf("%ld %s", &key, (char*) val);
             rbt_insert(key, val, &tree);
         } else if(strcmp(command, "clear") == 0) {
             rbt_clear(tree);
             tree = NULL;
         } else if(strcmp(command, "find") == 0) {
-            scanf("%d", &key);
+            scanf("%ld", &key);
             printf("%s\n", rbt_find(tree, key));
         } else if(strcmp(command, "show") == 0) {
             rbt_show(tree);
@@ -156,7 +156,7 @@ void rbt_rotate_left(RbtNode *tree, RbtNode **root) {
 }
 
 //ricerca classica del nodo. Quando trova il nodo restituisce l'indirizzo al valore, NULL altrimenti
-char *rbt_find(RbtNode *tree, int key) {
+char *rbt_find(RbtNode *tree, long key) {
     if(tree == NULL) {
     	return NULL;
 	} else if(key == tree->key) {
@@ -179,12 +179,12 @@ void rbt_clear(RbtNode *tree) {
 }
 
 //funzione d'appoggio, dichiarata inline per suggerire al compilatore di espanderla come una macro
-void inline rbt_insert(int key, char* val, RbtNode **tree) {
+void inline rbt_insert(long key, char* val, RbtNode **tree) {
 	//richiama la funzione ricorsiva passando il valore iniziale NULL come indirizzo del padre
 	rbt_insert_rec(key, val, NULL, tree, tree);
 }
 
-void rbt_insert_rec(int key, char* val, RbtNode *father, RbtNode **tree, RbtNode **root) {
+void rbt_insert_rec(long key, char* val, RbtNode *father, RbtNode **tree, RbtNode **root) {
 	//cerco uno spazio libero
     if(*tree == NULL){
     	//alloco il nodo
@@ -217,7 +217,7 @@ void rbt_show(RbtNode *tree) {
     if(tree == NULL) {
         printf("NULL ");
     } else {
-        printf("%d:%s:%s ", tree->key, tree->val, (tree->col == BLACK)?"black":"red");
+        printf("%ld:%s:%s ", tree->key, tree->val, (tree->col == BLACK)?"black":"red");
         rbt_show(tree->left);
         rbt_show(tree->right);
     }

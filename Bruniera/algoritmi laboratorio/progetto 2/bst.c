@@ -5,7 +5,7 @@
 
 //struttura del nodo dell'albero
 struct Node {
-    int key;
+    long key;
     char *val;
     struct Node *left;
     struct Node *right;
@@ -14,14 +14,14 @@ struct Node {
 typedef struct Node Node;
 
 void show(Node *tree);
-void insert(int key, char* val, Node **tree);
+void insert(long key, char* val, Node **tree);
 void clear(Node *tree);
-char *find(Node *tree, int key);
+char *find(Node *tree, long key);
 
 int main(int argc, char** argv) {
     char command[7];
     char val[256];
-    int key;
+    long key;
     bool run = true;
     Node *tree;
     tree = NULL;
@@ -31,13 +31,13 @@ int main(int argc, char** argv) {
         scanf("%s", (char*)&command);
         
         if(strcmp(command, "insert") == 0) {
-            scanf("%d %s", &key, &val[0]);
+            scanf("%ld %s", &key, &val[0]);
             insert(key, val, &tree);
         } else if(strcmp(command, "clear") == 0) {
             clear(tree);
             tree = NULL;
         } else if(strcmp(command, "find") == 0) {
-            scanf("%d", &key);
+            scanf("%ld", &key);
             printf("%s\n", find(tree, key));
         } else if(strcmp(command, "show") == 0) {
             show(tree);
@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
 }
 
 //ricerca classica del nodo. Quando trova il nodo restituisce l'indirizzo al valore, NULL altrimenti
-char *find(Node *tree, int key) {
+char *find(Node *tree, long key) {
     if(tree == NULL) {
     	return NULL;
 	} else if(key == tree->key) {
@@ -73,7 +73,7 @@ void clear(Node *tree) {
     }
 }
 
-void insert(int key, char* val, Node **tree) {
+void insert(long key, char* val, Node **tree) {
 	//cerco uno spazio libero
     if(*tree == NULL){
     	//alloco il nodo
@@ -99,7 +99,7 @@ void show(Node *tree) {
     if(tree == NULL) {
         printf("NULL ");
     } else {
-        printf("%d:%s ", tree->key, tree->val);
+        printf("%ld:%s ", tree->key, tree->val);
         show(tree->left);
         show(tree->right);
     }

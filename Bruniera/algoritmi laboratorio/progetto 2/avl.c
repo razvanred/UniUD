@@ -5,9 +5,9 @@
 
 //struttura del nodo dell'albero avl
 struct AvlNode {
-    int key;
+    long key;
     char *val;
-    int height;
+    long height;
     struct AvlNode *left;
     struct AvlNode *right;
 };
@@ -15,12 +15,12 @@ struct AvlNode {
 typedef struct AvlNode AvlNode;
 
 void avl_show(AvlNode *tree);
-void avl_insert(int key, char* val, AvlNode **tree);
+void avl_insert(long key, char* val, AvlNode **tree);
 void avl_clear(AvlNode *tree);
-char *avl_find(AvlNode *tree, int key);
-int height(AvlNode *tree);
+char *avl_find(AvlNode *tree, long key);
+long height(AvlNode *tree);
 void rebalance(AvlNode **tree);
-int max(int a, int b);
+long max(long a, long b);
 void avl_rotate_left(AvlNode **tree);
 void avl_rotate_right(AvlNode **tree);
 void ready_left(AvlNode **tree);
@@ -30,7 +30,7 @@ void update_height(AvlNode *tree);
 int main(int argc, char** argv) {
     char command[10];
     char val[50];
-    int key;
+    long key;
     bool run = true;
     AvlNode *tree;
     tree = NULL;
@@ -40,19 +40,19 @@ int main(int argc, char** argv) {
         scanf("%s", (char*)&command);
         
         if(strcmp(command, "insert") == 0) {
-            scanf("%d %s", &key, (char*)&val);
+            scanf("%ld %s", &key, (char*)&val);
             avl_insert(key, val, &tree);
         } else if(strcmp(command, "clear") == 0) {
             avl_clear(tree);
             tree = NULL;
         } else if(strcmp(command, "find") == 0) {
-            scanf("%d", &key);
+            scanf("%ld", &key);
             printf("%s\n", avl_find(tree, key));
         } else if(strcmp(command, "show") == 0) {
             avl_show(tree);
             puts("");
         } else if(strcmp(command, "height") == 0) {
-            printf("%d\n", height(tree));
+            printf("%ld\n", height(tree));
         } else if(strcmp(command, "exit") == 0) {
             run = false;
         }
@@ -105,14 +105,14 @@ void avl_rotate_left(AvlNode **tree) {
 }
 
 //massimo di due interi
-int max(int a, int b) {
+long max(long a, long b) {
     return (a > b)?a:b;
 }
 
 //ribilancia un nodo dell'albero
 void rebalance(AvlNode **tree) {
-    int left = height((*tree)->left);
-    int right = height((*tree)->right);
+    long left = height((*tree)->left);
+    long right = height((*tree)->right);
     
     //se destra o sinistra sono troppo alte ruoto nell'altra direzione per bilanciare
     if(left > right + 1) {
@@ -128,12 +128,12 @@ void rebalance(AvlNode **tree) {
 }
 
 //restituisce l'altezza dell'albero, se vuoto ha altezza 0
-int height(AvlNode *tree) {
+long height(AvlNode *tree) {
     return (tree == NULL)?0:tree->height;
 }
 
 //ricerca classica del nodo. Quando trova il nodo restituisce l'indirizzo al valore, NULL altrimenti
-char *avl_find(AvlNode *tree, int key) {
+char *avl_find(AvlNode *tree, long key) {
 	if (tree == NULL) {
 		return NULL;
 	} else if(key == tree->key) {
@@ -155,7 +155,7 @@ void avl_clear(AvlNode *tree) {
     }
 }
 
-void avl_insert(int key, char* val, AvlNode **tree) {
+void avl_insert(long key, char* val, AvlNode **tree) {
 	//cerco uno spazio libero
     if(*tree == NULL){
     	//alloco il nodo
@@ -183,7 +183,7 @@ void avl_show(AvlNode *tree) {
     if(tree == NULL) {
         printf("NULL ");
     } else {
-        printf("%d:%s:%d ", tree->key, tree->val, tree->height);
+        printf("%ld:%s:%ld ", tree->key, tree->val, tree->height);
         avl_show(tree->left);
         avl_show(tree->right);
     }
