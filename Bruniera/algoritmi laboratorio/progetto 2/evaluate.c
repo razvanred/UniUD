@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
 
 void try_tree(void (* insert)(long, char*, void**), char *(* find)(void*, long), void (* clear)(void*), void  **tree, int n, struct timespec threshold) {
     struct timespec start, end, result, sum, time_array[100];
-    int counter, m;
+    int counter;
     long key;
     long double deviation;
     char placeholder[] = "a";
@@ -65,9 +65,8 @@ void try_tree(void (* insert)(long, char*, void**), char *(* find)(void*, long),
 	sum.tv_nsec = 0;
 	sum.tv_sec = 0;
 	for(int j = 0; j < 100; j++) {
-		//resetto altri contatori
+		//resetto contatore e inizializzo la lista
 		counter = 0;
-		m = 0;
 		head = NULL;
 		//parte il timer e lancio la funzione
 		clock_gettime(CLOCK_MONOTONIC, &start);
@@ -75,7 +74,6 @@ void try_tree(void (* insert)(long, char*, void**), char *(* find)(void*, long),
 			for(int i = 0; i < n; i++) {
 				key = rand_plus();
 				if(find(*tree, key) == NULL) {
-					m++;
 					insert(key, placeholder, tree);
 				}
 			}
@@ -86,7 +84,7 @@ void try_tree(void (* insert)(long, char*, void**), char *(* find)(void*, long),
 			head->tree = *tree;
 			//inizializzo un nuovo albero
 			*tree = NULL;
-			//aumento i contatori
+			//aumento il contatore
 			counter++;
 			//fermo il timer e calcolo la differenza
 			clock_gettime(CLOCK_MONOTONIC, &end);
@@ -95,7 +93,7 @@ void try_tree(void (* insert)(long, char*, void**), char *(* find)(void*, long),
 	    } while(result.tv_sec < threshold.tv_sec || (result.tv_sec == threshold.tv_sec && result.tv_nsec < threshold.tv_nsec));
 	    //finito calcolo il tempo medio delle ripetizioni
 	    start = result;
-	    timespec_div(&start, counter * (n + m), &result);
+	    timespec_div(&start, counter * n, &result);
 	    //incremento il contatore dei campioni e salvo il campione
 	    time_array[j] = result;
 	    start = sum;
