@@ -85,4 +85,3 @@ dotProduct xs = sum . zipWith (*) xs
 prod x y = map (\ x' ->  map (sum . zipWith (*) x') (transpose y)) x
     where transpose [] = []
           transpose (x:xs) = map (\ f -> f []) (foldl (zipWith (\ f x -> f.(x:))) (map (:) x) xs)
-
