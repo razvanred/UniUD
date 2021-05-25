@@ -54,7 +54,7 @@ colaltsums mat = zipWith (-) odd even
 -- f è una funzione che prende una lista ed aggiunge un'altra lista in testa ad essa
 -- x è un elemento della lista
 -- restituisce una funzione che prende una lista ed aggiunge sia la testa di f che l'elemento x in testa
--- Credevo si potesse fare solo con `(.(:))`, ma mi sbagliavo
+-- Si può fare anche con `curry.(.uncurry(:))`
 putLazyTail f x = f . (x:)
 
 -- Creo delle liste lazy partendo dagli elementi delle liste di righe
@@ -84,4 +84,4 @@ dotProduct xs = sum . zipWith (*) xs
 -- Producendo cose illeggibili come questa
 prod x y = map (\ x' ->  map (sum . zipWith (*) x') (transpose y)) x
     where transpose [] = []
-          transpose (x:xs) = map (\ f -> f []) (foldl (zipWith (\ f x -> f.(x:))) (map (:) x) xs)
+          transpose (x:xs) = map (\ f -> f []) (foldl (zipWith (curry.(.uncurry(:)))) (map (:) x) xs)
