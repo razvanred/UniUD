@@ -1,3 +1,6 @@
+module Quad(QT(C, Q), buildNSimplify, quadEq, quadMap, quadZipWith, simplify)
+    where
+
 data QT a = C a | Q (QT a) (QT a) (QT a) (QT a)
     deriving (Eq, Show)
 
@@ -112,20 +115,20 @@ insertLogo = insertLogoRec 1
 -- ZIP WITH
 
 
-quadZipWith (Q hlf hrf llf lrf) (Q hlt hrt llt lrt) f = buildNSimplify hl' hr' ll' lr'
-    where hl' = quadZipWith hlf hlt f
-          hr' = quadZipWith hrf hrt f
-          ll' = quadZipWith llf llt f
-          lr' = quadZipWith lrf lrt f
-quadZipWith qf (Q hlt hrt llt lrt) f = buildNSimplify hl' hr' ll' lr'
-    where hl' = quadZipWith qf hlt f
-          hr' = quadZipWith qf hrt f
-          ll' = quadZipWith qf llt f
-          lr' = quadZipWith qf lrt f
-quadZipWith (Q hlf hrf llf lrf) qt f = buildNSimplify hl' hr' ll' lr'
-    where hl' = quadZipWith hlf qt f
-          hr' = quadZipWith hrf qt f
-          ll' = quadZipWith llf qt f
-          lr' = quadZipWith lrf qt f
-quadZipWith (C cf) (C ct) f = C (f cf ct)
+quadZipWith f (Q hlf hrf llf lrf) (Q hlt hrt llt lrt) = buildNSimplify hl' hr' ll' lr'
+    where hl' = quadZipWith f hlf hlt
+          hr' = quadZipWith f hrf hrt
+          ll' = quadZipWith f llf llt
+          lr' = quadZipWith f lrf lrt
+quadZipWith f qf (Q hlt hrt llt lrt) = buildNSimplify hl' hr' ll' lr'
+    where hl' = quadZipWith f qf hlt
+          hr' = quadZipWith f qf hrt
+          ll' = quadZipWith f qf llt
+          lr' = quadZipWith f qf lrt
+quadZipWith f (Q hlf hrf llf lrf) qt = buildNSimplify hl' hr' ll' lr'
+    where hl' = quadZipWith f hlf qt
+          hr' = quadZipWith f hrf qt
+          ll' = quadZipWith f llf qt
+          lr' = quadZipWith f lrf qt
+quadZipWith f (C cf) (C ct) = C (f cf ct)
 

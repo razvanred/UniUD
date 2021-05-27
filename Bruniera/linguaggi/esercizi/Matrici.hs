@@ -8,6 +8,11 @@ m3 = [[3,7,4,7],[2,9,9,3],[1,1,5,4]]
 m4 = [[1,2,3],[4,5,6],[7,8,9],[10,11,12]]
 m5 = [[1,2],[1,1]]
 m6 = [[2,0],[0,2]]
+lazyIdentity = ide 1
+    where ide n = line 1 n : ide (n+1)
+          line x n | x == n = 1 : line (x+1) n
+                   | otherwise = 0 : line (x+1) n
+getIdentity n = map (take n) (take n lazyIdentity)
 
 -------------------------------------------------------------------------------------
 
@@ -58,12 +63,11 @@ colaltsums mat = zipWith (-) odd even
 putLazyTail f x = f . (x:)
 
 -- Creo delle liste lazy partendo dagli elementi delle liste di righe
--- Trasformo la prima riga in una lista di costruttori con `map (:)`
+-- Parto da una lista di funzioni identità, su cui si possa eseguire una composizione
 -- Accodo gli elementi delle righe successive con fold
 -- Ottengo una lista di teste lazy
 transposeToLazyHead :: [[a]] -> [[a] -> [a]]
-transposeToLazyHead [] = []
-transposeToLazyHead (x:xs) = foldl (zipWith putLazyTail) (map (:) x) xs
+transposeToLazyHead xs = foldl (zipWith putLazyTail) (repeat id) xs
 
 -- Applico le teste alla lista vuota, se vado a valutarle trovo esattamente le teste
 transpose = map (\ f -> f []) . transposeToLazyHead
@@ -83,5 +87,4 @@ dotProduct xs = sum . zipWith (*) xs
 -- La sintassi di Haskell sembra incentivare a scrivere gigantesche espressioni su una sola riga
 -- Producendo cose illeggibili come questa
 prod x y = map (\ x' ->  map (sum . zipWith (*) x') (transpose y)) x
-    where transpose [] = []
-          transpose (x:xs) = map (\ f -> f []) (foldl (zipWith (curry.(.uncurry(:)))) (map (:) x) xs)
+    where transpose xs = map (\ f -> f []) (foldl (zipWith (curry.(.uncurry(:)))) (repeat id) xs)
