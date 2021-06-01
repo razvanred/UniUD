@@ -117,7 +117,7 @@ foldMat f g (Mat n (Q hl hr ll lr)) = f n hl' hr' ll' lr'
           lr' = foldMat f g (Mat (n-1) lr)
 
 -- Provo la funzione di folding implementando una trasposizione
-transpose = foldMat (\ n hl hr ll lr -> Mat n $ Q (mat hl) (mat ll) (mat hr) (mat lr)) (\ n x -> Mat n $ C x)
+transposeQuad = foldMat (\ n hl hr ll lr -> Mat n $ Q (mat hl) (mat ll) (mat hr) (mat lr)) (\ n x -> Mat n $ C x)
 
 
 ----------------------------------------------------------------------------------------------
