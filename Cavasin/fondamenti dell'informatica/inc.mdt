@@ -1,0 +1,89 @@
+<machine>
+	<io_machine>false</io_machine>
+	<tapes_number>1</tapes_number>
+	<alphabet>
+		<blank>_</blank>
+		<symbols>10</symbols>
+	</alphabet>
+	<states>
+		<state>
+			<name>rewind</name>
+			<initial>true</initial>
+			<final>false</final>
+			<description>rewind</description>
+		</state>
+		<state>
+			<name>sum</name>
+			<initial>false</initial>
+			<final>false</final>
+			<description>sum</description>
+		</state>
+		<state>
+			<name>carry</name>
+			<initial>false</initial>
+			<final>false</final>
+			<description>carry</description>
+		</state>
+		<state>
+			<name>reset</name>
+			<initial>false</initial>
+			<final>false</final>
+			<description>reset</description>
+		</state>
+		<state>
+			<name>halt</name>
+			<initial>false</initial>
+			<final>true</final>
+			<description></description>
+		</state>
+	</states>
+	<instructions>
+		<instruction>
+			<value>carry _ -> reset 1 L</value>
+			<description></description>
+		</instruction>
+		<instruction>
+			<value>carry 0 -> reset 1 L</value>
+			<description></description>
+		</instruction>
+		<instruction>
+			<value>carry 1 -> carry 0 L</value>
+			<description></description>
+		</instruction>
+		<instruction>
+			<value>rewind _ -> sum _ L</value>
+			<description></description>
+		</instruction>
+		<instruction>
+			<value>rewind 0 -> rewind 0 R</value>
+			<description></description>
+		</instruction>
+		<instruction>
+			<value>rewind 1 -> rewind 1 R</value>
+			<description></description>
+		</instruction>
+		<instruction>
+			<value>sum 0 -> reset 1 L</value>
+			<description></description>
+		</instruction>
+		<instruction>
+			<value>sum 1 -> carry 0 L</value>
+			<description></description>
+		</instruction>
+		<instruction>
+			<value>reset _ -> halt _ R</value>
+			<description></description>
+		</instruction>
+		<instruction>
+			<value>reset 0 -> reset 0 L</value>
+			<description></description>
+		</instruction>
+		<instruction>
+			<value>reset 1 -> reset 1 L</value>
+			<description></description>
+		</instruction>
+	</instructions>
+	<tapes>
+		<tape>_11_</tape>
+	</tapes>
+</machine>
