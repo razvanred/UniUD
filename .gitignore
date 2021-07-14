@@ -22,7 +22,9 @@ Rosu/*.bak
 
 # Exceptions
 
-!/.gitignore
+!.gitignore
+!.gitattributes
+
 # Markdown Linter files
 !.markdownlint.json 
 
