@@ -67,7 +67,7 @@ putLazyTail f x = f . (x:)
 -- Accodo gli elementi delle righe successive con fold
 -- Ottengo una lista di teste lazy
 transposeToLazyHead :: [[a]] -> [[a] -> [a]]
-transposeToLazyHead xs = foldl (zipWith putLazyTail) (repeat id) xs
+transposeToLazyHead = foldl (zipWith putLazyTail) (repeat id)
 
 -- Applico le teste alla lista vuota, se vado a valutarle trovo esattamente le teste
 transpose = map (\ f -> f []) . transposeToLazyHead
