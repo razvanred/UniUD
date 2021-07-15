@@ -1,0 +1,10 @@
+# Bruniera
+programmazione/esempi/1.2
+programmazione/esempi/*.bak
+**/*.exe
+algoritmi laboratorio/**/*.csv
+algoritmi laboratorio/**/*.xlsx
+algoritmi laboratorio/**/*.txt
+algoritmi laboratorio/**/*.docx
+algoritmi laboratorio/**/*.pdf
+**/*.java~
