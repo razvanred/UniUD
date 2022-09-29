@@ -12,6 +12,10 @@ if(NOT isMultiConfig)
         message(STATUS "CMAKE_BUILD_TYPE is undefined. Will default to ${CMAKE_BUILD_TYPE}")
     endif()
     set(allowedBuildTypes Debug Release RelWithDebInfo MinSizeRel)
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
+                 STRINGS "${allowedBuildTypes}")
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
+                 HELPSTRING "Supported build types are: Debug, Release (default), RelWithDebInfo, and MinSizeRel")
     if(NOT CMAKE_BUILD_TYPE IN_LIST allowedBuildTypes)
         message(FATAL_ERROR "Unknown build type: ${CMAKE_BUILD_TYPE}")
     endif()
@@ -31,23 +35,10 @@ set(CMAKE_C_STANDARD_REQUIRED YES)
 set(CMAKE_C_EXTENSIONS NO)
 
 #=============================
-# Top level project only
-#=============================
-if(NOT isMultiConfig)
-    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
-                 STRINGS "${allowedBuildTypes}")
-    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY
-                 HELPSTRING "Supported build types are: Debug, Release (default), RelWithDebInfo, and MinSizeRel")
-endif()
-
-#=============================
 # Targets Configuration
 #=============================
-if(MSVC)
-    add_compile_definitions(_CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS)
-endif()
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
-    add_compile_options("$<$<CONFIG:Debug>:-Wall;-Wextra;-pedantic>") # ;-Wconversion
+    add_compile_options("$<$<CONFIG:Debug>:-Wall;-Wextra;-Wpedantic;-Wconversion>")
 endif()
 
 #=============================

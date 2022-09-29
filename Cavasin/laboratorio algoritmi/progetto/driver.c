@@ -1,13 +1,10 @@
-#define _DEFAULT_SOURCE // NOLINT(bugprone-reserved-identifier)
-#include <time.h>
-
-#undef _DEFAULT_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <time.h>
 #include "types.h"
 
 // 1/relative error required
@@ -148,6 +145,7 @@ void bench(int *const v, int const vLength, int const k, Timespec const threshol
 
 int main(void) {
 	Timespec programStart, programEnd;
+	// monotonic clocks are guaranteed to increase monotonically
 	clock_gettime(CLOCK_MONOTONIC, &programStart);
 	srand((unsigned)time(NULL));
 
@@ -163,10 +161,10 @@ int main(void) {
 	double const a = 100;
 	double const b = log2(50000)/99;
 
-	for(int j = 0; j < 4; ++j) {
+	for(int j = 0; j < 3; ++j) {
 		for(int i = 0; i < 100; ++i) {
 			// input size follows an exponential curve from 100 to 5000000
-			int const vLength = (int)ceil(a*exp2(i*b));
+			int const vLength = (int)floor(a*exp2(i*b));
 			int k;
 
 			switch(j) {
@@ -177,12 +175,10 @@ int main(void) {
 					k = (int)log(vLength);
 					break;
 				case 2:
-					k = vLength/4;
-					break;
-				case 3:
 					k = vLength/3*2;
 					break;
 				default:
+					k = -1;
 					assert(false);
 			}
 			printf("vLength=%d k=%d\n", vLength, k);

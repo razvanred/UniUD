@@ -61,7 +61,7 @@ static BTNode *bTreeAllocHelper(BTNode *const parent, int *const i, Token const 
 		++(*i);
 		return NULL;
 	} else {
-		BTNode *const t = bTNodeAlloc(tokens[(*i)++].val, NULL);
+		BTNode *const t = bTNodeAlloc(tokens[(*i)++].val, "");
 		t->parent = parent;
 		t->left = bTreeAllocHelper(t, i, tokens);
 		if(t->left) {

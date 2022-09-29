@@ -1,10 +1,7 @@
 #ifndef ASD_LAB_TYPES_H
 #define ASD_LAB_TYPES_H
 
-#define _DEFAULT_SOURCE // NOLINT(bugprone-reserved-identifier)
 #include <time.h>
-
-#undef _DEFAULT_SOURCE
 
 #define TIMESPEC_ZERO (struct timespec) {.tv_sec=0, .tv_nsec=0}
 
@@ -22,7 +19,8 @@ typedef int (*Comparator)(void const *, int, int);
 typedef struct Heap {
 	int *const refs; /*!< an array of indices to data in values. References will be compared to eachother using the
  									 provided comparison function */
-	int const refsLength; //!< length of refs, determines the max heap size
+	int const refsLength;  //!< length of refs >= maxSize
+	int const maxSize; //!< max heap size, must be <= refsLength
 	int heapSize; //!< current length of the heap
 	Comparator const compare; //!< the comparison function for this particular heap
 	void const *const values; /*!< a pointer to any data that will be available to the comparison function. This

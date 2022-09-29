@@ -7,7 +7,7 @@
 #include <limits.h>
 
 void lputs(char s[const]) {
-	fputs((s), stdout);
+	fputs(s, stdout);
 }
 
 void swap(int *const a, int *const b) {
@@ -50,14 +50,20 @@ int intRandom(void) {
 }
 
 int compareInt(void const *const a, void const *const b) {
+	assert(a);
+	assert(b);
 	return *(int const *)a < *(int const *)b ? -1 : *(int const *)a == *(int const *)b ? 0 : 1;
 }
 
 int compareLongDouble(void const *const a, void const *const b) {
+	assert(a);
+	assert(b);
 	return *(long double const *)a < *(long double const *)b ? -1 : *(long double const *)a == *(long double const *)b ? 0 : 1;
 }
 
 void arrayPrint(int const v[const], int const vLength) {
+	assert(v);
+
 	lputs("{");
 	for(int i = 0; i < vLength; ++i) {
 		printf(" %d", v[i]);
@@ -66,6 +72,8 @@ void arrayPrint(int const v[const], int const vLength) {
 }
 
 void arrayRandom(int *const v, int const vLength) {
+	assert(v);
+
 	for(int i = 0; i < vLength; ++i) {
 		v[i] = intRandom();
 	}
@@ -101,6 +109,7 @@ void readLine(char s[const], int sLength) {
 }
 
 int *stringAlloc(int *const length, int const maxLength, char const s[]) {
+	assert(length);
 	assert(s);
 
 	*length = 0;

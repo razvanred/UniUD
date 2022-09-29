@@ -6,7 +6,7 @@
 
 extern int arraySwap(int v[const], int i, int k);
 extern int min(int a, int b);
-extern Heap heapAlloc(int size, int maxSize, Comparator compare, void const *values);
+extern Heap heapAlloc(int size, int maxSize, void const *values, int valuesLength, Comparator compare);
 extern void heapFree(Heap h);
 extern int heapPop(Heap *h);
 extern int heapPush(Heap *h, int i);
@@ -24,6 +24,7 @@ extern int compareInt(void const *a, void const *b);
  * @return new index of pivot
  */
 static int partition(int v[const], int p, int const q, int const pivot) {
+	assert(v);
 	assert(p <= pivot && pivot <= q);
 
 	arraySwap(v, pivot, q);
@@ -50,6 +51,7 @@ static int partition(int v[const], int p, int const q, int const pivot) {
  * @return The index in v of the k+1º smallest element
  */
 static int quickSelectHelper(int v[const], int const p, int const q, int const k) {
+	assert(v);
 	assert(p <= k || k <= q);
 
 	int const pivot = partition(v, p, q, k);
@@ -70,6 +72,7 @@ static int quickSelectHelper(int v[const], int const p, int const q, int const k
  * @return The index in v of the k+1º smallest element
  */
 int quickSelect(int v[const], int const vLength, int const k) {
+	assert(v);
 	assert(0 <= k || k < vLength);
 
 	return quickSelectHelper(v, 0, vLength-1, k);
@@ -85,6 +88,8 @@ int quickSelect(int v[const], int const vLength, int const k) {
  * @return -1 if values[a] < values[b], 0 if values[a] == values[b], 1 if values[a] > values[b]
  */
 static int compareRef(void const *const values, int const a, int const b) {
+	assert(values);
+
 	int const *const v = values;
 	return compareInt(&v[a], &v[b]);
 }
@@ -97,6 +102,8 @@ static int compareRef(void const *const values, int const a, int const b) {
  * @return 1 if values[a] < values[b], 0 if values[a] == values[b], -1 if values[a] > values[b]
  */
 static int compareRefInverted(void const *const values, int const a, int const b) {
+	assert(values);
+
 	int const *const v = values;
 	return compareInt(&v[b], &v[a]);
 }
@@ -109,13 +116,15 @@ static int compareRefInverted(void const *const values, int const a, int const b
  * @return h1.compare() called on the elements in h1 referenced by a and b
  */
 static int compareRefRef(void const *const values, int const a, int const b) {
+	assert(values);
+
 	Heap const *const h1 = values;
 	return h1->compare(h1->values, h1->refs[a], h1->refs[b]);
 }
 
 /**
  * Finds the element that would end up at index k if v[i...j] were sorted, by using heaps
- * modifies v
+ * does not modify v
  * time: Θ(n)+O(k)*O(log k)=O(n + k log k)
  * @param v array of integers
  * @param vLength length of v
@@ -123,21 +132,23 @@ static int compareRefRef(void const *const values, int const a, int const b) {
  * @return The index in v of the k+1º smallest element
  */
 int heapSelect(int v[const], int const vLength, int const k) {
+	assert(v);
 	// as a minor optimization, h2 moves from the closest extreme to k. This brings down the maximum number of top level
 	// iterations to n/2.
 	bool const fromLeft = k <= vLength/2;
 	// when iterating from right to left, a maxHeap is needed instead of a minHeap. To achieve this, it's sufficient to
 	// optionally invert the comparison operator.
-	Heap const h1 = heapAlloc(vLength, vLength, fromLeft ? compareRef : compareRefInverted, v);
+	Heap const h1 = heapAlloc(vLength, vLength, v, vLength, fromLeft ? compareRef : compareRefInverted);
 	// h2 must also store the corresponding position in h1 of each element. To achieve this, the whole h1 is passed as data.
 	// That makes h2 an index-based heap of indices in v.
-	Heap h2 = heapAlloc(1, vLength, compareRefRef, &h1);
+	Heap h2 = heapAlloc(1, k+1, &h1, vLength, compareRefRef);
 
 	for(int i = 0; i < (fromLeft ? k : vLength-k-1); ++i) {
 		// ref is an index to a ref in h1
 		int const ref = heapPop(&h2);
 		if(heapLeft(ref) < h1.heapSize) {
 			heapPush(&h2, heapLeft(ref));
+			// if ref has no left child, there will be no right child
 			if(heapRight(ref) < h1.heapSize) {
 				heapPush(&h2, heapRight(ref));
 			}
@@ -162,19 +173,20 @@ int heapSelect(int v[const], int const vLength, int const k) {
  * @return The index in v of the k+1º smallest element
  */
 static int selectionSelect(int v[const], int p, int const q, int const k) {
+	assert(v);
 	assert(p <= k && k <= q);
 
-	//
-	for(; p <= k; p++) {
+	// basic selection sort
+	for(; p <= k; ++p) {
 		int min = p;
-		for(int j = p+1; j <= q; j++) {
+		for(int j = p+1; j <= q; ++j) {
 			if(v[j] < v[p]) {
 				min = j;
 			}
 		}
 		arraySwap(v, p, min);
 	}
-	return (p+q)/2;
+	return k;
 }
 
 /**
@@ -190,6 +202,7 @@ static int selectionSelect(int v[const], int p, int const q, int const k) {
  * @return The index in v of the k+1º smallest element
  */
 static int mdmSelectHelper(int v[const], int const p, int const q, int const k) {
+	assert(v);
 	assert(p <= k && k <= q);
 
 	if(p == q) {
@@ -225,5 +238,6 @@ static int mdmSelectHelper(int v[const], int const p, int const q, int const k) 
  * @return The index in v of the k+1º smallest element
  */
 int mdmSelect(int v[const], int const vLength, int const k) {
+	assert(v);
 	return mdmSelectHelper(v, 0, vLength-1, k);
 }

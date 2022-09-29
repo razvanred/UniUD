@@ -21,10 +21,8 @@ set(CMAKE_FOLDER progetto)
 #=============================
 # Targets Configuration
 #=============================
-if(MSVC)
-    add_compile_definitions(_CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS)
-endif()
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+    add_compile_definitions(_DEFAULT_SOURCE)
     add_compile_options("$<$<CONFIG:Debug>:-Wall;-Wextra;-Wpedantic;-Wconversion>")
 endif()
 
