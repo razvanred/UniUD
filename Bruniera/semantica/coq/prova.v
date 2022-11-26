@@ -1,3 +1,5 @@
+Require Coq.micromega.Lia.
+
 Fixpoint ack (n m : nat) : nat :=
   match n with
   | O => S m
@@ -79,7 +81,7 @@ forall n m : nat, (fst (ack_flip false n m) = ack n m).
 Proof. intros n m. induction n as [| n' IH0].
   - compute. reflexivity.
   - induction m as [| m' IH1].
-    + Admitted.
+    + Lia.lia. Admitted.
 
 Theorem eavenness0 :
 forall n : nat, ack_flip false 1 n = (ack 1 n, false).
