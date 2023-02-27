@@ -1,0 +1,13 @@
+{
+    "element": {
+        "caption": "Read the statement carefully and:",
+        "label": "A",
+        "text": null
+    },
+    "instructions": [
+        {
+            "caption": false,
+            "text": "Highlight the part of the explanation that determines the truthfulness of the statement and click the Select button to confirm, then follow the steps below.<br>"
+        }
+    ]
+}

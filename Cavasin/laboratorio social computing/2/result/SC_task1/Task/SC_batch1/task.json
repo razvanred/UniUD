@@ -1,0 +1,106 @@
+{
+    "modality": "pointwise",
+    "allowed_tries": 3,
+    "time_check_amount": 3,
+    "time_assessment": 1,
+    "documents": {
+        "min_docs_repetitions": 1,
+        "doc_categories": [],
+        "workers_number": ""
+    },
+    "attributes": [
+        {
+            "name": "id",
+            "name_pretty": "ID",
+            "show": false,
+            "annotate": false,
+            "required": false
+        },
+        {
+            "name": "statement",
+            "name_pretty": "Statement",
+            "show": true,
+            "annotate": false,
+            "required": false
+        },
+        {
+            "name": "explanation",
+            "name_pretty": "Explanation",
+            "show": true,
+            "annotate": true,
+            "required": true
+        },
+        {
+            "name": "label",
+            "name_pretty": "Label",
+            "show": true,
+            "annotate": false,
+            "required": false
+        }
+    ],
+    "annotator": {
+        "type": "options",
+        "values": [
+            {
+                "label": "Select",
+                "color": "#55ff99"
+            }
+        ]
+    },
+    "countdown_time": false,
+    "countdown_behavior": false,
+    "countdown_modality": false,
+    "countdown_attribute": false,
+    "countdown_attribute_values": [],
+    "countdown_position_values": [],
+    "logger": false,
+    "logger_option": {
+        "button": {
+            "general": false,
+            "click": false
+        },
+        "mouse": {
+            "general": false,
+            "mouseMovements": false,
+            "leftClicks": false,
+            "rightClicks": false
+        },
+        "keyboard": {
+            "general": false,
+            "shortcuts": false,
+            "keys": false
+        },
+        "textInput": {
+            "general": false,
+            "paste": false,
+            "delete": false
+        },
+        "clipboard": {
+            "general": false,
+            "copy": false,
+            "cut": false
+        },
+        "radio": {
+            "general": false,
+            "change": false
+        },
+        "crowd-xplorer": {
+            "general": false,
+            "query": false,
+            "result": false
+        },
+        "various": {
+            "general": false,
+            "selection": false,
+            "unload": false,
+            "focus&blur": false,
+            "scroll": false,
+            "resize": false
+        }
+    },
+    "server_endpoint": "",
+    "messages": [
+		"If you see a 'Connection Issues' error and you have an ad blocker installed, please disable it temporarily. This page contains no ads, but some checks within this web page are treated as such."
+	],
+    "additional_times": false
+}

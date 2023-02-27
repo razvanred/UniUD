@@ -1,0 +1,2 @@
+worker_id,paid,task_name,batch_name,unit_id,time_submit,time_submit_parsed,try_current,sequence_number,text
+NMXJ0KIWOLKHNV,True,SC_task1,SC_batch1,unit_9,"Thu, 12 Jan 2023 13:28:35 GMT",2023-01-12 13:28:35 00:00,1.0,5.0,The task was fine

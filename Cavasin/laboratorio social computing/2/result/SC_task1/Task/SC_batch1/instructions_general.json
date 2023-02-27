@@ -1,0 +1,6 @@
+[
+    {
+        "caption": "Task Instructions",
+        "text": "<p>In this task, you will be asked to select a value to indicate the <strong>truthfulness level</strong> of some statements. </p><p>We will show you <strong>3 statements</strong> along with an explanation that could have been written by a human expert or a machine learning model. </p><p>For each statement, we ask you to verify how true it is or how false it is, first by reading the explanation alone, then by doing an online search.</p><p>The data from this task is being gathered for research purposes. No personally-identifying information is recorded. Participation is entirely voluntary, and you are free to discontinue at any point.</p>"
+    }
+]

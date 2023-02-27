@@ -1,0 +1,141 @@
+[
+    {
+        "name": "truthfulness-1",
+        "name_pretty": false,
+        "description": "How true is the statement, having read the explanation?",
+        "example": false,
+        "gold": true,
+        "pairwise": false,
+        "justification": false,
+        "url": false,
+        "scale": {
+            "type": "categorical",
+            "multiple_selection": false,
+            "mapping": [
+                {
+                    "label": "Lie",
+                    "description": "",
+                    "value": "0"
+                },
+                {
+                    "label": "False",
+                    "description": "",
+                    "value": "1"
+                },
+                {
+                    "label": "Barely True",
+                    "description": "",
+                    "value": "2"
+                },
+                {
+                    "label": "Half True",
+                    "description": "",
+                    "value": "3"
+                },
+                {
+                    "label": "Mostly True",
+                    "description": "",
+                    "value": "4"
+                },
+                {
+                    "label": "True",
+                    "description": "",
+                    "value": "5"
+                }
+            ],
+            "instructions": false
+        },
+        "style": {
+            "position": "top",
+            "orientation": "vertical",
+            "type": "list",
+            "separator": false
+        }
+    },
+    {
+        "name": "explanation-quality",
+        "name_pretty": false,
+        "description": "How confident are you in your choice above? Use the slider to set a value (1 = not confident, 100 = completely confident)",
+        "example": false,
+        "gold": false,
+        "pairwise": false,
+        "justification": false,
+        "url": false,
+        "scale": {
+            "type": "interval",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "instructions": false
+        },
+        "style": {
+            "position": "middle",
+            "type": "list",
+            "orientation": "vertical",
+            "separator": false
+        }
+    },
+    {
+        "name": "truthfulness-2",
+        "name_pretty": false,
+        "description": "Now that you have selected a web page, how true do you think the statement is?",
+        "example": false,
+        "gold": false,
+        "pairwise": false,
+        "justification": {
+            "text": "Justify your choice (min. 5 words)",
+            "min_words": 5
+        },
+        "url": {
+            "enable": true,
+            "instructions": {
+                "caption": "Web Search",
+                "label": "Refine the statement's truthfulness",
+                "text": "Now use this search form to look up further information on the truthfulness of this statement. Select the result that has helped you the most."
+            }
+        },
+        "scale": {
+            "type": "categorical",
+            "multiple_selection": false,
+            "mapping": [
+                {
+                    "label": "Lie",
+                    "description": "",
+                    "value": "0"
+                },
+                {
+                    "label": "False",
+                    "description": "",
+                    "value": "1"
+                },
+                {
+                    "label": "Barely True",
+                    "description": "",
+                    "value": "2"
+                },
+                {
+                    "label": "Half True",
+                    "description": "",
+                    "value": "3"
+                },
+                {
+                    "label": "Mostly True",
+                    "description": "",
+                    "value": "4"
+                },
+                {
+                    "label": "True",
+                    "description": "",
+                    "value": "5"
+                }
+            ],
+            "instructions": false
+        },
+        "style": {
+            "position": "bottom",
+            "orientation": "vertical",
+            "type": "list",
+            "separator": false
+        }
+    }
+]
