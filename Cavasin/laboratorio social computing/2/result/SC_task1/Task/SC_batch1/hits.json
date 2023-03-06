@@ -1,0 +1,314 @@
+[
+    {
+        "unit_id": "unit_0",
+        "token_input": "SIBEZGHPYK",
+        "token_output": "DVCHUJSNKW",
+        "documents_number": 3,
+        "documents": [
+            {
+                "id": "47357",
+                "statement": "Margaret Thatcher implemented policies.",
+                "explanation": "The claim is that Margaret Thatcher implemented policies. The evidence states that she was Prime Minister and that she implemented policies known as Thatcherism. So, the answer to the question is true.",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "171067",
+                "statement": "Lalla Ward has only ever been an author.",
+                "explanation": "The claim is that Lalla Ward has only ever been an author. The evidence is that Lalla Ward is an English actress and author. So, the claim is false.",
+                "label": "REFUTES"
+            },
+            {
+                "id": "224557",
+                "statement": "Vampire Academy, worldwide, grossed $15.4 million.",
+                "explanation": "The film grossed $ 15.4 million worldwide.",
+                "label": "SUPPORTS"
+            }
+        ]
+    },
+    {
+        "unit_id": "unit_1",
+        "token_input": "QINZJLDXTM",
+        "token_output": "XLWTKMYEPI",
+        "documents_number": 3,
+        "documents": [
+            {
+                "id": "47357",
+                "statement": "Margaret Thatcher implemented policies.",
+                "explanation": "\"The relevant information about the claim is lacking in the context.\"",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "171067",
+                "statement": "Lalla Ward has only ever been an author.",
+                "explanation": "The claim is that Lalla Ward has only ever been an author. The evidence is that Lalla Ward is an English actress and author. So, the claim is false.",
+                "label": "REFUTES"
+            },
+            {
+                "id": "224557",
+                "statement": "Vampire Academy, worldwide, grossed $15.4 million.",
+                "explanation": "The author first states the claim that Vampire Academy grossed $15.4 million worldwide. Then, they provide evidence to support this claim by stating that the film was a failure critically and financially. However, they also state that the film grossed only $15.4 million worldwide against a $30 million budget. Based on the information provided, it seems that the claim is false.",
+                "label": "SUPPORTS"
+            }
+        ]
+    },
+    {
+        "unit_id": "unit_2",
+        "token_input": "FVHLDMUYEA",
+        "token_output": "GFNBVQWDUS",
+        "documents_number": 3,
+        "documents": [
+            {
+                "id": "171067",
+                "statement": "Lalla Ward has only ever been an author.",
+                "explanation": "Lalla Ward has been an actress and an author.",
+                "label": "REFUTES"
+            },
+            {
+                "id": "47357",
+                "statement": "Margaret Thatcher implemented policies.",
+                "explanation": "The claim is that Margaret Thatcher implemented policies. The evidence states that she was Prime Minister and that she implemented policies known as Thatcherism. So, the answer to the question is true.",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "224557",
+                "statement": "Vampire Academy, worldwide, grossed $15.4 million.",
+                "explanation": "The author first states the claim that Vampire Academy grossed $15.4 million worldwide. Then, they provide evidence to support this claim by stating that the film was a failure critically and financially. However, they also state that the film grossed only $15.4 million worldwide against a $30 million budget. Based on the information provided, it seems that the claim is false.",
+                "label": "SUPPORTS"
+            }
+        ]
+    },
+    {
+        "unit_id": "unit_3",
+        "token_input": "VMXOPGRFUK",
+        "token_output": "CGDJWYXAFB",
+        "documents_number": 3,
+        "documents": [
+            {
+                "id": "224557",
+                "statement": "Vampire Academy, worldwide, grossed $15.4 million.",
+                "explanation": "The film grossed $ 15.4 million worldwide.",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "47357",
+                "statement": "Margaret Thatcher implemented policies.",
+                "explanation": "The claim is that Margaret Thatcher implemented policies. The evidence states that she was Prime Minister and that she implemented policies known as Thatcherism. So, the answer to the question is true.",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "171067",
+                "statement": "Lalla Ward has only ever been an author.",
+                "explanation": "The claim is that Lalla Ward has only ever been an author. The evidence is that Lalla Ward is an English actress and author. So, the claim is false.",
+                "label": "REFUTES"
+            }
+        ]
+    },
+    {
+        "unit_id": "unit_4",
+        "token_input": "WZCBPRKXIF",
+        "token_output": "TVYEXSMQUW",
+        "documents_number": 3,
+        "documents": [
+            {
+                "id": "171067",
+                "statement": "Lalla Ward has only ever been an author.",
+                "explanation": "The claim is that Lalla Ward has only ever been an author. The evidence is that Lalla Ward is an English actress and author. So, the claim is false.",
+                "label": "REFUTES"
+            },
+            {
+                "id": "47357",
+                "statement": "Margaret Thatcher implemented policies.",
+                "explanation": "\"The relevant information about the claim is lacking in the context.\"",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "224557",
+                "statement": "Vampire Academy, worldwide, grossed $15.4 million.",
+                "explanation": "The author first states the claim that Vampire Academy grossed $15.4 million worldwide. Then, they provide evidence to support this claim by stating that the film was a failure critically and financially. However, they also state that the film grossed only $15.4 million worldwide against a $30 million budget. Based on the information provided, it seems that the claim is false.",
+                "label": "SUPPORTS"
+            }
+        ]
+    },
+    {
+        "unit_id": "unit_5",
+        "token_input": "XJRLQTICSK",
+        "token_output": "WKSDOVTZXG",
+        "documents_number": 3,
+        "documents": [
+            {
+                "id": "224557",
+                "statement": "Vampire Academy, worldwide, grossed $15.4 million.",
+                "explanation": "The author first states the claim that Vampire Academy grossed $15.4 million worldwide. Then, they provide evidence to support this claim by stating that the film was a failure critically and financially. However, they also state that the film grossed only $15.4 million worldwide against a $30 million budget. Based on the information provided, it seems that the claim is false.",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "171067",
+                "statement": "Lalla Ward has only ever been an author.",
+                "explanation": "Lalla Ward has been an actress and an author.",
+                "label": "REFUTES"
+            },
+            {
+                "id": "47357",
+                "statement": "Margaret Thatcher implemented policies.",
+                "explanation": "The claim is that Margaret Thatcher implemented policies. The evidence states that she was Prime Minister and that she implemented policies known as Thatcherism. So, the answer to the question is true.",
+                "label": "SUPPORTS"
+            }
+        ]
+    },
+    {
+        "unit_id": "unit_6",
+        "token_input": "YHEDLNSAGZ",
+        "token_output": "CKVHZUPGDX",
+        "documents_number": 3,
+        "documents": [
+            {
+                "id": "171067",
+                "statement": "Lalla Ward has only ever been an author.",
+                "explanation": "The claim is that Lalla Ward has only ever been an author. The evidence is that Lalla Ward is an English actress and author. So, the claim is false.",
+                "label": "REFUTES"
+            },
+            {
+                "id": "224557",
+                "statement": "Vampire Academy, worldwide, grossed $15.4 million.",
+                "explanation": "The film grossed $ 15.4 million worldwide.",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "47357",
+                "statement": "Margaret Thatcher implemented policies.",
+                "explanation": "The claim is that Margaret Thatcher implemented policies. The evidence states that she was Prime Minister and that she implemented policies known as Thatcherism. So, the answer to the question is true.",
+                "label": "SUPPORTS"
+            }
+        ]
+    },
+    {
+        "unit_id": "unit_7",
+        "token_input": "LFGTXRQHCA",
+        "token_output": "TVIWQPBYZG",
+        "documents_number": 3,
+        "documents": [
+            {
+                "id": "224557",
+                "statement": "Vampire Academy, worldwide, grossed $15.4 million.",
+                "explanation": "The author first states the claim that Vampire Academy grossed $15.4 million worldwide. Then, they provide evidence to support this claim by stating that the film was a failure critically and financially. However, they also state that the film grossed only $15.4 million worldwide against a $30 million budget. Based on the information provided, it seems that the claim is false.",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "171067",
+                "statement": "Lalla Ward has only ever been an author.",
+                "explanation": "The claim is that Lalla Ward has only ever been an author. The evidence is that Lalla Ward is an English actress and author. So, the claim is false.",
+                "label": "REFUTES"
+            },
+            {
+                "id": "47357",
+                "statement": "Margaret Thatcher implemented policies.",
+                "explanation": "\"The relevant information about the claim is lacking in the context.\"",
+                "label": "SUPPORTS"
+            }
+        ]
+    },
+    {
+        "unit_id": "unit_8",
+        "token_input": "RIFQBYGEKO",
+        "token_output": "RZABVTQHED",
+        "documents_number": 3,
+        "documents": [
+            {
+                "id": "47357",
+                "statement": "Margaret Thatcher implemented policies.",
+                "explanation": "The claim is that Margaret Thatcher implemented policies. The evidence states that she was Prime Minister and that she implemented policies known as Thatcherism. So, the answer to the question is true.",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "224557",
+                "statement": "Vampire Academy, worldwide, grossed $15.4 million.",
+                "explanation": "The author first states the claim that Vampire Academy grossed $15.4 million worldwide. Then, they provide evidence to support this claim by stating that the film was a failure critically and financially. However, they also state that the film grossed only $15.4 million worldwide against a $30 million budget. Based on the information provided, it seems that the claim is false.",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "171067",
+                "statement": "Lalla Ward has only ever been an author.",
+                "explanation": "Lalla Ward has been an actress and an author.",
+                "label": "REFUTES"
+            }
+        ]
+    },
+    {
+        "unit_id": "unit_9",
+        "token_input": "VSRGKFBADL",
+        "token_output": "TGLFQODKBX",
+        "documents_number": 3,
+        "documents": [
+            {
+                "id": "47357",
+                "statement": "Margaret Thatcher implemented policies.",
+                "explanation": "The claim is that Margaret Thatcher implemented policies. The evidence states that she was Prime Minister and that she implemented policies known as Thatcherism. So, the answer to the question is true.",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "224557",
+                "statement": "Vampire Academy, worldwide, grossed $15.4 million.",
+                "explanation": "The film grossed $ 15.4 million worldwide.",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "171067",
+                "statement": "Lalla Ward has only ever been an author.",
+                "explanation": "The claim is that Lalla Ward has only ever been an author. The evidence is that Lalla Ward is an English actress and author. So, the claim is false.",
+                "label": "REFUTES"
+            }
+        ]
+    },
+    {
+        "unit_id": "unit_10",
+        "token_input": "HAUPQOCTXZ",
+        "token_output": "RNSATMQIKD",
+        "documents_number": 3,
+        "documents": [
+            {
+                "id": "47357",
+                "statement": "Margaret Thatcher implemented policies.",
+                "explanation": "\"The relevant information about the claim is lacking in the context.\"",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "171067",
+                "statement": "Lalla Ward has only ever been an author.",
+                "explanation": "The claim is that Lalla Ward has only ever been an author. The evidence is that Lalla Ward is an English actress and author. So, the claim is false.",
+                "label": "REFUTES"
+            },
+            {
+                "id": "224557",
+                "statement": "Vampire Academy, worldwide, grossed $15.4 million.",
+                "explanation": "The author first states the claim that Vampire Academy grossed $15.4 million worldwide. Then, they provide evidence to support this claim by stating that the film was a failure critically and financially. However, they also state that the film grossed only $15.4 million worldwide against a $30 million budget. Based on the information provided, it seems that the claim is false.",
+                "label": "SUPPORTS"
+            }
+        ]
+    },
+    {
+        "unit_id": "unit_11",
+        "token_input": "UHYMNRJCPB",
+        "token_output": "WVGYXLPANO",
+        "documents_number": 3,
+        "documents": [
+            {
+                "id": "224557",
+                "statement": "Vampire Academy, worldwide, grossed $15.4 million.",
+                "explanation": "The author first states the claim that Vampire Academy grossed $15.4 million worldwide. Then, they provide evidence to support this claim by stating that the film was a failure critically and financially. However, they also state that the film grossed only $15.4 million worldwide against a $30 million budget. Based on the information provided, it seems that the claim is false.",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "47357",
+                "statement": "Margaret Thatcher implemented policies.",
+                "explanation": "The claim is that Margaret Thatcher implemented policies. The evidence states that she was Prime Minister and that she implemented policies known as Thatcherism. So, the answer to the question is true.",
+                "label": "SUPPORTS"
+            },
+            {
+                "id": "171067",
+                "statement": "Lalla Ward has only ever been an author.",
+                "explanation": "Lalla Ward has been an actress and an author.",
+                "label": "REFUTES"
+            }
+        ]
+    }
+]

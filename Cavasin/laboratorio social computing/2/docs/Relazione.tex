@@ -1,0 +1,215 @@
+\documentclass[a4paper, 11pt, twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english, italian]{babel}
+\usepackage[a4paper]{geometry}
+\geometry{margin=2.5cm}
+
+% Pacchetti
+\usepackage{float,graphicx}
+\usepackage{hyperref}
+% \usepackage[ruled, vlined]{algorithm2e}
+% \renewcommand{\thealgocf}{}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{siunitx}
+\sisetup{
+    output-decimal-marker = {,},
+    group-separator = {.}
+} % Metti numeri grandi nel comando \num{} per usare i corretti separatori di migliaia e virgola
+\graphicspath{ {./images/} }
+% \linespread{0.9}
+\setlength{\parindent}{0cm} % Non indentare nuovi paragrafi
+\raggedbottom % Lascia spazio vuoto alla fine della pagina invece di distribuire i paragrafi verticalmente nella pagina, così non ci sono enormi spazi tra i paragrafi
+
+%\DeclareCaptionFont{white}{\color{white}}
+%\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}}
+%\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, font=bf}
+\lstdefinestyle{codestyle}{
+    language=Python,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    % numbers=left,
+    keepspaces=true,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    numbersep=5pt,
+    columns=fullflexible,
+    % frame=lines,
+    basicstyle=\ttfamily
+}
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} 
+\lstset{style=codestyle}
+
+\title{
+    \vspace{-50pt}
+    \textsc{Università degli Studi di Udine -- Dipartimento di Scienze Matematiche, Informatiche e Fisiche} \\ 
+    \vfill
+    \horrule{1pt}\\
+    \huge{Relazione 2$^{\circ}$ Progetto del Corso di Social~Computing}\\
+    \horrule{1pt}\\
+    \vfill
+    }
+\author{ % In ordine alfabetico (cognome)
+    Riccardo Cavasin\\ 
+    matr. 144692\\ 
+    \vspace{18pt}
+    \href{mailto:cavasin.riccardo@spes.uniud.it}{\texttt{cavasin.riccardo@spes.uniud.it}}\\
+    Thomas Cimador\\ 
+    matr. 152334\\ 
+    \vspace{18pt}
+    \href{mailto:cimador.thomas@spes.uniud.it}{\texttt{cimador.thomas@spes.uniud.it}}\\
+    Alessandro Faion\\ 
+    matr. 128378\\ 
+    \vspace{18pt}
+    \href{mailto:faion.alessandrokenan@spes.uniud.it}{\texttt{faion.alessandrokenan@spes.uniud.it}}\\
+}
+\date{}
+
+% -------------------------------------------------------------------------------- %
+% ------------------------------- INIZIO DOCUMENTO ------------------------------- %
+% -------------------------------------------------------------------------------- %
+\begin{document}
+\begin{titlepage}
+    \begin{figure}[t]
+        \includegraphics[width=4.5cm, height=4.5cm]{uniud_logo.png}
+        \centering
+    \end{figure}
+    \maketitle
+    \vfill
+    \begin{center}
+        \large{A.A. 2022-2023}
+    \end{center}
+    \thispagestyle{empty}
+\end{titlepage}
+
+% -------------------------------------------------------------------------------- %
+% ------------------------------- INDICE CONTENUTI ------------------------------- %
+% -------------------------------------------------------------------------------- %
+\tableofcontents
+% \listoffigures
+% \lstlistoflistings
+\thispagestyle{empty}  % Per far cominciare la numerazione delle pagine a partire
+\newpage               % dalla pagina successiva (dell'Introduzione)
+\setcounter{page}{1}   %
+
+% -------------------------------------------------------------------------------- %
+% ------------------------------- INTRODUZIONE ----------------------------------- %
+% -------------------------------------------------------------------------------- %
+\section{Introduzione}\label{sec:intro}
+Lo scopo di questo progetto è sviluppare un lavoro di Crowdsourcing nella forma di una pagina web e di esaminare i dati raccolti da esso.
+
+Questo lavoro viene definito anche Task e chiede al lavoratore (Worker) di valutare la veridicità di alcune \textbf{frasi} (Statements), ognuna di esse accompagnata da una \textbf{spiegazione} (Explanation).
+
+Viene inoltre richiesto di valutare la qualità delle spiegazioni e sfruttare un motore di ricerca per individuare evidenze che confutano o confermano la valutazione del valore di verità scelto. \\
+
+Per la creazione e il dispiegamento (pubblicazione) del task, ci si usufruisce di \texttt{Crowd\_Frame}, una serie di script che automatizza certi passaggi.
+
+\section{Creazione del Task}
+\subsection{Disposizione delle frasi da valutare}
+Per popolare il task, si parte da un dataset: un file \textsc{csv} contenente tre statement, ognuno dei quali riportante cinque informazioni:
+\begin{itemize}
+    \item \texttt{id}: un identificatore univoco
+    \item \texttt{statement}: il testo della frase
+    \item \texttt{explanation\_human}: una spiegazione dello statement scritta da un esperto
+    \item \texttt{explanation\_model}: una spiegazione dello statement scritta da un modello di Machine Learning
+    \item \texttt{label}: un'etichetta che esplicita il (mancato) supporto della spiegazione (\textsc{supports} o \textsc{refutes}).
+\end{itemize}
+
+Il task viene sviluppato per apparire diversamente a ogni worker. Per introdurre varietà, viene selezionata una delle due spiegazioni per ogni statement ($1/3$ \texttt{explanation\_human},
+
+$2/3$ \texttt{explanation\_model}). Inoltre, le tre frasi sono disposte in ordine casuale. Queste impostazioni sono definite nel file \texttt{hits.json}. \\
+
+In totale ci sono dodici lavori (\textsc{hit}, Human Intelligence Task) e quindi 12 potenziali lavoratori. Tra tutte le 36 frasi che compaiono, 12 a caso sono associate a spiegazioni scritte da esperti, e le altre 24 hanno spiegazioni generate con il Machine Learning. \\
+
+\subsection{Dimensioni di valutazione}
+Per valutare gli statement, nella pagina web vengono presentati i seguenti controlli in questo ordine:
+\begin{enumerate}
+    \item \textbf{Annotazione della spiegazione}: il worker evidenzia la parte della spiegazione più cruciale per determinare la veridicità dello statement.
+    \item \textbf{Prima scala di valutazione}: giudizio iniziale dello statement. Presenta sei opzioni da 0 (completamente falso) a 5 (completamente vero).
+    \item \textbf{Intervallo di valutazione} da 1 a 100: stimare la confidenza nell'aver scelto il valore precedente.
+    \item \textbf{Ricerca web}: per cercare ulteriori informazioni riguardo alla veridicità dello statement. Vengono utilizzate le \textsc{api} di Microsoft Bing.
+    \item \textbf{Seconda scala di valutazione}: un'altra opportunità di valutare la veridicità dello statement dopo aver effettuato la ricerca web.
+\end{enumerate}
+Tali dimensioni di valutazione e delle istruzioni brevi sono definite nei file \texttt{dimensions.json} e \texttt{instructions\_evaluation.json}.
+
+Sono anche fornite delle istruzioni iniziali per il completamento del task nel file
+
+\texttt{instructions\_general.json}.
+
+\section{Dispiegamento del Task}
+Una volta creati tutti i file \textsc{json} necessari, viene utilizzato lo script di inizializzazione di \texttt{Crowd\_Frame} per pubblicare il task su un bucket di Amazon Web Services.
+
+Il nostro task si trova a questo indirizzo:
+
+\url{https://my-sc-project-bucket.s3.us-east-1.amazonaws.com/SC\_task1/SC\_batch1/index.html} \\
+
+Per la distribuzione del task, viene utilizzata la Requester~Sandbox di \textbf{Amazon Mechanical~Turk} (MTurk), una piattaforma di crowdsourcing che consente ai requester, ovvero chi crea il task, di farlo svolgere ai worker che accedono alla Worker~Sandbox. \\
+
+Dopo aver completato il task, i worker riceveranno una piccola somma di denaro (non reale nel caso Sandbox) come ricompensa precedentemente stabilita dal requester.
+
+Su MTurk, il nostro task si trova a questo indirizzo:
+
+\url{https://workersandbox.mturk.com/projects/3X9FJ610CA7MNUDAE7IMNHFFXW71WI/tasks} \\
+
+Accettando il lavoro su Amazon Mechanical~Turk, il worker viene presentato con una pagina con un link al task su Amazon Web Services. Al termine del task, il worker visualizza un output token da copiare nella pagina su MTurk. Inviato tale token, il worker terminerà il task e sarà pronto per essere pagato.
+
+\section{Raccolta dei risultati}
+I risultati sono stati raccolti con lo script di download di \texttt{Crowd\_Frame}, il quale li mette a disposizione in file \textsc{csv} e \textsc{json}. Ogni file \textsc{json} corrisponde a un worker, mentre ogni file \textsc{csv} corrisponde a un genere di informazioni inviate da tutti i worker (risposte, informazioni, commenti, risultati della ricerca web, ecc.) \\
+
+Questo task è progettato per funzionare con 12 worker, ma causa limitazioni di disponibilità, è stato possibile reclutare soltanto 9 worker.
+
+\section{Analisi dei risultati}
+\subsection{Accordo tra lavoratori}
+Non è stato possibile calcolare il Percent Agreement (accordo percentuale), in quanto i worker che hanno completato il task sono maggiori di 2, e ridurre i worker a 2 causerebbe la perdita di informazioni.
+
+Per valutare l'accordo tra più worker, è stato quindi scelto di utilizzare il \textbf{Pairwise Agreement} (accordo a coppie) in cui si confrontano le coppie di valori espressi da un worker, invece dei singoli valori. \\
+
+Per la prima scala di valutazione (assegnamento di un valore di verità avendo letto solo lo statement e l'explanation), i worker hanno avuto il seguente accordo per ogni frase (prima, seconda e terza rispettivamente):
+\begin{enumerate}
+    \item 25\%
+    \item 19\% (\textcolor{red}{minor accordo})
+    \item 25\%
+\end{enumerate}
+L'accordo medio è del 23\%. La maggioranza dei worker ha risposto diversamente. \\
+
+Per la seconda scala di valutazione (compilata dopo la ricerca web), gli accordi per ogni frase sono stati:
+\begin{enumerate}
+    \item 44\% (\textcolor{red}{minor accordo})
+    \item 78\% (\textcolor{green}{maggior accordo})
+    \item 58\%
+\end{enumerate}
+L'accordo medio è del 60\%. Questo significa che la ricerca web ha aiutato la maggior parte dei worker a rispondere in maniera più coerente.
+
+\subsection{Annotazione spiegazioni}
+Viene calcolata la percentuale media di testo annotato per ogni spiegazione. In media, ogni spiegazione è stata annotata dai worker al:
+\begin{enumerate}
+    \item 37.5\% (\textcolor{red}{minor testo annotato})
+    \item 53.4\% (\textcolor{green}{maggior testo annotato})
+    \item 52.6\%
+\end{enumerate}
+La seconda e la prima spiegazione sono state annotate maggiormente e la prima è stata annotata di meno. \\
+
+Per la prima, la seconda e la terza spiegazione, l'annotazione è stata aggiornata:
+\begin{enumerate}
+    \item 19 volte
+    \item 42 volte (\textcolor{red}{maggior numero di correzioni})
+    \item 16 volte (\textcolor{green}{minor numero di correzioni})
+\end{enumerate}
+La seconda annotazione è stata corretta molto più spesso rispetto alla prima e la terza.
+
+\subsection{Tempo impiegato}
+Il tempo medio che i worker hanno impiegato per valutare ciascun elemento per ogni frase è stato:
+\begin{enumerate}
+    \item 164 secondi
+    \item 150 secondi
+    \item 165 secondi
+\end{enumerate}
+Tutte e tre le annotazioni hanno impiegato un tempo simile per essere valutate.
+
+\end{document}
