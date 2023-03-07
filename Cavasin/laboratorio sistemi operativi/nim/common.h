@@ -2,7 +2,7 @@
 #define NIM__COMMON_H_
 
 #include <termios.h>
-#include <stropts.h>
+#include <sys/ioctl.h>
 #include <asm/ioctls.h>
 
 #define SCK_PATH "socket"
