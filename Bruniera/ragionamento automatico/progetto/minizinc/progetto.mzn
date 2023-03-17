@@ -3,13 +3,9 @@ include "globals.mzn";
 par int: start;
 par int: limit;
 
-int: n = 5;
+par int: n;
 
-array [1..n,1..n] of int: m=[| 5, 1, 2, 4, 3,
-  | 4, 1, 3, -2, 5,
-  | -5, -3, -2, 4, 1,
-  | 1, 5, -4, 3, 2,
-  | 4, 3, 2, -1, -5 |];
+array [1..n,1..n] of par int: m;
 
               
 array [1..2,1..n+1] of var 1..n: path;
@@ -60,6 +56,11 @@ constraint forall (i in 2..n) (abs(time[1,i]-time[2,i]) > limit);
 var int: total = (sum (i in 1..n) (m[path[1,i],path[1,i+1]])) +
                (sum (i in 1..n) (m[path[2,i],path[2,i+1]]));
 
-solve minimize total;
-               
+% Massimizza la la differenza
+var int: max_difference = min (i in 2..n) (abs(time[1,i]-time[2,i]));
+
+solve satisfy;
+%solve minimize total;
+%solve maximize max_difference;
+
 %output ["path \(path)\ntime \(time)\ntotal \(total)"];
