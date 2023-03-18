@@ -19,7 +19,7 @@ constraint path[1,1] = start /\
            path[2,n+1] = start;
 
 % Inizi diversi (ridondante)
-constraint path[1,2] != path[2,2];
+%constraint path[1,2] != path[2,2];
 
 % Simmetry break
 constraint path[1,2] > path[2,2];
@@ -33,12 +33,12 @@ constraint forall (i in 1..n) (m[path[1,i],path[1,i+1]] >= 0);
 constraint forall (i in 1..n) (m[path[2,i],path[2,i+1]] >= 0);
 
 % Popolazione dell'array di tempi (accesso random)
-constraint forall (i in 1..n)
-              (time[1,path[1,i]] = sum (j in 1..i-1) 
-                  (m[path[1,j],path[1,j+1]]));
-constraint forall (i in 1..n)
-              (time[2,path[2,i]] = sum (j in 1..i-1)
-                  (m[path[2,j],path[2,j+1]]));
+%constraint forall (i in 1..n)
+%              (time[1,path[1,i]] = sum (j in 1..i-1) 
+%                  (m[path[1,j],path[1,j+1]]));
+%constraint forall (i in 1..n)
+%              (time[2,path[2,i]] = sum (j in 1..i-1)
+%                  (m[path[2,j],path[2,j+1]]));
               
 % Popolazione dei tempi ridondante (incrementale)
 constraint time[1,1] = 0 /\ time[2,1] = 0;
@@ -57,10 +57,10 @@ var int: total = (sum (i in 1..n) (m[path[1,i],path[1,i+1]])) +
                (sum (i in 1..n) (m[path[2,i],path[2,i+1]]));
 
 % Massimizza la la differenza
-var int: max_difference = min (i in 2..n) (abs(time[1,i]-time[2,i]));
+var int: min_difference = min (i in 2..n) (abs(time[1,i]-time[2,i]));
 
-solve satisfy;
-%solve minimize total;
-%solve maximize max_difference;
+%solve satisfy;
+solve minimize total;
+%solve maximize min_difference;
 
-%output ["path \(path)\ntime \(time)\ntotal \(total)"];
+output ["path: \([path[1,i] | i in 1..n+1])\n      \([path[2,i] | i in 1..n+1])\ntime: \([time[1,i] | i in 1..n])\n      \([time[1,i] | i in 1..n])\ntotal \(total)"];

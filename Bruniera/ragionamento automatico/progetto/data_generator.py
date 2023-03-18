@@ -3,13 +3,21 @@
 import random
 
 def random_graph(size):
-    text="["
-    for _i in range(0,size):
-        text += "|"
-        for _j in range(0,size):
-            text += f"{random.randint(-23,20)},"
-        text += "\n"
-    text += "|]"
-    return text
+    zinc="["
+    asp=""
+    for i in range(0,size):
+        zinc += "|"
+        for j in range(0,size):
+            length=random.randint(-25,20)
+            if length >= 0:
+                zinc += f"{length},"
+                asp += f"strada({i},{j},{length}).\n"
+            else:
+                zinc += "-1,"
+        zinc += "\n"
+    zinc += "|]\n"
+    return (zinc,asp)
 
-print(random_graph(100))
+graph = random_graph(12)
+print(graph[0])
+print(graph[1])
