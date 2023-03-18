@@ -1,8 +1,30 @@
-start(0)
+% Macchine
+car(a).
+car(b).
 
-limit(6)
+% Nodi
+node(X) :- strada(X,Y,Z).
+% I nodi sono N, se ne manca qualcuno è perché non ha nodi uscenti ed è insoddisfacibile
+N{node(X) : node(X)}N :- n(N).
 
-n(12)
+% Ci sono N+1 passaggi
+arc(X) :- node(X).
+arc(X) :- n(X).
+
+% Iniziano e finiscono in start
+step(Z,0,X) :- start(X), car(Z).
+step(Z,Y,X) :- start(X), car(Z), n(Y).
+% C'è esattamente uno step per ogni arco
+1{step(Z,Y,X) : arc(Y), node(X)}1 :- car(Z), arc(Y).
+% C'è esattamente uno step per ogni nodo (tranne il nodo start)
+1{step(Z,Y,X) : arc(Y), arc(Y)}1 :- car(Z), node(X), X != S, start(S).
+
+% Input
+start(0).
+
+limit(6).
+
+n(12).
 
 strada(0,2,0).
 strada(0,4,4).
