@@ -18,6 +18,6 @@ def random_graph(size):
     zinc += "|]\n"
     return (zinc,asp)
 
-graph = random_graph(5)
+graph = random_graph(100)
 print(graph[0])
 print(graph[1])
