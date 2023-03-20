@@ -3,9 +3,10 @@ car(a).
 car(b).
 
 % Nodi
-node(X) :- strada(X,Y,Z).
-% I nodi sono N, se ne manca qualcuno è perché non ha nodi uscenti ed è insoddisfacibile
+node(X) :- strada(X,Y,Z), strada(V,X,W).
+% I nodi sono N, se ne manca qualcuno è perché non ha nodi uscenti o entranti ed è insoddisfacibile
 N{node(X) : node(X)}N :- n(N).
+% c'erano modi più semplici, ma così escludo alcuni semplici casi insoddisfacibili
 
 % Ci sono N+1 passaggi
 arc(X) :- node(X).
@@ -15,9 +16,21 @@ arc(X) :- n(X).
 step(Z,0,X) :- start(X), car(Z).
 step(Z,Y,X) :- start(X), car(Z), n(Y).
 % C'è esattamente uno step per ogni arco
-1{step(Z,Y,X) : arc(Y), node(X)}1 :- car(Z), arc(Y).
+1{step(Z,Y,_)}1 :- car(Z), arc(Y).
 % C'è esattamente uno step per ogni nodo (tranne il nodo start)
-1{step(Z,Y,X) : arc(Y), arc(Y)}1 :- car(Z), node(X), X != S, start(S).
+1{step(Z,_,_)}1 :- car(Z), node(X), X != S, start(S).
+% Iniziano con step diversi (ridondante)
+:- step(a,1,X), step(b,1,X).
+
+% Due nodi sono o connessi o non connessi
+con(X,Y) :- strada(X,Y,Z).
+1{strada(X,Y,Z) : strada(X,Y,Z)}1 :- con(X,Y).
+:- strada(X,Y,Z), ncon(X,Y).
+1{con(X,Y); ncon(X,Y)}1 :- node(X), node(Y).
+
+% Gli step devono essere legali
+:- step(Z,T,X), step(Z,T+1,Y), ncon(X,Y), car(Z), arc(T).
+
 
 % Input
 start(0).
