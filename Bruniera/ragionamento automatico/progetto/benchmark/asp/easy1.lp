@@ -1,0 +1,13 @@
+start(0).
+limit(6).
+n(6).
+strada(0,4,14).
+strada(1,2,4).
+strada(1,3,0).
+strada(2,1,1).
+strada(2,4,16).
+strada(3,1,14).
+strada(3,4,19).
+strada(4,1,10).
+strada(5,2,5).
+strada(5,4,3).

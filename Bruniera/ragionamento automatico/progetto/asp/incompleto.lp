@@ -1,38 +1,35 @@
-% Elenco macchine
+% Macchine
 car(a).
 car(b).
 
-% Elenco nodi
-node(0..N-1) :- n(N).
+% Nodi
+node(X) :- strada(X,Y,Z).
+% I nodi sono N, se ne manca qualcuno è perché non ha nodi uscenti ed è insoddisfacibile
+N{node(X) : node(X)}N :- n(N).
 
-% Elenco tempi
-% Se non si limitano i tempi non finisce mai il grounding
-time(0..T) :- T = #sum{L : strada(X,Y,L)}.
+% Ci sono N+1 passaggi
+arc(X) :- node(X).
+arc(X) :- n(X).
 
-% Se esiste una strada *può* andare da X a Y
-{go(Z,X,Y)} :- strada(X,Y,_), car(Z).
+% Iniziano e finiscono in start
+step(Z,0,X) :- start(X), car(Z).
+step(Z,Y,X) :- start(X), car(Z), n(Y).
+% C'è esattamente uno step per ogni arco
+1{step(Z,Y,X) : arc(Y), node(X)}1 :- car(Z), arc(Y).
+% C'è esattamente uno step per ogni nodo (tranne il nodo start)
+1{step(Z,Y,X) : arc(Y), arc(Y)}1 :- car(Z), node(X), X != S, start(S).
+% Iniziano con step diversi (ridondante)
+:- step(a,1,X), step(b,1,X).
 
-% Se vai da un posto visitato ad un altro, lo visiti
-seen(Z,X) :- go(Z,S,X), start(S), car(Z).
-seen(Z,Y) :- seen(Z,X), go(Z,X,Y), car(Z).
+% Due nodi sono o connessi o non connessi
+con(X,Y) :- strada(X,Y,Z).
+1{strada(X,Y,Z) : strada(X,Y,Z)}1 :- con(X,Y).
+:- strada(X,Y,Z), ncon(X,Y).
+1{con(X,Y); ncon(X,Y)}1 :- node(X), node(Y).
 
-% Vai dappertutto una volta sola
-1{go(Z,X,Y) : strada(X,Y,_)}1 :- node(X), car(Z).
-1{go(Z,X,Y) : strada(X,Y,_)}1 :- node(Y), car(Z).
-:- node(X), not seen(Z,X), car(Z).
+% Gli step devono essere legali
+:- step(Z,T,X), step(Z,T+1,Y), ncon(X,Y), car(Z), arc(T).
 
-% Se era al nodo X al tempo T sarà al nodo Y al tempo T+L
-at(Z,X,T) :- go(Z,S,X), start(S), car(Z), strada(S,X,T), time(T).
-at(Z,Y,T+L) :- at(Z,X,T), go(Z,X,Y), car(Z), strada(X,Y,L), X != S, start(S), time(T), time(L).
-
-% Usare questa invece del "not seen" è più lento
-%:- node(X), car(Z), 1{not at(Z,X,T) : time(T)}1.
-
-% Non possono essere allo stesso nodo (eccetto S) a tempi troppo vicini
-:- at(a,X,T1), at(b,X,T2), node(X), time(T1), time(T2), limit(L), |T1-T2| <= L, x != S, start(S).
-
-% Questo symmetry break peggiora
-%:- go(a,S,X), go(a,S,Y), start(S), X > Y.
 
 % Input
 start(0).
