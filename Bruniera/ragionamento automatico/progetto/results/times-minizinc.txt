@@ -1,144 +1,144 @@
 benchmark/minizinc/easy1.dzn:
- =====UNSATISFIABLE=====
+=====UNSATISFIABLE=====
 % time elapsed: 0.13 s
 
 benchmark/minizinc/easy2.dzn:
- total 190
+total 190
 % time elapsed: 0.19 s
 
 benchmark/minizinc/easy3.dzn:
- total 129
+total 129
 % time elapsed: 3.44 s
 
 benchmark/minizinc/mid1.dzn:
- total 166
+total 166
 % time elapsed: 52.62 s
 
 benchmark/minizinc/mid2.dzn:
- total 142
+total 142
 % time elapsed: 32.91 s
 
 benchmark/minizinc/mid3.dzn:
- total 183
+total 183
 % time elapsed: 64.02 s
 
 benchmark/minizinc/mid4.dzn:
- total 142
+total 142
 % time elapsed: 30.54 s
 
 benchmark/minizinc/mid5.dzn:
- total 104
+total 104
 % time elapsed: 39.91 s
 
 benchmark/minizinc/mid6.dzn:
- total 132
+total 132
 % time elapsed: 32.59 s
 
 benchmark/minizinc/mid7.dzn:
- total 127
+total 127
 % time elapsed: 201.42 s
 
 benchmark/minizinc/mid8.dzn:
- total 133
+total 133
 % time elapsed: 106.21 s
 
 benchmark/minizinc/mid9.dzn:
- total 166
+total 166
 % time elapsed: 168.23 s
 
 benchmark/minizinc/mid10.dzn:
- total 153
+total 153
 % time elapsed: 19.76 s
 
 benchmark/minizinc/mid11.dzn:
- total 162
+total 162
 % time elapsed: 4.07 s
 
 benchmark/minizinc/mid12.dzn:
- time: [0, 60, 43, 35, 56, 22, 12, 17, 75, 19, 81, 60, 10, 16]
-      [0, 19, 10, 52, 66, 35, 69, 58, 16, 7, 5, 19, 51, 73]
+total 173
+% time elapsed: 300.01 s
 
 benchmark/minizinc/mid13.dzn:
- total 160
+total 160
 % time elapsed: 64.33 s
 
 benchmark/minizinc/mid14.dzn:
- total 124
+total 124
 % time elapsed: 46.25 s
 
 benchmark/minizinc/mid15.dzn:
- total 164
+total 164
 % time elapsed: 97.15 s
 
 benchmark/minizinc/mid16.dzn:
- total 141
+total 141
 % time elapsed: 20.57 s
 
 benchmark/minizinc/mid17.dzn:
- total 119
+total 119
 % time elapsed: 37.09 s
 
 benchmark/minizinc/mid18.dzn:
- total 150
+total 150
 % time elapsed: 35.59 s
 
 benchmark/minizinc/mid19.dzn:
- total 153
+total 153
 % time elapsed: 16.79 s
 
 benchmark/minizinc/mid20.dzn:
- total 119
+total 119
 % time elapsed: 27.46 s
 
 benchmark/minizinc/mid21.dzn:
- total 157
+total 157
 % time elapsed: 176.58 s
 
 benchmark/minizinc/mid22.dzn:
- total 149
+total 149
 % time elapsed: 43.63 s
 
 benchmark/minizinc/mid23.dzn:
- total 118
+total 118
 % time elapsed: 66.04 s
 
 benchmark/minizinc/mid24.dzn:
- total 169
+total 169
 % time elapsed: 41.62 s
 
 benchmark/minizinc/mid25.dzn:
- total 113
+total 113
 % time elapsed: 5.95 s
 
 benchmark/minizinc/mid26.dzn:
- total 117
+total 117
 % time elapsed: 41.51 s
 
 benchmark/minizinc/mid27.dzn:
- total 134
+total 134
 % time elapsed: 50.95 s
 
 benchmark/minizinc/mid28.dzn:
- total 113
+total 113
 % time elapsed: 19.12 s
 
 benchmark/minizinc/mid29.dzn:
- total 152
+total 152
 % time elapsed: 16.18 s
 
 benchmark/minizinc/mid30.dzn:
- total 106
+total 106
 % time elapsed: 17.04 s
 
 benchmark/minizinc/hard1.dzn:
- time: [0, 64, 22, 21, 52, 55, 19, 43, 19, 19, 11, 41, 19, 47, 41, 19, 60, 56, 65, 13, 5, 29, 52, 58, 48, 54, 49, 62, 49, 19]
-      [0, 37, 6, 65, 43, 72, 61, 23, 11, 11, 58, 21, 47, 57, 21, 47, 68, 73, 38, 60, 57, 47, 43, 75, 61, 71, 63, 70, 40, 11]
+total 145
+% time elapsed: 300.02 s
 
 benchmark/minizinc/hard2.dzn:
- time: [0, 120, 86, 9, 89, 87, 89, 33, 105, 52, 77, 76, 81, 22, 69, 60, 47, 94, 8, 53, 73, 95, 96, 10, 94, 95, 73, 60, 35, 85, 76, 112, 93, 33, 16, 39, 93, 33, 13, 93, 53, 63, 112, 94, 31, 94, 112, 52, 53, 0]
-      [0, 96, 38, 30, 17, 39, 36, 52, 54, 74, 17, 30, 42, 60, 57, 72, 40, 64, 67, 2, 0, 71, 72, 60, 70, 71, 27, 72, 81, 76, 69, 25, 85, 52, 64, 85, 85, 9, 63, 69, 19, 31, 25, 70, 57, 70, 9, 16, 2, 89]
+total 216
+% time elapsed: 300.05 s
 
 benchmark/minizinc/hard3.dzn:
- time: [0, 55, 45, 27, 136, 112, 106, 157, 85, 91, 12, 32, 66, 175, 36, 136, 4, 82, 2, 69, 25, 7, 105, 206, 172, 197, 37, 27, 164, 43, 7, 162, 183, 6, 116, 2, 143, 124, 69, 66, 159, 163, 74, 21, 36, 47, 134, 51, 45, 84, 129, 158, 174, 114, 59, 142, 11, 74, 98, 86, 111, 55, 161, 129, 197, 3, 153, 101, 4, 69, 153, 200, 174, 120, 32, 51, 85, 186, 165, 153, 205, 54, 180, 195, 27, 129, 2, 64, 76, 121, 112, 202, 2, 119, 122, 181, 79, 27, 2, 36]
-      [0, 113, 82, 204, 57, 1, 155, 41, 56, 194, 54, 98, 192, 37, 140, 105, 193, 101, 197, 169, 133, 56, 133, 92, 72, 78, 10, 140, 40, 117, 142, 60, 44, 197, 80, 95, 68, 132, 188, 41, 3, 113, 157, 181, 108, 24, 108, 161, 148, 184, 106, 34, 140, 78, 129, 101, 53, 132, 147, 174, 182, 48, 108, 32, 78, 93, 87, 55, 74, 106, 188, 98, 82, 103, 185, 21, 190, 47, 128, 121, 91, 82, 81, 164, 202, 10, 161, 18, 115, 82, 144, 60, 167, 133, 130, 197, 157, 75, 95, 122]
+total 418
+% time elapsed: 300.24 s
 
