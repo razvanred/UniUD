@@ -1,0 +1,144 @@
+benchmark/asp/easy1.lp:
+UNSATISFIABLE
+Time         : 0.028s (Solving: 0.00s 1st Model: 0.00s Unsat: 0.00s)
+
+benchmark/asp/easy2.lp:
+SATISFIABLE
+Time         : 0.769s (Solving: 0.02s 1st Model: 0.02s Unsat: 0.00s)
+
+benchmark/asp/easy3.lp:
+SATISFIABLE
+Time         : 1.123s (Solving: 0.03s 1st Model: 0.03s Unsat: 0.00s)
+
+benchmark/asp/mid1.lp:
+SATISFIABLE
+Time         : 1.661s (Solving: 0.03s 1st Model: 0.03s Unsat: 0.00s)
+
+benchmark/asp/mid2.lp:
+SATISFIABLE
+Time         : 1.630s (Solving: 0.02s 1st Model: 0.02s Unsat: 0.00s)
+
+benchmark/asp/mid3.lp:
+SATISFIABLE
+Time         : 1.584s (Solving: 0.19s 1st Model: 0.19s Unsat: 0.00s)
+
+benchmark/asp/mid4.lp:
+SATISFIABLE
+Time         : 1.497s (Solving: 0.02s 1st Model: 0.02s Unsat: 0.00s)
+
+benchmark/asp/mid5.lp:
+SATISFIABLE
+Time         : 1.655s (Solving: 0.03s 1st Model: 0.03s Unsat: 0.00s)
+
+benchmark/asp/mid6.lp:
+SATISFIABLE
+Time         : 1.767s (Solving: 0.12s 1st Model: 0.12s Unsat: 0.00s)
+
+benchmark/asp/mid7.lp:
+SATISFIABLE
+Time         : 1.663s (Solving: 0.05s 1st Model: 0.05s Unsat: 0.00s)
+
+benchmark/asp/mid8.lp:
+SATISFIABLE
+Time         : 1.627s (Solving: 0.05s 1st Model: 0.05s Unsat: 0.00s)
+
+benchmark/asp/mid9.lp:
+SATISFIABLE
+Time         : 1.345s (Solving: 0.03s 1st Model: 0.03s Unsat: 0.00s)
+
+benchmark/asp/mid10.lp:
+SATISFIABLE
+Time         : 1.458s (Solving: 0.04s 1st Model: 0.04s Unsat: 0.00s)
+
+benchmark/asp/mid11.lp:
+SATISFIABLE
+Time         : 1.565s (Solving: 0.05s 1st Model: 0.05s Unsat: 0.00s)
+
+benchmark/asp/mid12.lp:
+SATISFIABLE
+Time         : 1.619s (Solving: 0.02s 1st Model: 0.02s Unsat: 0.00s)
+
+benchmark/asp/mid13.lp:
+SATISFIABLE
+Time         : 1.688s (Solving: 0.04s 1st Model: 0.04s Unsat: 0.00s)
+
+benchmark/asp/mid14.lp:
+SATISFIABLE
+Time         : 1.423s (Solving: 0.11s 1st Model: 0.11s Unsat: 0.00s)
+
+benchmark/asp/mid15.lp:
+SATISFIABLE
+Time         : 1.471s (Solving: 0.04s 1st Model: 0.04s Unsat: 0.00s)
+
+benchmark/asp/mid16.lp:
+SATISFIABLE
+Time         : 1.520s (Solving: 0.05s 1st Model: 0.05s Unsat: 0.00s)
+
+benchmark/asp/mid17.lp:
+SATISFIABLE
+Time         : 1.913s (Solving: 0.04s 1st Model: 0.04s Unsat: 0.00s)
+
+benchmark/asp/mid18.lp:
+SATISFIABLE
+Time         : 1.587s (Solving: 0.03s 1st Model: 0.03s Unsat: 0.00s)
+
+benchmark/asp/mid19.lp:
+SATISFIABLE
+Time         : 1.486s (Solving: 0.03s 1st Model: 0.03s Unsat: 0.00s)
+
+benchmark/asp/mid20.lp:
+SATISFIABLE
+Time         : 1.660s (Solving: 0.04s 1st Model: 0.04s Unsat: 0.00s)
+
+benchmark/asp/mid21.lp:
+SATISFIABLE
+Time         : 1.647s (Solving: 0.03s 1st Model: 0.03s Unsat: 0.00s)
+
+benchmark/asp/mid22.lp:
+SATISFIABLE
+Time         : 1.466s (Solving: 0.05s 1st Model: 0.05s Unsat: 0.00s)
+
+benchmark/asp/mid23.lp:
+SATISFIABLE
+Time         : 1.681s (Solving: 0.07s 1st Model: 0.07s Unsat: 0.00s)
+
+benchmark/asp/mid24.lp:
+SATISFIABLE
+Time         : 1.495s (Solving: 0.02s 1st Model: 0.02s Unsat: 0.00s)
+
+benchmark/asp/mid25.lp:
+SATISFIABLE
+Time         : 1.591s (Solving: 0.05s 1st Model: 0.05s Unsat: 0.00s)
+
+benchmark/asp/mid26.lp:
+SATISFIABLE
+Time         : 1.631s (Solving: 0.03s 1st Model: 0.03s Unsat: 0.00s)
+
+benchmark/asp/mid27.lp:
+SATISFIABLE
+Time         : 1.633s (Solving: 0.05s 1st Model: 0.05s Unsat: 0.00s)
+
+benchmark/asp/mid28.lp:
+SATISFIABLE
+Time         : 1.600s (Solving: 0.08s 1st Model: 0.08s Unsat: 0.00s)
+
+benchmark/asp/mid29.lp:
+SATISFIABLE
+Time         : 1.638s (Solving: 0.11s 1st Model: 0.11s Unsat: 0.00s)
+
+benchmark/asp/mid30.lp:
+SATISFIABLE
+Time         : 1.651s (Solving: 0.03s 1st Model: 0.03s Unsat: 0.00s)
+
+benchmark/asp/hard1.lp:
+SATISFIABLE
+Time         : 6.227s (Solving: 0.80s 1st Model: 0.80s Unsat: 0.00s)
+
+benchmark/asp/hard2.lp:
+SATISFIABLE
+Time         : 14.824s (Solving: 1.80s 1st Model: 1.80s Unsat: 0.00s)
+
+benchmark/asp/hard3.lp:
+SATISFIABLE
+Time         : 66.571s (Solving: 15.42s 1st Model: 15.41s Unsat: 0.00s)
+
