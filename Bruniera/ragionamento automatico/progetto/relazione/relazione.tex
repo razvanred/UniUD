@@ -134,8 +134,11 @@
 
     Le strade di una città sono rappresentate mediante una matrice di adiacenza, $M[x,y]=c$ significa che tra l'incrocio $x$ e l'incrocio $y$ c'è una strada di lunghezza $\qty[parse-numbers = false]{c}{\kilo\meter}$. Nella rappresentazione logica useremo invece fatti del tipo $\text{\lstinline{strada}}(x,y,c)$. Due auto partono dallo stesso incrocio prendendo due strade diverse. Si trovi un piano per le due auto tale da permettere a ciascuna di effettuare un circuito Hamiltoniano, senza mai fermarsi e senza mai passare per un incrocio allo stesso tempo (inteso con una certa tolleranza, che so mezz'ora, vedi tu come formularlo in modo sensato) dell'altra auto. Non è necessario che ritornino al punto di partenza allo stesso momento ma entrambe lo fanno.As si, assumiamo ce le auto vadano costantemente alla stessa velocità.per comodità metterei 1 minuto a $\unit{\kilo\meter}$. E le lunghezze delle strade le farei intere.
 
-    Ho soprannominato il problema \emph{"Shy" Travelling Salesmen Problem} (STSP) perché è simile al TSP, ma con il requisito che i due commessi viaggiatori "timidi" mantengano le distanze.
+    Ho soprannominato il problema \emph{"Shy" Travelling Salesmen Problem} (STSP) perché è simile al TSP, ma con il requisito che i due commessi viaggiatori "timidi" mantengano le distanze entro una certa tolleranza che chiamerò "timidezza".
     Sempre per similitudine con TSP, nel caso di COP ho deciso di ottimizzare la somma del tempo di percorrenza delle due macchine.
+
+    I modelli si trovano rispettivamente nei file \lstinline{minizinc/progetto.mzn} e \lstinline{asp/progetto.lp}. I risultati dei benchmark, invece si trovano nella cartella \lstinline{results/}.
+    Gli script \lstinline{data_generator.py}, \lstinline{bench-minizinc.fish} e \lstinline{bench-asp.fish} permettono di generare un batch di istanze benchmark e di eseguirli (il primo richiede python, mentre gli altri due fish-shell).
 \end{abstract}
 
 \newpage
@@ -191,6 +194,8 @@ Dopo averli calcolati, semplicemente un vincolo controlla che i tempi di visita 
 Come symmetry break (implicato dal vincolo sui tempi) utilizzo il vincolo \lstinline{constraint path[1,2] > path[2,2]}.
 Se il grafo fosse stato indiretto avrei potuto aggiungere anche il vincolo \lstinline{constraint path[1,2] > path[2,n]}, ma in un grafo indiretto questo potrebbe rendere insoddisfacibile un'istanza, ad esempio se tutti i nodi entranti in \lstinline{start} partono da nodi di indice più alto di tutti i nodi uscenti.
 
+Ho sperimentato anche con altri metodi per calcolare i tempi e con altri vincoli ridondanti (alcuni dei quali sono ancora commentati nel file della soluzione), ma quelli appena illustrati hanno fornito i risultati migliori.
+
 \paragraph{Goal}
 Come obbiettivo sommo i pesi di tutti gli archi attraversati da entrambe le macchine (che saranno sempre positivi) e minimizzo il valore risultante.
 Questo valore viene stampato in output e rappresenta l'ottimo raggiunto.
@@ -214,9 +219,35 @@ Con un approccio del genere non ha senso utilizzare riavvii. Un condizionale sel
 Utilizzare questa euristica per input molto grandi ha risultati pessimi, non riesce a trovare velocemente un buon ottimo ed ovviamente non è possibile esaurire la ricerca velocemente.
 
 \paragraph{Grandi istanze}
-Per le istanze grandi, il risultato migliore lo ho trovato con un approccio "aggressivamente probabilistico" basato su Large Neighborhood Search.
+Per le istanze grandi, il risultato migliore lo ho trovato con un approccio "aggressivamente probabilistico" basato su una semplice strategia di Large Neighborhood Search (LNS).
+Questo approccio ottiene risultati sorprendentemente buoni, mentre tentare una ricerca più esaustiva non avrebbe senso su istanze oltre una certa dimensione.
+
+Utilizzando l'euristica \lstinline{relax_and_reconstruct}. Ad ogni riavvio le variabili hanno una certa probabilità di essere mantenute per l'esplorazione successiva.
+Ho notato che istanza molto grandi funzionano meglio con probabilità più alte mentre quelle più piccole con probabilità più basse. Quindi la probabilità è calcolata dalla dimensione del grafo, e limitata al massimo a $\qty{90}{\percent}$, che viene raggiunta da istanze con \lstinline{n >= 70}.
+
+L'esplorazione avviene con una strategia \lstinline{first_fail} per la scelta delle variabili, e \lstinline{indomain_random} per la scelta dei valori.
+Utilizzare questa strategia fa una notevole differenza nel trovare velocemente un ottimo.
+
+Per i riavvii ci sono due strategie principali: riavvii rapidi, per evitare di "incagliarsi" in un ramo sbagliato e sfruttare di più la LNS; e riavvii lenti, per esplorare meglio un ramo ed assicurarsi di non perdersi alcuni ottimi. Entrambe le tecniche hanno vantaggi e svantaggi.
+La ricerca con la sequenza di Luby (con l'annotazione \lstinline{restart_luby}) permette di utilizzare entrambe le tecniche, alternando fasi di riavvii molto rapidi, ed alcuni riavvii esponenzialmente sempre più lenti.
+Si ottenevano buoni risultati anche con i riavvii esponenziali, ed una base molto bassa (ad esempio $1.00001$), però a contrario della sequenza di Luby, questa ad un certo punto smette di fare riavvii rapidi e rimane "bloccata" su un ottimo.
+
+Utilizzare queste euristiche per un piccolo input non da buoni risultati. Non solo non si arresta mai perché continuando a riavviare, e procedendo randomicamente, non riesce ad esaurire la ricerca.
+Ma sotto una certa dimensione di input è addirittura più lento della ricerca esaustiva nel trovare l'ottimo.
 
 \paragraph{Risultato finale}
+La soglia oltre la quale gli input sono considerati "grandi" è stata trovata per tentativi. Corrisponde alla dimensione oltre la quale la ricerca eccede il limite di $5$ minuti, che sulla mia macchina corrisponde a \lstinline{n > 14}, ma non esiste una soglia "universale".
+
+Se oltre alla dimensione degli input si varia anche la tolleranza agli incontri, il tempo potrebbe aumentare ed eccedere il limite. Tuttavia, nei test effettuati si è visto che in questi casi in cui l'istanza è piccola ma comunque eccede il limite, la ricerca esaustiva trova un ottimo prima di LNS.
+Avere questa tolleranza come parametro non era richiesto dalla consegna, quindi non ho studiato approfonditamente cosa succede al suo variare.
+
+In realtà, utilizzare multithreading avrebbe permesso di spostare questa soglia più in alto. Ma per qualche ragione, la LNS diventava più lenta in multithreading, quindi come compromesso non è stato utilizzato.
+
+Un possibile sviluppo futuro potrebbe essere una selezione più accurata dell'euristica da utilizzare, analizzando meglio la macchina ed il problema, invece che limitarsi ad una condizione sulla dimensione del grafo.
+
+Questa euristica selettiva permette al modello di affrontare con buoni risultati sia problemi medio-piccoli (che costituiscono la maggior parte dei benchmark forniti). Che casi molto grandi, di cui sono stati forniti tre esempi, rispettivamente con \lstinline{n = 30}, \lstinline{n = 50}, ed \lstinline{n = 100}.
+Per ottenere buoni risultati anche con input ancora più grandi bisognerebbe modificare l'espressione \lstinline{min(90, 55 + (n div 2))} per raggiungere probabilità più alte di $\qty{90}{\percent}$ con input più grandi di \lstinline{n = 100}.
+
 \begin{lstlisting}[language=minizinc]
 solve 
   ::relax_and_reconstruct([path[j,i] | i in 1..n+1, j in 1..2], min(90, 55 + (n div 2)))
@@ -236,6 +267,32 @@ solve
 \section{ASP}
 
 \subsection{Modellazione}
+
+A causa di una piccola svista che non valeva la pena di risolvere, nella codifica per ASP i nodi sono numerati partendo da $0$, mentre la matrice per minizinc è indicizzata partendo da $1$.
+Le istanze di benchmark sono esattamente le stesse, solo numerati in modo diverso.
+Se proprio si volesse avere soluzioni allineate sarebbe sufficiente incrementare di $1$ tutti gli indici nelle istanze fornite.
+
+\paragraph{Circuito Hamiltoniano}
+Come primo approccio ho tentato di "tradurre" direttamente la soluzione minizinc, implementando una sorta di vettore come una serie di fatti del tipo \lstinline{step(Z,Y,X)}, che significa al passo \lstinline{Y}, la macchina \lstinline{Z} si trova al nodo \lstinline{X}.
+Inoltre c'erano alcune differenze nel come produce l'elenco dei nodi.
+Questa soluzione incompleta si può trovare nel file \lstinline{asp/incompleto.lp}.
+
+Alla fine è stata abbandonata perché le prestazioni non erano soddisfacenti, ho invece optato per una versione modificata dell'implementazione di Hamilton Circuit vista a lezioni.
+L'unica differenza (a parte i nomi delle funzioni) è l'aggiunta della variabile \lstinline{Z} per indicare di quale macchina si tratta.
+
+\begin{lstlisting}[language=prolog]
+{go(Z,X,Y)} :- strada(X,Y,_), car(Z).
+
+seen(Z,X) :- go(Z,S,X), start(S), car(Z).
+seen(Z,Y) :- seen(Z,X), go(Z,X,Y), car(Z).
+
+1{go(Z,X,Y) : strada(X,Y,_)}1 :- node(X), car(Z).
+1{go(Z,X,Y) : strada(X,Y,_)}1 :- node(Y), car(Z).
+:- node(X), not seen(Z,X), car(Z).
+\end{lstlisting}
+
+\paragraph{Timidezza}
+Per modellare la tolleranza agli incontri introduco una nuova funzione 
 
 \subsection{Confronto con minizinc}
 
