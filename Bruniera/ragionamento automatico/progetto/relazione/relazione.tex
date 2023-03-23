@@ -1,0 +1,246 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage{authblk}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[a-2b,mathxmp]{pdfx}[2018/12/22]
+\usepackage[pdfa]{hyperref}
+\usepackage{pdfpages}
+\usepackage{siunitx}
+\usepackage{colorprofiles}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+% stile per i blocchi di codice
+% non so se serviranno
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\lstdefinelanguage{minizinc}{
+    morekeywords={
+        %% MiniZinc keywords
+        %%
+        ann, annotation, any, array, assert,
+        bool,
+        constraint,
+        else, elseif, endif, enum, exists,
+        float, forall, function,
+        if, in, include, int,
+        list,
+        minimize, maximize,
+        of, op, output,
+        par, predicate,
+        record,
+        set, solve, string,
+        test, then, tuple, type,
+        var,
+        where,
+        %% MiniZinc functions
+        %%
+        abort, abs, acosh, array_intersect, array_union,
+        array1d, array2d, array3d, array4d, array5d, array6d, asin, assert, atan,
+        bool2int,
+        card, ceil, combinator, concat, cos, cosh,
+        dom, dom_array, dom_size, dominance,
+        exp,
+        fix, floor,
+        index_set, index_set_1of2, index_set_2of2, index_set_1of3, index_set_2of3, index_set_3of3,
+        int2float, is_fixed,
+        join,
+        lb, lb_array, length, let, ln, log, log2, log10,
+        min, max,
+        pow, product,
+        round,
+        set2array, show, show_int, show_float, sin, sinh, sqrt, sum,
+        tan, tanh, trace,
+        ub, and ub_array,
+        %% Search keywords
+        %%
+        bool_search, int_search, seq_search, priority_search,
+        %% MiniSearch keywords
+        %%
+        minisearch, search, while, repeat, next, commit, print, post, sol, scope, time_limit, break, fail
+    },
+    sensitive=true, % are the keywords case sensitive
+    morecomment=[l][\em\color{ForestGreen}]{\%},
+    %morecomment=[s]{/*}{*/},
+    morestring=[b]",
+}
+% fine stile
+
+
+% Write a Minizinc and an ASP program capable of finding a solution to the
+% following  problem.
+% Prepare a battery of 30 benchmark instances.
+% Generate them randomly but prepare some easy/small instances (a couple
+% of running time seconds),
+% some average instances (a couple of minutes) and some hard instances
+% (exceeding timeout).
+% 
+% Run both the Minizinc and the ASP encoding on all the instances,
+% possibly exploring different search strategies,
+% with a timeout of 5 minutes for each test
+% (``configuration'' option in Minizinc, --time-limit option in clingo, in
+% both cases you can use linux tricks)
+% 
+% In case of COPs, report the best value for the solution found within the
+% timeout.
+% 
+% Write a short report (5-10) pages report containing 1) the problem
+% as written above 2) your models (and the reasons for some choices),
+% and 3) a presentation of the execution results.
+% Prepare the programs and the benchmark instances used in a unique zip file.
+
+\begin{titlepage}
+    \title{Progetto di Automated Reasoning\\Shy Travelling Salesmen Problem}
+    \author{Bruniera Alvise}
+    \affil{Università degli studi di Udine}
+    \date{\today}
+\end{titlepage}
+
+\begin{document}
+
+\maketitle
+
+\newpage
+
+\begin{abstract}
+    Scrivi un programma in minizinc e ASP in grado di trovare una soluzione al seguente problema (STSP). Prepara una batteria di 30 istanze casuali, includendo alcune più facili, alcune medie ed alcune che eccedano il timeout di 5 minuti.
+    Possibilmente sperimenta con diverse strategie. Nel caso di COP riporta il risultato migliore ottenuto entro il timeout.
+
+    Le strade di una città sono rappresentate mediante una matrice di adiacenza, $M[x,y]=c$ significa che tra l'incrocio $x$ e l'incrocio $y$ c'è una strada di lunghezza $\qty[parse-numbers = false]{c}{\kilo\meter}$. Nella rappresentazione logica useremo invece fatti del tipo $\text{\lstinline{strada}}(x,y,c)$. Due auto partono dallo stesso incrocio prendendo due strade diverse. Si trovi un piano per le due auto tale da permettere a ciascuna di effettuare un circuito Hamiltoniano, senza mai fermarsi e senza mai passare per un incrocio allo stesso tempo (inteso con una certa tolleranza, che so mezz'ora, vedi tu come formularlo in modo sensato) dell'altra auto. Non è necessario che ritornino al punto di partenza allo stesso momento ma entrambe lo fanno.As si, assumiamo ce le auto vadano costantemente alla stessa velocità.per comodità metterei 1 minuto a $\unit{\kilo\meter}$. E le lunghezze delle strade le farei intere.
+
+    Ho soprannominato il problema \emph{"Shy" Travelling Salesmen Problem} (STSP) perché è simile al TSP, ma con il requisito che i due commessi viaggiatori "timidi" mantengano le distanze.
+    Sempre per similitudine con TSP, nel caso di COP ho deciso di ottimizzare la somma del tempo di percorrenza delle due macchine.
+\end{abstract}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Introduzione al problema}
+
+Prima di affrontare le soluzione è necessario chiarire alcuni dettagli sul problema, che la consegna non specifica.
+
+Per cominciare, non viene specificato come rappresentare nella matrice quando due incroci \emph{non} sono collegati. Per comodità ho deciso di rappresentarlo inserendo un numero negativo nella matrice, e considerando invece $0$ come una strada.
+Usare numeri negativi ha facilitato lo sviluppo, in questo modo per attivare o disattivare un a strada in un test era questione di cambiare un segno. Quanto allo zero, si tratta di una decisione arbitraria, ad ogni modo non rende più semplice il problema.
+Questo non ha riscontri nella codifica ASP, se non nel permettere fatti del tipo $\text{\lstinline{strada}}(x,y,0)$, perché le strade assenti sono semplicemente assenti.
+
+Un'altra precisazione riguarda la direzionalità e la riflessività del grafo. La consegna non specifica che il grafo debba essere indiretto, ache se nel TSP classico è così.
+Per semplificare la generazione delle istanze di benchmark ho deciso di usare un grafo indiretto, che non richiede di assicurarsi che $m[x,y]=m[y,x]$. Questo ha avuto degli effetti marginali sul modello utilizzato.
+Per quanto riguarda la riflessivita, se anche ci fosse un arco che connette un nodo a se stesso, questo non sarebbe mai utilizzato in un circuito perché violerebbe il requisito di attraversare ogni incrocio una volta sola, quindi non fa differenza che siano ammessi o meno.
+
+La direzionalità del grafo ed ammettere archi di lunghezza $0$ sono un po' meno naturali rispetto alla formulazione classica di TSP, ma sono comunque riconducibili al mondo reale come la presenza di ostacoli in un solo lato della strada, e la presenza di incroci molto ravvicinati, ad esempio in una rotonda.
+
+I casi benchmark forniti sono "standardizzati" nel senso che tutti gli archi assenti sono $-1$ e non sono presenti archi riflessivi.
+
+Sia la tolleranza agli incontri, che il nodo di partenza, sono indicati nell'input del problema e possono essere alterati a piacere. Per semplicità i benchmark usano sempre gli stessi valori. In particolare usano $6$ minuti per la tolleranza, scelta in modo puramente arbitrario.
+
+Per quanto riguarda il valore da ottimizzare, ho scelto di minimizzare la somma dei tempi di percorrenza totali.
+Ho considerato di utilizzare il massimo dei tempi, ma mi sembrava meno interessante come soluzione. In usando il massimo i due circuiti sarebbero stati in un certo senso "disaccoppiati" permettendo a quello più corto di crescere arbitrariamente senza cambiare il punteggio finche non supera il più lungo.
+Ho considerato anche di massimizzare il distacco tra i due viaggiatori, ma questo avrebbe reso inutile il valore della tolleranza e sarebbe diventato in generale un problema meno realistico.
+
+\section{Minizinc}
+
+\subsection{Modellazione}
+
+A metà dello sviluppo ho notato che la libreria standard di minizinc fornisce alcuni global constraint per verificare che un vettore di precedenze rappresenti un circuito in un grafo. Ho deciso di non utilizzarla per più motivi, anzitutto perché questo avrebbe eliminato metà della consegna, inoltre perché ero già a buon punto e ottenevo comunque prestazioni soddisfacenti senza utilizzarlo.
+
+\paragraph{Circuito Hamiltoniano}
+Per rappresentare il circuito utilizzo semplicemente un vettore bidimensionale \lstinline{path} di tipo \lstinline{array [1..2,1..n+1] of var 1..n} in cui sono indicati per le due macchine la sequenza di nodi da attraversare.
+
+Per verificare che sia un Hamiltoniano utilizzo 5 vincoli. Il primo richiede che il primo e l'ultimo nodo di entrambi i percorsi siano uguali al nodo di partenza.
+Due richiedono che tutti i nodi nel percorso siano diversi (utilizzando il global constraint \lstinline{all_different}). E gli ultimi due controllano che per ogni coppia di nodi consecutivi nel percorso esista l'arco nella matrice.
+
+Su tutti questi vincoli ho utilizzato l'annotazione \lstinline{::domain} per forzare la domain propagation, anche se sugli ultimi due non sembrava avere effetti. Su tutti gli altri vincoli del modello, qualsiasi tipo di propagazione provassi o non aveva effetti, o peggiorava le prestazioni o veniva direttamente rifiutata dal solver.
+
+\paragraph{Timidezza}
+Per verificare che le due macchine non si incontrassero entro una tolleranza ho utilizzato un secondo vettore \lstinline{time} di tipo \lstinline{array [1..2,1..n] of var 0..max_time} in cui \lstinline{max_time} è un grezzo upper bound dei tempi ottenuto sommando tutti i valori positivi della matrice \lstinline{m}.
+Questo limite dovrebbe aiutare il solver a risolvere il modello. Inoltre avrebbe permesso di utilizzare le ottimizzazioni del compilatore superiori ad \lstinline{-O2}, che poi non sono state usate perché per qualche ragione era più veloce con le ottimizzazioni di default.
+
+Il vettore viene popolato prima inserendo $0$ nelle celle corrispondenti al nodo di partenza e poi incrementalmente utilizzando l'ultimo valore inserito nel vettore, ed il peso del prossimo arco da attraversare. Il vettore è stato etichettato con l'annotazione \lstinline{::is_defined_var} poiché non serve fare ricerca su questi valori, ma dipendono direttamente dal percorso, il chè ha un osservabile impatto sulle prestazioni.
+
+Dopo averli calcolati, semplicemente un vincolo controlla che i tempi di visita corrispondenti a ciascun nodo abbiano una differenza (assoluta) maggiore della variabile \lstinline{limit}.
+
+Come symmetry break (implicato dal vincolo sui tempi) utilizzo il vincolo \lstinline{constraint path[1,2] > path[2,2]}.
+Se il grafo fosse stato indiretto avrei potuto aggiungere anche il vincolo \lstinline{constraint path[1,2] > path[2,n]}, ma in un grafo indiretto questo potrebbe rendere insoddisfacibile un'istanza, ad esempio se tutti i nodi entranti in \lstinline{start} partono da nodi di indice più alto di tutti i nodi uscenti.
+
+\paragraph{Goal}
+Come obbiettivo sommo i pesi di tutti gli archi attraversati da entrambe le macchine (che saranno sempre positivi) e minimizzo il valore risultante.
+Questo valore viene stampato in output e rappresenta l'ottimo raggiunto.
+
+\subsection{Euristiche}
+
+Queste euristiche sono la parte del progetto in cui mi sono concentrato maggiormente e che hanno influito di più sulla qualità del risultato.
+
+Ho cominciato cercando di ottimizzare le euristiche un input piccolo, e dopo aver trovato un buon risultato, lo ho provato su un input molto grande ed ho scoperto che le euristiche per gli input piccoli sono pessime per quelli grandi e viceversa.
+
+Tuttavia, ho anche notato che è possibile utilizzare espressioni e condizionali all'interno delle euristiche. Quindi non ero costretto ne a scegliere di ottimizzare per una sola dimensione ne a fare compromessi, ma potevo utilizzare un approccio ibrido.
+
+\paragraph{Piccole istanze}
+Per le piccole istanze, ho notato che un approccio esaustivo e naive produce i risultati migliori, rispetto a tecniche più probabilistiche.
+
+Trattandosi di un circuito, ha senso che le variabili vengano popolate in \lstinline{input_order}. Ma per la scelta del valore \lstinline{indomani_reverse_split} non ho una spiegazione, ho il sospetto che funzioni bene solo perché sono istanze casuali.
+Ho anche notato che \lstinline{indomani_reverse_split} non è più veloce di \lstinline{indomani_split} ad esaurire la ricerca (cambia solo se iniziare dalla metà superiore od inferiore) ma nei casi testati trova l'ottimo prima.
+
+Con un approccio del genere non ha senso utilizzare riavvii. Un condizionale selezione l'euristica \lstinline{restart_none} per le istanze piccole.
+
+Utilizzare questa euristica per input molto grandi ha risultati pessimi, non riesce a trovare velocemente un buon ottimo ed ovviamente non è possibile esaurire la ricerca velocemente.
+
+\paragraph{Grandi istanze}
+Per le istanze grandi, il risultato migliore lo ho trovato con un approccio "aggressivamente probabilistico" basato su Large Neighborhood Search.
+
+\paragraph{Risultato finale}
+\begin{lstlisting}[language=minizinc]
+solve 
+  ::relax_and_reconstruct([path[j,i] | i in 1..n+1, j in 1..2], min(90, 55 + (n div 2)))
+  ::if n > 14 then 
+    int_search(path, first_fail, indomain_random) 
+   else 
+    int_search(path, input_order, indomain_reverse_split) 
+   endif
+  ::if n > 14 then
+    restart_luby(n div 4) 
+   else 
+    restart_none
+   endif
+  minimize total;
+\end{lstlisting}
+
+\section{ASP}
+
+\subsection{Modellazione}
+
+\subsection{Confronto con minizinc}
+
+\section{Risultati dei benchmark}
+
+
+
+\end{document}

@@ -49,7 +49,7 @@ constraint forall (i in 1..n) (m[path[2,i],path[2,i+1]] >= 0) ::domain;
 %                  (m[path[2,j],path[2,j+1]]));
               
 % Popolazione dei tempi ridondante (incrementale)
-constraint time[1,1] = 0 /\ time[2,1] = 0;
+constraint time[1,start] = 0 /\ time[2,start] = 0;
 constraint forall (i in 2..n)
               (time[1,path[1,i]] = time[1,path[1,i-1]] + m[path[1,i-1],path[1,i]]);
 constraint forall (i in 2..n)
