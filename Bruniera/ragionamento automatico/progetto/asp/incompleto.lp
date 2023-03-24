@@ -1,3 +1,6 @@
+% Questo è il primo tentativo (scartato) di implementare
+% hamilton circuit, "traducendo" direttamente da minizinc
+
 % Macchine
 car(a).
 car(b).

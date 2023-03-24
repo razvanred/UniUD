@@ -1,4 +1,10 @@
 #!/usr/bin/fish
+
+# Questo script esegue il benchmark solo di asp
+# serve la shell fish per usarlo
+
+# I risultati precedenti vengono eliminati al lancio
+
 function asp-run -a file
     echo $file
     set output (clingo asp/progetto.lp $file --time-limit=300 2>/dev/null | string split0)

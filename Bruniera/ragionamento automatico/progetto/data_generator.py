@@ -1,5 +1,7 @@
 #!/bin/env python3
 
+# Questo script genera le istanze casuali
+
 import random
 import sys
 

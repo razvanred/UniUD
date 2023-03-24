@@ -1,4 +1,10 @@
 #!/usr/bin/fish
+
+# Questo script esegue il benchmark solo di minizinc
+# serve la shell fish per usarlo
+
+# I risultati precedenti vengono eliminati al lancio
+
 function minizinc-run -a file
     echo $file
     set output (minizinc --solver org.gecode.gecode minizinc/progetto.mzn $file --output-time --time-limit 300000 2>/dev/null | string split0)

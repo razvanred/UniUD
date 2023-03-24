@@ -1,5 +1,7 @@
 #!/bin/env python3
 
+# Questo script legge i file dei tempi e li formatta in una tabella latex
+
 import re
 import sys
 

@@ -333,6 +333,34 @@ La maggior parte del tempo in realtà è occupata dal grounding, ma anche consid
 
 \section{Risultati dei benchmark}
 
+Come benchmark fornisco:
+
+\begin{itemize}
+    \item $3$ Istanze piccole (di dimensioni $6$, $10$, e $12$)
+    \item $30$ Istanze medie (di dimensioni $14$)
+    \item $3$ Istanze grandi (di dimensioni $30$, $50$, e $100$)
+\end{itemize}
+
+Nella tabella seguente sono riportati, oltre al tempo di esecuzione, la soddisfacibilità dell'istanza, e nel caso di COP l'ottimo raggiunto.
+Per ASP ho riportato sia il tempo totale, che quello effettivamente richiesto dal solving (il resto è impiegato dal grounding).
+
 \input{../results/table.txt}
+
+\paragraph{Considerazioni}
+Il time limit era di $300$ secondi, quindi l'istanza \lstinline{mid12}, e le tre istanze \lstinline{hard} sono quelle che eccedono il limite di tempo.
+Le tre istanze difficili sono le uniche in cui è stata usate l'euristiche per i problemi grandi, le altre erano entro il limite. In particolare le istanze \lstinline{mid} sono esattamente la dimensione massima prima di superare il limite di dimensione.
+
+Si può notare che il tempo impiegato dalle istanze di dimensione $14$ è molto variabile, con alcune ottimizzate in meno di $10$ secondi, ed altre che richiedono diversi minuti.
+Dovendo ottimizzare i circuiti, altri fattori come la quantità di soluzioni ammissibili e la difficolta nel trovarle, influisce sul tempo necessario per l'ottimizzazione.
+Comunque la prima soluzione viene prodotta quasi istantaneamente anche nei casi che eccedono i $300$ secondi.
+
+L'istanza \lstinline{mid12} è l'unica istanza ``non grande" del batch che ha superato il limite di tempo. In questo caso l'approccio stile LNS avrebbe ottenuto un ottimo migliore ($169$).
+Generalmente durante lo sviluppo questo non era vero per le istanza di questa dimensione, si tratta di un caso particolare che avrebbe richiesto molto più tempo degli altri per una ricerca esaustiva.
+Completando la ricerca su una macchina più veloce risulta che l'ottimo è $163$, con almeno altre due soluzioni tra questa e $169$. Quindi anche l'approccio LNS non era ottimale in questo caso.
+
+ASP sembra molto più consistente con tutte le istanze medie che terminano tra $1$ e $2$ secondi. In questo tempo però trova una singola soluzione, mentre minizinc potrebbe aver già trovato decine di ottimi locali.
+Possiamo notare che le istanze in cui ASP ha impiegato più tempo non corrispondono con quelle in cui minizinc ha impiegato più tempo.
+Da questo capisco che non si tratta di una ``Difficoltà intrinseca" del problema, ma dipende da come avviene la ricerca. Il che ribadisce l'importanza di delle buone euristiche.
+In particolare L'istanza \lstinline{hard3} viene risolta in più di un minuti, con $15$ di solving, mentre minizinc produce il primo risultato dopo solo $3$ secondi.
 
 \end{document}
