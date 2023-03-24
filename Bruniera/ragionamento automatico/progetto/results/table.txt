@@ -1,36 +1,79 @@
-easy1 & =====UNSATISFIABLE===== & 0.13s $ UNSATISFIABLE & 0.028s(0.00s2)\\
-easy2 & total 190 & 0.19s $ SATISFIABLE & 0.769s(0.02s2)\\
-easy3 & total 129 & 3.44s $ SATISFIABLE & 1.123s(0.03s2)\\
-mid1 & total 166 & 52.62s $ SATISFIABLE & 1.661s(0.03s2)\\
-mid2 & total 142 & 32.91s $ SATISFIABLE & 1.630s(0.02s2)\\
-mid3 & total 183 & 64.02s $ SATISFIABLE & 1.584s(0.19s2)\\
-mid4 & total 142 & 30.54s $ SATISFIABLE & 1.497s(0.02s2)\\
-mid5 & total 104 & 39.91s $ SATISFIABLE & 1.655s(0.03s2)\\
-mid6 & total 132 & 32.59s $ SATISFIABLE & 1.767s(0.12s2)\\
-mid7 & total 127 & 201.42s $ SATISFIABLE & 1.663s(0.05s2)\\
-mid8 & total 133 & 106.21s $ SATISFIABLE & 1.627s(0.05s2)\\
-mid9 & total 166 & 168.23s $ SATISFIABLE & 1.345s(0.03s2)\\
-mid10 & total 153 & 19.76s $ SATISFIABLE & 1.458s(0.04s2)\\
-mid11 & total 162 & 4.07s $ SATISFIABLE & 1.565s(0.05s2)\\
-mid12 & total 173 & 300.01s $ SATISFIABLE & 1.619s(0.02s2)\\
-mid13 & total 160 & 64.33s $ SATISFIABLE & 1.688s(0.04s2)\\
-mid14 & total 124 & 46.25s $ SATISFIABLE & 1.423s(0.11s2)\\
-mid15 & total 164 & 97.15s $ SATISFIABLE & 1.471s(0.04s2)\\
-mid16 & total 141 & 20.57s $ SATISFIABLE & 1.520s(0.05s2)\\
-mid17 & total 119 & 37.09s $ SATISFIABLE & 1.913s(0.04s2)\\
-mid18 & total 150 & 35.59s $ SATISFIABLE & 1.587s(0.03s2)\\
-mid19 & total 153 & 16.79s $ SATISFIABLE & 1.486s(0.03s2)\\
-mid20 & total 119 & 27.46s $ SATISFIABLE & 1.660s(0.04s2)\\
-mid21 & total 157 & 176.58s $ SATISFIABLE & 1.647s(0.03s2)\\
-mid22 & total 149 & 43.63s $ SATISFIABLE & 1.466s(0.05s2)\\
-mid23 & total 118 & 66.04s $ SATISFIABLE & 1.681s(0.07s2)\\
-mid24 & total 169 & 41.62s $ SATISFIABLE & 1.495s(0.02s2)\\
-mid25 & total 113 & 5.95s $ SATISFIABLE & 1.591s(0.05s2)\\
-mid26 & total 117 & 41.51s $ SATISFIABLE & 1.631s(0.03s2)\\
-mid27 & total 134 & 50.95s $ SATISFIABLE & 1.633s(0.05s2)\\
-mid28 & total 113 & 19.12s $ SATISFIABLE & 1.600s(0.08s2)\\
-mid29 & total 152 & 16.18s $ SATISFIABLE & 1.638s(0.11s2)\\
-mid30 & total 106 & 17.04s $ SATISFIABLE & 1.651s(0.03s2)\\
-hard1 & total 145 & 300.02s $ SATISFIABLE & 6.227s(0.80s2)\\
-hard2 & total 216 & 300.05s $ SATISFIABLE & 14.824s(1.80s2)\\
-hard3 & total 418 & 300.24s $ SATISFIABLE & 66.571s(15.42s2)\\
+\begin{tabular}{|c||c|c|c|c|}
+\hline
+\multirow{2}{3em}{Test} & \multicolumn{2}{c|}{Minizinc} & \multicolumn{2}{c|}{ASP}\\
+\cline{2-5}
+& Ottimo & Tempo & Risultato & Tempo totale (Solving)\\
+\hhline{|=||=|=|=|=|}
+easy1 & UNSAT & 0.13s & UNSAT & 0.028s (0.00s)\\
+\hline
+easy2 & total 190 & 0.19s & SAT & 0.769s (0.02s)\\
+\hline
+easy3 & total 129 & 3.44s & SAT & 1.123s (0.03s)\\
+\hline
+mid1 & total 166 & 52.62s & SAT & 1.661s (0.03s)\\
+\hline
+mid2 & total 142 & 32.91s & SAT & 1.630s (0.02s)\\
+\hline
+mid3 & total 183 & 64.02s & SAT & 1.584s (0.19s)\\
+\hline
+mid4 & total 142 & 30.54s & SAT & 1.497s (0.02s)\\
+\hline
+mid5 & total 104 & 39.91s & SAT & 1.655s (0.03s)\\
+\hline
+mid6 & total 132 & 32.59s & SAT & 1.767s (0.12s)\\
+\hline
+mid7 & total 127 & 201.42s & SAT & 1.663s (0.05s)\\
+\hline
+mid8 & total 133 & 106.21s & SAT & 1.627s (0.05s)\\
+\hline
+mid9 & total 166 & 168.23s & SAT & 1.345s (0.03s)\\
+\hline
+mid10 & total 153 & 19.76s & SAT & 1.458s (0.04s)\\
+\hline
+mid11 & total 162 & 4.07s & SAT & 1.565s (0.05s)\\
+\hline
+mid12 & total 173 & 300.01s & SAT & 1.619s (0.02s)\\
+\hline
+mid13 & total 160 & 64.33s & SAT & 1.688s (0.04s)\\
+\hline
+mid14 & total 124 & 46.25s & SAT & 1.423s (0.11s)\\
+\hline
+mid15 & total 164 & 97.15s & SAT & 1.471s (0.04s)\\
+\hline
+mid16 & total 141 & 20.57s & SAT & 1.520s (0.05s)\\
+\hline
+mid17 & total 119 & 37.09s & SAT & 1.913s (0.04s)\\
+\hline
+mid18 & total 150 & 35.59s & SAT & 1.587s (0.03s)\\
+\hline
+mid19 & total 153 & 16.79s & SAT & 1.486s (0.03s)\\
+\hline
+mid20 & total 119 & 27.46s & SAT & 1.660s (0.04s)\\
+\hline
+mid21 & total 157 & 176.58s & SAT & 1.647s (0.03s)\\
+\hline
+mid22 & total 149 & 43.63s & SAT & 1.466s (0.05s)\\
+\hline
+mid23 & total 118 & 66.04s & SAT & 1.681s (0.07s)\\
+\hline
+mid24 & total 169 & 41.62s & SAT & 1.495s (0.02s)\\
+\hline
+mid25 & total 113 & 5.95s & SAT & 1.591s (0.05s)\\
+\hline
+mid26 & total 117 & 41.51s & SAT & 1.631s (0.03s)\\
+\hline
+mid27 & total 134 & 50.95s & SAT & 1.633s (0.05s)\\
+\hline
+mid28 & total 113 & 19.12s & SAT & 1.600s (0.08s)\\
+\hline
+mid29 & total 152 & 16.18s & SAT & 1.638s (0.11s)\\
+\hline
+mid30 & total 106 & 17.04s & SAT & 1.651s (0.03s)\\
+\hline
+hard1 & total 145 & 300.02s & SAT & 6.227s (0.80s)\\
+\hline
+hard2 & total 216 & 300.05s & SAT & 14.824s (1.80s)\\
+\hline
+hard3 & total 418 & 300.24s & SAT & 66.571s (15.42s)\\
+\hline
+\end{tabular}

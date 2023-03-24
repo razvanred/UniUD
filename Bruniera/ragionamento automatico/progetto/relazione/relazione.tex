@@ -1,4 +1,4 @@
-\documentclass[12pt, a4paper]{article}
+\documentclass[11pt, a4paper]{article}
 \usepackage{authblk}
 \usepackage{listings}
 \usepackage{xcolor}
@@ -11,6 +11,8 @@
 \usepackage{colorprofiles}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage{multirow}
+\usepackage{hhline}
 
 % stile per i blocchi di codice
 % non so se serviranno
@@ -132,9 +134,9 @@
     Scrivi un programma in minizinc e ASP in grado di trovare una soluzione al seguente problema (STSP). Prepara una batteria di 30 istanze casuali, includendo alcune più facili, alcune medie ed alcune che eccedano il timeout di 5 minuti.
     Possibilmente sperimenta con diverse strategie. Nel caso di COP riporta il risultato migliore ottenuto entro il timeout.
 
-    Le strade di una città sono rappresentate mediante una matrice di adiacenza, $M[x,y]=c$ significa che tra l'incrocio $x$ e l'incrocio $y$ c'è una strada di lunghezza $\qty[parse-numbers = false]{c}{\kilo\meter}$. Nella rappresentazione logica useremo invece fatti del tipo $\text{\lstinline{strada}}(x,y,c)$. Due auto partono dallo stesso incrocio prendendo due strade diverse. Si trovi un piano per le due auto tale da permettere a ciascuna di effettuare un circuito Hamiltoniano, senza mai fermarsi e senza mai passare per un incrocio allo stesso tempo (inteso con una certa tolleranza, che so mezz'ora, vedi tu come formularlo in modo sensato) dell'altra auto. Non è necessario che ritornino al punto di partenza allo stesso momento ma entrambe lo fanno.As si, assumiamo ce le auto vadano costantemente alla stessa velocità.per comodità metterei 1 minuto a $\unit{\kilo\meter}$. E le lunghezze delle strade le farei intere.
+    Le strade di una città sono rappresentate mediante una matrice di adiacenza, $M[x,y]=c$ significa che tra l'incrocio $x$ e l'incrocio $y$ c'è una strada di lunghezza $\qty[parse-numbers = false]{c}{\kilo\meter}$. Nella rappresentazione logica useremo invece fatti del tipo $\text{\lstinline{strada}}(x,y,c)$. Due auto partono dallo stesso incrocio prendendo due strade diverse. Si trovi un piano per le due auto tale da permettere a ciascuna di effettuare un circuito Hamiltoniano, senza mai fermarsi e senza mai passare per un incrocio allo stesso tempo (inteso con una certa tolleranza, che so mezz'ora, vedi tu come formularlo in modo sensato) dell'altra auto. Non è necessario che ritornino al punto di partenza allo stesso momento ma entrambe lo fanno. Ah si, assumiamo che le auto vadano costantemente alla stessa velocità.per comodità metterei 1 minuto a $\unit{\kilo\meter}$. E le lunghezze delle strade le farei intere.
 
-    Ho soprannominato il problema \emph{"Shy" Travelling Salesmen Problem} (STSP) perché è simile al TSP, ma con il requisito che i due commessi viaggiatori "timidi" mantengano le distanze entro una certa tolleranza che chiamerò "timidezza".
+    Ho soprannominato il problema \emph{``Shy" Travelling Salesmen Problem} (STSP) perché è simile al TSP, ma con il requisito che i due commessi viaggiatori ``timidi" mantengano le distanze entro una certa tolleranza che chiamerò ``timidezza".
     Sempre per similitudine con TSP, nel caso di COP ho deciso di ottimizzare la somma del tempo di percorrenza delle due macchine.
 
     I modelli si trovano rispettivamente nei file \lstinline{minizinc/progetto.mzn} e \lstinline{asp/progetto.lp}. I risultati dei benchmark, invece si trovano nella cartella \lstinline{results/}.
@@ -161,12 +163,12 @@ Per quanto riguarda la riflessivita, se anche ci fosse un arco che connette un n
 
 La direzionalità del grafo ed ammettere archi di lunghezza $0$ sono un po' meno naturali rispetto alla formulazione classica di TSP, ma sono comunque riconducibili al mondo reale come la presenza di ostacoli in un solo lato della strada, e la presenza di incroci molto ravvicinati, ad esempio in una rotonda.
 
-I casi benchmark forniti sono "standardizzati" nel senso che tutti gli archi assenti sono $-1$ e non sono presenti archi riflessivi.
+I casi benchmark forniti sono ``standardizzati" nel senso che tutti gli archi assenti sono $-1$ e non sono presenti archi riflessivi.
 
 Sia la tolleranza agli incontri, che il nodo di partenza, sono indicati nell'input del problema e possono essere alterati a piacere. Per semplicità i benchmark usano sempre gli stessi valori. In particolare usano $6$ minuti per la tolleranza, scelta in modo puramente arbitrario.
 
 Per quanto riguarda il valore da ottimizzare, ho scelto di minimizzare la somma dei tempi di percorrenza totali.
-Ho considerato di utilizzare il massimo dei tempi, ma mi sembrava meno interessante come soluzione. In usando il massimo i due circuiti sarebbero stati in un certo senso "disaccoppiati" permettendo a quello più corto di crescere arbitrariamente senza cambiare il punteggio finche non supera il più lungo.
+Ho considerato di utilizzare il massimo dei tempi, ma mi sembrava meno interessante come soluzione. In usando il massimo i due circuiti sarebbero stati in un certo senso ``disaccoppiati" permettendo a quello più corto di crescere arbitrariamente senza cambiare il punteggio finche non supera il più lungo.
 Ho considerato anche di massimizzare il distacco tra i due viaggiatori, ma questo avrebbe reso inutile il valore della tolleranza e sarebbe diventato in generale un problema meno realistico.
 
 \section{Minizinc}
@@ -219,7 +221,7 @@ Con un approccio del genere non ha senso utilizzare riavvii. Un condizionale sel
 Utilizzare questa euristica per input molto grandi ha risultati pessimi, non riesce a trovare velocemente un buon ottimo ed ovviamente non è possibile esaurire la ricerca velocemente.
 
 \paragraph{Grandi istanze}
-Per le istanze grandi, il risultato migliore lo ho trovato con un approccio "aggressivamente probabilistico" basato su una semplice strategia di Large Neighborhood Search (LNS).
+Per le istanze grandi, il risultato migliore lo ho trovato con un approccio ``aggressivamente probabilistico" basato su una semplice strategia di Large Neighborhood Search (LNS).
 Questo approccio ottiene risultati sorprendentemente buoni, mentre tentare una ricerca più esaustiva non avrebbe senso su istanze oltre una certa dimensione.
 
 Utilizzando l'euristica \lstinline{relax_and_reconstruct}. Ad ogni riavvio le variabili hanno una certa probabilità di essere mantenute per l'esplorazione successiva.
@@ -228,15 +230,15 @@ Ho notato che istanza molto grandi funzionano meglio con probabilità più alte 
 L'esplorazione avviene con una strategia \lstinline{first_fail} per la scelta delle variabili, e \lstinline{indomain_random} per la scelta dei valori.
 Utilizzare questa strategia fa una notevole differenza nel trovare velocemente un ottimo.
 
-Per i riavvii ci sono due strategie principali: riavvii rapidi, per evitare di "incagliarsi" in un ramo sbagliato e sfruttare di più la LNS; e riavvii lenti, per esplorare meglio un ramo ed assicurarsi di non perdersi alcuni ottimi. Entrambe le tecniche hanno vantaggi e svantaggi.
+Per i riavvii ci sono due strategie principali: riavvii rapidi, per evitare di ``incagliarsi" in un ramo sbagliato e sfruttare di più la LNS; e riavvii lenti, per esplorare meglio un ramo ed assicurarsi di non perdersi alcuni ottimi. Entrambe le tecniche hanno vantaggi e svantaggi.
 La ricerca con la sequenza di Luby (con l'annotazione \lstinline{restart_luby}) permette di utilizzare entrambe le tecniche, alternando fasi di riavvii molto rapidi, ed alcuni riavvii esponenzialmente sempre più lenti.
-Si ottenevano buoni risultati anche con i riavvii esponenziali, ed una base molto bassa (ad esempio $1.00001$), però a contrario della sequenza di Luby, questa ad un certo punto smette di fare riavvii rapidi e rimane "bloccata" su un ottimo.
+Si ottenevano buoni risultati anche con i riavvii esponenziali, ed una base molto bassa (ad esempio $1.00001$), però a contrario della sequenza di Luby, questa ad un certo punto smette di fare riavvii rapidi e rimane ``bloccata" su un ottimo.
 
 Utilizzare queste euristiche per un piccolo input non da buoni risultati. Non solo non si arresta mai perché continuando a riavviare, e procedendo randomicamente, non riesce ad esaurire la ricerca.
 Ma sotto una certa dimensione di input è addirittura più lento della ricerca esaustiva nel trovare l'ottimo.
 
 \paragraph{Risultato finale}
-La soglia oltre la quale gli input sono considerati "grandi" è stata trovata per tentativi. Corrisponde alla dimensione oltre la quale la ricerca eccede il limite di $5$ minuti, che sulla mia macchina corrisponde a \lstinline{n > 14}, ma non esiste una soglia "universale".
+La soglia oltre la quale gli input sono considerati ``grandi" è stata trovata per tentativi. Corrisponde alla dimensione oltre la quale la ricerca eccede il limite di $5$ minuti, che sulla mia macchina corrisponde a \lstinline{n > 14}, ma non esiste una soglia ``universale".
 
 Se oltre alla dimensione degli input si varia anche la tolleranza agli incontri, il tempo potrebbe aumentare ed eccedere il limite. Tuttavia, nei test effettuati si è visto che in questi casi in cui l'istanza è piccola ma comunque eccede il limite, la ricerca esaustiva trova un ottimo prima di LNS.
 Avere questa tolleranza come parametro non era richiesto dalla consegna, quindi non ho studiato approfonditamente cosa succede al suo variare.
@@ -273,12 +275,18 @@ Le istanze di benchmark sono esattamente le stesse, solo numerati in modo divers
 Se proprio si volesse avere soluzioni allineate sarebbe sufficiente incrementare di $1$ tutti gli indici nelle istanze fornite.
 
 \paragraph{Circuito Hamiltoniano}
-Come primo approccio ho tentato di "tradurre" direttamente la soluzione minizinc, implementando una sorta di vettore come una serie di fatti del tipo \lstinline{step(Z,Y,X)}, che significa al passo \lstinline{Y}, la macchina \lstinline{Z} si trova al nodo \lstinline{X}.
+Come primo approccio ho tentato di ``tradurre" direttamente la soluzione minizinc, implementando una sorta di vettore come una serie di fatti del tipo \lstinline{step(Z,Y,X)}, che significa al passo \lstinline{Y}, la macchina \lstinline{Z} si trova al nodo \lstinline{X}.
 Inoltre c'erano alcune differenze nel come produce l'elenco dei nodi.
 Questa soluzione incompleta si può trovare nel file \lstinline{asp/incompleto.lp}.
 
-Alla fine è stata abbandonata perché le prestazioni non erano soddisfacenti, ho invece optato per una versione modificata dell'implementazione di Hamilton Circuit vista a lezioni.
+Alla fine è stata abbandonata perché le prestazioni non erano soddisfacenti, ho invece optato per una versione modificata dell'implementazione di Hamilton Circuit vista a lezione.
 L'unica differenza (a parte i nomi delle funzioni) è l'aggiunta della variabile \lstinline{Z} per indicare di quale macchina si tratta.
+
+Quindi funzione \lstinline{go(Z,X,Y)} che indica che la macchina \lstinline{Z} attraversa l'arco \lstinline{strada(X,Y,_)} è \emph{può} essere vera se l'arco esiste.
+Poi definisco la funzione \lstinline{seen(Z,X)} che indica che la macchina \lstinline{Z} ha visitato il nodo \lstinline{X} se è raggiunta un percorso di \lstinline{go} che inizia dal nodo di partenza.
+Ed infine richiedo che tutti i nodi siano visitati (quello di partenza risulterà visitato solo se il percorso è un circuito), e che per ogni macchina da ogni nodo venga preso esattamente un arco in entrata ed uno in uscita.
+
+Ho anche sperimentato con la soluzione riportata sulla pagina Wikipedia e nel tutorial di Potassco (la stessa), ma era notevolmente più lenta di quella vista a lezione.
 
 \begin{lstlisting}[language=prolog]
 {go(Z,X,Y)} :- strada(X,Y,_), car(Z).
@@ -292,12 +300,39 @@ seen(Z,Y) :- seen(Z,X), go(Z,X,Y), car(Z).
 \end{lstlisting}
 
 \paragraph{Timidezza}
-Per modellare la tolleranza agli incontri introduco una nuova funzione 
+Per modellare la tolleranza agli incontri è necessaria una nuova funzione che permetta di sapere a che tempo viene visitato un nodo.
+Quindi introduciamo la funzione \lstinline{at(Z,X,T)}, la quale indica che la macchina \lstinline{Z} si trova al nodo \lstinline{X} al tempo \lstinline{T}.
+Viene definita ricorsivamente sfruttando la funzione \lstinline{go} definita in precedenza.
+
+A questo punto manca solo inserire la regola che impedisca alle due macchine di essere allo stesso nodo allo stesso tempo, per completare il modello.
+
+Ho fatto un tentativo di calcolare direttamente i tempi insieme alla funzione \lstinline{go} senza definire \lstinline{at}. Le performance di quella soluzione erano peggiori, probabilmente perché il grounding diventava molto più grande.
+
+\begin{lstlisting}[language=prolog]
+at(Z,X,T) :- go(Z,S,X), start(S), car(Z), strada(S,X,T), time(T).
+at(Z,Y,T+L) :- at(Z,X,T), go(Z,X,Y), car(Z), strada(X,Y,L), X != S, start(S), time(T), time(L).
+
+:- at(a,X,T1), at(b,X,T2), node(X), time(T1), time(T2), limit(L), |T1-T2| <= L, x != S, start(S).
+\end{lstlisting}
+
+Per calcolare i tempi è necessario introdurre un limite superiore al tempo, altrimenti il grounding non finisce mai. Quindi ho usato lo stesso limite del modello minizinc.
+Per migliorare le performance ho provato a raffinare un po' il limite prendendo il minimo tra: la somma di tutti i pesi, ed \lstinline{n} volte il peso massimo; sperando di rimpicciolire il grounding.
+Questo raffinamento è stato scartato perché le performance sono leggermente peggiorate ed il grounding aveva le stesse dimensioni in tutti i test. Si tratta probabilmente di una peculiarità delle istanze generate casualmente.
 
 \subsection{Confronto con minizinc}
 
+La soluzione in ASP risulta molto più breve di quella in minizinc, sfrutta la maggiore espressività del linguaggio ed è più semplice da leggere e da comprendere.
+Tuttavia, modellare il problema è stato più complicato ed ha richiesto più tempo.
+
+In generale, penso che questo problema e quelli basati sulla ricerca di percorsi in un grafo siano più naturali da modellare come istanze di CSP o COP che di ASP.
+In contrasto, ad esempio, con problemi come il graph colouring che sarebbe molto più semplice da modellare in ASP.
+
+Ovviamente \emph{ottimizzare} il modello COP è più difficile di trovare uno stable model, ma se si cerca solo di soddisfare il modello, minizinc è molto più veloce di ASP.
+Anche se si rimuovono tutte le euristiche, minizinc soddisfa il modello molto prima di asp.
+La maggior parte del tempo in realtà è occupata dal grounding, ma anche considerando solo il tempo per risolvere il problema già grounded, è molto più lento di CSP.
+
 \section{Risultati dei benchmark}
 
-
+\input{../results/table.txt}
 
 \end{document}
