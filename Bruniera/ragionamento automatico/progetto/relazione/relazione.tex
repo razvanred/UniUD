@@ -4,7 +4,7 @@
 \usepackage{xcolor}
 \usepackage{graphicx}
 \usepackage{float}
-\usepackage[a-2b,mathxmp]{pdfx}[2018/12/22]
+\usepackage[a-2b,mathxmp]{pdfx}
 \usepackage[pdfa]{hyperref}
 \usepackage{pdfpages}
 \usepackage{siunitx}
@@ -154,21 +154,21 @@
 Prima di affrontare le soluzione è necessario chiarire alcuni dettagli sul problema, che la consegna non specifica.
 
 Per cominciare, non viene specificato come rappresentare nella matrice quando due incroci \emph{non} sono collegati. Per comodità ho deciso di rappresentarlo inserendo un numero negativo nella matrice, e considerando invece $0$ come una strada.
-Usare numeri negativi ha facilitato lo sviluppo, in questo modo per attivare o disattivare un a strada in un test era questione di cambiare un segno. Quanto allo zero, si tratta di una decisione arbitraria, ad ogni modo non rende più semplice il problema.
+Usare numeri negativi ha facilitato lo sviluppo, in questo modo per attivare o disattivare una strada in un test era questione di cambiare un segno. Quanto allo zero, si tratta di una decisione arbitraria, ad ogni modo non rende più semplice il problema.
 Questo non ha riscontri nella codifica ASP, se non nel permettere fatti del tipo $\text{\lstinline{strada}}(x,y,0)$, perché le strade assenti sono semplicemente assenti.
 
-Un'altra precisazione riguarda la direzionalità e la riflessività del grafo. La consegna non specifica che il grafo debba essere indiretto, ache se nel TSP classico è così.
+Un'altra precisazione riguarda la direzionalità e la riflessività del grafo. La consegna non specifica che il grafo debba essere indiretto, anche se nel TSP classico è così.
 Per semplificare la generazione delle istanze di benchmark ho deciso di usare un grafo indiretto, che non richiede di assicurarsi che $m[x,y]=m[y,x]$. Questo ha avuto degli effetti marginali sul modello utilizzato.
-Per quanto riguarda la riflessivita, se anche ci fosse un arco che connette un nodo a se stesso, questo non sarebbe mai utilizzato in un circuito perché violerebbe il requisito di attraversare ogni incrocio una volta sola, quindi non fa differenza che siano ammessi o meno.
+Per quanto riguarda la riflessività, se anche ci fosse un arco che connette un nodo a se stesso, questo non sarebbe mai utilizzato in un circuito perché violerebbe il requisito di attraversare ogni incrocio una volta sola, quindi non fa differenza che siano ammessi o meno.
 
-La direzionalità del grafo ed ammettere archi di lunghezza $0$ sono un po' meno naturali rispetto alla formulazione classica di TSP, ma sono comunque riconducibili al mondo reale come la presenza di ostacoli in un solo lato della strada, e la presenza di incroci molto ravvicinati, ad esempio in una rotonda.
+La direzionalità del grafo ed ammettere archi di lunghezza $0$, che sono un po' meno naturali rispetto alla formulazione classica di TSP, sono comunque riconducibili al mondo reale come la presenza di ostacoli in un solo lato della strada, e la presenza di incroci molto ravvicinati, ad esempio in una rotonda.
 
 I casi benchmark forniti sono ``standardizzati" nel senso che tutti gli archi assenti sono $-1$ e non sono presenti archi riflessivi.
 
 Sia la tolleranza agli incontri, che il nodo di partenza, sono indicati nell'input del problema e possono essere alterati a piacere. Per semplicità i benchmark usano sempre gli stessi valori. In particolare usano $6$ minuti per la tolleranza, scelta in modo puramente arbitrario.
 
 Per quanto riguarda il valore da ottimizzare, ho scelto di minimizzare la somma dei tempi di percorrenza totali.
-Ho considerato di utilizzare il massimo dei tempi, ma mi sembrava meno interessante come soluzione. In usando il massimo i due circuiti sarebbero stati in un certo senso ``disaccoppiati" permettendo a quello più corto di crescere arbitrariamente senza cambiare il punteggio finche non supera il più lungo.
+Ho considerato di utilizzare il massimo dei tempi, ma mi sembrava meno interessante come soluzione. Usando il massimo, i due circuiti sarebbero stati in un certo senso ``disaccoppiati", permettendo a quello più corto di crescere arbitrariamente senza cambiare il punteggio, finche non supera il più lungo.
 Ho considerato anche di massimizzare il distacco tra i due viaggiatori, ma questo avrebbe reso inutile il valore della tolleranza e sarebbe diventato in generale un problema meno realistico.
 
 \section{Minizinc}
@@ -234,7 +234,7 @@ Per i riavvii ci sono due strategie principali: riavvii rapidi, per evitare di `
 La ricerca con la sequenza di Luby (con l'annotazione \lstinline{restart_luby}) permette di utilizzare entrambe le tecniche, alternando fasi di riavvii molto rapidi, ed alcuni riavvii esponenzialmente sempre più lenti.
 Si ottenevano buoni risultati anche con i riavvii esponenziali, ed una base molto bassa (ad esempio $1.00001$), però a contrario della sequenza di Luby, questa ad un certo punto smette di fare riavvii rapidi e rimane ``bloccata" su un ottimo.
 
-Utilizzare queste euristiche per un piccolo input non da buoni risultati. Non solo non si arresta mai perché continuando a riavviare, e procedendo randomicamente, non riesce ad esaurire la ricerca.
+Utilizzare queste euristiche per un piccolo input non dà buoni risultati. Non solo non si arresta mai perché continuando a riavviare, e procedendo randomicamente, non riesce ad esaurire la ricerca.
 Ma sotto una certa dimensione di input è addirittura più lento della ricerca esaustiva nel trovare l'ottimo.
 
 \paragraph{Risultato finale}
