@@ -1,0 +1,57 @@
+----------------------------------------------------------------------
+-- Dati
+qm0 x = Mat x $ C 0
+qm2 = Mat 2 $ Q (C 1) (Q (C 1) (C 2) (C 3) (C 4)) (C 2) (C 4)
+qm3 = Mat 2 $ Q (Q (C 1) (C 0) (C 2) (C 2)) (C 0) (Q (C 2) (C 5) (C 0) (C 1)) (Q (C 3) (C 1) (C 0) (C 6))
+qm4 = Mat 2 $ Q (Q (C 1) (C 0) (C 2) (C 2)) (C 0) (Q (C 2) (C 5) (C 0) (C 1)) (Q (C 3) (C 0) (C 0) (C 6))
+qm5 = Mat 2 $ Q (C 1) (Q (C 4) (C 3) (C 1) (C 2)) (C 2) (C 4)
+qm6 = Mat 2 $ Q (C 1) (Q (C 1) (C 2) (C 3) (C 4)) (C 3) (Q (C 1) (C 2) (C 4) (C 3))
+id2 = Mat 2 $ Q (Q (C 1) (C 0) (C 0) (C 1)) (C 0) (C 0) (Q (C 1) (C 0) (C 0) (C 1))
+rot2= Mat 2 $ Q (C 0) (Q (C 0) (C 1) (C 1) (C 0)) (Q (C 0) (C 1) (C 1) (C 0)) (C 0)
+
+v0 x = Vec x $ F 0
+v1 = Vec 2 (N (F 1) (N (F 0) (F 2)))
+v2 = Vec 2 (N (N (F 0) (F 2)) (F 1))
+v3 = Vec 2 (N (F 1) (N (F 2) (F 3)))
+v4 = Vec 2 (N (N (F 1) (F 2)) (F 3))
+
+----------------------------------------------------------------------
+-- Validazione
+
+-- Profondità errata
+validateF (Vec 0 (N (F 1) (F 2))) (qm0 0) (qm0 0)
+validateF (v0 0) (Mat 0 (Q (C 1) (C 2) (C 2) (C 2))) (qm0 0)
+validateF (v0 0) (qm0 0) (Mat 0 (Q (C 1) (C 2) (C 2) (C 2)))
+
+-- Dimensioni diverse
+validateF (v0 1) (qm0 0) (qm0 0)
+validateF (v0 0) (qm0 1) (qm0 0)
+validateF (v0 0) (qm0 0) (qm0 1)
+
+-- Compressione
+maybeCompressMat (Mat 1 $ Q (C 0) (C 0) (C 0) (C 0))
+maybeCompressVec (Vec 1 $ N (F 0) (F 0))
+
+----------------------------------------------------------------------
+-- Copertura
+
+-- Esempio
+validateF v1 qm3 qm4 -- 124
+
+-- Applicazione
+f v1 qm2 (qm0 2) -- 80 (F con C, N con Q, F con C, N con C)
+f v2 qm2 (qm0 2) -- 84 (N con C, F con Q, N con C, F con C)
+f v1 (qm0 2) qm2 -- 80
+f v2 (qm0 2) qm2 -- 84
+
+-- Somma e somma trasposta (la prima operazione è Q sommata Q)
+f v1 qm5 qm6 -- 156 (C ricorsiva, Q sommata a C, trasposta, Q ricorsiva)
+f v2 qm5 qm6 -- 148
+f v1 qm6 qm5 -- 156
+f v2 qm6 qm5 -- 148
+
+-- Prodotto tra vettori
+f v3 id2 (qm0 2) -- 30 (F con F ed N con N)
+f v4 id2 (qm0 2) -- 46
+f v3 rot2 (qm0 2) -- 20 (F con N ed N con F)
+f v4 rot2 (qm0 2) -- 36

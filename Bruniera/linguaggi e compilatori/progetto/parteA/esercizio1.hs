@@ -1,4 +1,10 @@
+-- module Main
+--     where
+
 import Control.Monad (guard)
+-- Scrivere una funzione haskell che calcoli la formula:
+-- v(A+B^T)v^T + v(A^T+B)v^T
+
 ----------------------------------------------------------------------
 -- Strutture dati
 data Matrix a = Mat {
@@ -17,15 +23,6 @@ data Vector a = Vec {
 data BT a = F a | N (BT a) (BT a)
     deriving (Eq, Show)
 
-qm0 x = Mat x $ C 0
-qm1 x = Mat x $ C 1
-qm2 = Mat 0 $ C 2
-qm3 = Mat 2 $ Q (Q (C 1) (C 0) (C 2) (C 2)) (C 0) (Q (C 2) (C 5) (C 0) (C 1)) (Q (C 3) (C 1) (C 0) (C 6))
-qm4 = Mat 2 $ Q (Q (C 1) (C 0) (C 2) (C 2)) (C 0) (Q (C 2) (C 5) (C 0) (C 1)) (Q (C 3) (C 0) (C 0) (C 6))
-qm5 = Mat 3 $ Q (Q (Q (C 1) (C 0) (C 0) (C 1)) (C 0) (C 0) (Q (C 1) (C 0) (C 0) (C 1))) (C 0) (C 0) (Q (Q (C 1) (C 0) (C 0) (C 1)) (C 0) (C 0) (Q (C 1) (C 0) (C 0) (C 1)))
-qm6 = Mat 3 $ Q (Q (Q (C 1) (C 0) (C 0) (C 2)) (C 0) (C 0) (Q (C 3) (C 0) (C 0) (C 4))) (C 0) (C 0) (Q (Q (C 5) (C 0) (C 0) (C 6)) (C 0) (C 0) (Q (C 7) (C 0) (C 0) (C 8)))
-
-v1 = Vec 2 (N (F 1) (N (F 0) (F 2)))
 ----------------------------------------------------------------------
 -- Consegna
 
@@ -96,15 +93,15 @@ sumQT (Q ula ura lla lra) (Q ulb urb llb lrb) = mergeQT ul' ur' ll' lr'
           lr' = sumQT lra lrb
 
 sumTransposeMat :: (Eq a, Num a) => Matrix a -> Matrix a
-sumTransposeMat (Mat nexp mat) = Mat nexp (deepSumTranspose nexp mat)
+sumTransposeMat (Mat nexp mat) = Mat nexp (sumTransposeQT mat)
 
-deepSumTranspose :: Eq a => Int -> Num a => QT a -> QT a
-deepSumTranspose exp (C m) = C (m * 2)
-deepSumTranspose exp (Q ul ur ll lr) = mergeQT ul' ur' ll' lr'
-    where ul' = deepSumTranspose (exp - 1) ul
+sumTransposeQT :: Eq a => Num a => QT a -> QT a
+sumTransposeQT (C m) = C (m * 2)
+sumTransposeQT (Q ul ur ll lr) = mergeQT ul' ur' ll' lr'
+    where ul' = sumTransposeQT ul
           ur' = sumQT ur $ transposeQT ll
           ll' = transposeQT ur'
-          lr' = deepSumTranspose (exp - 1) lr
+          lr' = sumTransposeQT lr
 
 
 apply :: (Eq a, Num a) => Matrix a -> Vector a -> Vector a
@@ -203,3 +200,45 @@ checkSize v a b = (v' == a') && (v' == b')
     where v' = vexp v
           a' = nexp a
           b' = nexp b
+
+----------------------------------------------------------------------
+-- Test per code coverage
+-- bisogna decommentare l'header del modulo
+
+-- qm0 x = Mat x $ C 0
+-- qm2 = Mat 2 $ Q (C 1) (Q (C 1) (C 2) (C 3) (C 4)) (C 2) (C 4)
+-- qm3 = Mat 2 $ Q (Q (C 1) (C 0) (C 2) (C 2)) (C 0) (Q (C 2) (C 5) (C 0) (C 1)) (Q (C 3) (C 1) (C 0) (C 6))
+-- qm4 = Mat 2 $ Q (Q (C 1) (C 0) (C 2) (C 2)) (C 0) (Q (C 2) (C 5) (C 0) (C 1)) (Q (C 3) (C 0) (C 0) (C 6))
+-- qm5 = Mat 2 $ Q (C 1) (Q (C 4) (C 3) (C 1) (C 2)) (C 2) (C 4)
+-- qm6 = Mat 2 $ Q (C 1) (Q (C 1) (C 2) (C 3) (C 4)) (C 3) (Q (C 1) (C 2) (C 4) (C 3))
+-- id2 = Mat 2 $ Q (Q (C 1) (C 0) (C 0) (C 1)) (C 0) (C 0) (Q (C 1) (C 0) (C 0) (C 1))
+-- rot2= Mat 2 $ Q (C 0) (Q (C 0) (C 1) (C 1) (C 0)) (Q (C 0) (C 1) (C 1) (C 0)) (C 0)
+-- 
+-- v0 x = Vec x $ F 0
+-- v1 = Vec 2 (N (F 1) (N (F 0) (F 2)))
+-- v2 = Vec 2 (N (N (F 0) (F 2)) (F 1))
+-- v3 = Vec 2 (N (F 1) (N (F 2) (F 3)))
+-- v4 = Vec 2 (N (N (F 1) (F 2)) (F 3))
+-- 
+-- main = do
+--     print $ validateF (Vec 0 (N (F 1) (F 2))) (qm0 0) (qm0 0)
+--     print $ validateF (v0 0) (Mat 0 (Q (C 1) (C 2) (C 2) (C 2))) (qm0 0)
+--     print $ validateF (v0 0) (qm0 0) (Mat 0 (Q (C 1) (C 2) (C 2) (C 2)))
+--     print $ validateF (v0 1) (qm0 0) (qm0 0)
+--     print $ validateF (v0 0) (qm0 1) (qm0 0)
+--     print $ validateF (v0 0) (qm0 0) (qm0 1)
+--     print $ maybeCompressMat (Mat 1 $ Q (C 0) (C 0) (C 0) (C 0))
+--     print $ maybeCompressVec (Vec 1 $ N (F 0) (F 0))
+--     print $ validateF v1 qm3 qm4
+--     print $ f v1 qm2 (qm0 2) -- 80 (F con C, N con Q, F con C, N con C)
+--     print $ f v2 qm2 (qm0 2) -- 84 (N con C, F con Q, N con C, F con C)
+--     print $ f v1 (qm0 2) qm2 -- 80
+--     print $ f v2 (qm0 2) qm2 -- 84
+--     print $ f v1 qm5 qm6 -- 156 (C ricorsiva, Q sommata a C, trasposta, Q ricorsiva)
+--     print $ f v2 qm5 qm6 -- 148
+--     print $ f v1 qm6 qm5 -- 156
+--     print $ f v2 qm6 qm5 -- 148
+--     print $ f v3 id2 (qm0 2) -- 30 (F con F ed N con N)
+--     print $ f v4 id2 (qm0 2) -- 46
+--     print $ f v3 rot2 (qm0 2) -- 20 (F con N ed N con F)
+--     print $ f v4 rot2 (qm0 2) -- 36
