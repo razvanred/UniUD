@@ -17,24 +17,38 @@ data Vector a = Vec {
 data BT a = F a | N (BT a) (BT a)
     deriving (Eq, Show)
 
+qm0 x = Mat x $ C 0
+qm1 x = Mat x $ C 1
+qm2 = Mat 0 $ C 2
+qm3 = Mat 2 $ Q (Q (C 1) (C 0) (C 2) (C 2)) (C 0) (Q (C 2) (C 5) (C 0) (C 1)) (Q (C 3) (C 1) (C 0) (C 6))
+qm4 = Mat 2 $ Q (Q (C 1) (C 0) (C 2) (C 2)) (C 0) (Q (C 2) (C 5) (C 0) (C 1)) (Q (C 3) (C 0) (C 0) (C 6))
+qm5 = Mat 3 $ Q (Q (Q (C 1) (C 0) (C 0) (C 1)) (C 0) (C 0) (Q (C 1) (C 0) (C 0) (C 1))) (C 0) (C 0) (Q (Q (C 1) (C 0) (C 0) (C 1)) (C 0) (C 0) (Q (C 1) (C 0) (C 0) (C 1)))
+qm6 = Mat 3 $ Q (Q (Q (C 1) (C 0) (C 0) (C 2)) (C 0) (C 0) (Q (C 3) (C 0) (C 0) (C 4))) (C 0) (C 0) (Q (Q (C 5) (C 0) (C 0) (C 6)) (C 0) (C 0) (Q (C 7) (C 0) (C 0) (C 8)))
+
+v1 = Vec 2 (N (F 1) (N (F 0) (F 2)))
 ----------------------------------------------------------------------
 -- Consegna
 
 -- La funzione f della consegna
 -- L'unica validazione che esegue è controllare che le dimensioni siano corrette
-f :: Eq a => Num a => Vector a -> Matrix a -> Matrix a -> Maybe a
+f :: (Eq a, Num a) => Vector a -> Matrix a -> Matrix a -> Maybe a
 f v a b = do
     guard (checkSize v a b)
     let ab = sumMat a b
     let abba = sumTransposeMat ab
     let va = apply abba v
     return (productVec v va)
---  return (vProduct v $ apply (sumTranspose $ sumMat a b) v)  
+--  return (productVec v $ apply (sumTranspose $ sumMat a b) v)
+
+-- La funzione f senza controlli e senza semplificazioni
+-- Per controllare se f è corretta
+naiveF :: (Eq a, Num a) => Vector a -> Matrix a -> Matrix a -> a
+naiveF v a b = (productVec v ((apply (sumMat a (transposeMat b)) v))) + (productVec v ((apply (sumMat (transposeMat a) b) v)))
 
 -- Esegue f validando l'input
 -- Se l'input non è compresso lo comprime
 -- Se nexp ed vexp sono invalidi restituisce Nothing
-validateF :: Eq a => Num a => Vector a -> Matrix a -> Matrix a -> Maybe a
+validateF :: (Eq a, Num a) => Vector a -> Matrix a -> Matrix a -> Maybe a
 validateF v a b = do
     v' <- maybeCompressVec v
     a' <- maybeCompressMat a
@@ -60,10 +74,10 @@ transposeQT (Q ul ur ll lr) = Q ul' ll' ur' lr'
           ll' = transposeQT ll
           lr' = transposeQT lr
 
-sumMat :: Eq a => Num a => Matrix a -> Matrix a -> Matrix a
+sumMat :: (Eq a, Num a) => Matrix a -> Matrix a -> Matrix a
 sumMat (Mat nexp mata) (Mat _ matb) = Mat nexp (sumQT mata matb)
 
-sumQT :: Eq a => Num a => QT a -> QT a -> QT a
+sumQT :: (Eq a, Num a) => QT a -> QT a -> QT a
 sumQT (C x) (C y) = C (x + y)
 sumQT (C x) (Q ul ur ll lr) = mergeQT ul' ur' ll' lr'
     where ul' = sumQT (C x) ul
@@ -81,26 +95,27 @@ sumQT (Q ula ura lla lra) (Q ulb urb llb lrb) = mergeQT ul' ur' ll' lr'
           ll' = sumQT lla llb
           lr' = sumQT lra lrb
 
-sumTransposeMat :: Eq a => Num a => Matrix a -> Matrix a
-sumTransposeMat (Mat nexp mat) = Mat nexp (sumTransposeQT mat)
+sumTransposeMat :: (Eq a, Num a) => Matrix a -> Matrix a
+sumTransposeMat (Mat nexp mat) = Mat nexp (deepSumTranspose nexp mat)
 
-sumTransposeQT :: Eq a => Num a => QT a -> QT a
-sumTransposeQT (C m) = C m
-sumTransposeQT (Q ul ur ll lr) = mergeQT ul' ur' ll' lr'
-    where ul' = sumTransposeQT ul
+deepSumTranspose :: Eq a => Int -> Num a => QT a -> QT a
+deepSumTranspose exp (C m) = C (m * 2)
+deepSumTranspose exp (Q ul ur ll lr) = mergeQT ul' ur' ll' lr'
+    where ul' = deepSumTranspose (exp - 1) ul
           ur' = sumQT ur $ transposeQT ll
           ll' = transposeQT ur'
-          lr' = sumTransposeQT lr
+          lr' = deepSumTranspose (exp - 1) lr
 
 
-apply :: Eq a => Num a => Matrix a -> Vector a -> Vector a
+apply :: (Eq a, Num a) => Matrix a -> Vector a -> Vector a
 apply (Mat nexp mat) (Vec _ vec) = Vec nexp (deepApply nexp mat vec)
 
-deepApply :: Eq a => Num a => Int -> QT a -> BT a -> BT a
+deepApply :: (Eq a, Num a) => Int -> QT a -> BT a -> BT a
 deepApply exp (C a) (F v) = F ((a * v) * (2 ^ exp))
-deepApply exp (C a) (N l r) = mergeBT l' r'
+deepApply exp (C a) (N l r) = mergeBT p' p'
     where l' = deepApply (exp - 1) (C a) l
           r' = deepApply (exp - 1) (C a) r
+          p' = sumBT l' r'
 deepApply exp (Q ul ur ll lr) (F v) = mergeBT (sumBT ul' ur') (sumBT ll' lr')
     where ul' = deepApply (exp - 1) ul (F v)
           ur' = deepApply (exp - 1) ur (F v)
@@ -108,11 +123,11 @@ deepApply exp (Q ul ur ll lr) (F v) = mergeBT (sumBT ul' ur') (sumBT ll' lr')
           lr' = deepApply (exp - 1) lr (F v)
 deepApply exp (Q ul ur ll lr) (N l r) = mergeBT (sumBT ul' ur') (sumBT ll' lr')
     where ul' = deepApply (exp - 1) ul l
-          ur' = deepApply (exp - 1) ur l
-          ll' = deepApply (exp - 1) ll r
+          ur' = deepApply (exp - 1) ur r
+          ll' = deepApply (exp - 1) ll l
           lr' = deepApply (exp - 1) lr r
 
-sumBT :: Eq a => Num a => BT a -> BT a -> BT a
+sumBT :: (Eq a, Num a) => BT a -> BT a -> BT a
 sumBT (F a) (F b) = F (a + b)
 sumBT (F a) (N l r) = mergeBT l' r'
     where l' = sumBT (F a) l
