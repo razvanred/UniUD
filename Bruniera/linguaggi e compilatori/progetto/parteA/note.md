@@ -54,7 +54,8 @@ $$
 $$
 \begin{aligned}
 & A\rightarrow && \mathrm{pred}~A'\\
-& A'\rightarrow && E,A' && | ~\epsilon\\
+& A'\rightarrow && EA''\\
+& A''\rightarrow && ,EA'' && | ~\epsilon\\
 & B\rightarrow && A && | ~EB'\\
 & B'\rightarrow && =E && | ~>E\\
 & E\rightarrow && \mathrm{id}E' && | ~\mathrm{num}E'\\
@@ -66,8 +67,9 @@ $$
 
 $$
 \begin{aligned}
-&& A: & (\mathrm{pred}~A)\mapsto\{\mathrm{pred}\}\\
-&& A': & (E,A')\mapsto\{\mathrm{id},\mathrm{num}\}~|~(\epsilon)\mapsto\{\epsilon\}\\
+&& A: & (\mathrm{pred}~A')\mapsto\{\mathrm{pred}\}\\
+&& A': & (EA'')\mapsto\{\mathrm{id},\mathrm{num}\}\\
+&& A'': &(,EA'')\mapsto\{,\}~|~(\epsilon)\mapsto\{\epsilon\}\\
 && B: &  (A)\mapsto\{\mathrm{pred}\}~|~(EB')\mapsto\{\mathrm{id},\mathrm{num}\}\\
 && B': & (=E)\mapsto\{=\}~|~(>E)\mapsto\{>\}\\
 && E: &  (\mathrm{id}E')\mapsto\{\mathrm{id}\}~|~(\mathrm{num}E')\mapsto\{\mathrm{num}\}\\
@@ -81,11 +83,12 @@ $$
 \begin{aligned}
 FOLLOW(A)=&~ \{\$,),\mathrm{or},\mathrm{and}\} \\
 FOLLOW(A')=&~ \{\$,),\mathrm{or},\mathrm{and}\} \\
+FOLLOW(A'')=&~ \{\$,),\mathrm{or},\mathrm{and}\}\\
 FOLLOW(B)=&~ \{\$,),\mathrm{or},\mathrm{and}\} \\
 FOLLOW(B')=&~ \{\$,),\mathrm{or},\mathrm{and}\} \\
-FOLLOW(E)=&~ \{\$,),\mathrm{or},\mathrm{and},=,>\} \\
-FOLLOW(E')=&~ \{\$,),\mathrm{or},\mathrm{and},=,>\} \\
+FOLLOW(E)=&~ \{,~,=,>,\$,),\mathrm{or},\mathrm{and}\} \\
+FOLLOW(E')=&~ \{,~,=,>,\$,),\mathrm{or},\mathrm{and}\} \\
 FOLLOW(P)=&~ \{\$,),\mathrm{or},\mathrm{and}\} \\
-FOLLOW(P')=&~ \{\$,),\mathrm{or},\mathrm{and}\} \\
+FOLLOW(P')=&~ \{)\} \\
 \end{aligned}
 $$
