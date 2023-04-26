@@ -109,47 +109,47 @@ apply (Mat nexp mat) (Vec _ vec) = Vec nexp (deepApply nexp mat vec)
 
 deepApply :: (Eq a, Num a) => Int -> QT a -> BT a -> BT a
 deepApply exp (C a) (F v) = F ((a * v) * (2 ^ exp))
-deepApply exp (C a) (N l r) = mergeBT p' p'
-    where l' = deepApply (exp - 1) (C a) l
-          r' = deepApply (exp - 1) (C a) r
+deepApply exp (C a) (N u l) = mergeBT p' p'
+    where l' = deepApply (exp - 1) (C a) u
+          r' = deepApply (exp - 1) (C a) l
           p' = sumBT l' r'
 deepApply exp (Q ul ur ll lr) (F v) = mergeBT (sumBT ul' ur') (sumBT ll' lr')
     where ul' = deepApply (exp - 1) ul (F v)
           ur' = deepApply (exp - 1) ur (F v)
           ll' = deepApply (exp - 1) ll (F v)
           lr' = deepApply (exp - 1) lr (F v)
-deepApply exp (Q ul ur ll lr) (N l r) = mergeBT (sumBT ul' ur') (sumBT ll' lr')
-    where ul' = deepApply (exp - 1) ul l
-          ur' = deepApply (exp - 1) ur r
-          ll' = deepApply (exp - 1) ll l
-          lr' = deepApply (exp - 1) lr r
+deepApply exp (Q ul ur ll lr) (N u l) = mergeBT (sumBT ul' ur') (sumBT ll' lr')
+    where ul' = deepApply (exp - 1) ul u
+          ur' = deepApply (exp - 1) ur l
+          ll' = deepApply (exp - 1) ll u
+          lr' = deepApply (exp - 1) lr l
 
 sumBT :: (Eq a, Num a) => BT a -> BT a -> BT a
 sumBT (F a) (F b) = F (a + b)
-sumBT (F a) (N l r) = mergeBT l' r'
-    where l' = sumBT (F a) l
-          r' = sumBT (F a) r
-sumBT (N l r) (F b) = mergeBT l' r'
-    where l' = sumBT l (F b)
-          r' = sumBT r (F b)
-sumBT (N la ra) (N lb rb) = mergeBT l' r'
-    where l' = sumBT la lb
-          r' = sumBT ra rb
+sumBT (F a) (N u l) = mergeBT u' l'
+    where u' = sumBT (F a) u
+          l' = sumBT (F a) l
+sumBT (N u l) (F b) = mergeBT u' l'
+    where u' = sumBT u (F b)
+          l' = sumBT l (F b)
+sumBT (N la ra) (N lb rb) = mergeBT u' l'
+    where u' = sumBT la lb
+          l' = sumBT ra rb
 
 productVec :: Num a => Vector a -> Vector a -> a
 productVec (Vec vexp veca) (Vec _ vecb) = deepProduct vexp veca vecb
 
 deepProduct :: Num a => Int -> BT a -> BT a -> a
 deepProduct exp (F a) (F b) = (a * b) * (2 ^ exp)
-deepProduct exp (F a) (N l r) = l' + r'
-    where l' = deepProduct (exp - 1) (F a) l
-          r' = deepProduct (exp - 1) (F a) r
-deepProduct exp (N l r) (F b) = l' + r'
-    where l' = deepProduct (exp - 1) l (F b)
-          r' = deepProduct (exp - 1) r (F b)
-deepProduct exp (N la ra) (N lb rb) = l' + r'
-    where l' = deepProduct (exp - 1) la lb
-          r' = deepProduct (exp - 1) ra rb
+deepProduct exp (F a) (N u l) = u' + l'
+    where u' = deepProduct (exp - 1) (F a) u
+          l' = deepProduct (exp - 1) (F a) l
+deepProduct exp (N u l) (F b) = u' + l'
+    where u' = deepProduct (exp - 1) u (F b)
+          l' = deepProduct (exp - 1) l (F b)
+deepProduct exp (N la ra) (N lb rb) = u' + l'
+    where u' = deepProduct (exp - 1) la lb
+          l' = deepProduct (exp - 1) ra rb
 
 ----------------------------------------------------------------------
 -- Validazione
@@ -181,18 +181,18 @@ maybeCompressVec Vec {vexp, vec} = do
     return (Vec vexp cVec)
 
 maybeCompressVecRec :: Eq a => Int -> BT a -> Maybe (BT a)
-maybeCompressVecRec exp (N l r) | exp < 1 = Nothing
+maybeCompressVecRec exp (N u l) | exp < 1 = Nothing
                                         | otherwise = do
+                                            u' <- maybeCompressVecRec (exp - 1) u
                                             l' <- maybeCompressVecRec (exp - 1) l
-                                            r' <- maybeCompressVecRec (exp - 1) r
-                                            return (mergeBT l' r')
+                                            return (mergeBT u' l')
 maybeCompressVecRec exp (F x) | exp < 0 = Nothing
                               | otherwise = Just (F x)
 
 mergeBT :: Eq a => BT a -> BT a ->BT a
-mergeBT (F l) (F r) | l == r = F l
-                    | otherwise = N (F l) (F r)
-mergeBT l r = N l r
+mergeBT (F u) (F l) | u == l = F u
+                    | otherwise = N (F u) (F l)
+mergeBT u l = N u l
 
 -- Controlla che le dimensioni combacino
 checkSize :: Vector a -> Matrix a -> Matrix a -> Bool
