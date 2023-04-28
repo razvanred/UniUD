@@ -16,9 +16,9 @@ v3 = Vec 2 (N (F 1) (N (F 2) (F 3)))
 v4 = Vec 2 (N (N (F 1) (F 2)) (F 3))
 
 ----------------------------------------------------------------------
--- Validazione, tutte le query restituiscono Nothing
+-- Validazione
 
--- Profondità errata
+-- Profondità errata, tutte le query restituiscono Nothing
 validateF (Vec 0 (N (F 1) (F 2))) (qm0 0) (qm0 0)
 validateF (v0 0) (Mat 0 (Q (C 1) (C 2) (C 2) (C 2))) (qm0 0)
 validateF (v0 0) (qm0 0) (Mat 0 (Q (C 1) (C 2) (C 2) (C 2)))
@@ -26,12 +26,12 @@ validateF (v0 (-1)) (qm0 0) (qm0 0)
 validateF (v0 0) (qm0 (-1)) (qm0 0)
 validateF (v0 0) (qm0 0) (qm0 (-1))
 
--- Dimensioni diverse
+-- Dimensioni diverse, tutte le query restituiscono Nothing
 validateF (v0 1) (qm0 0) (qm0 0)
 validateF (v0 0) (qm0 1) (qm0 0)
 validateF (v0 0) (qm0 0) (qm0 1)
 
--- Compressione
+-- Compressione, restituiscono Just il dato compresso
 maybeCompressMat (Mat 1 $ Q (C 0) (C 0) (C 0) (C 0))
 maybeCompressVec (Vec 1 $ N (F 0) (F 0))
 
