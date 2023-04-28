@@ -37,6 +37,17 @@ v(((A+B)+(A^T+B^T))v^T)\\
 v(((A+B)+(A+B)^T)v^T)
 $$
 
+$$
+\begin{aligned}
+& v^T(A+B^T)v+v^T(A^T+B)v=\\
+& v^T((A+B^T)v+(A^T+B)v)= &\text{[distributività]}\\
+& v^T((A+B^T+A^T+B)v)= &\text{[distributività]}\\
+& v^T((A+B+A^T+B^T)v)= &\text{[commutatività]}\\
+& v^T(((A+B)+(A^T+B^T))v)= &\text{[associatività]}\\
+& v^T(((A+B)+(A+B)^T)v) &\text{[addizione]}\\
+\end{aligned}
+$$
+
 ```
 1 0 0 0
 2 2 0 0
@@ -67,15 +78,15 @@ $$
 
 $$
 \begin{aligned}
-&& A: & (\mathrm{pred}~A')\mapsto\{\mathrm{pred}\}\\
-&& A': & (EA'')\mapsto\{\mathrm{id},\mathrm{num}\}\\
-&& A'': &(,EA'')\mapsto\{,\}~|~(\epsilon)\mapsto\{\epsilon\}\\
-&& B: &  (A)\mapsto\{\mathrm{pred}\}~|~(EB')\mapsto\{\mathrm{id},\mathrm{num}\}\\
-&& B': & (=E)\mapsto\{=\}~|~(>E)\mapsto\{>\}\\
-&& E: &  (\mathrm{id}E')\mapsto\{\mathrm{id}\}~|~(\mathrm{num}E')\mapsto\{\mathrm{num}\}\\
-&& E': & (+E)\mapsto\{+\}~|~(\epsilon)\mapsto\{\epsilon\}\\
-&& P: &  ((PP')\mapsto\{(\}~|~(\mathrm{not}P)\mapsto\{\mathrm{not}\}~|~(B)\mapsto\{\mathrm{id},\mathrm{num},\mathrm{pred}\}\\
-&& P': &(\mathrm{or}~P))\mapsto\{\mathrm{or}\}~|~(\mathrm{and}~P))\mapsto\{\mathrm{and}\}& \\
+A: & (\mathrm{pred}~A')\mapsto\{\mathrm{pred}\}\\
+A': & (EA'')\mapsto\{\mathrm{id},\mathrm{num}\}\\
+A'': &(,EA'')\mapsto\{,\}~|~(\epsilon)\mapsto\{\epsilon\}\\
+B: &  (A)\mapsto\{\mathrm{pred}\}~|~(EB')\mapsto\{\mathrm{id},\mathrm{num}\}\\
+B': & (=E)\mapsto\{=\}~|~(>E)\mapsto\{>\}\\
+E: &  (\mathrm{id}E')\mapsto\{\mathrm{id}\}~|~(\mathrm{num}E')\mapsto\{\mathrm{num}\}\\
+E': & (+E)\mapsto\{+\}~|~(\epsilon)\mapsto\{\epsilon\}\\
+P: &  ((PP')\mapsto\{(\}~|~(\mathrm{not}P)\mapsto\{\mathrm{not}\}~|~(B)\mapsto\{\mathrm{id},\mathrm{num},\mathrm{pred}\}\\
+P': &(\mathrm{or}~P))\mapsto\{\mathrm{or}\}~|~(\mathrm{and}~P))\mapsto\{\mathrm{and}\}& \\
 \end{aligned}
 $$
 
@@ -89,6 +100,6 @@ FOLLOW(B')=&~ \{\$,),\mathrm{or},\mathrm{and}\} \\
 FOLLOW(E)=&~ \{,~,=,>,\$,),\mathrm{or},\mathrm{and}\} \\
 FOLLOW(E')=&~ \{,~,=,>,\$,),\mathrm{or},\mathrm{and}\} \\
 FOLLOW(P)=&~ \{\$,),\mathrm{or},\mathrm{and}\} \\
-FOLLOW(P')=&~ \{)\} \\
+FOLLOW(P')=&~ \{\$,),\mathrm{or},\mathrm{and}\} \\
 \end{aligned}
 $$
