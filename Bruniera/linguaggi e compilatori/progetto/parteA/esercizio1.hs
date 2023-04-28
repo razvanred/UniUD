@@ -13,7 +13,7 @@ data Matrix a = Mat {
 } deriving (Eq, Show)
 
 data QT a = C a | Q ( QT a ) ( QT a ) ( QT a ) ( QT a )
-    deriving (Eq, Show)
+    deriving (Eq, Show) 
 
 data Vector a = Vec {
     vexp :: Int ,
@@ -205,25 +205,28 @@ checkSize v a b = (v' == a') && (v' == b')
 -- Test per code coverage
 -- bisogna decommentare l'header del modulo
 
--- qm0 x = Mat x $ C 0
--- qm2 = Mat 2 $ Q (C 1) (Q (C 1) (C 2) (C 3) (C 4)) (C 2) (C 4)
--- qm3 = Mat 2 $ Q (Q (C 1) (C 0) (C 2) (C 2)) (C 0) (Q (C 2) (C 5) (C 0) (C 1)) (Q (C 3) (C 1) (C 0) (C 6))
--- qm4 = Mat 2 $ Q (Q (C 1) (C 0) (C 2) (C 2)) (C 0) (Q (C 2) (C 5) (C 0) (C 1)) (Q (C 3) (C 0) (C 0) (C 6))
--- qm5 = Mat 2 $ Q (C 1) (Q (C 4) (C 3) (C 1) (C 2)) (C 2) (C 4)
--- qm6 = Mat 2 $ Q (C 1) (Q (C 1) (C 2) (C 3) (C 4)) (C 3) (Q (C 1) (C 2) (C 4) (C 3))
--- id2 = Mat 2 $ Q (Q (C 1) (C 0) (C 0) (C 1)) (C 0) (C 0) (Q (C 1) (C 0) (C 0) (C 1))
--- rot2= Mat 2 $ Q (C 0) (Q (C 0) (C 1) (C 1) (C 0)) (Q (C 0) (C 1) (C 1) (C 0)) (C 0)
--- 
--- v0 x = Vec x $ F 0
--- v1 = Vec 2 (N (F 1) (N (F 0) (F 2)))
--- v2 = Vec 2 (N (N (F 0) (F 2)) (F 1))
--- v3 = Vec 2 (N (F 1) (N (F 2) (F 3)))
--- v4 = Vec 2 (N (N (F 1) (F 2)) (F 3))
--- 
+qm0 x = Mat x $ C 0
+qm2 = Mat 2 $ Q (C 1) (Q (C 1) (C 2) (C 3) (C 4)) (C 2) (C 4)
+qm3 = Mat 2 $ Q (Q (C 1) (C 0) (C 2) (C 2)) (C 0) (Q (C 2) (C 5) (C 0) (C 1)) (Q (C 3) (C 1) (C 0) (C 6))
+qm4 = Mat 2 $ Q (Q (C 1) (C 0) (C 2) (C 2)) (C 0) (Q (C 2) (C 5) (C 0) (C 1)) (Q (C 3) (C 0) (C 0) (C 6))
+qm5 = Mat 2 $ Q (C 1) (Q (C 4) (C 3) (C 1) (C 2)) (C 2) (C 4)
+qm6 = Mat 2 $ Q (C 1) (Q (C 1) (C 2) (C 3) (C 4)) (C 3) (Q (C 1) (C 2) (C 4) (C 3))
+id2 = Mat 2 $ Q (Q (C 1) (C 0) (C 0) (C 1)) (C 0) (C 0) (Q (C 1) (C 0) (C 0) (C 1))
+rot2= Mat 2 $ Q (C 0) (Q (C 0) (C 1) (C 1) (C 0)) (Q (C 0) (C 1) (C 1) (C 0)) (C 0)
+
+v0 x = Vec x $ F 0
+v1 = Vec 2 (N (F 1) (N (F 0) (F 2)))
+v2 = Vec 2 (N (N (F 0) (F 2)) (F 1))
+v3 = Vec 2 (N (F 1) (N (F 2) (F 3)))
+v4 = Vec 2 (N (N (F 1) (F 2)) (F 3))
+
 -- main = do
 --     print $ validateF (Vec 0 (N (F 1) (F 2))) (qm0 0) (qm0 0)
 --     print $ validateF (v0 0) (Mat 0 (Q (C 1) (C 2) (C 2) (C 2))) (qm0 0)
 --     print $ validateF (v0 0) (qm0 0) (Mat 0 (Q (C 1) (C 2) (C 2) (C 2)))
+--     print $ validateF (v0 (-1)) (qm0 0) (qm0 0)
+--     print $ validateF (v0 0) (qm0 (-1)) (qm0 0)
+--     print $ validateF (v0 0) (qm0 0) (qm0 (-1))
 --     print $ validateF (v0 1) (qm0 0) (qm0 0)
 --     print $ validateF (v0 0) (qm0 1) (qm0 0)
 --     print $ validateF (v0 0) (qm0 0) (qm0 1)
