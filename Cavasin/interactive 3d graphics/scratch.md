@@ -1,0 +1,1 @@
+mipmap: pag. 183
