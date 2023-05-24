@@ -92,7 +92,7 @@ Not all active microfacets will contribute: some will be blocked by other microf
 
 Also called general Cook-Torrance microfacet specular model, where:
 
-* $F(h,l)$ is the Fresnel reflectance of the active microfacets (the ones with $n=h$).
+* $F(h,l)$ is the Fresnel reflectance of the active microfacets (the ones where $n=h$).
 * $G(l,v,h)$ is the geometry function: the probability that microfacets with $n=h$ will be visible from both the light direction $l$ and the view direction $v$.
 * $D(h)$ is the Normal Distribution Function (NDF), that is the concentration of active micro-facets.
 
@@ -119,3 +119,14 @@ $$
 
 The normalization factor $\frac{m+2}{8\pi}$ makes the BRDF energy preserving by keeping the total reflectance $R$ constant.\
 Intuitively, when $m$ increases (corresponding to a smoother surface), the size of the highlight decreases, but its brightness increases.
+
+### Combining diffuse and specular
+
+Simply adding $f_{\text{spec}}(l,v)+f_{\text{diff}}(l,v)$ can violate energy conservation for certain inputs, where in reality subsurface reflection can only utilize incoming energy which was not reflected back at the surface. One simple approach is to multiply the diffuse term by $(1 − F(h, l))$.
+
+## Metalness workflow
+
+We can redefine the inputs to the model by observing that for metals $c_\mathrm {diff}$ is not needed (is black), and for dielectrics, a specular monochromatic value of 0.04 can be used for $c_\mathrm{spec}$. By introducing a float parameter called *metalness*, we can use just one color (*base color*):
+
+* when metalness is 0: $c_\mathrm {diff}=$ base color, $c_\mathrm{spec}=\langle0.04, \ldots\rangle$
+* when metalness is 1: $c_\mathrm {diff}=\langle0, \ldots\rangle$, $c_\mathrm{spec}=$ base color

@@ -74,7 +74,7 @@ In irradiance\radiance, the area is measured in a plane perpendicular to the ray
 
 ![cosine correction](img/coscorr.svg)
 
-Intuitively, the irradiance is proportional to the density of the rays and inversely proportional to the landing distance $d$ between them, so, $\frac{E}{d/cos(\theta_i)}=E\,\mathrm{cos}(\theta_i)$. We can use the dot product of $l$ and $n$ to compute $\mathrm{cos}(\theta_i)$.
+Intuitively, the irradiance is proportional to the density of the rays and inversely proportional to the landing distance $d$ between them, so, $\frac{E}{d/cos(\theta_i)}=E\,\cos(\theta_i)$. We can use the dot product of $l$ and $n$ to compute $\cos(\theta_i)$.
 
 ### Local vs Global Illumination
 
