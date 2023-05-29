@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="270" viewBox="0 0 152.481 55.298">
+  <defs>
+    <marker id="a" markerHeight="3" markerWidth="3" orient="auto" overflow="visible" preserveAspectRatio="xMidYMid"
+      refX="0" refY="0" viewBox="0 0 5.667 5.667">
+      <path fill="#838787" fill-rule="evenodd" stroke="context-stroke" stroke-width=".5pt"
+        d="M2.5 0a2.5 2.5 0 0 1-5 0c0-1.38 1.15-2.5 2.5-2.5A2.5 2.5 0 0 1 2.5 0z" />
+    </marker>
+  </defs>
+  <g transform="translate(-72.075 -79.1)">
+    <path fill="none" stroke="#f07124" stroke-dasharray="2 2" stroke-width=".529"
+      d="m73.265 80.29 26.458 26.46M173.786 80.29l15 16.041" />
+    <path fill="none" stroke="#838787" stroke-width=".794" marker-mid="url(#a)" marker-start="url(#a)"
+      d="m126.182 80.29-52.917 52.917h52.917z" />
+    <path fill="#0c0" fill-opacity=".39" stroke="#838787" stroke-width=".794" marker-mid="url(#a)"
+      marker-start="url(#a)" d="M73.265 80.29v52.917l52.917-52.916Z" />
+    <circle cx="99.724" cy="106.749" r="1.587" fill="#0071bc" />
+    <g transform="translate(17.398)">
+      <path fill="none" stroke="#838787" stroke-width=".794" marker-mid="url(#a)" marker-start="url(#a)"
+        d="m186.387 80.29-49.58 52.917h69.16z" />
+      <path fill="#0c0" fill-opacity=".39" stroke="#838787" stroke-width=".794" marker-mid="url(#a)"
+        marker-start="url(#a)" d="m156.388 80.29-19.581 52.917 49.58-52.916Z" />
+    </g>
+    <circle cx="188.785" cy="96.331" r="1.587" fill="#0071bc" />
+  </g>
+</svg>

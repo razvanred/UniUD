@@ -20,9 +20,9 @@ The affine subspaces $\lang S,W,+\rang$ of $A$ are the subsets in the form $S=P+
 
 The points $P_0,\ldots,P_k$ of an affine space are affinely independent if and only if, the vectors $\overrightarrow{P_0P_1},\ldots,\overrightarrow{P_0P_k}$ are linearly independent $\forall P_0\in A$.Equivalently, $k$ points in an affine space are affinely independent iff the smallest affine subspace containing them has dimension $k-1$.
 
-* two points are affinely independent if and only if they are distinct
-* three points are affinely independent if and only if they are not collinear
-* four points are affinely independent if and only if they are not coplanar
+* Two points are affinely independent if and only if they are distinct
+* Three points are affinely independent if and only if they are not collinear
+* Four points are affinely independent if and only if they are not coplanar
 
 ### Affine combination, Convex combination
 
@@ -124,7 +124,7 @@ H & t\\
 \begin{pmatrix}
 x\\
 1
-\end{pmatrix}\\
+\end{pmatrix}\\[.5em]
 \begin{pmatrix}
 y\\
 0
@@ -186,9 +186,7 @@ The use of colons means that barycentric coordinates are a sort of homogeneous c
 
 For example, let's consider $n=3$ and $(\alpha_1+\alpha_2+\alpha_3)=1$. In this case, $\alpha_1\overrightarrow{OP_1}+\alpha_2\overrightarrow{OP_2}+\alpha_3\overrightarrow{OP_3}$ is an affine combination.\
 We now define an alternative representation $(0,\beta_1,\beta_2)$ for a point with non-zero barycentric coordinates $Q$, such way that the tuples are not multiple of eachother. These coordinates do not satisfy the equation $\overrightarrow{OQ}=0+\beta_2\overrightarrow{OP_2}+\beta_3\overrightarrow{OP_3}$, because $Q$, having non-zero barycentric coordinates, lies outside the line defined by the affine combination of the vertices $P_2$ and $P_3$.\
-We chose $0$ as the first coordinate to guarantee it to not be a multiple of the solution $(\alpha_1:\alpha_2:\alpha_3)$, but it holds true for all non-multiples. Also note that $(\alpha_1+\alpha_2+\alpha_3)=k$, is just an uniform scaling of factor $k$.
-
-The coordinates are all positive iff $Q$ lies inside the simplex.
+We chose $0$ as the first coordinate to guarantee it to not be a multiple of the solution $(\alpha_1:\alpha_2:\alpha_3)$, but it holds true for all non-multiples. Also remember that $(\alpha_1+\alpha_2+\alpha_3)=k$ is just an uniform scaling of factor $k$.
 
 Moreover, the barycentric coordinates are also not changed if the origin point $O$ is changed:
 
@@ -199,15 +197,15 @@ $$
 \overrightarrow{O'Q'}=\overrightarrow{O'O}+\overrightarrow{OQ}=\overrightarrow{O'Q},\quad Q'=Q
 $$
 
-Intuitively, the influence (in blue) of each $\overrightarrow{OP_i}$ vector is proportional to its length.\
-The homogeneous barycentric coordinates of $P_i$ are all zero, except the one of index $i$.
+Intuitively, the influence (in blue) of each $\overrightarrow{OP_i}$ vector is proportional to its length.
+
+The homogeneous barycentric coordinates of $P_i$ are all zero, except the one of index $i$.\
+The convex combination of $P_1,\ldots,P_n$ (all the points with nonnegative barycentric coordinates) describe a convex hull that is the simplex with these points as its vertices. That is to say, the coordinates are all positive iff $Q$ lies inside the simplex.
 
 ### Normalized barycentric coordinates
 
-In our context it is useful to constrain the barycentric coordinates of a point so that they are unique. This is achieved by imposing the condition $\sum \alpha_i=1$, or equivalently by dividing every $\alpha_i$ by the sum of all $\alpha_i$. These specific barycentric coordinates are called *normalized*.
+In our context it is useful to constrain the barycentric coordinates of a point so that they are unique. This is achieved by dividing every $\alpha_i$ by the sum of all $\alpha_i$. These specific barycentric coordinates are called *normalized*.
 In our case, normalized barycentric coordinates are called barycentric coordinates. The above defined coordinates are called "homogeneous barycentric coordinates".
-
-The convex combination of $P_1,\ldots,P_n$ (all the points with nonnegative barycentric coordinates) describe a convex hull that is the simplex with these points as its vertices.
 
 For $n=3$, normalized barycentric coordinates measure the signed areas of the subtriangles around $Q$.
 

@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="700" version="1.0"
+  viewBox="0 -115 1466.371 525">
+  <defs>
+    <path id="a" d="m0 0-2.5 2.5L6.25 0-2.5-2.5Z" />
+  </defs>
+  <defs>
+    <marker id="d" markerHeight="5" markerWidth="8.75" orient="auto-start-reverse" overflow="visible"
+      preserveAspectRatio="xMidYMid" refX="0" refY="0" viewBox="0 0 8.75 5">
+      <use xlink:href="#a" fill="#838787" />
+    </marker>
+    <marker id="b" markerHeight="5" markerWidth="8.75" orient="auto-start-reverse" overflow="visible"
+      preserveAspectRatio="xMidYMid" refX="0" refY="0" viewBox="0 0 8.75 5">
+      <use xlink:href="#a" fill="#f07124" />
+    </marker>
+    <marker id="c" markerHeight="3.667" markerWidth="3.667" orient="auto" overflow="visible"
+      preserveAspectRatio="xMidYMid" refX="0" refY="0" viewBox="0 0 5.667 5.667">
+      <path fill="#0071bc" stroke="context-stroke" stroke-width=".5pt"
+        d="M2.5 0a2.5 2.5 0 0 1-5 0c0-1.38 1.15-2.5 2.5-2.5A2.5 2.5 0 0 1 2.5 0Z" />
+    </marker>
+  </defs>
+  <g transform="translate(-54.631 -251.174)">
+    <path fill="none" stroke="#f07124" stroke-dasharray="12 3" stroke-width="3.738" marker-end="url(#b)"
+      d="m318.004 591.569-81.961-370.441" />
+    <path fill="none" stroke="#838787" stroke-dasharray="11.998 3" stroke-width="3.338"
+      d="m370.59 514.72-52.586 76.849-53.23-76.85" />
+    <path fill="none" stroke="#838787" stroke-width="3.738" d="M58.059 193.88H577.94L370.59 514.72H264.774Z" />
+    <path fill="none" stroke="#0071bc" stroke-width="3.738" marker-end="url(#c)" marker-start="url(#c)"
+      d="M213.823 435.64 477.27 272.62" />
+    <path fill="none" stroke="#0071bc" stroke-width="3.738" marker-end="url(#c)" marker-start="url(#c)"
+      d="M264.774 514.72V193.88" />
+    <path fill="#f07124" fill-rule="evenodd"
+      d="M264.774 346.12a4.863 4.863 0 0 1 4.862 4.863 4.863 4.863 0 0 1-4.862 4.862c-2.684 0-4.862-2.237-4.862-4.862a4.863 4.863 0 0 1 4.862-4.862z"
+      color="#000" style="-inkscape-stroke:none" />
+    <g id="f" transform="translate(0 249.966)">
+      <path id="e" fill="none" fill-opacity="1" stroke="#838787" stroke-dasharray="none" stroke-dashoffset="0"
+        stroke-opacity="1" stroke-width="3" marker-end="url(#d)" d="M318.004 341.603h35.22" opacity="1" />
+      <use xlink:href="#e" transform="rotate(90 318.004 341.603)" />
+    </g>
+    <text id="g" x="372.412" y="597.927" fill="#838787" fill-opacity="1" stroke="none" stroke-dasharray="none"
+      stroke-dashoffset="0" stroke-opacity="1" stroke-width="0" font-family="sans-serif" font-size="24"
+      font-stretch="normal" font-style="italic" font-variant="normal" font-weight="400" opacity="1"
+      style="-inkscape-font-specification:&quot;sans-serif Italic&quot;">
+      <tspan x="372.412" y="597.927">x</tspan>
+    </text>
+    <text id="h" x="310.897" y="662.165" fill="#838787" fill-opacity="1" stroke="none" stroke-dasharray="none"
+      stroke-dashoffset="0" stroke-opacity="1" stroke-width="0" font-family="sans-serif" font-size="24"
+      font-stretch="normal" font-style="italic" font-variant="normal" font-weight="400" opacity="1"
+      style="-inkscape-font-specification:&quot;sans-serif Italic&quot;">
+      <tspan x="310.897" y="662.165">z</tspan>
+    </text>
+  </g>
+  <g transform="translate(421.31 -154.828)">
+    <path fill="none" stroke="#f07124" stroke-dasharray="12 3" stroke-width="3" marker-end="url(#b)"
+      d="m787.716 413.083-2-299.683" />
+    <path id="i" fill="none" stroke="#838787" stroke-dasharray="none" stroke-opacity="1" stroke-width="3"
+      d="M678.917 93.917h319.166v319.166H678.917Z" display="inline" />
+    <path fill="none" stroke="#0071bc" stroke-width="3" marker-end="url(#c)" marker-start="url(#c)"
+      d="m678.917 213.363 279.409-99.23" />
+    <path fill="none" stroke="#0071bc" stroke-width="3" marker-end="url(#c)" marker-start="url(#c)"
+      d="M678.917 413.083 806.442 93.917" />
+    <path fill="#f07124" fill-rule="evenodd"
+      d="M785.928 140.405a4.855 4.855 0 0 1 4.854 4.854 4.855 4.855 0 0 1-4.854 4.853c-2.679 0-4.853-2.232-4.853-4.853a4.855 4.855 0 0 1 4.853-4.854z"
+      color="#000" style="-inkscape-stroke:none" />
+    <g id="j">
+      <use xlink:href="#f" transform="rotate(-90 505.59 193.089)" />
+      <use xlink:href="#g" transform="translate(590 -209.966)" />
+      <use xlink:href="#h" transform="translate(588 -341.965)" />
+    </g>
+  </g>
+  <g transform="translate(-489.681 -150.895)">
+    <path fill="none" stroke="#f07124" stroke-dasharray="12 3" stroke-width="3" marker-end="url(#b)"
+      d="m1233.36 413.372-2-299.684" />
+    <use xlink:href="#i" transform="translate(448.13 .662)" />
+    <path fill="none" stroke="#0071bc" stroke-width="3" marker-end="url(#c)" marker-start="url(#c)"
+      d="M1127.048 331.874c125.384-36.986 209.682-83.034 276.659-158.37" />
+    <path fill="none" stroke="#0071bc" stroke-width="3" marker-end="url(#c)" marker-start="url(#c)"
+      d="M1127.048 413.744c107.59-60.328 111.815-182.918 126.173-319.165" />
+    <path fill="#f07124" fill-rule="evenodd"
+      d="M1232.3 249.593a4.855 4.855 0 0 1 4.853 4.853 4.855 4.855 0 0 1-4.854 4.854c-2.679 0-4.853-2.233-4.853-4.854a4.855 4.855 0 0 1 4.853-4.853z"
+      color="#000" style="-inkscape-stroke:none" />
+    <use xlink:href="#j" transform="translate(446.408)" />
+  </g>
+  <text fill="#838787" stroke-width="0" font-family="sans-serif" font-size="37.333" font-style="italic"
+    font-weight="400" style="-inkscape-font-specification:&quot;sans-serif Italic&quot;">
+    <tspan x="159.027" y="-85.521" font-style="normal" style="-inkscape-font-specification:sans-serif">camera space
+    </tspan>
+  </text>
+  <text fill="#838787" stroke-width="0" font-family="sans-serif" font-size="37.333" font-style="italic"
+    font-weight="400" style="-inkscape-font-specification:&quot;sans-serif Italic&quot;">
+    <tspan x="1107.716" y="-85.521" font-style="normal" style="-inkscape-font-specification:sans-serif">hyperbolic
+      z-buffer</tspan>
+  </text>
+  <text fill="#838787" stroke-width="0" font-family="sans-serif" font-size="37.333" font-style="italic"
+    font-weight="400" style="-inkscape-font-specification:&quot;sans-serif Italic&quot;">
+    <tspan x="682.716" y="-85.521" font-style="normal" style="-inkscape-font-specification:sans-serif">linear z-buffer
+    </tspan>
+  </text>
+  <text x="-17.284" y="-124.316" fill="#838787" stroke="#838787" stroke-dasharray="11.998 3" stroke-width="3"
+    font-family="sans-serif" font-size="42.443" style="-inkscape-font-specification:sans-serif">
+    <tspan x="977.716" y="350" stroke="none">NDC</tspan>
+  </text>
+</svg>
