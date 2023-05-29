@@ -2,8 +2,8 @@
 
 ## [The Math behind (most) 3D games - Perspective Projection](https://www.youtube.com/watch?v=U0_ONQQ5ZNM)
 
-* Clip space doesn't turn the frustum into a cube, it's just a 4D projective space $\mathbb P^4(\mathbb R)$. This is done by the perspective division, which brings us in NDC space (a projected affine space $\mathbb R^3$ with $x_{4}=1$).
-* Clipping can be done in the clip space (by interpreting the homogeneous coordinates), or in NDC (interpreting the depth values). Clipping in NDC has the advantage that it's generic, as any projection technique can be brought to NDC.
+* Clip space doesn't turn the frustum into a cube, it's just a 4D projective space $\mathbb P^4(\mathbb R)$. This is instead done by the perspective division, which brings us in NDC space (a projected affine space $\mathbb R^3$ with $x_{4}=1$).
+* Clipping can be done in the clip space (by interpreting the $w$ coordinates), or in NDC (interpreting the z-buffer). Clipping in NDC has the advantage that it's generic, as any projection technique can be brought to NDC.
 
 ## Normal transformations
 
