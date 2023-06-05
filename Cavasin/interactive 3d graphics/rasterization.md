@@ -23,6 +23,10 @@ $$
 If $\overrightarrow{AC}$ is on the left of $\overrightarrow{AB}$ the area is positive, otherwise it's negative. This is is equivalent to calculating $\overrightarrow{AB}\times\overrightarrow{AC}$.\
 The expressions can be tweaked for alternative vertex traversals, for example using $\overrightarrow{AB}$ and $\overrightarrow{BC}$.
 
+### Scan conversion
+
+todo
+
 ## Triangle Traversal
 
 The purpose of this stage is to determine which pixels (or fragments) should be used to approximate points, lines and polygons by sampling them in screen space. For polygons it's also required to determine which pixels lie inside the two-dimensional polygon determined by its vertices.
