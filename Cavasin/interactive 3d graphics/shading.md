@@ -48,7 +48,7 @@ If the entry-exit distances are large compared to the shading scale, then specia
 
 Given that we ignore the cases of transparency and global subsurface scattering, we can assume that, with the exception of light sources, the radiance leaving a surface is reflected, and originated from elsewhere.
 
-*Local* reflectance depends on only the incoming light direction $l$ and the outgoing view direction $v$, and is quantified by the **b**idirectional **r**eflectance **d**istribution **f**unction, denoted as $f(l,v)$ or $f(\theta_l,\phi_l,\theta_v,\phi_v)$. $l$ and $v$ have two degrees of freedom each: elevation $\theta$ relative to the surface normal $n$ and azimuth $\phi$ (we assume a right-handed direction). The BRDF is defined only in cases where both the light and view directions are above the surface.
+*Local* reflectance depends on only the incoming light direction $l$ and the outgoing view direction $v$ relative to the surface (the normal). It's quantified by the **b**idirectional **r**eflectance **d**istribution **f**unction, denoted as $f(l,v)$ or $f(\theta_l,\phi_l,\theta_v,\phi_v)$. $l$ and $v$ have two degrees of freedom each: elevation $\theta$ relative to the surface normal $n$ and azimuth $\phi$ (we assume a right-handed direction). The BRDF is defined only in cases where both the light and view directions are above the surface.
 
 We assume every point to have it's own BRDF.
 
