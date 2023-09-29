@@ -1,0 +1,27 @@
+
+
+enumFrom@(Float,Char) = \ z -> case z of
+    (x, c) -> : a[*@Float x 1.1 , succ@Char c] (enumFrom@(Float,Char) a)
+
+       
+f :: Float -> ( any , ( Float , Char )) -> Bool
+f = \ x -> \ y' ->  case y' of
+    (_ ,( y , _ )) -> <@Float x y
+
+myMap = \ f -> \ l -> case l of
+    : x xs -> : (f x) (myMap f xs)
+    [] -> []
+
+myFilt = \ p -> \ l -> case l of
+    [] -> []
+    : x xs -> if (p x) then (: x ys[myFilt p xs]) else ys
+
+myZip = \ l1 -> \ l2 -> case l1 of
+    [] -> case l2 of
+        [] -> []
+        (: y ys) -> []
+        _ -> error "ouch !!"
+    (: x xs) -> case l2 of
+        [] -> []
+        (: y ys) -> : (y, x) (myZip xs ys)
+        _ -> error "ouch !!"
