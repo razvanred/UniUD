@@ -564,3 +564,27 @@ quarta iterazione
       ) of
    : x xs -> : (snd x) (myMap snd xs)
    [] -> [])))
+
+: (2.2@Float, 'b'@Char)
+(: (2.42@Float, 'c'@char)
+(: (2.662@Float, 'd'@char)
+(case (case [] of
+         [] -> []
+         : x xs -> if (f' x) then (: x ys[myFilt p xs]) else ys
+      ) of
+   : x xs -> : (snd x) (myMap snd xs)
+   [] -> [])))
+
+: (2.2@Float, 'b'@Char)
+(: (2.42@Float, 'c'@char)
+(: (2.662@Float, 'd'@char)
+(case [] of
+   : x xs -> : (snd x) (myMap snd xs)
+   [] -> [])))
+
+: (2.2@Float, 'b'@Char)
+(: (2.42@Float, 'c'@char)
+(: (2.662@Float, 'd'@char)
+[]))
+
+[(2.2,'b'),(2.42,'c'),(2.662,'d')]
