@@ -285,7 +285,7 @@ seconda iterazione
 : (2.2@Float, 'b'@Char)
 (case (if (<@Float 0@Float y[*@Float 2.2@Float 1.1@Float])
       then
-         (: ('d'@Char, (y, succ@char 'b'@char)) ys[myFilt f' (myZip "o" (enumFrom@(Float,Char) (y, succ@char 'b'@char)))])
+         (: ('d'@Char, a[(y, succ@char 'b'@char)]) ys[myFilt f' (myZip "o" (enumFrom@(Float,Char) a))])
       else
          ys
       ) of
@@ -465,7 +465,7 @@ terza iterazione
 (: (2.42@Float, 'c'@char)
 (case (if (<@Float 0@Float t[*@Float 2.42@Float 1.1@Float]) 
       then
-         (: ('o'@char, a[(t[*@Float 2.42@Float 1.1@Float] , succ@Char 'c'@char)])
+         (: ('o'@char, a[(t, succ@Char 'c'@char)])
             ys[myFilt f' (myZip [] (enumFrom@(Float,Char) a))])
       else 
          ys
