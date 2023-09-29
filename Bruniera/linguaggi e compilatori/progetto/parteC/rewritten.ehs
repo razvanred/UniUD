@@ -18,10 +18,7 @@ myFilt = \ p -> \ l -> case l of
     : x xs -> if (p x) then (: x ys[myFilt p xs]) else ys
 
 myZip = \ l1 -> \ l2 -> case l1 of
-    [] -> case l2 of
-        [] -> []
-        : y ys -> []
-        _ -> error "ouch !!"
+    [] -> []
     : x xs -> case l2 of
         [] -> []
         : y ys -> : (x,y) (myZip xs ys)

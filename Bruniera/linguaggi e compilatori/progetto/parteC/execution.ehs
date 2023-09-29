@@ -20,10 +20,7 @@ case (case (myZip (: (error "ERROR") "do") (enumFrom@(Float,Char) (2@Float,'a'@C
         [] -> []
 
 case (case (case (: (error "ERROR") "do") of 
-            [] -> case (enumFrom@(Float,Char) (2@Float,'a'@Char)) of
-                [] -> []
-                : y ys -> []
-                _ -> error "ouch !!"
+            [] -> []
             : x xs -> case (enumFrom@(Float,Char) (2@Float,'a'@Char)) of
                 [] -> []
                 : y ys -> : (x,y) (myZip xs ys)
@@ -194,10 +191,7 @@ seconda iterazione
 
 : (2.2@Float, 'b'@Char)
 (case (case (case "do" of
-               [] -> case (enumFrom@(Float,Char) (2.2@Float, 'b'@Char)) of
-                  [] -> []
-                  : y ys -> []
-                  _ -> error "ouch !!"
+               [] -> []
                : x xs -> case (enumFrom@(Float,Char) (2.2@Float, 'b'@Char)) of
                   [] -> []
                   : y ys -> : (x,y) (myZip xs ys)
@@ -367,11 +361,8 @@ terza iterazione
 
 : (2.2@Float, 'b'@Char)
 (: (2.42@Float, 'c'@char)
-(case (case (case "o"  of
-               [] -> case (enumFrom@(Float,Char) (2.42@Float, 'c'@char)) of
-                  [] -> []
-                  : y ys -> []
-                  _ -> error "ouch !!"
+(case (case (case "o" of
+               [] -> []
                : x xs -> case (enumFrom@(Float,Char) (2.42@Float, 'c'@char)) of
                   [] -> []
                   : y ys -> : (x,y) (myZip xs ys)
@@ -543,4 +534,33 @@ quarta iterazione
 : (2.2@Float, 'b'@Char)
 (: (2.42@Float, 'c'@char)
 (: (2.662@Float, 'd'@char)
-(myMap snd (myFilt f' (myZip [] (enumFrom@(Float,Char) (2.662@Float, 'd'@char)))))))
+(case (myFilt f' (myZip [] (enumFrom@(Float,Char) (2.662@Float, 'd'@char)))) of
+   : x xs -> : (snd x) (myMap snd xs)
+   [] -> [])))
+
+: (2.2@Float, 'b'@Char)
+(: (2.42@Float, 'c'@char)
+(: (2.662@Float, 'd'@char)
+(case (case (myZip [] (enumFrom@(Float,Char) (2.662@Float, 'd'@char))) of
+         [] -> []
+         : x xs -> if (f' x) then (: x ys[myFilt p xs]) else ys
+      ) of
+   : x xs -> : (snd x) (myMap snd xs)
+   [] -> [])))
+
+: (2.2@Float, 'b'@Char)
+(: (2.42@Float, 'c'@char)
+(: (2.662@Float, 'd'@char)
+(case (case (case [] of
+               [] -> []
+               : x xs -> case (enumFrom@(Float,Char) (2.662@Float, 'd'@char)) of
+                  [] -> []
+                  : y ys -> : (x,y) (myZip xs ys)
+                  _ -> error "ouch !!"
+               _ -> error "ouch !!"
+            ) of
+         [] -> []
+         : x xs -> if (f' x) then (: x ys[myFilt p xs]) else ys
+      ) of
+   : x xs -> : (snd x) (myMap snd xs)
+   [] -> [])))
