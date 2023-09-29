@@ -475,7 +475,7 @@ terza iterazione
 
 : (2.2@Float, 'b'@Char)
 (: (2.42@Float, 'c'@char)
-(case (if (<@Float 0@Float 2.662000000000001@Float) 
+(case (if (<@Float 0@Float 2.6620002@Float) 
       then
          (: ('o'@char, a[(2.662000000000001@Float , succ@Char 'c'@char)])
             ys[myFilt f' (myZip [] (enumFrom@(Float,Char) a))])
@@ -486,7 +486,7 @@ terza iterazione
    [] -> []))
 
 {-
-da qui in poi abbrevio `2.662000000000001` con `2.662`
+da qui in poi abbrevio `2.6620002` con `2.662`
 -}
 
 : (2.2@Float, 'b'@Char)
