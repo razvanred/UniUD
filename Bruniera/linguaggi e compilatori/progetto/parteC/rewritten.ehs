@@ -26,3 +26,4 @@ myZip = \ l1 -> \ l2 -> case l1 of
         [] -> []
         : y ys -> : (x,y) (myZip xs ys)
         _ -> error "ouch !!"
+    _ -> error "ouch !!"
