@@ -4,6 +4,10 @@ myMap snd (myFilt (f 0@Float) (myZip (error "ERROR":"do") [(2,'a')..]))
 
 myMap snd (myFilt (f 0@Float) (myZip (: (error "ERROR") "do") (enumFrom@(2@Float,'a'@Char))))
 
+{-
+prima iterazione
+-}
+
 case (myFilt (f 0@Float) (myZip (: (error "ERROR") "do") (enumFrom@(Float,Char) (2@Float,'a'@Char)))) of
         : x xs -> : (snd x) (myMap snd xs)
         [] -> []
@@ -104,33 +108,31 @@ per leggibilità continuerò ad usare f' come placeholder per:
 sarebbe la valutazione di (f 0)
 -}
 
-case (if (f'[(\ y' -> case y' of
+case (if (case x[((error "ERROR"), a[(*@Float 2@Float 1.1@Float , succ@Char 'a'@Char)])] of
                (_ ,y'') -> case y'' of
                   ( y , _ ) -> <@Float 0@Float y
-            )] x[((error "ERROR"), (2.2@Float, 'b'@Char))])
+            )
       then
-         (: x ys[myFilt f' (myZip "do" (enumFrom@(Float,Char) (2.2@Float, 'b'@Char)))]) 
+         (: x ys[myFilt f' (myZip "do" (enumFrom@(Float,Char) a))]) 
       else
          ys) of
         : x xs -> : (snd x) (myMap snd xs)
         [] -> []
 
-case (if (case ((error "ERROR"), (2.2@Float, 'b'@Char)) of
-            (_ ,y'') -> case y'' of
-               ( y , _ ) -> <@Float 0@Float y
-         )
-      then
-         (: ((error "ERROR"), (2.2@Float, 'b'@Char)) ys[myFilt f' (myZip "do" (enumFrom@(Float,Char) (2.2@Float, 'b'@Char)))]) 
-      else
-         ys) of
-        : x xs -> : (snd x) (myMap snd xs)
-        [] -> []
-
-case (if (case (2.2@Float, 'b'@Char) of
+case (if (case a[(*@Float 2@Float 1.1@Float , succ@Char 'a'@Char)] of
             ( y , _ ) -> <@Float 0@Float y
          )
       then
-         (: ((error "ERROR"), (2.2@Float, 'b'@Char)) ys[myFilt f' (myZip "do" (enumFrom@(Float,Char) (2.2@Float, 'b'@Char)))]) 
+         (: ((error "ERROR"), a) ys[myFilt f' (myZip "do" (enumFrom@(Float,Char) a))]) 
+      else
+         ys) of
+        : x xs -> : (snd x) (myMap snd xs)
+        [] -> []
+
+case (if (<@Float 0@Float t[*@Float 2@Float 1.1@Float])
+      then
+         (: ((error "ERROR"), a[(t, succ@Char 'a'@Char)])
+            ys[myFilt f' (myZip "do" (enumFrom@(Float,Char) a))]) 
       else
          ys) of
         : x xs -> : (snd x) (myMap snd xs)
@@ -138,7 +140,8 @@ case (if (case (2.2@Float, 'b'@Char) of
 
 case (if (<@Float 0@Float 2.2@Float)
       then
-         (: ((error "ERROR"), (2.2@Float, 'b'@Char)) ys[myFilt f' (myZip "do" (enumFrom@(Float,Char) (2.2@Float, 'b'@Char)))]) 
+         (: ((error "ERROR"), a[(2.2@Float, succ@Char 'a'@Char)])
+            ys[myFilt f' (myZip "do" (enumFrom@(Float,Char) a))]) 
       else
          ys) of
         : x xs -> : (snd x) (myMap snd xs)
@@ -146,25 +149,35 @@ case (if (<@Float 0@Float 2.2@Float)
 
 case (if True
       then
-         (: ((error "ERROR"), (2.2@Float, 'b'@Char)) ys[myFilt f' (myZip "do" (enumFrom@(Float,Char) (2.2@Float, 'b'@Char)))]) 
+         (: ((error "ERROR"), a[(2.2@Float, succ@Char 'a'@Char)])
+            ys[myFilt f' (myZip "do" (enumFrom@(Float,Char) a))]) 
       else
          ys) of
         : x xs -> : (snd x) (myMap snd xs)
         [] -> []
 
-case (: ((error "ERROR"), (2.2@Float, 'b'@Char)) ys[myFilt f' (myZip "do" (enumFrom@(Float,Char) (2.2@Float, 'b'@Char)))]) of
+case (: ((error "ERROR"), a[(2.2@Float, succ@Char 'a'@Char)])
+        ys[myFilt f' (myZip "do" (enumFrom@(Float,Char) a))]
+     ) of
         : x xs -> : (snd x) (myMap snd xs)
         [] -> []
 
-: (snd ((error "ERROR"), (2.2@Float, 'b'@Char)))
-(myMap snd (myFilt f' (myZip "do" (enumFrom@(Float,Char) (2.2@Float, 'b'@Char)))))
+: (snd ((error "ERROR"), a[(2.2@Float, succ@Char 'a'@Char)]))
+(myMap snd (myFilt f' (myZip "do" (enumFrom@(Float,Char) a))))
 
 {-
 viene forzata la valutazione completa
 -}
 
+: a[(2.2@Float, succ@Char 'a'@Char)]
+(myMap snd (myFilt f' (myZip "do" (enumFrom@(Float,Char) a))))
+
 : (2.2@Float, 'b'@Char)
 (myMap snd (myFilt f' (myZip "do" (enumFrom@(Float,Char) (2.2@Float, 'b'@Char)))))
+
+{-
+seconda iterazione
+-}
 
 : (2.2@Float, 'b'@Char)
 (case (myFilt f' (myZip "do" (enumFrom@(Float,Char) (2.2@Float, 'b'@Char)))) of
@@ -286,7 +299,7 @@ viene forzata la valutazione completa
    [] -> [])
 
 : (2.2@Float, 'b'@Char)
-(case (if (<@Float 0@Float y[2.4200000000000004@Float])
+(case (if (<@Float 0@Float 2.4200000000000004@Float)
       then
          (: ('d'@Char, a[(2.4200000000000004@Float, succ@char 'b'@char)])
             ys[myFilt f' (myZip "o" (enumFrom@(Float,Char) a))])
@@ -295,11 +308,15 @@ viene forzata la valutazione completa
       ) of
    : x xs -> : (snd x) (myMap snd xs)
    [] -> [])
+
+{-
+da qui in poi accorcio `2.4200000000000004` con `2.42`
+-}
 
 : (2.2@Float, 'b'@Char)
 (case (if True
       then
-         (: ('d'@Char, a[(2.4200000000000004@Float, succ@char 'b'@char)])
+         (: ('d'@Char, a[(2.42@Float, succ@char 'b'@char)])
             ys[myFilt f' (myZip "o" (enumFrom@(Float,Char) a))])
       else
          ys
@@ -308,7 +325,7 @@ viene forzata la valutazione completa
    [] -> [])
 
 : (2.2@Float, 'b'@Char)
-(case (: ('d'@Char, a[(2.4200000000000004@Float, succ@char 'b'@char)])
+(case (: ('d'@Char, a[(2.42@Float, succ@char 'b'@char)])
          ys[myFilt f' (myZip "o" (enumFrom@(Float,Char) a))]) of
    : x xs -> : (snd x) (myMap snd xs)
    [] -> [])
@@ -318,5 +335,13 @@ viene forzata la valutazione completa
 -}
 
 : (2.2@Float, 'b'@Char)
-(: (2.4200000000000004@Float, succ@char 'b'@char)
+(: a[(2.42@Float, succ@char 'b'@char)]
 (myMap snd ys[myFilt f' (myZip "o" (enumFrom@(Float,Char) a))]))
+
+: (2.2@Float, 'b'@Char)
+(: (2.42@Float, 'c'@char)
+(myMap snd ys[myFilt f' (myZip "o" (enumFrom@(Float,Char) (2.42@Float, 'c'@char)))]))
+
+{-
+terza iterazione
+-}
