@@ -330,18 +330,28 @@ da qui in poi accorcio `2.4200000000000004` con `2.42`
    : x xs -> : (snd x) (myMap snd xs)
    [] -> [])
 
+: (2.2@Float, 'b'@Char)
+(: snd (: ('d'@Char, a[(2.42@Float, succ@char 'b'@char)]))
+(myMap snd (myFilt f' (myZip "o" (enumFrom@(Float,Char) a)))))
+
 {-
 viene forzata la valutazione completa
 -}
 
 : (2.2@Float, 'b'@Char)
 (: a[(2.42@Float, succ@char 'b'@char)]
-(myMap snd ys[myFilt f' (myZip "o" (enumFrom@(Float,Char) a))]))
+(myMap snd (myFilt f' (myZip "o" (enumFrom@(Float,Char) a)))))
 
 : (2.2@Float, 'b'@Char)
 (: (2.42@Float, 'c'@char)
-(myMap snd ys[myFilt f' (myZip "o" (enumFrom@(Float,Char) (2.42@Float, 'c'@char)))]))
+(myMap snd (myFilt f' (myZip "o" (enumFrom@(Float,Char) (2.42@Float, 'c'@char))))))
 
 {-
 terza iterazione
 -}
+
+: (2.2@Float, 'b'@Char)
+(: (2.42@Float, 'c'@char)
+(case (myFilt f' (myZip "o" (enumFrom@(Float,Char) (2.42@Float, 'c'@char)))) of
+   : x xs -> : (snd x) (myMap snd xs)
+   [] -> []))
