@@ -2,7 +2,29 @@
 
 myMap snd (myFilt (f 0) (myZip (error "ERROR":"do") [(2,'a')..]))
 
-case snd of 
-    f' -> case (myFilt (f 0) (myZip (error "ERROR":"do") [(2,'a')..])) of
+case (myFilt (f 0) (myZip (error "ERROR":"do") [(2,'a')..])) of
+        : x xs -> : (snd x) (myMap snd xs)
         [] -> []
-        (: x xs ) -> : f' x
+
+case (case (myZip (error "ERROR":"do") [(2,'a')..])of
+        [] -> []
+        : x xs -> if (f 0 x) then (: x ys[myFilt (f 0) xs]) else ys
+    ) of
+        [] -> []
+        (: x xs) -> : (snd x) (myMap snd xs)
+
+case (case (case (error "ERROR":"do") of 
+            [] -> case [(2,'a')..] of
+                [] -> []
+                (: y ys) -> []
+                _ -> error "ouch !!"
+            : x xs -> case [(2,'a')..] of
+                [] -> []
+                (: y ys) -> : (y, x) (myZip xs ys)
+                _ -> error "ouch !!"
+           ) of
+        [] -> []
+        : x xs -> if (f 0 x) then (: x ys[myFilt (f 0) xs]) else ys
+     ) of
+        [] -> []
+        (: x xs) -> : (snd x) (myMap snd xs)

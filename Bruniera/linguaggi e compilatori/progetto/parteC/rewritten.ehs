@@ -19,9 +19,9 @@ myFilt = \ p -> \ l -> case l of
 myZip = \ l1 -> \ l2 -> case l1 of
     [] -> case l2 of
         [] -> []
-        (: y ys) -> []
+        : y ys -> []
         _ -> error "ouch !!"
-    (: x xs) -> case l2 of
+    : x xs -> case l2 of
         [] -> []
-        (: y ys) -> : (y, x) (myZip xs ys)
+        : y ys -> : (y, x) (myZip xs ys)
         _ -> error "ouch !!"
