@@ -1,0 +1,8 @@
+
+
+myMap snd (myFilt (f 0) (myZip (error "ERROR":"do") [(2,'a')..]))
+
+case snd of 
+    f' -> case (myFilt (f 0) (myZip (error "ERROR":"do") [(2,'a')..])) of
+        [] -> []
+        (: x xs ) -> : f' x

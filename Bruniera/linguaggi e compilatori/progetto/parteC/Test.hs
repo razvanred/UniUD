@@ -1,3 +1,5 @@
+module Test where
+
 instance Enum ( Float , Char ) where
     enumFrom (x , c ) = p : enumFrom p
         where
@@ -18,5 +20,3 @@ myZip [] _ = []
 myZip _ [] = []
 myZip ( x : xs ) ( y : ys ) = (x , y ) : myZip xs ys
 myZip _ _ = error "ouch !!"
-
-myMap snd (myFilt (f 0) (myZip (error "ERROR":"do") [(2,’a’)..]))
