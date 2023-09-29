@@ -1,12 +1,13 @@
 
 
 enumFrom@(Float,Char) = \ z -> case z of
-    (x, c) -> : a[*@Float x 1.1 , succ@Char c] (enumFrom@(Float,Char) a)
+    (x, c) -> : a[(*@Float x 1.1@Float , succ@Char c)] (enumFrom@(Float,Char) a)
 
        
 f :: Float -> ( any , ( Float , Char )) -> Bool
-f = \ x -> \ y' ->  case y' of
-    (_ ,( y , _ )) -> <@Float x y
+f = \ x -> \ y' -> case y' of
+    (_ , y'') -> case y'' of
+        ( y , _ ) -> <@Float x y
 
 myMap = \ f -> \ l -> case l of
     : x xs -> : (f x) (myMap f xs)
@@ -23,5 +24,5 @@ myZip = \ l1 -> \ l2 -> case l1 of
         _ -> error "ouch !!"
     : x xs -> case l2 of
         [] -> []
-        : y ys -> : (y, x) (myZip xs ys)
+        : y ys -> : (x,y) (myZip xs ys)
         _ -> error "ouch !!"
