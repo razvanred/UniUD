@@ -1,48 +1,81 @@
 
-myMap snd (myFilt (f 0) (myZip (error "ERROR":"do") [(2,'a')..]))
+myMap snd (myFilt (f 0@Float) (myZip (error "ERROR":"do") [(2,'a')..]))
 
 
-myMap snd (myFilt (f 0) (myZip (: (error "ERROR") "do") (enumFrom@(2,'a'))))
+myMap snd (myFilt (f 0@Float) (myZip (: (error "ERROR") "do") (enumFrom@(2@Float,'a'@Char))))
 
-case (myFilt (f 0) (myZip (: (error "ERROR") "do") (enumFrom@(Float,Char) (2,'a')))) of
+case (myFilt (f 0@Float) (myZip (: (error "ERROR") "do") (enumFrom@(Float,Char) (2@Float,'a'@Char)))) of
         : x xs -> : (snd x) (myMap snd xs)
         [] -> []
 
-case (case (myZip (: (error "ERROR") "do") (enumFrom@(Float,Char) (2,'a')))of
+case (case (myZip (: (error "ERROR") "do") (enumFrom@(Float,Char) (2@Float,'a'@Char)))of
         [] -> []
-        : x xs -> if (f 0 x) then (: x ys[myFilt (f 0) xs]) else ys
+        : x xs -> if (f'[f 0@Float] x) then (: x ys[myFilt f' xs]) else ys
     ) of
         : x xs -> : (snd x) (myMap snd xs)
         [] -> []
 
 case (case (case (: (error "ERROR") "do") of 
-            [] -> case (enumFrom@(Float,Char) (2,'a')) of
+            [] -> case (enumFrom@(Float,Char) (2@Float,'a'@Char)) of
                 [] -> []
                 : y ys -> []
                 _ -> error "ouch !!"
-            : x xs -> case (enumFrom@(Float,Char) (2,'a')) of
+            : x xs -> case (enumFrom@(Float,Char) (2@Float,'a'@Char)) of
                 [] -> []
                 : y ys -> : (y, x) (myZip xs ys)
                 _ -> error "ouch !!"
            ) of
         [] -> []
-        : x xs -> if (f 0 x) then (: x ys[myFilt (f 0) xs]) else ys
+        : x xs -> if (f'[f 0@Float] x) then (: x ys[myFilt f' xs]) else ys
      ) of
         : x xs -> : (snd x) (myMap snd xs)
         [] -> []
 
-case (case (case (: (error "ERROR") "do") of 
-            [] -> case (enumFrom@(Float,Char) (2,'a')) of
-                [] -> []
-                : y ys -> []
-                _ -> error "ouch !!"
-            : x xs -> case (enumFrom@(Float,Char) (2,'a')) of
-                [] -> []
-                : y ys -> : (y, x) (myZip xs ys)
-                _ -> error "ouch !!"
+case (case (case (enumFrom@(Float,Char) (2@Float,'a'@Char)) of
+            [] -> []
+            : y ys -> : (y, (error "ERROR")) (myZip "do" ys)
+            _ -> error "ouch !!"
            ) of
         [] -> []
-        : x xs -> if (f 0 x) then (: x ys[myFilt (f 0) xs]) else ys
+        : x xs -> if (f'[f 0@Float] x) then (: x ys[myFilt f' xs]) else ys
+     ) of
+        : x xs -> : (snd x) (myMap snd xs)
+        [] -> []
+
+case (case (case (case (2@Float,'a'@Char)of 
+                    (x, c) -> : a[*@Float x 1.1 , succ@Char c] (enumFrom@(Float,Char) a)
+                 ) of
+            [] -> []
+            : y ys -> : (y, (error "ERROR")) (myZip "do" ys)
+            _ -> error "ouch !!"
+           ) of
+        [] -> []
+        : x xs -> if (f'[f 0@Float] x) then (: x ys[myFilt f' xs]) else ys
+     ) of
+        : x xs -> : (snd x) (myMap snd xs)
+        [] -> []
+
+case (case (case (: a[*@Float 2 1.1 , succ@Char 'a'@Char] (enumFrom@(Float,Char) a)) of
+            [] -> []
+            : y ys -> : (y, (error "ERROR")) (myZip "do" ys)
+            _ -> error "ouch !!"
+           ) of
+        [] -> []
+        : x xs -> if (f'[f 0@Float] x) then (: x ys[myFilt f' xs]) else ys
+     ) of
+        : x xs -> : (snd x) (myMap snd xs)
+        [] -> []
+
+case (case (: (a[*@Float 2 1.1 , succ@Char 'a'@Char], (error "ERROR")) (myZip "do" (enumFrom@(Float,Char) a))) of
+        [] -> []
+        : x xs -> if (f'[f 0@Float] x) then (: x ys[myFilt f' xs]) else ys
+     ) of
+        : x xs -> : (snd x) (myMap snd xs)
+        [] -> []
+
+case (case (: (a[*@Float 2 1.1 , succ@Char 'a'@Char], (error "ERROR")) (myZip "do" (enumFrom@(Float,Char) a))) of
+        [] -> []
+        : x xs -> if (f'[f 0@Float] x[(a[*@Float 2 1.1 , succ@Char 'a'@Char], (error "ERROR"))]) then (: x ys[myFilt f' (myZip "do" (enumFrom@(Float,Char) a))]) else ys
      ) of
         : x xs -> : (snd x) (myMap snd xs)
         [] -> []
