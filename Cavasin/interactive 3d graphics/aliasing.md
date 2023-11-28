@@ -22,7 +22,7 @@ NVIDIA's dynamic super resolution feature is a more elaborate form of supersampl
 
 ### Multisampling (MSAA)
 
-Multisampling antialiasing (MSAA) lessens the high computational costs by shading the fragments once per pixel. Pixels may have, say, four $(x,y)$ sample locations, each with their own color and z-depth, but the fragment shader is evaluated only once and the result is shared among the samples covered by the primitive. The samples store their own $z$ because they are independently z-tested.
+Multisampling antialiasing (MSAA) lessens the high computational costs by shading the fragments once per pixel. Pixels may have, say, four $(x,y)$ sample locations, each with their own color and z-depth, but the fragment shader is evaluated once and the result is written only on the samples covered by the primitive. The samples store their own $z$ because they are independently z-tested.
 
 If the primitive covers all MSAA positional samples, the shading sample is evaluated at the center of the pixel. Otherwise, the shading sample's position can be shifted to better represent the positions covered. Doing so avoids shade sampling off the edge of a texture, for example. This position adjustment is called *centroid sampling* or *centroid interpolation*.
 
