@@ -1,0 +1,11 @@
+Chain. C ::= [C];
+separator nonempty C "+";
+_.	C ::= C2;
+ 
+Repeat. C ::= I "*" C1;
+_.	C1 ::= C;
+_.	C1 ::= C2;
+ 
+IntVal.    I ::= Integer;
+Leaf.	   C2 ::= Double;
+_.	   C2 ::= "(" C ")";
