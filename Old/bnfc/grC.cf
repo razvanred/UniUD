@@ -1,9 +1,0 @@
-Sum.	C ::= C "+" C1;
-_.	C ::= C1;
- 
-Repeat. C1 ::= I "*" C2;
-_.	C2 ::= C;
-_.	C1 ::= C3;
- 
-IntVal.    I ::= Integer;
-Leaf.	   C3 ::= Double;

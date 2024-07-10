@@ -9,28 +9,17 @@ module ParString
   ( happyError
   , myLexer
   , pE
-  , pE1
-  , pListE2
-  , pE2
-  , pE4
-  , pE3
-  , pI
   ) where
 
 import Prelude
 
 import AbsDef
 import LexString
+import Utils
 
 }
 
 %name pE E
-%name pE1 E1
-%name pListE2 ListE2
-%name pE2 E2
-%name pE4 E4
-%name pE3 E3
-%name pI I
 -- no lexer declaration
 %monad { Err } { (>>=) } { return }
 %tokentype {Token}
@@ -54,19 +43,25 @@ E :: { Tree Int String }
 E : E1 { $1 } | E2 { $1 }
 
 E1 :: { Tree Int String }
-E1 : E2 '+' ListE2 { Chain ($1 : $3) }
+E1 : E2 '+' ListE2 { Chain (flatCons $1 $3) }
 
 ListE2 :: { [Tree Int String] }
-ListE2 : E2 { (:[]) $1 } | E2 '+' ListE2 { (:) $1 $3 }
+ListE2 : E2 { flatCons $1 [] } | E2 '+' ListE2 { flatCons $1 $3 }
 
 E2 :: { Tree Int String }
-E2 : E3 { $1 } | I '*' E4 { Repeat $1 $3 }
-
-E4 :: { Tree Int String }
-E4 : '(' E1 ')' { $2 } | E3 { $1 }
+E2 : '(' E2 ')' { $2 } | E3 { $1 }
 
 E3 :: { Tree Int String }
-E3 : String { Leaf $1 }
+E3
+  : I '*' E4 { Repeat $1 $3 }
+  | E4 '*' I { Repeat $3 $1 }
+  | E4 { $1 }
+
+E4 :: { Tree Int String }
+E4 : '(' E1 ')' { $2 } | '(' E4 ')' { $2 } | E5 { $1 }
+
+E5 :: { Tree Int String }
+E5 : String { Leaf $1 }
 
 I :: { Int }
 I : Integer { $1 }

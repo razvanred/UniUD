@@ -2,7 +2,7 @@
 {-# OPTIONS_GHC -fno-warn-incomplete-patterns -fno-warn-overlapping-patterns #-}
 {-# LANGUAGE PatternSynonyms #-}
 
-module ParString
+module ParDouble
   ( happyError
   , myLexer
   , pE
@@ -11,7 +11,7 @@ module ParString
 import Prelude
 
 import AbsDef
-import LexString
+import LexDouble
 import Utils
 import qualified Data.Array as Happy_Data_Array
 import qualified Data.Bits as Bits
@@ -23,10 +23,10 @@ import Control.Monad (ap)
 data HappyAbsSyn 
 	= HappyTerminal (Token)
 	| HappyErrorToken Prelude.Int
-	| HappyAbsSyn4 (Int)
-	| HappyAbsSyn5 (String)
-	| HappyAbsSyn6 (Tree Int String)
-	| HappyAbsSyn8 ([Tree Int String])
+	| HappyAbsSyn4 (Double)
+	| HappyAbsSyn5 (Int)
+	| HappyAbsSyn6 (Tree Int Double)
+	| HappyAbsSyn8 ([Tree Int Double])
 
 {- to allow type-synonyms as our monads (likely
  - with explicitly-specified bind and return)
@@ -106,13 +106,13 @@ happyReduce_1,
 	-> [(Token)] -> (Err) HappyAbsSyn)
 
 happyExpList :: Happy_Data_Array.Array Prelude.Int Prelude.Int
-happyExpList = Happy_Data_Array.listArray (0,70) ([8192,6,32,0,0,0,0,0,0,4096,0,0,8,0,2048,8192,6,0,64,5120,32768,0,66,512,25088,0,0,16,0,0,8192,6,0,0,0,0,1,98,0,0
+happyExpList = Happy_Data_Array.listArray (0,72) ([8192,6,32,0,0,0,0,0,0,4096,0,0,8,0,2048,8192,6,0,64,5120,32768,0,34,1024,25088,0,0,16,0,0,8192,6,0,0,0,0,1,98,0,0
 	])
 
 {-# NOINLINE happyExpListPerState #-}
 happyExpListPerState st =
     token_strs_expected
-  where token_strs = ["error","%dummy","%start_pE","Integer","String","E","E1","ListE2","E2","E3","E4","E5","I","'('","')'","'*'","'+'","L_integ","L_quoted","%eof"]
+  where token_strs = ["error","%dummy","%start_pE","Double","Integer","E","E1","ListE2","E2","E3","E4","E5","I","'('","')'","'*'","'+'","L_doubl","L_integ","%eof"]
         bit_start = st Prelude.* 20
         bit_end = (st Prelude.+ 1) Prelude.* 20
         read_bit = readArrayBit happyExpList
@@ -141,9 +141,9 @@ action_1 _ = happyFail (happyExpListPerState 1)
 
 action_2 _ = happyReduce_1
 
-action_3 _ = happyReduce_17
+action_3 _ = happyReduce_16
 
-action_4 _ = happyReduce_16
+action_4 _ = happyReduce_17
 
 action_5 (20) = happyAccept
 action_5 _ = happyFail (happyExpListPerState 5)
@@ -190,14 +190,14 @@ action_16 (16) = happyShift action_18
 action_16 _ = happyReduce_12
 
 action_17 (14) = happyShift action_24
-action_17 (19) = happyShift action_13
-action_17 (5) = happyGoto action_4
+action_17 (18) = happyShift action_2
+action_17 (4) = happyGoto action_3
 action_17 (11) = happyGoto action_23
 action_17 (12) = happyGoto action_10
 action_17 _ = happyFail (happyExpListPerState 17)
 
-action_18 (18) = happyShift action_2
-action_18 (4) = happyGoto action_3
+action_18 (19) = happyShift action_13
+action_18 (5) = happyGoto action_4
 action_18 (13) = happyGoto action_22
 action_18 _ = happyFail (happyExpListPerState 18)
 
@@ -261,16 +261,16 @@ action_29 _ = happyFail (happyExpListPerState 29)
 action_30 _ = happyReduce_7
 
 happyReduce_1 = happySpecReduce_1  4 happyReduction_1
-happyReduction_1 (HappyTerminal (PT _ (TI happy_var_1)))
+happyReduction_1 (HappyTerminal (PT _ (TD happy_var_1)))
 	 =  HappyAbsSyn4
-		 ((read happy_var_1) :: Int
+		 ((read ( happy_var_1)) :: Double
 	)
 happyReduction_1 _  = notHappyAtAll 
 
 happyReduce_2 = happySpecReduce_1  5 happyReduction_2
-happyReduction_2 (HappyTerminal (PT _ (TL happy_var_1)))
+happyReduction_2 (HappyTerminal (PT _ (TI happy_var_1)))
 	 =  HappyAbsSyn5
-		 (happy_var_1
+		 ((read ( happy_var_1)) :: Int
 	)
 happyReduction_2 _  = notHappyAtAll 
 
@@ -332,14 +332,14 @@ happyReduction_9 _  = notHappyAtAll
 happyReduce_10 = happySpecReduce_3  10 happyReduction_10
 happyReduction_10 (HappyAbsSyn6  happy_var_3)
 	_
-	(HappyAbsSyn4  happy_var_1)
+	(HappyAbsSyn5  happy_var_1)
 	 =  HappyAbsSyn6
 		 (Repeat happy_var_1 happy_var_3
 	)
 happyReduction_10 _ _ _  = notHappyAtAll 
 
 happyReduce_11 = happySpecReduce_3  10 happyReduction_11
-happyReduction_11 (HappyAbsSyn4  happy_var_3)
+happyReduction_11 (HappyAbsSyn5  happy_var_3)
 	_
 	(HappyAbsSyn6  happy_var_1)
 	 =  HappyAbsSyn6
@@ -380,15 +380,15 @@ happyReduction_15 (HappyAbsSyn6  happy_var_1)
 happyReduction_15 _  = notHappyAtAll 
 
 happyReduce_16 = happySpecReduce_1  12 happyReduction_16
-happyReduction_16 (HappyAbsSyn5  happy_var_1)
+happyReduction_16 (HappyAbsSyn4  happy_var_1)
 	 =  HappyAbsSyn6
 		 (Leaf happy_var_1
 	)
 happyReduction_16 _  = notHappyAtAll 
 
 happyReduce_17 = happySpecReduce_1  13 happyReduction_17
-happyReduction_17 (HappyAbsSyn4  happy_var_1)
-	 =  HappyAbsSyn4
+happyReduction_17 (HappyAbsSyn5  happy_var_1)
+	 =  HappyAbsSyn5
 		 (happy_var_1
 	)
 happyReduction_17 _  = notHappyAtAll 
@@ -403,8 +403,8 @@ happyNewToken action sts stk (tk:tks) =
 	PT _ (TS _ 2) -> cont 15;
 	PT _ (TS _ 3) -> cont 16;
 	PT _ (TS _ 4) -> cont 17;
-	PT _ (TI happy_dollar_dollar) -> cont 18;
-	PT _ (TL happy_dollar_dollar) -> cont 19;
+	PT _ (TD happy_dollar_dollar) -> cont 18;
+	PT _ (TI happy_dollar_dollar) -> cont 19;
 	_ -> happyError' ((tk:tks), [])
 	}
 
