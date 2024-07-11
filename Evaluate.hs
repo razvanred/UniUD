@@ -1,9 +1,19 @@
-module Evaluate where
-
+import Data.Foldable (for_)
+import System.Environment
+import System.IO
+import TestString
 import AbsDef
 
-evaluate :: (b -> c) -> (a -> c -> c) -> (c -> c -> c) -> Tree a b -> c
-evaluate value repeat aggregate (Leaf b) = value b
-evaluate value repeat aggregate (Repeat a tree) = repeat a (evaluate value repeat aggregate tree)
-evaluate value repeat aggregate (Chain [x1, x2]) = aggregate (evaluate value repeat aggregate x1) (evaluate value repeat aggregate x2)
-evaluate value repeat aggregate (Chain (x1 : xs)) = aggregate (evaluate value repeat aggregate x1) (evaluate value repeat aggregate (Chain xs))
+main = do
+    args <- getArgs
+    mapM filecontent args
+
+filecontent t = do
+    handle <- openFile t ReadMode
+    contents <- hGetContents handle
+    func (lines contents)
+    hClose handle
+
+func :: [String] -> IO ()
+func inputs = for_ (map (show . test) inputs) putStrLn
+

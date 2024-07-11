@@ -12,11 +12,11 @@ ALEX_OPTS  = --ghc
 
 # List of goals not corresponding to file names.
 
-.PHONY : all clean
+.PHONY : all clean demo
 
 # Default goal.
 
-all : TestDouble
+all : Double String Evaluate
 
 # Rules for building the parser.
 
@@ -26,11 +26,21 @@ all : TestDouble
 %.hs : %.x
 	${ALEX} ${ALEX_OPTS} $<
 
-TestDouble : AbsDef.hs Lex.hs ParDouble.hs PrintDouble.hs TestDouble.hs
+Double : AbsDef.hs Lex.hs ParDouble.hs Utils.hs ExpectedTestsResults.hs Double.hs
 	${GHC} ${GHC_OPTS} $@
 
-TestString : AbsDef.hs Lex.hs ParString.hs TestString.hs
+String : AbsDef.hs Lex.hs ParString.hs Utils.hs ExpectedTestsResults.hs String.hs
 	${GHC} ${GHC_OPTS} $@
+
+Evaluate : AbsDef.hs Lex.hs ParString.hs Utils.hs TestString.hs Evaluate.hs
+	${GHC} ${GHC_OPTS} $@
+
+# demo
+
+demo : Double String
+	./String -test ./tests/testsString.txt
+	./Double -test ./tests/testsDouble.txt
+
 
 # Rules for cleaning generated files.
 
@@ -38,3 +48,6 @@ clean :
 	-rm -rf ${BUILD}/*
 
 # EOF
+
+
+
