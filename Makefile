@@ -26,19 +26,15 @@ all : TestDouble
 %.hs : %.x
 	${ALEX} ${ALEX_OPTS} $<
 
-TestDouble : AbsDef.hs LexDouble.hs ParDouble.hs PrintDouble.hs TestDouble.hs
+TestDouble : AbsDef.hs Lex.hs ParDouble.hs PrintDouble.hs TestDouble.hs
 	${GHC} ${GHC_OPTS} $@
 
-TestString : AbsDef.hs LexString.hs ParString.hs TestString.hs
+TestString : AbsDef.hs Lex.hs ParString.hs TestString.hs
 	${GHC} ${GHC_OPTS} $@
 
 # Rules for cleaning generated files.
 
 clean :
 	-rm -rf ${BUILD}/*
-
-# distclean : clean
-#	-rm -f AbsDouble.hs AbsDouble.hs.bak ComposOp.hs ComposOp.hs.bak DocDouble.txt DocDouble.txt.bak ErrM.hs ErrM.hs.bak LayoutDouble.hs LayoutDouble.hs.bak LexDouble.x LexDouble.x.bak ParDouble.y ParDouble.y.bak PrintDouble.hs PrintDouble.hs.bak SkelDouble.hs SkelDouble.hs.bak TestDouble.hs TestDouble.hs.bak XMLDouble.hs XMLDouble.hs.bak ASTDouble.agda ASTDouble.agda.bak ParserDouble.agda ParserDouble.agda.bak IOLib.agda IOLib.agda.bak Main.agda Main.agda.bak double.dtd double.dtd.bak TestDouble LexDouble.hs ParDouble.hs ParDouble.info ParDataDouble.hs Makefile
-
 
 # EOF

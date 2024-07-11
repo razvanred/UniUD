@@ -2,7 +2,7 @@ module TestString where
 
 import AbsDef
 import Evaluate
-import LexString
+import Lex
 import ParString
 
 mult :: Int -> [String] -> [String]

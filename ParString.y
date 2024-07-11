@@ -14,7 +14,7 @@ module ParString
 import Prelude
 
 import AbsDef
-import LexString
+import Lex
 import Utils
 
 }

@@ -15,7 +15,7 @@ module ParString
 import Prelude
 
 import AbsDef
-import LexString
+import Lex
 import Utils
 import qualified Data.Array as Happy_Data_Array
 import qualified Data.Bits as Bits

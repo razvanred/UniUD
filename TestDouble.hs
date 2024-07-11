@@ -29,7 +29,7 @@ import Prelude (
  )
 
 import AbsDef ()
-import LexDouble (Token, mkPosToken)
+import Lex (Token, mkPosToken)
 import ParDouble (myLexer, pE)
 import PrintDouble (Print, printTree)
 import SkelDouble ()

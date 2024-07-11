@@ -14,7 +14,7 @@ module ParDouble
 import Prelude
 
 import AbsDef
-import LexDouble
+import Lex
 import Utils
 
 }
