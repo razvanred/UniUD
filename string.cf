@@ -1,0 +1,22 @@
+_.          E ::= E1;
+_.          E ::= E2;
+
+Chain.      E1 ::= E2 "+" [E2];
+separator nonempty E2 "+";
+
+_.          E2 ::= "(" E2 ")";
+_.          E2 ::= E3;
+
+Repeat1.    E3 ::= I "*" E4;
+Repeat2.    E3 ::= E4 "*" I;
+_.          E3 ::= E4;
+
+_.          E4 ::= "(" E1 ")";
+_.          E4 ::= "(" E4 ")";
+_.          E4 ::= E5;
+
+Leaf.       E5 ::= String;
+
+IntVal.     I ::= Integer;
+
+entrypoints E;
