@@ -1,42 +1,28 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+
 {-# HLINT ignore "Use lambda-case" #-}
-import Data.Foldable (for_)
-import System.Environment
-import System.IO
-import ParDouble
+
 import ExpectedTestsResults
+import GHC.Float (expDouble)
+import ParDouble
+import System.Environment
 import Utils
 
-
--- main :: IO ()
--- main = do
---     args <- getArgs
---     case args of
---         ["--help"] -> usage
---         [] -> getContents >>= run 2 pE
---         "-s" : fs -> mapM_ (runFile 0 pE) fs
---         fs -> mapM_ (runFile 2 pE) fs
-
+{-
+permette di lanciare il parser per Tree Int Double specificando dei file da command line
+con l'opzione -test il file in input viene confrontato con i risultati attesi contenuti in ExpectedTestsResults.hs
+senza opzione viene lanciato il parser sulle linee del file in input
+-}
 main = do
     args <- getArgs
     case args of
-        "-test" : testFile:_ -> runTests testFile
-        -- _ -> mapM filecontent args
+        "-test" : testFile : _ -> do
+            inputs <- fileContents testFile
+            mapM_ putStrLn $ f inputs
+          where
+            f inputs = concat $ zipWith (\a b -> [b, a]) (runTests parse doubleResults inputs) inputs
+        _ -> do
+            inputs <- concat <$> mapM fileContents args
+            mapM_ (putStrLn . extract . parse) inputs
 
--- filecontent t = do
---     handle <- openFile t ReadMode
---     contents <- hGetContents handle
---     func (lines contents)
---     hClose handle
-
--- func :: [String] -> IO ()
--- func inputs = for_ (map (show . pE . myLexer) inputs) putStrLn
-
-runTests f = do
-    handle <- openFile f ReadMode
-    contents <- hGetContents handle
-    let matches = checkEquality  (map  (pE . myLexer)  (lines contents))  doubleResults
-    for_ (map (\match->case match of
-        (Left error)-> error
-        (Right t)->if t then "Ok" else "Invalid abstract tree") matches) putStrLn
-    hClose handle 
+parse = pE . myLexer

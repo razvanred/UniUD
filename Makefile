@@ -2,7 +2,7 @@
 
 # Makefile for building the parser and test program.
 
-BUILD      = bin
+BUILD      = build
 GHC        = ghc
 GHC_OPTS   = -outputdir ${BUILD}
 HAPPY      = happy
@@ -26,13 +26,13 @@ all : Double String Evaluate
 %.hs : %.x
 	${ALEX} ${ALEX_OPTS} $<
 
-Double : AbsDef.hs Lex.hs ParDouble.hs Utils.hs ExpectedTestsResults.hs Double.hs
+Double : AbsDef.hs Lex.hs Utils.hs ParDouble.hs ExpectedTestsResults.hs Double.hs
 	${GHC} ${GHC_OPTS} $@
 
-String : AbsDef.hs Lex.hs ParString.hs Utils.hs ExpectedTestsResults.hs String.hs
+String : AbsDef.hs Lex.hs Utils.hs ParString.hs ExpectedTestsResults.hs String.hs
 	${GHC} ${GHC_OPTS} $@
 
-Evaluate : AbsDef.hs Lex.hs ParString.hs Utils.hs TestString.hs Evaluate.hs
+Evaluate : AbsDef.hs Lex.hs Utils.hs ParString.hs Evaluate.hs
 	${GHC} ${GHC_OPTS} $@
 
 # demo
@@ -46,6 +46,7 @@ demo : Double String
 
 clean :
 	-rm -rf ${BUILD}/*
+	-rm -f Lex.hs Double ParDouble.hs ParDouble.info String ParString.hs ParString.info Evaluate
 
 # EOF
 
