@@ -32,13 +32,13 @@ Continuous features: find the treshold with maximal information gain. The traini
 
 #### Regression with decision trees
 
-Decision trees can be used to estimate a continous (non categorical) feature. Instead of the information gain we use the variance gain:
+Decision trees can be used to estimate a continuous (non categorical) feature. Instead of the information gain we use the variance gain:
 
 $$
 VAR(p_{root})-\bigl(w_{left}VAR(p_{left})+w_{right}VAR(p_{right})\bigr)
 $$
 
-Similar values are clustered together.
+Similar values are clustered together and averaged.
 
 ![decision trees regression](images/image-4.png)
 
