@@ -1,0 +1,39 @@
+
+/* main character classes */
+LineTerminator = \R
+InputCharacter = .
+
+DecIntegerLiteral = \d+
+
+WhiteSpace = {LineTerminator} | \s+
+
+Identificatore = [:letter:]([:letter:] | [:letterdigit:])*
+
+
+{Identificatore}            {   System.out.println(yytext());
+                                return sf.newSymbol("LVALUE", ParserSym.LVALUE, yytext()); }
+"true" | "false" { return sf.newSymbol("BOOL", ParserSym.BOOL, yytext()); } //bool?
+"="         { return sf.newSymbol("=", ParserSym.EQUAL); }
+
+"#".*{LineTerminator}     { /* ignore */ } // ma in realtà dovrà salvare in struttura dati
+
+//"["{Identificatore}"]"    { return sf.newSymbol("SEZ", ParserSym.SEZ, yytext()); }
+
+
+"$"{Identificatore}        { return sf.newSymbol("RVALUE", ParserSym.RVALUE, yytext()); }
+"$"{Identificatore}"\."{Identificatore} { return sf.newSymbol("SECTIONRVALUE", ParserSym.SECTIONRVALUE, yytext()); }
+//"import"\.*{LineTerminator} { return sf.newSymbol("IMPORT", ParserSym.IMPORT, yytext()); }
+//"inherit"\.*{LineTerminator} { return sf.newSymbol("INHERIT", ParserSym.INHERIT, yytext()); }
+{DecIntegerLiteral}    { return sf.newSymbol("NUMBER", ParserSym.NUMBER, Integer.valueOf(yytext())); }
+.+          { return sf.newSymbol("STRING", ParserSym.STRING, yytext()); }
+{WhiteSpace}          { /* ignore */ }
+
+
+
+…or push an existing repository from the command line
+
+git remote add origin git@github.com:LEC2024/B.git
+git branch -M main
+git push -u origin main
+
+git@github.com:LEC2024/B.git
