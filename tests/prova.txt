@@ -1,0 +1,15 @@
+[sez1]
+var1 = "ciao"
+
+[sez2]
+var2 = $sez3.var3
+var3 = 3
+var4 = "pippo"
+var0 = 1
+var1 = 2
+
+[sez3]
+var3 = $sez2.var2
+
+[sez4]
+var4 = $sez3.var3

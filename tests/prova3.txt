@@ -1,0 +1,39 @@
+#import  <tests/prova2.txt>
+#import <tests/prova2.txt>
+
+[ciao]
+#inherit sbrega
+#inherit grappa
+var1 = 5
+# commento2
+
+[sbrega]
+# cat
+# on
+# rat
+inherit ciao
+ac = "dc"
+# commentoinherit
+var1 = 3
+gigi = "mi piace la bicicletta"
+var3 = $astolfo
+ac = 21
+
+[grappa]
+inherit sez2
+inherit sbrega
+# io sono un commento
+var3 = false
+astolfo = "ciao"
+
+[sez10]
+inherit grappa
+var3 = $astolfo
+
+[sez2]
+var1 = 15
+
+[sez1]
+inherit sez10
+inherit sez2
+var2 = $var3

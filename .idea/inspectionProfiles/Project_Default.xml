@@ -1,0 +1,28 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0" is_locked="false">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="ArrayIndexOutOfBounds" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ClangTidy" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="clangTidyChecks" value="-*,mpi-*,performance-*,bugprone-*,-bugprone-signal-handler,-bugprone-exception-escape,-bugprone-unchecked-optional-access,-bugprone-shared-ptr-array-mismatch,-bugprone-assignment-in-if-condition,-bugprone-unhandled-exception-at-new,-bugprone-easily-swappable-parameters,-bugprone-standalone-empty,-bugprone-stringview-nullptr,cert-err52-cpp,cert-err60-cpp,cert-err34-c,cert-str34-c,cert-dcl21-cpp,cert-msc50-cpp,cert-env33-c,cert-msc51-cpp,cert-dcl58-cpp,cert-flp30-c,cppcoreguidelines-pro-type-member-init,cppcoreguidelines-slicing,cppcoreguidelines-interfaces-global-init,cppcoreguidelines-pro-type-static-cast-downcast,cppcoreguidelines-narrowing-conversions,google-default-arguments,google-runtime-operator,google-explicit-constructor,hicpp-multiway-paths-covered,hicpp-exception-baseclass,misc-*,-misc-unused-alias-decls,-misc-use-anonymous-namespace,-misc-misleading-identifier,-misc-confusable-identifiers,-misc-unused-using-decls,-misc-misleading-bidirectional,-misc-no-recursion,-misc-non-private-member-variables-in-classes,-misc-redundant-expression,modernize-*,-modernize-use-trailing-return-type,-modernize-avoid-c-arrays,-modernize-use-using,-modernize-use-default-member-init,-modernize-macro-to-enum,openmp-use-default-none,portability-*,-portability-restrict-system-includes,readability-*,-readability-redundant-preprocessor,-readability-named-parameter,-readability-function-size,-readability-simplify-boolean-expr,-readability-identifier-length,-readability-duplicate-include,-readability-magic-numbers,-readability-redundant-member-init,-readability-suspicious-call-argument,-readability-qualified-auto,-readability-isolate-declaration,-readability-uppercase-literal-suffix,-readability-container-data-pointer,-readability-else-after-return,-readability-redundant-access-specifiers,-readability-function-cognitive-complexity,-readability-implicit-bool-conversion,-readability-container-contains,-readability-identifier-naming" />
+    </inspection_tool>
+    <inspection_tool class="ConstantConditionsOC" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ConstantFunctionResult" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ConstantParameter" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="DanglingPointer" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="DockerFileAddOrCopySemantic" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="EndlessLoop" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="InconsistentLineSeparators" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="InfiniteRecursion" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LocalValueEscapesScope" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LongLine" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="LoopDoesntUseConditionVariable" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="Misra" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="NullDereference" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ProblematicWhitespace" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="SyntaxError" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="UnreachableCallsOfFunction" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UnusedLocalVariable" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UnusedParameter" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UnusedValue" enabled="false" level="WARNING" enabled_by_default="false" />
+  </profile>
+</component>

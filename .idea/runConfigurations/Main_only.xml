@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Main only" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="Main" />
+    <module name="ProgettoLC parte2 Gruppo 23-13" />
+    <option name="PROGRAM_PARAMETERS" value="&quot;D:\Users\Nemo\OneDrive-shared\uniUD\Cavasin\linguaggi e compilatori\gB\untitled\tests\prova3.txt&quot;" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
