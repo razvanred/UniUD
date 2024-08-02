@@ -4,8 +4,8 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Section {
-    public List<String> inherits;
-    public Map<String, Assignment<?>> assignments;
+    public final List<String> inherits;
+    public final Map<String, Assignment<?>> assignments;
     public final String name;
 
     public Section(String name, List<String> inherits, Map<String, Assignment<?>> assignments){

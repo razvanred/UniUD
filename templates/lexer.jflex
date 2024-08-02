@@ -7,7 +7,6 @@ import jflex.base.Pair;
 import java.util.Optional;
 import java.util.Map;
 import java.util.LinkedHashMap;
-
 %%
 
 %public
@@ -16,6 +15,7 @@ import java.util.LinkedHashMap;
 %cupsym ParserSym
 %cup
 %line
+%scanerror java.lang.IllegalArgumentException
 
 /*
 %eofval{
@@ -32,30 +32,32 @@ Dots = \. | \.\.
 Filename = (\w | \.)+
 
 %{
-    SymbolFactory sf;
-    Preprocessor preprocessor = new Preprocessor();
+    private SymbolFactory sf;
+    private Preprocessor preprocessor;
 
     public final AnnotatedComments annotatedComments = new AnnotatedComments();
 
-    public Lexer(Reader input, SymbolFactory sf) {
+    public Lexer(Reader input, SymbolFactory sf, Preprocessor preprocessor) {
         this(input);
         this.sf = sf;
+        this.preprocessor = preprocessor;
     }
 
     public void parsedSection(String section){
          annotatedComments.parsedSection(section);
     }
 
-    public void parsedAssignment(Assignment<?> assignment){
-        annotatedComments.parsedAssignment(assignment);
+    public void parsedAssignment(String lValue){
+        annotatedComments.parsedAssignment(lValue);
     }
 %}
 
 %%
-// mettere piu whitespace dopo import e usare indexof < per trovare il path
-"import <" \/? ( {Filename} | {Dots} \/ {Filename} | ( ({Dots} | {Filename} \/)+ {Filename} )) ">" {
+
+"import" {WhiteSpace}* "<" \/? ( {Filename} | {Dots} \/ {Filename} | ( ({Dots} | {Filename} \/)+ {Filename} )) ">" {
                                 // System.out.println(yytext().substring(8,yylength()-1));
-                                Optional<FileReader> fileopt = preprocessor.process(yytext().substring(8,yylength()-1));
+                                int i = yytext().indexOf("<");
+                                Optional<FileReader> fileopt = preprocessor.process(yytext().substring(i+1,yylength()-1));
                                 if (fileopt.isPresent()) {
                                     yypushStream(fileopt.get());
                                 }}

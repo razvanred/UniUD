@@ -1,10 +1,12 @@
-#import  <tests/prova2.txt>
-#import <tests/prova2.txt>
+import <prova2.txt>
+import <prova2.txt>
 
 [ciao]
-#inherit sbrega
-#inherit grappa
+inherit sbrega
+inherit grappa
+inherit sbrega
 var1 = 5
+astolfo = true
 # commento2
 
 [sbrega]
@@ -13,14 +15,17 @@ var1 = 5
 # rat
 inherit ciao
 ac = "dc"
-# commentoinherit
+# a
 var1 = 3
+# b
 gigi = "mi piace la bicicletta"
+# c
 var3 = $astolfo
-ac = 21
+# d
 
 [grappa]
 inherit sez2
+inherit sez1
 inherit sbrega
 # io sono un commento
 var3 = false
