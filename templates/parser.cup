@@ -37,7 +37,7 @@ sections_list ::= sections_list:sl single_section:ss {: if (!sl.containsKey(ss.n
                                                            sl.put(ss.name,ss);
                                                            RESULT = sl;
                                                         } else {
-                                                          report_fatal_error("Repeated Section", null);
+                                                          report_fatal_error("Section " + ss.name + " has already been defined" + System.lineSeparator(), null);
                                                         } :}
                   | single_section:ss {: RESULT = new Configuration(ss); :};
 
@@ -46,14 +46,17 @@ single_section ::= section_name:name inherit_list:i assignments:a {: RESULT = ne
 
 section_name ::= SECTION:name {: lexer.parsedSection(name); RESULT = name; :};
 
-inherit_list ::= inherit_list:inherits inherit:i {: inherits.add(0, i);
+inherit_list ::= inherit_list:inherits inherit:i {: if (inherits.contains(i)) {
+                                                       System.err.println("Duplicated inherit of " + i);
+                                                    }
+                                                    inherits.add(0, i);
                                                     RESULT = inherits; :}
                  | inherit:i {: RESULT = new LinkedList<String>(Arrays.asList(i)); :};
 
 inherit ::= INHERIT IDENTIFIER:s {: RESULT = s; :};
 
 assignments ::= assignments:assignments assignment:a  {: if(assignments.containsKey(a.lValue)) {
-                                                           System.err.println(a.lValue + " has already been assigned");
+                                                           System.err.println("Variable " + a.lValue + " has already been assigned");
                                                          }
                                                          assignments.put(a.lValue, a);
                                                          RESULT = assignments; :}
@@ -61,7 +64,7 @@ assignments ::= assignments:assignments assignment:a  {: if(assignments.contains
                                   t.put(a.lValue, a);
                                   RESULT = t; :};
 
-assignment ::= IDENTIFIER:lValue EQUAL NUMBER:rValue {: Assignment<Integer> a = new Assignment<>(lValue, Either.left(rValue)); lexer.parsedAssignment(a); RESULT = a; :}
-               | IDENTIFIER:lValue EQUAL STRING:rValue {: Assignment<String> a = new Assignment<>(lValue, Either.left(rValue)); lexer.parsedAssignment(a); RESULT = a; :}
-               | IDENTIFIER:lValue EQUAL BOOL:rValue {: Assignment<Boolean> a = new Assignment<>(lValue, Either.left(rValue)); lexer.parsedAssignment(a); RESULT = a; :}
-               | IDENTIFIER:lValue EQUAL REFERENCE:rValue {: Assignment<Void> a = new Assignment<>(lValue, Either.right(rValue)); lexer.parsedAssignment(a); RESULT = a; :};
+assignment ::= IDENTIFIER:lValue EQUAL NUMBER:rValue {: Assignment<Integer> a = new Assignment<>(lValue, Either.left(rValue)); lexer.parsedAssignment(lValue); RESULT = a; :}
+               | IDENTIFIER:lValue EQUAL STRING:rValue {: Assignment<String> a = new Assignment<>(lValue, Either.left(rValue)); lexer.parsedAssignment(lValue); RESULT = a; :}
+               | IDENTIFIER:lValue EQUAL BOOL:rValue {: Assignment<Boolean> a = new Assignment<>(lValue, Either.left(rValue)); lexer.parsedAssignment(lValue); RESULT = a; :}
+               | IDENTIFIER:lValue EQUAL REFERENCE:rValue {: Assignment<Void> a = new Assignment<>(lValue, Either.right(rValue)); lexer.parsedAssignment(lValue); RESULT = a; :};

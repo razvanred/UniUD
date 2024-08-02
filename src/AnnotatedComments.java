@@ -1,9 +1,7 @@
 import java.util.*;
 
-public class AnnotatedComments extends HashMap<String, Map<Assignment<?>, List<String>>> {
+public class AnnotatedComments extends HashMap<String, Map<String, List<String>>> {
     private List<String> lastComments = new LinkedList<>();
-    //    private Assignment<?> lastAssignment = null;
-    private String lexedSection = null;
     private String parsedSection = null;
 
     public AnnotatedComments() {
@@ -20,16 +18,15 @@ public class AnnotatedComments extends HashMap<String, Map<Assignment<?>, List<S
             parsedAssignment(null);
         }
         put(newSection, new HashMap<>());
-        lexedSection = newSection;
     }
 
     public void parsedSection(String newSection) {
         parsedSection = newSection;
     }
 
-    public void parsedAssignment(Assignment<?> assignment) {
+    public void parsedAssignment(String newAssignment) {
         if (!lastComments.isEmpty()) {
-            get(parsedSection).put(assignment, lastComments);
+            get(parsedSection).put(newAssignment, lastComments);
             lastComments = new LinkedList<>();
         }
     }

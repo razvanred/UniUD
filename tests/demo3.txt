@@ -1,0 +1,8 @@
+# questo file genera un errore perché lo stesso nome sezione viene usato due volte
+
+[sez1]
+var1 = "y"
+var2 = "x"
+
+[sez1]
+var3 = "p"

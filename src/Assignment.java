@@ -12,7 +12,7 @@ public class Assignment<T> {
         this.rValue = rValue;
     }
 
-    public boolean isReference(){
+    public boolean isReference() {
         return rValue.isRight();
     }
 
@@ -30,7 +30,8 @@ public class Assignment<T> {
         return Objects.equals(lValue, section.name);
     }
 
-//    public static class RValue extends Either<E, Pair<Optional<String>, String>>{
-//
-//    }
+    @Override
+    public String toString() {
+        return lValue + " = " + (isReference() ? "$" + ((rValue.getRight().fst.map(qualifier -> qualifier + ".").orElse("")) + rValue.getRight().snd) : rValue.getLeft().toString());
+    }
 }

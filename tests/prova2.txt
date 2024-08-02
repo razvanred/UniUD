@@ -1,13 +1,13 @@
 [sezione4]
-inherit orpo
+#inherit orpo
 var1 = 4
 gigi = "mi piace la bicicletta"
-var3 = $pop
-var1 = 18
+var3 = $gigi
+#var1 = 18
 
 [sezione123]
-inherit gianna
-astolfo = $sezione1.sbrega
+#inherit gianna
+astolfo = $sez1.var2
 var10 = false
 
 [sezione1]
