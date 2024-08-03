@@ -43,6 +43,11 @@ class Main {
                 continue;
             }
 
+            if (path.getFileName().toString().equals("demo4.txt")) {
+                System.out.println("var5a in sez5 has value: " + configuration.getRValueFromName("sez5", "var5a"));
+                System.out.println("var5b in sez5 has value: " + configuration.getRValueFromName("sez5", "var5b"));
+            }
+
             configuration.prettyPrint(lexer.annotatedComments);
         }
     }

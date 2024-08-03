@@ -1,9 +1,6 @@
 .PHONY final: Parser
 	javac -cp ./libs/java-cup-11b.jar:./libs/jflex-full-1.9.1.jar:. *.java
 
-"C:\Program Files\Microsoft\jdk-17.0.11.9-hotspot\bin\java.exe" -Dfile.encoding=UTF-8 -classpath "out\production\ProgettoLC parte2 Gruppo 23-13;libs\java-cup-11b.jar;libs\jflex-full-1.9.1.jar;libs\java-cup-11b-runtime.jar" Main tests\prova3.txt
-
-
 .PHONY Parser: Lexer.java
 	java -jar ./libs/java-cup-11b.jar -interface ./templates/parser.cup
 
@@ -11,4 +8,4 @@ Lexer.java:
 	java -jar ./libs/jflex-full-1.9.1.jar --nobak -d ./ --skel ./skeleton.nested ./templates/lexer.jflex
 
 demo:
-	java -cp ./libs/java-cup-11b-runtime.jar:. Main demo.txt
+	java -cp ./libs/java-cup-11b-runtime.jar:./libs/jflex-full-1.9.1.jar:. Main ./tests/demo1.txt ./tests/demo2.txt ./tests/demo3.txt ./tests/demo4.txt
