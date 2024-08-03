@@ -58,7 +58,7 @@ public class Configuration extends LinkedHashMap<String, Section> {
         } while (box.contains("hasPruned"));
     }
 
-    public Triple<resolveResult, Section, Either<?, Pair<Optional<String>, String>>> resolveReference(Section section, Either<?, Pair<Optional<String>, String>> rValue) {
+    private Triple<resolveResult, Section, Either<?, Pair<Optional<String>, String>>> resolveReference(Section section, Either<?, Pair<Optional<String>, String>> rValue) {
         visitedAssignments.clear();
         return resolveReferenceHelper(section, rValue);
     }
@@ -201,6 +201,8 @@ public class Configuration extends LinkedHashMap<String, Section> {
             System.out.println();
         }
     }
+
+
 
 
 }//class
