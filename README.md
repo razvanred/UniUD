@@ -1,4 +1,4 @@
-# Resources
+# Highlights
 
 * [Calcolo Scientifico](https://github.com/razvnred/UniUD/tree/master/Bruniera/calcolo%20scientifico) (vscode/katex only)
 * [Fondamenti dell'Informatica](https://github.com/razvnred/UniUD/tree/master/Cavasin/fondamenti%20dell'informatica)
