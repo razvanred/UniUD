@@ -70,10 +70,7 @@ transStatement x = case x of
   Grammatica.Abs.Iter iterstatement -> failure x
   Grammatica.Abs.Sel selectionstatement -> failure x
   Grammatica.Abs.Assgn lexpr assignmentop rexpr -> failure x
-  Grammatica.Abs.PreInc blexpr -> failure x
-  Grammatica.Abs.PreDecr blexpr -> failure x
-  Grammatica.Abs.PostInc blexpr -> failure x
-  Grammatica.Abs.PostDecr blexpr -> failure x
+  Grammatica.Abs.LExprStatement lexpr -> failure x
 
 transAssignment_op :: Grammatica.Abs.Assignment_op -> Result
 transAssignment_op x = case x of
@@ -121,7 +118,7 @@ transRExpr x = case x of
   Grammatica.Abs.Pow rexpr1 rexpr2 -> failure x
   Grammatica.Abs.Neg rexpr -> failure x
   Grammatica.Abs.Ref lexpr -> failure x
-  Grammatica.Abs.Increment statement -> failure x
+  Grammatica.Abs.Increment incr -> failure x
   Grammatica.Abs.Lexpr lexpr -> failure x
   Grammatica.Abs.FCall funcall -> failure x
   Grammatica.Abs.Int integer -> failure x
@@ -130,6 +127,13 @@ transRExpr x = case x of
   Grammatica.Abs.Float double -> failure x
   Grammatica.Abs.Bool boolean -> failure x
   Grammatica.Abs.Array rexprs -> failure x
+
+transIncr :: Grammatica.Abs.Incr -> Result
+transIncr x = case x of
+  Grammatica.Abs.PreInc blexpr -> failure x
+  Grammatica.Abs.PreDecr blexpr -> failure x
+  Grammatica.Abs.PostInc blexpr -> failure x
+  Grammatica.Abs.PostDecr blexpr -> failure x
 
 transLExpr :: Grammatica.Abs.LExpr -> Result
 transLExpr x = case x of

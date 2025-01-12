@@ -5,7 +5,7 @@ comment "#" ;
  
 -- un programma è una sequenza di dichiarazioni
 Prog.       Program ::= [Decl] ;
-separator   Decl "§" ;
+separator   Decl ";" ;
 
 -- dichiarazione di costante
 ConstDecl.  Decl ::= "def" Ident ":" Type ":=" RExpr ; 
@@ -32,13 +32,17 @@ Pointer.       CompoundType ::= "&" Type ;
 BlockDecl.  Block ::= "{" [Decl] [Statement] "}" ;
 separator Statement "§" ;
 
+
 Comp.       Statement ::= Block ;
--- ProcCall.   Statement ::= FunCall ;
+ProcCall.   Statement ::= FunCall ;
 Jmp.        Statement ::= JumpStatement  ;
 Iter.       Statement ::= IterStatement ;
 Sel.        Statement ::= SelectionStatement ;
 Assgn.      Statement ::= LExpr Assignment_op RExpr ;
-LExprStatement.  Statement ::= LExpr ;
+_.          Statement ::= Statement1 ;
+-- LExprStatement.  Statement ::= Statement1 ;
+
+
 
 Assign.     Assignment_op ::= ":=" ;
 AssgnMul.   Assignment_op ::= "*=" ;
@@ -48,6 +52,24 @@ AssgnSub.   Assignment_op ::= "-=" ;
 AssgnPow.   Assignment_op ::= "^=" ;
 AssgnAnd.   Assignment_op ::= "&=" ;
 AssgnOr.    Assignment_op ::= "|=" ;
+
+{-
+  int b = 0;
+
+  a[f(3)] = a[f(3)] + 3
+  
+  a[f(3)] += 3
+
+  int f(int n) {
+   if b == 0 {
+      b = 1;
+      return 1;
+   }else
+      return 2;
+}
+
+-}
+
 
 Break.      JumpStatement ::= "break" ;
 Continue.   JumpStatement ::= "continue" ;
@@ -83,8 +105,10 @@ Pow.        RExpr9 ::= RExpr10 "**" RExpr9 ;
 
 Neg.        RExpr11 ::= "-" RExpr12 ;
 Ref.        RExpr11 ::= "&" LExpr ;
+Increment.  RExpr11 ::= Statement1 ;
+Lexpr.      RExpr11 ::= LExpr ;
 
---FCall.      RExpr12 ::= FunCall ;
+FCall.      RExpr12 ::= FunCall ;
 
 Int.        RExpr13 ::= Integer ;
 Char.       RExpr13 ::= Char ;
@@ -92,22 +116,37 @@ String.     RExpr13 ::= String ;
 Float.      RExpr13 ::= Double ;
 Bool.       RExpr13 ::= Boolean ;
 
-_.          RExpr13 ::= RExpr14 ;
 Array.      RExpr14 ::= "[" [RExpr13] "]" ;
 separator RExpr13 "," ;
 
-Lexpr.      RExpr15 ::= LExpr ;
-Increment.  RExpr16 ::= Incr ;
+-- increment handling
+PreInc.     Statement1 ::= "++" BLExpr ;
+PreDecr.    Statement1 ::= "--" BLExpr ;
 
--- ++a++
-PreInc.     Incr ::= "++" BLExpr ;
-PreDecr.    Incr ::= "--" BLExpr ;
+PostInc.    Statement1 ::= BLExpr "++" ;
+PostDecr.   Statement1 ::= BLExpr "--" ;
 
-PostInc.    Incr ::= BLExpr "++" ;
-PostDecr.   Incr ::= BLExpr "--" ;
+--
+{-
+
+int i = 3;
+int *p = &i 
+*p = 5;
+
+i = *p + 5;
+
+&p retun l-value
+
+int i = 3;
+$(&i) = 5;
+
+-}
 
 Deref.      LExpr ::= "$" RExpr ;
-BasLExpr.   LExpr2 ::= BLExpr ;
-
+BasLExpr.   LExpr ::= BLExpr ;
 ArrayEl.    BLExpr ::= BLExpr "[" RExpr "]" ;
 Id.         BLExpr ::= Ident ;
+
+Call.       FunCall ::= Ident "(" [RExpr] ")" ;
+separator   RExpr "," ;
+

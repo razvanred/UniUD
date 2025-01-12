@@ -46,16 +46,15 @@ The reserved words used in grammatica are the following:
   | ``string`` | ``var`` | ``void`` | ``while``
 
 The symbols used in grammatica are the following:
-  | ; | : | := | (
+  | § | : | := | (
   | ) | , | [ | ]
-  | & | { | } | §
-  | *= | += | /= | -=
-  | ^= | &= | |= | ||
-  | && | ! | == | !=
-  | < | <= | > | >=
-  | + | - | * | /
-  | % | ** | ++ | --
-  | $ |  |  |
+  | & | { | } | *=
+  | += | /= | -= | ^=
+  | &= | |= | || | &&
+  | ! | == | != | <
+  | <= | > | >= | +
+  | - | * | / | %
+  | ** | ++ | -- | $
 
 ===Comments===
 Single-line comments begin with #.There are no multiple-line comments in the grammar.
@@ -69,7 +68,7 @@ All other symbols are terminals.
   | //Program// | -> | //[Decl]//
   | //[Decl]// | -> | **eps**
   |  |  **|**  | //Decl//
-  |  |  **|**  | //Decl// ``;`` //[Decl]//
+  |  |  **|**  | //Decl// ``§`` //[Decl]//
   | //Decl// | -> | ``def`` //Ident// ``:`` //Type// ``:=`` //RExpr//
   |  |  **|**  | ``var`` //Ident// ``:`` //Type// ``:=`` //RExpr//
   |  |  **|**  | ``def`` //Ident// ``(`` //[Parameter]// ``)`` ``:`` //Type// //Block//
@@ -100,7 +99,7 @@ All other symbols are terminals.
   |  |  **|**  | //IterStatement//
   |  |  **|**  | //SelectionStatement//
   |  |  **|**  | //LExpr// //Assignment_op// //RExpr//
-  |  |  **|**  | //Statement1//
+  |  |  **|**  | //LExpr//
   | //Assignment_op// | -> | ``:=``
   |  |  **|**  | ``*=``
   |  |  **|**  | ``+=``
@@ -145,7 +144,7 @@ All other symbols are terminals.
   | //RExpr11// | -> | //RExpr12//
   |  |  **|**  | ``-`` //RExpr12//
   |  |  **|**  | ``&`` //LExpr//
-  |  |  **|**  | //Statement1//
+  |  |  **|**  | //Incr//
   |  |  **|**  | //LExpr//
   | //RExpr12// | -> | //RExpr13//
   |  |  **|**  | //FunCall//
@@ -157,13 +156,13 @@ All other symbols are terminals.
   |  |  **|**  | //Boolean//
   | //RExpr14// | -> | ``(`` //RExpr// ``)``
   |  |  **|**  | ``[`` //[RExpr13]// ``]``
-  | //[RExpr13]// | -> | **eps**
-  |  |  **|**  | //RExpr13//
-  |  |  **|**  | //RExpr13// ``,`` //[RExpr13]//
-  | //Statement1// | -> | ``++`` //BLExpr//
+  | //Incr// | -> | ``++`` //BLExpr//
   |  |  **|**  | ``--`` //BLExpr//
   |  |  **|**  | //BLExpr// ``++``
   |  |  **|**  | //BLExpr// ``--``
+  | //[RExpr13]// | -> | **eps**
+  |  |  **|**  | //RExpr13//
+  |  |  **|**  | //RExpr13// ``,`` //[RExpr13]//
   | //LExpr// | -> | ``$`` //RExpr//
   |  |  **|**  | //BLExpr//
   | //BLExpr// | -> | //BLExpr// ``[`` //RExpr// ``]``

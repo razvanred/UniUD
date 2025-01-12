@@ -146,7 +146,7 @@ instance Print Grammatica.Abs.Program where
 instance Print [Grammatica.Abs.Decl] where
   prt _ [] = concatD []
   prt _ [x] = concatD [prt 0 x]
-  prt _ (x:xs) = concatD [prt 0 x, doc (showString ";"), prt 0 xs]
+  prt _ (x:xs) = concatD [prt 0 x, doc (showString "\167"), prt 0 xs]
 
 instance Print Grammatica.Abs.Decl where
   prt i = \case
@@ -205,10 +205,7 @@ instance Print Grammatica.Abs.Statement where
     Grammatica.Abs.Iter iterstatement -> prPrec i 0 (concatD [prt 0 iterstatement])
     Grammatica.Abs.Sel selectionstatement -> prPrec i 0 (concatD [prt 0 selectionstatement])
     Grammatica.Abs.Assgn lexpr assignmentop rexpr -> prPrec i 0 (concatD [prt 0 lexpr, prt 0 assignmentop, prt 0 rexpr])
-    Grammatica.Abs.PreInc blexpr -> prPrec i 1 (concatD [doc (showString "++"), prt 0 blexpr])
-    Grammatica.Abs.PreDecr blexpr -> prPrec i 1 (concatD [doc (showString "--"), prt 0 blexpr])
-    Grammatica.Abs.PostInc blexpr -> prPrec i 1 (concatD [prt 0 blexpr, doc (showString "++")])
-    Grammatica.Abs.PostDecr blexpr -> prPrec i 1 (concatD [prt 0 blexpr, doc (showString "--")])
+    Grammatica.Abs.LExprStatement lexpr -> prPrec i 0 (concatD [prt 0 lexpr])
 
 instance Print Grammatica.Abs.Assignment_op where
   prt i = \case
@@ -256,7 +253,7 @@ instance Print Grammatica.Abs.RExpr where
     Grammatica.Abs.Pow rexpr1 rexpr2 -> prPrec i 9 (concatD [prt 10 rexpr1, doc (showString "**"), prt 9 rexpr2])
     Grammatica.Abs.Neg rexpr -> prPrec i 11 (concatD [doc (showString "-"), prt 12 rexpr])
     Grammatica.Abs.Ref lexpr -> prPrec i 11 (concatD [doc (showString "&"), prt 0 lexpr])
-    Grammatica.Abs.Increment statement -> prPrec i 11 (concatD [prt 1 statement])
+    Grammatica.Abs.Increment incr -> prPrec i 11 (concatD [prt 0 incr])
     Grammatica.Abs.Lexpr lexpr -> prPrec i 11 (concatD [prt 0 lexpr])
     Grammatica.Abs.FCall funcall -> prPrec i 12 (concatD [prt 0 funcall])
     Grammatica.Abs.Int n -> prPrec i 13 (concatD [prt 0 n])
@@ -265,6 +262,13 @@ instance Print Grammatica.Abs.RExpr where
     Grammatica.Abs.Float d -> prPrec i 13 (concatD [prt 0 d])
     Grammatica.Abs.Bool boolean -> prPrec i 13 (concatD [prt 0 boolean])
     Grammatica.Abs.Array rexprs -> prPrec i 14 (concatD [doc (showString "["), prt 13 rexprs, doc (showString "]")])
+
+instance Print Grammatica.Abs.Incr where
+  prt i = \case
+    Grammatica.Abs.PreInc blexpr -> prPrec i 0 (concatD [doc (showString "++"), prt 0 blexpr])
+    Grammatica.Abs.PreDecr blexpr -> prPrec i 0 (concatD [doc (showString "--"), prt 0 blexpr])
+    Grammatica.Abs.PostInc blexpr -> prPrec i 0 (concatD [prt 0 blexpr, doc (showString "++")])
+    Grammatica.Abs.PostDecr blexpr -> prPrec i 0 (concatD [prt 0 blexpr, doc (showString "--")])
 
 instance Print [Grammatica.Abs.RExpr] where
   prt 13 [] = concatD []

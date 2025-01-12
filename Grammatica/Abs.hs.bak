@@ -51,10 +51,7 @@ data Statement
     | Iter IterStatement
     | Sel SelectionStatement
     | Assgn LExpr Assignment_op RExpr
-    | PreInc BLExpr
-    | PreDecr BLExpr
-    | PostInc BLExpr
-    | PostDecr BLExpr
+    | LExprStatement LExpr
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
 data Assignment_op
@@ -96,7 +93,7 @@ data RExpr
     | Pow RExpr RExpr
     | Neg RExpr
     | Ref LExpr
-    | Increment Statement
+    | Increment Incr
     | Lexpr LExpr
     | FCall FunCall
     | Int Integer
@@ -105,6 +102,10 @@ data RExpr
     | Float Double
     | Bool Boolean
     | Array [RExpr]
+  deriving (C.Eq, C.Ord, C.Show, C.Read)
+
+data Incr
+    = PreInc BLExpr | PreDecr BLExpr | PostInc BLExpr | PostDecr BLExpr
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
 data LExpr = Deref RExpr | BasLExpr BLExpr
