@@ -94,6 +94,12 @@ ExpAssign.  Expr9 ::= SStatement1 ;
 
 FCall.      Expr10 ::= FunCall ;
 
+{-
+Char.       Expr1 ::= Expr2 ;
+_.          Expr2 ::= Char ;
+_.          Expr2 ::= Integer "f" ; <-- da Lexer
+-}
+
 Int.        Expr11 ::= Integer ;
 Char.       Expr11 ::= Char ;
 String.     Expr11 ::= String ;
@@ -102,8 +108,9 @@ Bool.       Expr11 ::= Boolean ;
 rules Boolean ::= "True" | "False" ;
 
 
-Array.      Expr12 ::= "[" [Expr11] "]" ;
+Array.        Expr12 ::= "[" [Expr11] "]" ;
 separator nonempty Expr11 "," ;
+RangedArray.  Expr12 ::= "[" Expr11 "..." Expr11 "]" ;
 
 coercions Expr 12 ;
 

@@ -42,42 +42,41 @@ import Parser.Lex
   '-'        { PT _ (TS _ 17) }
   '--'       { PT _ (TS _ 18) }
   '-='       { PT _ (TS _ 19) }
-  '...'      { PT _ (TS _ 20) }
-  '/'        { PT _ (TS _ 21) }
-  '/='       { PT _ (TS _ 22) }
-  ':'        { PT _ (TS _ 23) }
-  ':='       { PT _ (TS _ 24) }
-  ';'        { PT _ (TS _ 25) }
-  '<'        { PT _ (TS _ 26) }
-  '<='       { PT _ (TS _ 27) }
-  '=='       { PT _ (TS _ 28) }
-  '>'        { PT _ (TS _ 29) }
-  '>='       { PT _ (TS _ 30) }
-  'False'    { PT _ (TS _ 31) }
-  'True'     { PT _ (TS _ 32) }
-  '['        { PT _ (TS _ 33) }
-  ']'        { PT _ (TS _ 34) }
-  '^='       { PT _ (TS _ 35) }
-  'bool'     { PT _ (TS _ 36) }
-  'break'    { PT _ (TS _ 37) }
-  'char'     { PT _ (TS _ 38) }
-  'continue' { PT _ (TS _ 39) }
-  'def'      { PT _ (TS _ 40) }
-  'else'     { PT _ (TS _ 41) }
-  'float'    { PT _ (TS _ 42) }
-  'if'       { PT _ (TS _ 43) }
-  'int'      { PT _ (TS _ 44) }
-  'ref'      { PT _ (TS _ 45) }
-  'return'   { PT _ (TS _ 46) }
-  'string'   { PT _ (TS _ 47) }
-  'val'      { PT _ (TS _ 48) }
-  'var'      { PT _ (TS _ 49) }
-  'void'     { PT _ (TS _ 50) }
-  'while'    { PT _ (TS _ 51) }
-  '{'        { PT _ (TS _ 52) }
-  '|='       { PT _ (TS _ 53) }
-  '||'       { PT _ (TS _ 54) }
-  '}'        { PT _ (TS _ 55) }
+  '/'        { PT _ (TS _ 20) }
+  '/='       { PT _ (TS _ 21) }
+  ':'        { PT _ (TS _ 22) }
+  ':='       { PT _ (TS _ 23) }
+  ';'        { PT _ (TS _ 24) }
+  '<'        { PT _ (TS _ 25) }
+  '<='       { PT _ (TS _ 26) }
+  '=='       { PT _ (TS _ 27) }
+  '>'        { PT _ (TS _ 28) }
+  '>='       { PT _ (TS _ 29) }
+  'False'    { PT _ (TS _ 30) }
+  'True'     { PT _ (TS _ 31) }
+  '['        { PT _ (TS _ 32) }
+  ']'        { PT _ (TS _ 33) }
+  '^='       { PT _ (TS _ 34) }
+  'bool'     { PT _ (TS _ 35) }
+  'break'    { PT _ (TS _ 36) }
+  'char'     { PT _ (TS _ 37) }
+  'continue' { PT _ (TS _ 38) }
+  'def'      { PT _ (TS _ 39) }
+  'else'     { PT _ (TS _ 40) }
+  'float'    { PT _ (TS _ 41) }
+  'if'       { PT _ (TS _ 42) }
+  'int'      { PT _ (TS _ 43) }
+  'ref'      { PT _ (TS _ 44) }
+  'return'   { PT _ (TS _ 45) }
+  'string'   { PT _ (TS _ 46) }
+  'val'      { PT _ (TS _ 47) }
+  'var'      { PT _ (TS _ 48) }
+  'void'     { PT _ (TS _ 49) }
+  'while'    { PT _ (TS _ 50) }
+  '{'        { PT _ (TS _ 51) }
+  '|='       { PT _ (TS _ 52) }
+  '||'       { PT _ (TS _ 53) }
+  '}'        { PT _ (TS _ 54) }
   L_Ident    { PT _ (TV $$)   }
   L_charac   { PT _ (TC $$)   }
   L_doubl    { PT _ (TD $$)   }
@@ -262,9 +261,7 @@ Boolean
 
 Expr12 :: { Parser.Abs.Expr }
 Expr12
-  : '[' ListExpr11 ']' { Parser.Abs.Array $2 }
-  | '[' Expr11 '...' Expr11 ']' { Parser.Abs.RangedArray $2 $4 }
-  | '(' Expr ')' { $2 }
+  : '[' ListExpr11 ']' { Parser.Abs.Array $2 } | '(' Expr ')' { $2 }
 
 ListExpr11 :: { [Parser.Abs.Expr] }
 ListExpr11

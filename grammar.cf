@@ -96,14 +96,16 @@ FCall.      Expr10 ::= FunCall ;
 
 Int.        Expr11 ::= Integer ;
 Char.       Expr11 ::= Char ;
+-- NumChar.    Expr11 ::= Integer 'f' <-- da Lexer
 String.     Expr11 ::= String ;
 Float.      Expr11 ::= Double ;
 Bool.       Expr11 ::= Boolean ;
 rules Boolean ::= "True" | "False" ;
 
 
-Array.      Expr12 ::= "[" [Expr11] "]" ;
+Array.        Expr12 ::= "[" [Expr11] "]" ;
 separator nonempty Expr11 "," ;
+RangedArray.  Expr12 ::= "[" Expr11 "..." Expr11 "]" ;
 
 coercions Expr 12 ;
 

@@ -9,7 +9,7 @@ $$
 $$
 
 $$
-\shdw \clash
+\shdw\quad \clash
 $$
 
 $$

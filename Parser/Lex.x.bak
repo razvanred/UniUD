@@ -28,7 +28,7 @@ $u = [. \n]          -- universal: any character
 
 -- Symbols and non-identifier-like reserved words
 
-@rsyms = \{ | \} | \; | \: | \: \= | \( | \) | \, | \[ | \] | \& | \* \= | \+ \= | \/ \= | \- \= | \^ \= | \& \= | \| \= | \| \| | \& \& | \! | \= \= | \! \= | \< | \< \= | \> | \> \= | \+ | \- | \* | \/ | \% | \* \* | \$ | \. \. \. | \+ \+ | \- \-
+@rsyms = \{ | \} | \; | \: | \: \= | \( | \) | \, | \[ | \] | \& | \* \= | \+ \= | \/ \= | \- \= | \^ \= | \& \= | \| \= | \| \| | \& \& | \! | \= \= | \! \= | \< | \< \= | \> | \> \= | \+ | \- | \* | \/ | \% | \* \* | \$ | \+ \+ | \- \-
 
 :-
 
@@ -166,7 +166,7 @@ eitherResIdent tv s = treeFind resWords
 -- | The keywords and symbols of the language organized as binary search tree.
 resWords :: BTree
 resWords =
-  b "==" 28
+  b ">" 28
     (b "++" 14
        (b "&=" 7
           (b "%" 4
@@ -174,28 +174,27 @@ resWords =
           (b "**" 11
              (b ")" 9 (b "(" 8 N N) (b "*" 10 N N))
              (b "+" 13 (b "*=" 12 N N) N)))
-       (b "/" 21
+       (b "/=" 21
           (b "--" 18
              (b "," 16 (b "+=" 15 N N) (b "-" 17 N N))
-             (b "..." 20 (b "-=" 19 N N) N))
-          (b ";" 25
-             (b ":" 23 (b "/=" 22 N N) (b ":=" 24 N N))
-             (b "<=" 27 (b "<" 26 N N) N))))
-    (b "float" 42
-       (b "^=" 35
-          (b "True" 32
-             (b ">=" 30 (b ">" 29 N N) (b "False" 31 N N))
-             (b "]" 34 (b "[" 33 N N) N))
-          (b "continue" 39
-             (b "break" 37 (b "bool" 36 N N) (b "char" 38 N N))
-             (b "else" 41 (b "def" 40 N N) N)))
-       (b "var" 49
-          (b "return" 46
-             (b "int" 44 (b "if" 43 N N) (b "ref" 45 N N))
-             (b "val" 48 (b "string" 47 N N) N))
-          (b "|=" 53
-             (b "while" 51 (b "void" 50 N N) (b "{" 52 N N))
-             (b "}" 55 (b "||" 54 N N) N))))
+             (b "/" 20 (b "-=" 19 N N) N))
+          (b "<" 25
+             (b ":=" 23 (b ":" 22 N N) (b ";" 24 N N))
+             (b "==" 27 (b "<=" 26 N N) N))))
+    (b "if" 42
+       (b "bool" 35
+          (b "[" 32
+             (b "False" 30 (b ">=" 29 N N) (b "True" 31 N N))
+             (b "^=" 34 (b "]" 33 N N) N))
+          (b "def" 39
+             (b "char" 37 (b "break" 36 N N) (b "continue" 38 N N))
+             (b "float" 41 (b "else" 40 N N) N)))
+       (b "void" 49
+          (b "string" 46
+             (b "ref" 44 (b "int" 43 N N) (b "return" 45 N N))
+             (b "var" 48 (b "val" 47 N N) N))
+          (b "|=" 52
+             (b "{" 51 (b "while" 50 N N) N) (b "}" 54 (b "||" 53 N N) N))))
   where
   b s n = B bs (TS bs n)
     where

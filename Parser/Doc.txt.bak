@@ -55,8 +55,7 @@ The symbols used in Parser are the following:
   | ! | == | != | <
   | <= | > | >= | +
   | - | * | / | %
-  | ** | $ | ... | ++
-  | -- |  |  |
+  | ** | $ | ++ | --
 
 ===Comments===
 Single-line comments begin with #.Multiple-line comments are  enclosed with #< and >#.
@@ -158,7 +157,6 @@ All other symbols are terminals.
   | //Boolean// | -> | ``True``
   |  |  **|**  | ``False``
   | //Expr12// | -> | ``[`` //[Expr11]// ``]``
-  |  |  **|**  | ``[`` //Expr11// ``...`` //Expr11// ``]``
   |  |  **|**  | ``(`` //Expr// ``)``
   | //[Expr11]// | -> | //Expr11//
   |  |  **|**  | //Expr11// ``,`` //[Expr11]//

@@ -260,7 +260,6 @@ instance Print Parser.Abs.Expr where
     Parser.Abs.Float d -> prPrec i 11 (concatD [prt 0 d])
     Parser.Abs.Bool boolean -> prPrec i 11 (concatD [prt 0 boolean])
     Parser.Abs.Array exprs -> prPrec i 12 (concatD [doc (showString "["), prt 11 exprs, doc (showString "]")])
-    Parser.Abs.RangedArray expr1 expr2 -> prPrec i 12 (concatD [doc (showString "["), prt 11 expr1, doc (showString "..."), prt 11 expr2, doc (showString "]")])
 
 instance Print Parser.Abs.Boolean where
   prt i = \case

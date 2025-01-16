@@ -107,7 +107,6 @@ data Expr
     | Float Double
     | Bool Boolean
     | Array [Expr]
-    | RangedArray Expr Expr
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
 data Boolean = Boolean_True | Boolean_False

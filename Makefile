@@ -13,7 +13,7 @@ ALEX_OPTS  = --ghc
 
 # List of goals not corresponding to file names.
 
-.PHONY : all clean distclean buildDir
+.PHONY : all clean distclean test parser lexer buildDir
 
 # Default goal.
 
@@ -21,11 +21,17 @@ all : ${BUILD}/Test
 
 # Rules for building
 
-buildDir :
-	mkdir ${BUILD}
+lexer : ${CODEGEN}/Lex.hs
 
-${CODEGEN}/Abs.hs ${CODEGEN}/Lex.x ${CODEGEN}/Par.y ${CODEGEN}/Print.hs ${CODEGEN}/Test.hs : grammar.cf
-	mkdir ${CODEGEN}
+parser : lexer ${CODEGEN}/Par.hs
+
+test : ${BUILD}/Test
+
+buildDir :
+	mkdir -p ${BUILD}
+
+${CODEGEN}/Lex.x ${CODEGEN}/Par.y ${CODEGEN}/Abs.hs ${CODEGEN}/Print.hs ${CODEGEN}/Test.hs : grammar.cf
+	mkdir -p ${CODEGEN}
 	cp -p grammar.cf ${CODEGEN}/Parser.cf
 	bnfc --haskell -d ${CODEGEN}/Parser.cf
 
@@ -35,7 +41,7 @@ ${CODEGEN}/%.hs : ${CODEGEN}/%.y
 ${CODEGEN}/%.hs : ${CODEGEN}/%.x
 	${ALEX} ${ALEX_OPTS} $<
 
-${BUILD}/Test : buildDir ${CODEGEN}/Abs.hs ${CODEGEN}/Lex.hs ${CODEGEN}/Par.hs ${CODEGEN}/Print.hs ${CODEGEN}/Test.hs
+${BUILD}/Test : buildDir parser ${CODEGEN}/Abs.hs ${CODEGEN}/Print.hs ${CODEGEN}/Test.hs
 	${GHC} ${GHC_OPTS} ${CODEGEN}/Test.hs -o $@
 
 # Rules for cleaning generated files.

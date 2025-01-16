@@ -130,7 +130,6 @@ transExpr x = case x of
   Parser.Abs.Float double -> failure x
   Parser.Abs.Bool boolean -> failure x
   Parser.Abs.Array exprs -> failure x
-  Parser.Abs.RangedArray expr1 expr2 -> failure x
 
 transBoolean :: Parser.Abs.Boolean -> Result
 transBoolean x = case x of
