@@ -1,6 +1,13 @@
 {
     "markdown.math.macros": {
         "\\clash": "\\uplus",
-        "\\shdw": "\\small{\\overleftarrow{\\cup}}"
+        "\\shdw": "\\small{\\overleftarrow{\\cup}}",
+        "\\bool": "\\mathsf{bool}",
+        "\\char": "\\mathsf{char}",
+        "\\int": "\\mathsf{int}",
+        "\\float": "\\mathsf{float}",
+        "\\string": "\\mathsf{string}",
+        "\\void": "\\mathsf{void}",
+        "\\sup": "\\sqcup"
     }
 }
