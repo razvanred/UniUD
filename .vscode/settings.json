@@ -1,0 +1,6 @@
+{
+    "markdown.math.macros": {
+        "\\clash": "\\uplus",
+        "\\shdw": "\\small{\\overleftarrow{\\cup}}"
+    }
+}

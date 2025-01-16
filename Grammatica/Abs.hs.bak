@@ -10,111 +10,109 @@ import Prelude (Char, Double, Integer, String)
 import qualified Prelude as C (Eq, Ord, Show, Read)
 import qualified Data.String
 
-data Program = Prog [Decl]
+data SBlock = Block [Instruction]
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
-data Decl
-    = ConstDecl Ident Type RExpr
-    | VarDecl Ident Type RExpr
-    | FunDecl Ident [Parameter] Type Block
+data Instruction = Statement SStatement | Declaration SDeclaration
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
-data Parameter = Param Ident Type
+data SDeclaration
+    = ConstDecl Ident Type Expr
+    | VarDecl Ident Type Expr
+    | FunDecl Ident [Parameter] Type SBlock
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
-data Type = BasType BasicType | CompType CompoundType
+data Parameter = Param Modality Ident Type
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
-data BasicType
-    = BasicType_bool
-    | BasicType_char
-    | BasicType_int
-    | BasicType_string
-    | BasicType_float
-    | BasicType_void
+data Modality = Modality1 | Modality_val | Modality_ref
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
-data Boolean = Boolean_True | Boolean_False
+data Type
+    = BasicType SBasicType
+    | ArrayType Expr Type
+    | UnsizedArrayType Type
+    | Pointer Type
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
-data CompoundType
-    = ArrDef RExpr Type | ArrPartialDef Type | Pointer Type
+data SBasicType
+    = SBasicType_bool
+    | SBasicType_char
+    | SBasicType_int
+    | SBasicType_string
+    | SBasicType_float
+    | SBasicType_void
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
-data Block = BlockDecl [Decl] [Statement]
-  deriving (C.Eq, C.Ord, C.Show, C.Read)
-
-data Statement
-    = Comp Block
+data SStatement
+    = Compound SBlock
     | ProcCall FunCall
-    | Jmp JumpStatement
-    | Iter IterStatement
-    | Sel SelectionStatement
-    | Assgn LExpr Assignment_op RExpr
-    | LExprStatement LExpr
+    | Jump JumpSStatement
+    | Iter IterSStatement
+    | Branch BranchSStatement
+    | Assign Expr Assignment_op Expr
+    | PreInc Expr
+    | PreDecr Expr
+    | PostInc Expr
+    | PostDecr Expr
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
 data Assignment_op
-    = Assign
-    | AssgnMul
-    | AssgnAdd
-    | AssgnDiv
-    | AssgnSub
-    | AssgnPow
-    | AssgnAnd
-    | AssgnOr
+    = AssignOp
+    | AssignMul
+    | AssignAdd
+    | AssignDiv
+    | AssignSub
+    | AssignPow
+    | AssignAnd
+    | AssignOr
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
-data JumpStatement = Break | Continue | RetExpVoid | RetExp RExpr
+data JumpSStatement = Break | Continue | RetExpVoid | RetExp Expr
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
-data SelectionStatement
-    = IfNoElse RExpr Block | IfElse RExpr Block Block
+data BranchSStatement
+    = IfNoElse Expr SBlock | IfElse Expr SBlock SBlock
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
-data IterStatement = While RExpr Block
+data IterSStatement = While Expr SBlock
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
-data RExpr
-    = Or RExpr RExpr
-    | And RExpr RExpr
-    | Not RExpr
-    | Eq RExpr RExpr
-    | Neq RExpr RExpr
-    | Lt RExpr RExpr
-    | LtE RExpr RExpr
-    | Gt RExpr RExpr
-    | GtE RExpr RExpr
-    | Add RExpr RExpr
-    | Sub RExpr RExpr
-    | Mul RExpr RExpr
-    | Div RExpr RExpr
-    | Mod RExpr RExpr
-    | Pow RExpr RExpr
-    | Neg RExpr
-    | Ref LExpr
-    | Increment Incr
-    | Lexpr LExpr
+data Expr
+    = Or Expr Expr
+    | And Expr Expr
+    | Not Expr
+    | Eq Expr Expr
+    | Neq Expr Expr
+    | Lt Expr Expr
+    | LtE Expr Expr
+    | Gt Expr Expr
+    | GtE Expr Expr
+    | Add Expr Expr
+    | Sub Expr Expr
+    | Mul Expr Expr
+    | Div Expr Expr
+    | Mod Expr Expr
+    | Pow Expr Expr
+    | Neg Expr
+    | Ref Expr
+    | Deref Expr
+    | ArrayAcc Expr Expr
+    | Id Ident
+    | IncDec SStatement
     | FCall FunCall
     | Int Integer
     | Char Char
     | String String
     | Float Double
     | Bool Boolean
-    | Array [RExpr]
+    | Array [Expr]
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
-data Incr
-    = PreInc BLExpr | PreDecr BLExpr | PostInc BLExpr | PostDecr BLExpr
+data Boolean = Boolean_True | Boolean_False
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
-data LExpr = Deref RExpr | BasLExpr BLExpr
-  deriving (C.Eq, C.Ord, C.Show, C.Read)
-
-data BLExpr = ArrayEl BLExpr RExpr | Id Ident
-  deriving (C.Eq, C.Ord, C.Show, C.Read)
-
-data FunCall = Call Ident [RExpr]
+data FunCall = Call Ident [Expr]
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
 newtype Ident = Ident String

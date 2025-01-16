@@ -1,3 +1,19 @@
-TODO1 pensare di fare solamente la dichiarazione senza inizializzazione
 
-TODO3 semplificare per evitare di avere Compound Type
+# hello
+
+def a:int:=5;
+
+a:=5;
+
+5:=5;
+
+5:=[([1,2,3])];
+
+# 5:=[[1,2,3]]v;
+
+# 5:=$[4]v;
+
+{};
+
+def f():void{
+}

@@ -1,152 +1,157 @@
-
 -- commenti singola linea
 comment "#" ;
---commenti multiLine?
- 
--- un programma è una sequenza di dichiarazioni
-Prog.       Program ::= [Decl] ;
-separator   Decl ";" ;
+comment "#<" ">#" ;
+
+entrypoints SBlock1;
+
+-- un blocco è una sequenza di istruzioni
+_.           SBlock ::= "{" SBlock1 "}" ;
+Block.       SBlock1 ::= [ Instruction ];
+-- un'istruzione è una dichiarazione o uno statement
+Statement.    Instruction ::= SStatement;
+Declaration.  Instruction ::= SDeclaration;
+separator Instruction ";";
 
 -- dichiarazione di costante
-ConstDecl.  Decl ::= "def" Ident ":" Type ":=" RExpr ; 
+ConstDecl.  SDeclaration ::= "def" Ident ":" Type ":=" Expr ; 
 
 -- dichiarazione di variabile
-VarDecl.    Decl ::= "var" Ident ":" Type ":=" RExpr ; -- TODO1
+VarDecl.    SDeclaration ::= "var" Ident ":" Type ":=" Expr ;
 
 -- dichiarazione di procedura o funzione
-FunDecl.    Decl ::= "def" Ident "(" [Parameter] ")" ":" Type Block ;
-separator Parameter "," ;
-Param.      Parameter ::= Ident ":" Type ;
+FunDecl.    SDeclaration ::= "def" Ident "(" [Parameter] ")" ":" Type SBlock ;
+separator   Parameter "," ;
+Param.      Parameter ::= Modality Ident ":" Type ;
+-- | "const" | "res" | "valres" | "name"
+rules  Modality ::= {-empty-} | "val" | "ref" ; 
 
--- un tipo può essere tipo semplice
-BasType.    Type ::= BasicType ;
-rules BasicType ::= "bool" | "char" | "int" | "string" | "float" | "void" ;
+-- sintassi tipi
+BasicType.         Type ::= SBasicType ;
+ArrayType.         Type ::= "[" Expr "]" Type ;
+UnsizedArrayType.  Type ::= "["  "]" Type ;
+Pointer.           Type ::= "&" Type ;
+rules SBasicType ::= "bool" | "char" | "int" | "string" | "float" | "void" ;
+
+-- statements
+
+Compound.   SStatement ::= SBlock ;
+ProcCall.   SStatement ::= FunCall ;
+Jump.       SStatement ::= JumpSStatement  ;
+Iter.       SStatement ::= IterSStatement ;
+Branch.     SStatement ::= BranchSStatement ;
+Assign.     SStatement ::= Expr Assignment_op Expr ;
+
+_.          SStatement ::= SStatement1 ;
+
+AssignOp.   Assignment_op ::= ":=" ;
+AssignMul.  Assignment_op ::= "*=" ;
+AssignAdd.  Assignment_op ::= "+=" ;
+AssignDiv.  Assignment_op ::= "/=" ;
+AssignSub.  Assignment_op ::= "-=" ;
+AssignPow.  Assignment_op ::= "^=" ;
+AssignAnd.  Assignment_op ::= "&=" ;
+AssignOr.   Assignment_op ::= "|=" ;
+
+Break.      JumpSStatement ::= "break" ;
+Continue.   JumpSStatement ::= "continue" ;
+RetExpVoid. JumpSStatement ::= "return" ;
+RetExp.     JumpSStatement ::= "return" Expr ;
+
+IfNoElse.   BranchSStatement ::= "if" "(" Expr ")" SBlock ;
+IfElse.     BranchSStatement ::= "if" "(" Expr ")" SBlock "else" SBlock ;
+
+While.      IterSStatement ::= "while" "(" Expr ")" SBlock ;
+
+Or.         Expr  ::= Expr "||" Expr1 ;
+And.        Expr1 ::= Expr1 "&&" Expr2 ;
+Not.        Expr2 ::= "!" Expr3 ;
+
+Eq.         Expr3 ::= Expr4 "==" Expr4 ;
+Neq.        Expr3 ::= Expr4 "!=" Expr4 ;
+Lt.         Expr3 ::= Expr4 "<"  Expr4 ;
+LtE.        Expr3 ::= Expr4 "<=" Expr4 ;
+Gt.         Expr3 ::= Expr4 ">"  Expr4 ;
+GtE.        Expr3 ::= Expr4 ">=" Expr4 ;
+
+Add.        Expr4 ::= Expr4 "+" Expr5 ;
+Sub.        Expr4 ::= Expr4 "-" Expr5 ;
+
+Mul.        Expr5 ::= Expr5 "*" Expr6 ;
+Div.        Expr5 ::= Expr5 "/" Expr6 ;
+Mod.        Expr5 ::= Expr5 "%" Expr6 ;
+
+Pow.        Expr6 ::= Expr7 "**" Expr6 ;
+
+Neg.        Expr7 ::= "-" Expr8 ;
+
+Ref.        Expr8 ::= "&" Expr8 ;
+Deref.      Expr8 ::= "$" Expr8 ;
+
+ArrayAcc.   Expr8 ::= Expr8 "[" Expr "]";
+
+Id.         Expr9 ::= Ident ;
+ExpAssign.  Expr9 ::= SStatement1 ;
+
+FCall.      Expr10 ::= FunCall ;
+
+Int.        Expr11 ::= Integer ;
+Char.       Expr11 ::= Char ;
+String.     Expr11 ::= String ;
+Float.      Expr11 ::= Double ;
+Bool.       Expr11 ::= Boolean ;
 rules Boolean ::= "True" | "False" ;
 
--- oppure tipo composto
-CompType.      Type ::= CompoundType ; -- TODO3
-ArrDef.        CompoundType ::= "[" RExpr "]" Type ;
-ArrPartialDef. CompoundType ::= "["  "]" Type ;
-Pointer.       CompoundType ::= "&" Type ;
 
-BlockDecl.  Block ::= "{" [Decl] [Statement] "}" ;
-separator Statement "§" ;
+Array.      Expr12 ::= "[" [Expr11] "]" ;
+separator nonempty Expr11 "," ;
 
-
-Comp.       Statement ::= Block ;
-ProcCall.   Statement ::= FunCall ;
-Jmp.        Statement ::= JumpStatement  ;
-Iter.       Statement ::= IterStatement ;
-Sel.        Statement ::= SelectionStatement ;
-Assgn.      Statement ::= LExpr Assignment_op RExpr ;
-_.          Statement ::= Statement1 ;
--- LExprStatement.  Statement ::= Statement1 ;
-
-
-
-Assign.     Assignment_op ::= ":=" ;
-AssgnMul.   Assignment_op ::= "*=" ;
-AssgnAdd.   Assignment_op ::= "+=" ;
-AssgnDiv.   Assignment_op ::= "/=" ;
-AssgnSub.   Assignment_op ::= "-=" ;
-AssgnPow.   Assignment_op ::= "^=" ;
-AssgnAnd.   Assignment_op ::= "&=" ;
-AssgnOr.    Assignment_op ::= "|=" ;
-
-{-
-  int b = 0;
-
-  a[f(3)] = a[f(3)] + 3
-  
-  a[f(3)] += 3
-
-  int f(int n) {
-   if b == 0 {
-      b = 1;
-      return 1;
-   }else
-      return 2;
-}
-
--}
-
-
-Break.      JumpStatement ::= "break" ;
-Continue.   JumpStatement ::= "continue" ;
-RetExpVoid. JumpStatement ::= "return" ;
-RetExp.     JumpStatement ::= "return" "(" RExpr ")" ;
-
-IfNoElse.   SelectionStatement ::= "if" "(" RExpr ")" Block ;
-IfElse.     SelectionStatement ::= "if" "(" RExpr ")" Block "else" Block ;
-
-While.      IterStatement ::= "while" "(" RExpr ")" Block ;
-
-coercions   RExpr 14 ;
-
-Or.         RExpr  ::= RExpr "||" RExpr1 ;
-And.        RExpr1 ::= RExpr1 "&&" RExpr2 ;
-Not.        RExpr2 ::= "!" RExpr3 ;
-
-Eq.         RExpr5 ::= RExpr6 "==" RExpr6 ;
-Neq.        RExpr5 ::= RExpr6 "!=" RExpr6 ;
-Lt.         RExpr5 ::= RExpr6 "<"  RExpr6 ;
-LtE.        RExpr5 ::= RExpr6 "<=" RExpr6 ;
-Gt.         RExpr5 ::= RExpr6 ">"  RExpr6 ;
-GtE.        RExpr5 ::= RExpr6 ">=" RExpr6 ;
-
-Add.        RExpr7 ::= RExpr7 "+" RExpr8 ;
-Sub.        RExpr7 ::= RExpr7 "-" RExpr8 ;
-
-Mul.        RExpr8 ::= RExpr8 "*" RExpr9 ;
-Div.        RExpr8 ::= RExpr8 "/" RExpr9 ;
-Mod.        RExpr8 ::= RExpr8 "%" RExpr9 ;
-
-Pow.        RExpr9 ::= RExpr10 "**" RExpr9 ;
-
-Neg.        RExpr11 ::= "-" RExpr12 ;
-Ref.        RExpr11 ::= "&" LExpr ;
-Increment.  RExpr11 ::= Statement1 ;
-Lexpr.      RExpr11 ::= LExpr ;
-
-FCall.      RExpr12 ::= FunCall ;
-
-Int.        RExpr13 ::= Integer ;
-Char.       RExpr13 ::= Char ;
-String.     RExpr13 ::= String ;
-Float.      RExpr13 ::= Double ;
-Bool.       RExpr13 ::= Boolean ;
-
-Array.      RExpr14 ::= "[" [RExpr13] "]" ;
-separator RExpr13 "," ;
+coercions Expr 12 ;
 
 -- increment handling
-PreInc.     Statement1 ::= "++" BLExpr ;
-PreDecr.    Statement1 ::= "--" BLExpr ;
+PreInc.     SStatement1 ::= "++" Expr8 ;
+PreDecr.    SStatement1 ::= "--" Expr8 ;
+PostInc.    SStatement1 ::= Expr8 "++" ;
+PostDecr.   SStatement1 ::= Expr8 "--" ;
 
-PostInc.    Statement1 ::= BLExpr "++" ;
-PostDecr.   Statement1 ::= BLExpr "--" ;
+Call.       FunCall ::= Ident "(" [Expr] ")" ;
+separator   Expr "," ;
 
---
-{-
+{- Or.         Expr  ::= Expr "||" Expr1 ;
+And.        Expr1 ::= Expr1 "&&" Expr2 ;
+Not.        Expr2 ::= "!" Expr3 ;
 
-int i = 3;
-int *p = &i 
-*p = 5;
+Eq.         Expr3 ::= Expr4 "==" Expr4 ;
+Neq.        Expr3 ::= Expr4 "!=" Expr4 ;
+Lt.         Expr3 ::= Expr4 "<"  Expr4 ;
+LtE.        Expr3 ::= Expr4 "<=" Expr4 ;
+Gt.         Expr3 ::= Expr4 ">"  Expr4 ;
+GtE.        Expr3 ::= Expr4 ">=" Expr4 ;
 
-i = *p + 5;
+Add.        Expr4 ::= Expr4 "+" Expr5 ;
+Sub.        Expr4 ::= Expr4 "-" Expr5 ;
 
-&p retun l-value
+Mul.        Expr5 ::= Expr5 "*" Expr6 ;
+Div.        Expr5 ::= Expr5 "/" Expr6 ;
+Mod.        Expr5 ::= Expr5 "%" Expr6 ;
 
-int i = 3;
-$(&i) = 5;
+Pow.        Expr6 ::= Expr7 "**" Expr6 ;
 
--}
+Neg.        Expr7 ::= "-" Expr8 ;
+Ref.        Expr7 ::= "&" Expr7 ;
+Deref.      Expr7 ::= "$" Expr7 ;
+ArrayEl.    Expr7 ::= "[" Expr "]" Expr7 ;
 
-Deref.      LExpr ::= "$" RExpr ;
-BasLExpr.   LExpr ::= BLExpr ;
-ArrayEl.    BLExpr ::= BLExpr "[" RExpr "]" ;
-Id.         BLExpr ::= Ident ;
+Id.         Expr8 ::= Ident ;
+Increment.  Expr8 ::= SStatement1 ;
 
-Call.       FunCall ::= Ident "(" [RExpr] ")" ;
-separator   RExpr "," ;
+FCall.      Expr9 ::= FunCall ;
 
+Int.        Expr10 ::= Integer ;
+Char.       Expr10 ::= Char ;
+String.     Expr10 ::= String ;
+Float.      Expr10 ::= Double ;
+Bool.       Expr10 ::= Boolean ;
+rules Boolean ::= "True" | "False" ;
+
+Array.      Expr11 ::= "[" [Expr10] "]" ;
+separator nonempty Expr10 "," ; -}

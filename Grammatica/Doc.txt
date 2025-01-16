@@ -42,23 +42,23 @@ The set of reserved words is the set of terminals appearing in the grammar. Thos
 The reserved words used in grammatica are the following:
   | ``False`` | ``True`` | ``bool`` | ``break``
   | ``char`` | ``continue`` | ``def`` | ``else``
-  | ``float`` | ``if`` | ``int`` | ``return``
-  | ``string`` | ``var`` | ``void`` | ``while``
+  | ``float`` | ``if`` | ``int`` | ``ref``
+  | ``return`` | ``string`` | ``val`` | ``var``
+  | ``void`` | ``while`` |  |
 
 The symbols used in grammatica are the following:
-  | ; | : | := | (
-  | ) | , | [ | ]
-  | & | { | } | §
-  | *= | += | /= | -=
-  | ^= | &= | |= | ||
-  | && | ! | == | !=
-  | < | <= | > | >=
-  | + | - | * | /
-  | % | ** | ++ | --
-  | $ |  |  |
+  | { | } | ; | :
+  | := | ( | ) | ,
+  | [ | ] | & | *=
+  | += | /= | -= | ^=
+  | &= | |= | || | &&
+  | ! | == | != | <
+  | <= | > | >= | +
+  | - | * | / | %
+  | ** | $ | ++ | --
 
 ===Comments===
-Single-line comments begin with #.There are no multiple-line comments in the grammar.
+Single-line comments begin with #.Multiple-line comments are  enclosed with #< and >#.
 
 ==The syntactic structure of grammatica==
 Non-terminals are enclosed between < and >.
@@ -66,41 +66,40 @@ The symbols -> (production),  **|**  (union)
 and **eps** (empty rule) belong to the BNF notation.
 All other symbols are terminals.
 
-  | //Program// | -> | //[Decl]//
-  | //[Decl]// | -> | **eps**
-  |  |  **|**  | //Decl//
-  |  |  **|**  | //Decl// ``;`` //[Decl]//
-  | //Decl// | -> | ``def`` //Ident// ``:`` //Type// ``:=`` //RExpr//
-  |  |  **|**  | ``var`` //Ident// ``:`` //Type// ``:=`` //RExpr//
-  |  |  **|**  | ``def`` //Ident// ``(`` //[Parameter]// ``)`` ``:`` //Type// //Block//
+  | //SBlock// | -> | ``{`` //SBlock1// ``}``
+  | //SBlock1// | -> | //[Instruction]//
+  | //Instruction// | -> | //SStatement//
+  |  |  **|**  | //SDeclaration//
+  | //[Instruction]// | -> | **eps**
+  |  |  **|**  | //Instruction//
+  |  |  **|**  | //Instruction// ``;`` //[Instruction]//
+  | //SDeclaration// | -> | ``def`` //Ident// ``:`` //Type// ``:=`` //Expr//
+  |  |  **|**  | ``var`` //Ident// ``:`` //Type// ``:=`` //Expr//
+  |  |  **|**  | ``def`` //Ident// ``(`` //[Parameter]// ``)`` ``:`` //Type// //SBlock//
   | //[Parameter]// | -> | **eps**
   |  |  **|**  | //Parameter//
   |  |  **|**  | //Parameter// ``,`` //[Parameter]//
-  | //Parameter// | -> | //Ident// ``:`` //Type//
-  | //Type// | -> | //BasicType//
-  |  |  **|**  | //CompoundType//
-  | //BasicType// | -> | ``bool``
+  | //Parameter// | -> | //Modality// //Ident// ``:`` //Type//
+  | //Modality// | -> | **eps**
+  |  |  **|**  | ``val``
+  |  |  **|**  | ``ref``
+  | //Type// | -> | //SBasicType//
+  |  |  **|**  | ``[`` //Expr// ``]`` //Type//
+  |  |  **|**  | ``[`` ``]`` //Type//
+  |  |  **|**  | ``&`` //Type//
+  | //SBasicType// | -> | ``bool``
   |  |  **|**  | ``char``
   |  |  **|**  | ``int``
   |  |  **|**  | ``string``
   |  |  **|**  | ``float``
   |  |  **|**  | ``void``
-  | //Boolean// | -> | ``True``
-  |  |  **|**  | ``False``
-  | //CompoundType// | -> | ``[`` //RExpr// ``]`` //Type//
-  |  |  **|**  | ``[`` ``]`` //Type//
-  |  |  **|**  | ``&`` //Type//
-  | //Block// | -> | ``{`` //[Decl]// //[Statement]// ``}``
-  | //[Statement]// | -> | **eps**
-  |  |  **|**  | //Statement//
-  |  |  **|**  | //Statement// ``§`` //[Statement]//
-  | //Statement// | -> | //Block//
+  | //SStatement// | -> | //SBlock//
   |  |  **|**  | //FunCall//
-  |  |  **|**  | //JumpStatement//
-  |  |  **|**  | //IterStatement//
-  |  |  **|**  | //SelectionStatement//
-  |  |  **|**  | //LExpr// //Assignment_op// //RExpr//
-  |  |  **|**  | //Statement1//
+  |  |  **|**  | //JumpSStatement//
+  |  |  **|**  | //IterSStatement//
+  |  |  **|**  | //BranchSStatement//
+  |  |  **|**  | //Expr// //Assignment_op// //Expr//
+  |  |  **|**  | //SStatement1//
   | //Assignment_op// | -> | ``:=``
   |  |  **|**  | ``*=``
   |  |  **|**  | ``+=``
@@ -109,69 +108,66 @@ All other symbols are terminals.
   |  |  **|**  | ``^=``
   |  |  **|**  | ``&=``
   |  |  **|**  | ``|=``
-  | //JumpStatement// | -> | ``break``
+  | //JumpSStatement// | -> | ``break``
   |  |  **|**  | ``continue``
   |  |  **|**  | ``return``
-  |  |  **|**  | ``return`` ``(`` //RExpr// ``)``
-  | //SelectionStatement// | -> | ``if`` ``(`` //RExpr// ``)`` //Block//
-  |  |  **|**  | ``if`` ``(`` //RExpr// ``)`` //Block// ``else`` //Block//
-  | //IterStatement// | -> | ``while`` ``(`` //RExpr// ``)`` //Block//
-  | //RExpr// | -> | //RExpr1//
-  |  |  **|**  | //RExpr// ``||`` //RExpr1//
-  | //RExpr1// | -> | //RExpr2//
-  |  |  **|**  | //RExpr1// ``&&`` //RExpr2//
-  | //RExpr2// | -> | //RExpr3//
-  |  |  **|**  | ``!`` //RExpr3//
-  | //RExpr3// | -> | //RExpr4//
-  | //RExpr4// | -> | //RExpr5//
-  | //RExpr5// | -> | //RExpr6//
-  |  |  **|**  | //RExpr6// ``==`` //RExpr6//
-  |  |  **|**  | //RExpr6// ``!=`` //RExpr6//
-  |  |  **|**  | //RExpr6// ``<`` //RExpr6//
-  |  |  **|**  | //RExpr6// ``<=`` //RExpr6//
-  |  |  **|**  | //RExpr6// ``>`` //RExpr6//
-  |  |  **|**  | //RExpr6// ``>=`` //RExpr6//
-  | //RExpr6// | -> | //RExpr7//
-  | //RExpr7// | -> | //RExpr8//
-  |  |  **|**  | //RExpr7// ``+`` //RExpr8//
-  |  |  **|**  | //RExpr7// ``-`` //RExpr8//
-  | //RExpr8// | -> | //RExpr9//
-  |  |  **|**  | //RExpr8// ``*`` //RExpr9//
-  |  |  **|**  | //RExpr8// ``/`` //RExpr9//
-  |  |  **|**  | //RExpr8// ``%`` //RExpr9//
-  | //RExpr9// | -> | //RExpr10//
-  |  |  **|**  | //RExpr10// ``**`` //RExpr9//
-  | //RExpr10// | -> | //RExpr11//
-  | //RExpr11// | -> | //RExpr12//
-  |  |  **|**  | ``-`` //RExpr12//
-  |  |  **|**  | ``&`` //LExpr//
-  |  |  **|**  | //Statement1//
-  |  |  **|**  | //LExpr//
-  | //RExpr12// | -> | //RExpr13//
-  |  |  **|**  | //FunCall//
-  | //RExpr13// | -> | //RExpr14//
-  |  |  **|**  | //Integer//
+  |  |  **|**  | ``return`` //Expr//
+  | //BranchSStatement// | -> | ``if`` ``(`` //Expr// ``)`` //SBlock//
+  |  |  **|**  | ``if`` ``(`` //Expr// ``)`` //SBlock// ``else`` //SBlock//
+  | //IterSStatement// | -> | ``while`` ``(`` //Expr// ``)`` //SBlock//
+  | //Expr// | -> | //Expr// ``||`` //Expr1//
+  |  |  **|**  | //Expr1//
+  | //Expr1// | -> | //Expr1// ``&&`` //Expr2//
+  |  |  **|**  | //Expr2//
+  | //Expr2// | -> | ``!`` //Expr3//
+  |  |  **|**  | //Expr3//
+  | //Expr3// | -> | //Expr4// ``==`` //Expr4//
+  |  |  **|**  | //Expr4// ``!=`` //Expr4//
+  |  |  **|**  | //Expr4// ``<`` //Expr4//
+  |  |  **|**  | //Expr4// ``<=`` //Expr4//
+  |  |  **|**  | //Expr4// ``>`` //Expr4//
+  |  |  **|**  | //Expr4// ``>=`` //Expr4//
+  |  |  **|**  | //Expr4//
+  | //Expr4// | -> | //Expr4// ``+`` //Expr5//
+  |  |  **|**  | //Expr4// ``-`` //Expr5//
+  |  |  **|**  | //Expr5//
+  | //Expr5// | -> | //Expr5// ``*`` //Expr6//
+  |  |  **|**  | //Expr5// ``/`` //Expr6//
+  |  |  **|**  | //Expr5// ``%`` //Expr6//
+  |  |  **|**  | //Expr6//
+  | //Expr6// | -> | //Expr7// ``**`` //Expr6//
+  |  |  **|**  | //Expr7//
+  | //Expr7// | -> | ``-`` //Expr8//
+  |  |  **|**  | //Expr8//
+  | //Expr8// | -> | ``&`` //Expr8//
+  |  |  **|**  | ``$`` //Expr8//
+  |  |  **|**  | //Expr8// ``[`` //Expr// ``]``
+  |  |  **|**  | //Expr9//
+  | //Expr9// | -> | //Ident//
+  |  |  **|**  | //SStatement1//
+  |  |  **|**  | //Expr10//
+  | //Expr10// | -> | //FunCall//
+  |  |  **|**  | //Expr11//
+  | //Expr11// | -> | //Integer//
   |  |  **|**  | //Char//
   |  |  **|**  | //String//
   |  |  **|**  | //Double//
   |  |  **|**  | //Boolean//
-  | //RExpr14// | -> | ``(`` //RExpr// ``)``
-  |  |  **|**  | ``[`` //[RExpr13]// ``]``
-  | //[RExpr13]// | -> | **eps**
-  |  |  **|**  | //RExpr13//
-  |  |  **|**  | //RExpr13// ``,`` //[RExpr13]//
-  | //Statement1// | -> | ``++`` //BLExpr//
-  |  |  **|**  | ``--`` //BLExpr//
-  |  |  **|**  | //BLExpr// ``++``
-  |  |  **|**  | //BLExpr// ``--``
-  | //LExpr// | -> | ``$`` //RExpr//
-  |  |  **|**  | //BLExpr//
-  | //BLExpr// | -> | //BLExpr// ``[`` //RExpr// ``]``
-  |  |  **|**  | //Ident//
-  | //FunCall// | -> | //Ident// ``(`` //[RExpr]// ``)``
-  | //[RExpr]// | -> | **eps**
-  |  |  **|**  | //RExpr//
-  |  |  **|**  | //RExpr// ``,`` //[RExpr]//
+  |  |  **|**  | //Expr12//
+  | //Boolean// | -> | ``True``
+  |  |  **|**  | ``False``
+  | //Expr12// | -> | ``[`` //[Expr11]// ``]``
+  |  |  **|**  | ``(`` //Expr// ``)``
+  | //[Expr11]// | -> | //Expr11//
+  |  |  **|**  | //Expr11// ``,`` //[Expr11]//
+  | //SStatement1// | -> | ``++`` //Expr8//
+  |  |  **|**  | ``--`` //Expr8//
+  |  |  **|**  | //Expr8// ``++``
+  |  |  **|**  | //Expr8// ``--``
+  | //FunCall// | -> | //Ident// ``(`` //[Expr]// ``)``
+  | //[Expr]// | -> | **eps**
+  |  |  **|**  | //Expr//
+  |  |  **|**  | //Expr// ``,`` //[Expr]//
 
 
 

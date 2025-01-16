@@ -20,7 +20,7 @@ import Control.Monad      ( when )
 
 import Grammatica.Abs   ()
 import Grammatica.Lex   ( Token, mkPosToken )
-import Grammatica.Par   ( pSBlock1, myLexer )
+import Grammatica.Par   ( pSBlock, myLexer )
 import Grammatica.Print ( Print, printTree )
 import Grammatica.Skel  ()
 
@@ -70,7 +70,7 @@ main = do
   args <- getArgs
   case args of
     ["--help"] -> usage
-    []         -> getContents >>= run 2 pSBlock1
-    "-s":fs    -> mapM_ (runFile 0 pSBlock1) fs
-    fs         -> mapM_ (runFile 2 pSBlock1) fs
+    []         -> getContents >>= run 2 pSBlock
+    "-s":fs    -> mapM_ (runFile 0 pSBlock) fs
+    fs         -> mapM_ (runFile 2 pSBlock) fs
 

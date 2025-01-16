@@ -19,128 +19,123 @@ transIdent :: Grammatica.Abs.Ident -> Result
 transIdent x = case x of
   Grammatica.Abs.Ident string -> failure x
 
-transProgram :: Grammatica.Abs.Program -> Result
-transProgram x = case x of
-  Grammatica.Abs.Prog decls -> failure x
+transSBlock :: Grammatica.Abs.SBlock -> Result
+transSBlock x = case x of
+  Grammatica.Abs.Block instructions -> failure x
 
-transDecl :: Grammatica.Abs.Decl -> Result
-transDecl x = case x of
-  Grammatica.Abs.ConstDecl ident type_ rexpr -> failure x
-  Grammatica.Abs.VarDecl ident type_ rexpr -> failure x
-  Grammatica.Abs.FunDecl ident parameters type_ block -> failure x
+transInstruction :: Grammatica.Abs.Instruction -> Result
+transInstruction x = case x of
+  Grammatica.Abs.Statement sstatement -> failure x
+  Grammatica.Abs.Declaration sdeclaration -> failure x
+
+transSDeclaration :: Grammatica.Abs.SDeclaration -> Result
+transSDeclaration x = case x of
+  Grammatica.Abs.ConstDecl ident type_ expr -> failure x
+  Grammatica.Abs.VarDecl ident type_ expr -> failure x
+  Grammatica.Abs.FunDecl ident parameters type_ sblock -> failure x
 
 transParameter :: Grammatica.Abs.Parameter -> Result
 transParameter x = case x of
-  Grammatica.Abs.Param ident type_ -> failure x
+  Grammatica.Abs.Param modality ident type_ -> failure x
+
+transModality :: Grammatica.Abs.Modality -> Result
+transModality x = case x of
+  Grammatica.Abs.Modality1 -> failure x
+  Grammatica.Abs.Modality_val -> failure x
+  Grammatica.Abs.Modality_ref -> failure x
 
 transType :: Grammatica.Abs.Type -> Result
 transType x = case x of
-  Grammatica.Abs.BasType basictype -> failure x
-  Grammatica.Abs.CompType compoundtype -> failure x
-
-transBasicType :: Grammatica.Abs.BasicType -> Result
-transBasicType x = case x of
-  Grammatica.Abs.BasicType_bool -> failure x
-  Grammatica.Abs.BasicType_char -> failure x
-  Grammatica.Abs.BasicType_int -> failure x
-  Grammatica.Abs.BasicType_string -> failure x
-  Grammatica.Abs.BasicType_float -> failure x
-  Grammatica.Abs.BasicType_void -> failure x
-
-transBoolean :: Grammatica.Abs.Boolean -> Result
-transBoolean x = case x of
-  Grammatica.Abs.Boolean_True -> failure x
-  Grammatica.Abs.Boolean_False -> failure x
-
-transCompoundType :: Grammatica.Abs.CompoundType -> Result
-transCompoundType x = case x of
-  Grammatica.Abs.ArrDef rexpr type_ -> failure x
-  Grammatica.Abs.ArrPartialDef type_ -> failure x
+  Grammatica.Abs.BasicType sbasictype -> failure x
+  Grammatica.Abs.ArrayType expr type_ -> failure x
+  Grammatica.Abs.UnsizedArrayType type_ -> failure x
   Grammatica.Abs.Pointer type_ -> failure x
 
-transBlock :: Grammatica.Abs.Block -> Result
-transBlock x = case x of
-  Grammatica.Abs.BlockDecl decls statements -> failure x
+transSBasicType :: Grammatica.Abs.SBasicType -> Result
+transSBasicType x = case x of
+  Grammatica.Abs.SBasicType_bool -> failure x
+  Grammatica.Abs.SBasicType_char -> failure x
+  Grammatica.Abs.SBasicType_int -> failure x
+  Grammatica.Abs.SBasicType_string -> failure x
+  Grammatica.Abs.SBasicType_float -> failure x
+  Grammatica.Abs.SBasicType_void -> failure x
 
-transStatement :: Grammatica.Abs.Statement -> Result
-transStatement x = case x of
-  Grammatica.Abs.Comp block -> failure x
+transSStatement :: Grammatica.Abs.SStatement -> Result
+transSStatement x = case x of
+  Grammatica.Abs.Compound sblock -> failure x
   Grammatica.Abs.ProcCall funcall -> failure x
-  Grammatica.Abs.Jmp jumpstatement -> failure x
-  Grammatica.Abs.Iter iterstatement -> failure x
-  Grammatica.Abs.Sel selectionstatement -> failure x
-  Grammatica.Abs.Assgn lexpr assignmentop rexpr -> failure x
-  Grammatica.Abs.PreInc blexpr -> failure x
-  Grammatica.Abs.PreDecr blexpr -> failure x
-  Grammatica.Abs.PostInc blexpr -> failure x
-  Grammatica.Abs.PostDecr blexpr -> failure x
+  Grammatica.Abs.Jump jumpsstatement -> failure x
+  Grammatica.Abs.Iter itersstatement -> failure x
+  Grammatica.Abs.Branch branchsstatement -> failure x
+  Grammatica.Abs.Assign expr1 assignmentop expr2 -> failure x
+  Grammatica.Abs.PreInc expr -> failure x
+  Grammatica.Abs.PreDecr expr -> failure x
+  Grammatica.Abs.PostInc expr -> failure x
+  Grammatica.Abs.PostDecr expr -> failure x
 
 transAssignment_op :: Grammatica.Abs.Assignment_op -> Result
 transAssignment_op x = case x of
-  Grammatica.Abs.Assign -> failure x
-  Grammatica.Abs.AssgnMul -> failure x
-  Grammatica.Abs.AssgnAdd -> failure x
-  Grammatica.Abs.AssgnDiv -> failure x
-  Grammatica.Abs.AssgnSub -> failure x
-  Grammatica.Abs.AssgnPow -> failure x
-  Grammatica.Abs.AssgnAnd -> failure x
-  Grammatica.Abs.AssgnOr -> failure x
+  Grammatica.Abs.AssignOp -> failure x
+  Grammatica.Abs.AssignMul -> failure x
+  Grammatica.Abs.AssignAdd -> failure x
+  Grammatica.Abs.AssignDiv -> failure x
+  Grammatica.Abs.AssignSub -> failure x
+  Grammatica.Abs.AssignPow -> failure x
+  Grammatica.Abs.AssignAnd -> failure x
+  Grammatica.Abs.AssignOr -> failure x
 
-transJumpStatement :: Grammatica.Abs.JumpStatement -> Result
-transJumpStatement x = case x of
+transJumpSStatement :: Grammatica.Abs.JumpSStatement -> Result
+transJumpSStatement x = case x of
   Grammatica.Abs.Break -> failure x
   Grammatica.Abs.Continue -> failure x
   Grammatica.Abs.RetExpVoid -> failure x
-  Grammatica.Abs.RetExp rexpr -> failure x
+  Grammatica.Abs.RetExp expr -> failure x
 
-transSelectionStatement :: Grammatica.Abs.SelectionStatement -> Result
-transSelectionStatement x = case x of
-  Grammatica.Abs.IfNoElse rexpr block -> failure x
-  Grammatica.Abs.IfElse rexpr block1 block2 -> failure x
+transBranchSStatement :: Grammatica.Abs.BranchSStatement -> Result
+transBranchSStatement x = case x of
+  Grammatica.Abs.IfNoElse expr sblock -> failure x
+  Grammatica.Abs.IfElse expr sblock1 sblock2 -> failure x
 
-transIterStatement :: Grammatica.Abs.IterStatement -> Result
-transIterStatement x = case x of
-  Grammatica.Abs.While rexpr block -> failure x
+transIterSStatement :: Grammatica.Abs.IterSStatement -> Result
+transIterSStatement x = case x of
+  Grammatica.Abs.While expr sblock -> failure x
 
-transRExpr :: Grammatica.Abs.RExpr -> Result
-transRExpr x = case x of
-  Grammatica.Abs.Or rexpr1 rexpr2 -> failure x
-  Grammatica.Abs.And rexpr1 rexpr2 -> failure x
-  Grammatica.Abs.Not rexpr -> failure x
-  Grammatica.Abs.Eq rexpr1 rexpr2 -> failure x
-  Grammatica.Abs.Neq rexpr1 rexpr2 -> failure x
-  Grammatica.Abs.Lt rexpr1 rexpr2 -> failure x
-  Grammatica.Abs.LtE rexpr1 rexpr2 -> failure x
-  Grammatica.Abs.Gt rexpr1 rexpr2 -> failure x
-  Grammatica.Abs.GtE rexpr1 rexpr2 -> failure x
-  Grammatica.Abs.Add rexpr1 rexpr2 -> failure x
-  Grammatica.Abs.Sub rexpr1 rexpr2 -> failure x
-  Grammatica.Abs.Mul rexpr1 rexpr2 -> failure x
-  Grammatica.Abs.Div rexpr1 rexpr2 -> failure x
-  Grammatica.Abs.Mod rexpr1 rexpr2 -> failure x
-  Grammatica.Abs.Pow rexpr1 rexpr2 -> failure x
-  Grammatica.Abs.Neg rexpr -> failure x
-  Grammatica.Abs.Ref lexpr -> failure x
-  Grammatica.Abs.Increment statement -> failure x
-  Grammatica.Abs.Lexpr lexpr -> failure x
+transExpr :: Grammatica.Abs.Expr -> Result
+transExpr x = case x of
+  Grammatica.Abs.Or expr1 expr2 -> failure x
+  Grammatica.Abs.And expr1 expr2 -> failure x
+  Grammatica.Abs.Not expr -> failure x
+  Grammatica.Abs.Eq expr1 expr2 -> failure x
+  Grammatica.Abs.Neq expr1 expr2 -> failure x
+  Grammatica.Abs.Lt expr1 expr2 -> failure x
+  Grammatica.Abs.LtE expr1 expr2 -> failure x
+  Grammatica.Abs.Gt expr1 expr2 -> failure x
+  Grammatica.Abs.GtE expr1 expr2 -> failure x
+  Grammatica.Abs.Add expr1 expr2 -> failure x
+  Grammatica.Abs.Sub expr1 expr2 -> failure x
+  Grammatica.Abs.Mul expr1 expr2 -> failure x
+  Grammatica.Abs.Div expr1 expr2 -> failure x
+  Grammatica.Abs.Mod expr1 expr2 -> failure x
+  Grammatica.Abs.Pow expr1 expr2 -> failure x
+  Grammatica.Abs.Neg expr -> failure x
+  Grammatica.Abs.Ref expr -> failure x
+  Grammatica.Abs.Deref expr -> failure x
+  Grammatica.Abs.ArrayAcc expr1 expr2 -> failure x
+  Grammatica.Abs.Id ident -> failure x
+  Grammatica.Abs.ExpAssign sstatement -> failure x
   Grammatica.Abs.FCall funcall -> failure x
   Grammatica.Abs.Int integer -> failure x
   Grammatica.Abs.Char char -> failure x
   Grammatica.Abs.String string -> failure x
   Grammatica.Abs.Float double -> failure x
   Grammatica.Abs.Bool boolean -> failure x
-  Grammatica.Abs.Array rexprs -> failure x
+  Grammatica.Abs.Array exprs -> failure x
 
-transLExpr :: Grammatica.Abs.LExpr -> Result
-transLExpr x = case x of
-  Grammatica.Abs.Deref rexpr -> failure x
-  Grammatica.Abs.BasLExpr blexpr -> failure x
-
-transBLExpr :: Grammatica.Abs.BLExpr -> Result
-transBLExpr x = case x of
-  Grammatica.Abs.ArrayEl blexpr rexpr -> failure x
-  Grammatica.Abs.Id ident -> failure x
+transBoolean :: Grammatica.Abs.Boolean -> Result
+transBoolean x = case x of
+  Grammatica.Abs.Boolean_True -> failure x
+  Grammatica.Abs.Boolean_False -> failure x
 
 transFunCall :: Grammatica.Abs.FunCall -> Result
 transFunCall x = case x of
-  Grammatica.Abs.Call ident rexprs -> failure x
+  Grammatica.Abs.Call ident exprs -> failure x
