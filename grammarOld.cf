@@ -85,13 +85,14 @@ Pow.        Expr6 ::= Expr7 "**" Expr6 ;
 
 Neg.        Expr7 ::= "-" Expr8 ;
 
-ExpAssign.  Expr8 ::= SStatement1 ;
+Ref.        Expr8 ::= "&" Expr8 ;
+Deref.      Expr8 ::= "$" Expr8 ;
 
-Ref.        Expr9 ::= "&" Expr9 ;
-Deref.      Expr9 ::= "$" Expr9 ;
-ArrayAcc.   Expr9 ::= Expr9 "[" Expr "]";
+ArrayAcc.   Expr8 ::= Expr8 "[" Expr "]";
 
-Id.         Expr10 ::= Ident ;
+Id.         Expr9 ::= Ident ;
+ExpAssign.  Expr9 ::= SStatement1 ;
+
 FCall.      Expr10 ::= FunCall ;
 
 Int.        Expr11 ::= Integer ;
@@ -102,6 +103,7 @@ Float.      Expr11 ::= Double ;
 Bool.       Expr11 ::= Boolean ;
 rules Boolean ::= "True" | "False" ;
 
+
 Array.        Expr12 ::= "[" [Expr11] "]" ;
 separator nonempty Expr11 "," ;
 RangedArray.  Expr12 ::= "[" Expr11 "..." Expr11 "]" ;
@@ -109,10 +111,10 @@ RangedArray.  Expr12 ::= "[" Expr11 "..." Expr11 "]" ;
 coercions Expr 12 ;
 
 -- increment handling
-PreInc.     SStatement1 ::= "++" Expr9 ;
-PreDecr.    SStatement1 ::= "--" Expr9 ;
-PostInc.    SStatement1 ::= Expr9 "++" ;
-PostDecr.   SStatement1 ::= Expr9 "--" ;
+PreInc.     SStatement1 ::= "++" Expr8 ;
+PreDecr.    SStatement1 ::= "--" Expr8 ;
+PostInc.    SStatement1 ::= Expr8 "++" ;
+PostDecr.   SStatement1 ::= Expr8 "--" ;
 
 Call.       FunCall ::= Ident "(" [Expr] ")" ;
 separator   Expr "," ;
