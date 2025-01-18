@@ -2,7 +2,10 @@
 
 # Makefile for building the parser and test program.
 
+BUILD      = build
+CODEGEN    = Parser
 GHC        = ghc
+GHC_OPTS   = -outputdir ${BUILD}
 HAPPY      = happy
 HAPPY_OPTS = --array --info --ghc --coerce
 ALEX       = alex
@@ -10,33 +13,45 @@ ALEX_OPTS  = --ghc
 
 # List of goals not corresponding to file names.
 
-.PHONY : all clean distclean
+.PHONY : all clean distclean test parser lexer buildDir
 
 # Default goal.
 
-all : Grammar/Test
+all : ${BUILD}/Test
 
-# Rules for building the parser.
+# Rules for building
 
-Grammar/Abs.hs Grammar/Lex.x Grammar/Par.y Grammar/Print.hs Grammar/Test.hs : grammar.cf
-	bnfc --haskell -d grammar.cf
+lexer : ${CODEGEN}/Lex.hs
 
-%.hs : %.y
+parser : lexer ${CODEGEN}/Par.hs
+
+test : ${BUILD}/Test
+
+buildDir :
+	mkdir -p ${BUILD}
+
+${CODEGEN}/Lex.x ${CODEGEN}/Par.y ${CODEGEN}/Abs.hs ${CODEGEN}/Print.hs ${CODEGEN}/Test.hs : grammar.cf
+	mkdir -p ${CODEGEN}
+	cp -p grammar.cf ${CODEGEN}/Parser.cf
+	bnfc --haskell -d ${CODEGEN}/Parser.cf
+
+${CODEGEN}/%.hs : ${CODEGEN}/%.y
 	${HAPPY} ${HAPPY_OPTS} $<
 
-%.hs : %.x
+${CODEGEN}/%.hs : ${CODEGEN}/%.x
 	${ALEX} ${ALEX_OPTS} $<
 
-Grammar/Test : Grammar/Abs.hs Grammar/Lex.hs Grammar/Par.hs Grammar/Print.hs Grammar/Test.hs
-	${GHC} ${GHC_OPTS} $@
+${BUILD}/Test : buildDir parser ${CODEGEN}/Abs.hs ${CODEGEN}/Print.hs ${CODEGEN}/Test.hs
+	${GHC} ${GHC_OPTS} ${CODEGEN}/Test.hs -o $@
 
 # Rules for cleaning generated files.
 
 clean :
-	-rm -f Grammar/*.hi Grammar/*.o Grammar/*.log Grammar/*.aux Grammar/*.dvi
+	rm -rf ${BUILD}
 
 distclean : clean
-	-rm -f Grammar/Abs.hs Grammar/Abs.hs.bak Grammar/ComposOp.hs Grammar/ComposOp.hs.bak Grammar/Doc.txt Grammar/Doc.txt.bak Grammar/ErrM.hs Grammar/ErrM.hs.bak Grammar/Layout.hs Grammar/Layout.hs.bak Grammar/Lex.x Grammar/Lex.x.bak Grammar/Par.y Grammar/Par.y.bak Grammar/Print.hs Grammar/Print.hs.bak Grammar/Skel.hs Grammar/Skel.hs.bak Grammar/Test.hs Grammar/Test.hs.bak Grammar/XML.hs Grammar/XML.hs.bak Grammar/AST.agda Grammar/AST.agda.bak Grammar/Parser.agda Grammar/Parser.agda.bak Grammar/IOLib.agda Grammar/IOLib.agda.bak Grammar/Main.agda Grammar/Main.agda.bak Grammar/grammar.dtd Grammar/grammar.dtd.bak Grammar/Test Grammar/Lex.hs Grammar/Par.hs Grammar/Par.info Grammar/ParData.hs Makefile
-	-rmdir -p Grammar/
+# -rm -f parser/Abs.hs parser/Abs.hs.bak parser/ComposOp.hs parser/ComposOp.hs.bak parser/Doc.txt parser/Doc.txt.bak parser/ErrM.hs parser/ErrM.hs.bak parser/Layout.hs parser/Layout.hs.bak parser/Lex.x parser/Lex.x.bak parser/Par.y parser/Par.y.bak parser/Print.hs parser/Print.hs.bak parser/Skel.hs parser/Skel.hs.bak parser/Test.hs parser/Test.hs.bak parser/XML.hs parser/XML.hs.bak parser/AST.agda parser/AST.agda.bak parser/Parser.agda parser/Parser.agda.bak parser/IOLib.agda parser/IOLib.agda.bak parser/Main.agda parser/Main.agda.bak parser/grammatica.dtd parser/grammatica.dtd.bak parser/Test parser/Lex.hs parser/Par.hs parser/Par.info parser/ParData.hs Makefile
+# ${RM} ${CODEGEN}/*.log ${CODEGEN}/*.aux ${CODEGEN}/*.dvi
+	rm -rf ${CODEGEN}
 
 # EOF
