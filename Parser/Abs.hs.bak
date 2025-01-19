@@ -123,7 +123,7 @@ data Expr' a
     | Deref a (Expr' a)
     | ArrayAcc a (Expr' a) (Expr' a)
     | Id a Ident
-    | FunCall a Ident [Expr' a]
+    | FCall a (FunCall' a)
     | Int a Integer
     | Char a Char
     | String a String
@@ -135,6 +135,10 @@ data Expr' a
 
 type Boolean = Boolean' BNFC'Position
 data Boolean' a = Boolean_True a | Boolean_False a
+  deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
+
+type FunCall = FunCall' BNFC'Position
+data FunCall' a = Call a Ident [Expr' a]
   deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
 
 newtype Ident = Ident String
@@ -258,7 +262,7 @@ instance HasPosition Expr where
     Deref p _ -> p
     ArrayAcc p _ _ -> p
     Id p _ -> p
-    FunCall p _ _ -> p
+    FCall p _ -> p
     Int p _ -> p
     Char p _ -> p
     String p _ -> p
@@ -271,4 +275,8 @@ instance HasPosition Boolean where
   hasPosition = \case
     Boolean_True p -> p
     Boolean_False p -> p
+
+instance HasPosition FunCall where
+  hasPosition = \case
+    Call p _ _ -> p
 

@@ -20,7 +20,7 @@ import Control.Monad      ( when )
 
 import Parser.Abs   ()
 import Parser.Lex   ( Token, mkPosToken )
-import Parser.Par   ( pBlock1, myLexer )
+import Parser.Par   ( pSBlock1, myLexer )
 import Parser.Print ( Print, printTree )
 import Parser.Skel  ()
 
@@ -70,7 +70,7 @@ main = do
   args <- getArgs
   case args of
     ["--help"] -> usage
-    []         -> getContents >>= run 2 pBlock1
-    "-s":fs    -> mapM_ (runFile 0 pBlock1) fs
-    fs         -> mapM_ (runFile 2 pBlock1) fs
+    []         -> getContents >>= run 2 pSBlock1
+    "-s":fs    -> mapM_ (runFile 0 pSBlock1) fs
+    fs         -> mapM_ (runFile 2 pSBlock1) fs
 

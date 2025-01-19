@@ -1,3 +1,13 @@
+if(x){
+    if(x){
+}else{
+    };
+};
+
+if(x){
+    if(x){}else{};
+};
+
 #x:=[[0],0][[0]][0][0]
 
 #x:=v[[0]]
@@ -22,10 +32,3 @@ x:=(++v)[x]
 #0:=[1,2,3][1];
 #0:=f()[1];
 
-
-#state 64 contains 1 reduce/reduce conflicts.
-#state 66 contains 2 shift/reduce conflicts.
-#state 68 contains 2 shift/reduce conflicts.
-#state 70 contains 2 shift/reduce conflicts.
-#state 71 contains 2 shift/reduce conflicts.
-#state 146 contains 2 shift/reduce conflicts.

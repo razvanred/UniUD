@@ -32,8 +32,8 @@ buildDir :
 
 ${CODEGEN}/Lex.x ${CODEGEN}/Par.y ${CODEGEN}/Abs.hs ${CODEGEN}/Print.hs ${CODEGEN}/Test.hs : grammar.cf
 	mkdir -p ${CODEGEN}
-	cp -p grammar.cf ${CODEGEN}/Parser.cf
-	bnfc --haskell -d ${CODEGEN}/Parser.cf
+	cp grammar.cf ${CODEGEN}/Parser.cf
+	bnfc --haskell --functor -d ${CODEGEN}/Parser.cf
 
 ${CODEGEN}/%.hs : ${CODEGEN}/%.y
 	${HAPPY} ${HAPPY_OPTS} $<

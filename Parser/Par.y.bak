@@ -260,14 +260,8 @@ Expr9
 Expr10 :: { (Parser.Abs.BNFC'Position, Parser.Abs.Expr) }
 Expr10
   : Ident { (fst $1, Parser.Abs.Id (fst $1) (snd $1)) }
-  | Ident '(' ListExpr ')' { (fst $1, Parser.Abs.FunCall (fst $1) (snd $1) (snd $3)) }
+  | FunCall { (fst $1, Parser.Abs.FCall (fst $1) (snd $1)) }
   | Expr11 { (fst $1, (snd $1)) }
-
-ListExpr :: { (Parser.Abs.BNFC'Position, [Parser.Abs.Expr]) }
-ListExpr
-  : {- empty -} { (Parser.Abs.BNFC'NoPosition, []) }
-  | Expr { (fst $1, (:[]) (snd $1)) }
-  | Expr ',' ListExpr { (fst $1, (:) (snd $1) (snd $3)) }
 
 Expr11 :: { (Parser.Abs.BNFC'Position, Parser.Abs.Expr) }
 Expr11
@@ -293,6 +287,16 @@ ListExpr4 :: { (Parser.Abs.BNFC'Position, [Parser.Abs.Expr]) }
 ListExpr4
   : Expr4 { (fst $1, (:[]) (snd $1)) }
   | Expr4 ',' ListExpr4 { (fst $1, (:) (snd $1) (snd $3)) }
+
+FunCall :: { (Parser.Abs.BNFC'Position, Parser.Abs.FunCall) }
+FunCall
+  : Ident '(' ListExpr ')' { (fst $1, Parser.Abs.Call (fst $1) (snd $1) (snd $3)) }
+
+ListExpr :: { (Parser.Abs.BNFC'Position, [Parser.Abs.Expr]) }
+ListExpr
+  : {- empty -} { (Parser.Abs.BNFC'NoPosition, []) }
+  | Expr { (fst $1, (:[]) (snd $1)) }
+  | Expr ',' ListExpr { (fst $1, (:) (snd $1) (snd $3)) }
 
 {
 

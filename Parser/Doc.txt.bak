@@ -149,11 +149,8 @@ All other symbols are terminals.
   |  |  **|**  | //Expr9// ``[`` //Expr// ``]``
   |  |  **|**  | //Expr10//
   | //Expr10// | -> | //Ident//
-  |  |  **|**  | //Ident// ``(`` //[Expr]// ``)``
+  |  |  **|**  | //FunCall//
   |  |  **|**  | //Expr11//
-  | //[Expr]// | -> | **eps**
-  |  |  **|**  | //Expr//
-  |  |  **|**  | //Expr// ``,`` //[Expr]//
   | //Expr11// | -> | //Integer//
   |  |  **|**  | //Char//
   |  |  **|**  | //String//
@@ -167,6 +164,10 @@ All other symbols are terminals.
   |  |  **|**  | ``(`` //Expr// ``)``
   | //[Expr4]// | -> | //Expr4//
   |  |  **|**  | //Expr4// ``,`` //[Expr4]//
+  | //FunCall// | -> | //Ident// ``(`` //[Expr]// ``)``
+  | //[Expr]// | -> | **eps**
+  |  |  **|**  | //Expr//
+  |  |  **|**  | //Expr// ``,`` //[Expr]//
 
 
 
