@@ -31,9 +31,9 @@ buildDir :
 	mkdir -p ${BUILD}
 
 ${CODEGEN}/Lex.x ${CODEGEN}/Par.y ${CODEGEN}/Abs.hs ${CODEGEN}/Print.hs ${CODEGEN}/Test.hs : grammar.cf
-	mkdir -p ${CODEGEN}
 	cp grammar.cf ${CODEGEN}/Parser.cf
 	bnfc --haskell --functor -d ${CODEGEN}/Parser.cf
+	rm ${CODEGEN}/*.bak
 
 ${CODEGEN}/%.hs : ${CODEGEN}/%.y
 	${HAPPY} ${HAPPY_OPTS} $<
@@ -52,6 +52,6 @@ clean :
 distclean : clean
 # -rm -f parser/Abs.hs parser/Abs.hs.bak parser/ComposOp.hs parser/ComposOp.hs.bak parser/Doc.txt parser/Doc.txt.bak parser/ErrM.hs parser/ErrM.hs.bak parser/Layout.hs parser/Layout.hs.bak parser/Lex.x parser/Lex.x.bak parser/Par.y parser/Par.y.bak parser/Print.hs parser/Print.hs.bak parser/Skel.hs parser/Skel.hs.bak parser/Test.hs parser/Test.hs.bak parser/XML.hs parser/XML.hs.bak parser/AST.agda parser/AST.agda.bak parser/Parser.agda parser/Parser.agda.bak parser/IOLib.agda parser/IOLib.agda.bak parser/Main.agda parser/Main.agda.bak parser/grammatica.dtd parser/grammatica.dtd.bak parser/Test parser/Lex.hs parser/Par.hs parser/Par.info parser/ParData.hs Makefile
 # ${RM} ${CODEGEN}/*.log ${CODEGEN}/*.aux ${CODEGEN}/*.dvi
-	rm -rf ${CODEGEN}
+	find ${CODEGEN} -maxdepth 1 -type f ! \( -name 'ASTBuilder.hs' \) -delete
 
 # EOF

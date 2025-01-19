@@ -85,7 +85,6 @@ Pow.        Expr6 ::= Expr7 "**" Expr6 ;
 
 Neg.        Expr7 ::= "-" Expr8 ;
 
--- ExpAssign.  Expr8 ::= Statement1 ;
 -- increment handling
 PreInc.     Expr8 ::= "++" Expr9 ;
 PreDecr.    Expr8 ::= "--" Expr9 ;
@@ -102,7 +101,7 @@ separator   Expr "," ;
 
 Int.        Expr11 ::= Integer ;
 Char.       Expr11 ::= Char ;
--- NumChar.    Expr11 ::= Integer 'f' <-- da Lexer
+-- NumChar. Expr11 ::= Integer 'c' <-- da Lexer
 String.     Expr11 ::= String ;
 Float.      Expr11 ::= Double ;
 Bool.       Expr11 ::= Boolean ;
@@ -113,6 +112,3 @@ separator nonempty Expr4 "," ;
 RangedArray.  Expr12 ::= "[" Expr4 "..." Expr4 "]" ;
 
 coercions Expr 12 ;
-
--- Call.       FunCall ::= Ident "(" [Expr] ")" ;
--- separator   Expr "," ;
