@@ -14,8 +14,8 @@ data Block a = Block Position [Instruction a] a
     deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data Instruction a
-    = Statement Position (Statement a) a
-    | Declaration Position (Declaration a) a
+    = Statement  (Statement a) a
+    | Declaration  (Declaration a) a
     deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data Declaration a

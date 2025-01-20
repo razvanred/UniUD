@@ -19,8 +19,8 @@ buildBlock :: Parser.Abs.Block -> a -> Block a
 buildBlock (Parser.Abs.Blck position instructions) x = AST.Block position (flip buildInstruction x <$> instructions) x
 
 buildInstruction :: Parser.Abs.Instruction -> a -> Instruction a
-buildInstruction (Parser.Abs.Stmt position statement) = pass1 (Statement position) (buildStatement statement)
-buildInstruction (Parser.Abs.Decl position declaration) = pass1 (Declaration position) (buildDeclaration declaration)
+buildInstruction (Parser.Abs.Stmt position statement) = pass1 Statement  (buildStatement statement)
+buildInstruction (Parser.Abs.Decl position declaration) = pass1 Declaration  (buildDeclaration declaration)
 
 buildStatement :: Parser.Abs.Statement -> a -> Statement a
 buildStatement (Parser.Abs.Jump _ jumpstatement) = buildJumpStatement jumpstatement

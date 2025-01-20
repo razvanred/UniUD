@@ -1,7 +1,7 @@
 
 # hello
 
-def a:int:=5;
+var a:int:=5;
 
 a:=5;
 
