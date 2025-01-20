@@ -9,38 +9,26 @@
 module AST where
 
 import Data.String qualified
-import Prelude (Bool, Char, Double, Integer, String)
-import Prelude qualified as C (
-    Eq,
-    Foldable,
-    Functor,
-    Int,
-    Maybe (..),
-    Ord,
-    Read,
-    Show,
-    Traversable,
- )
 
-data Block a = Block Position a [Instruction a]
-    deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
+data Block a = Block Position [Instruction a] a
+    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data Instruction a
-    = Statement Position a (Statement a)
-    | Declaration Position a (Declaration a)
-    deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
+    = Statement Position (Statement a) a
+    | Declaration Position (Declaration a) a
+    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data Declaration a
-    = ConstantDecl Position a Ident (Expr a)
-    | VariableDecl Position a Ident (Type a) (Expr a)
-    | FunctionDecl Position a Ident [Parameter a] (Type a) (Block a)
-    deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
+    = ConstantDecl Position Ident (Expr a) a
+    | VariableDecl Position Ident (Type a) (Expr a) a
+    | FunctionDecl Position Ident [Parameter a] (Type a) (Block a) a
+    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
-data Parameter a = Param a Modality Ident (Type a)
-    deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
+data Parameter a = Param Modality Ident (Type a) a
+    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data Modality = DefaultByValue | ModalityVal | ModalityRef
-    deriving (C.Eq, C.Ord, C.Show, C.Read)
+    deriving (Eq, Ord, Show, Read)
 
 data Type a
     = ErrorType String
@@ -50,54 +38,50 @@ data Type a
     | StringType
     | FloatType
     | VoidType
-    | ArrayType (C.Maybe (Expr a)) (Type a)
+    | ArrayType (Maybe (Expr a)) (Type a)
     | Pointer (Type a)
-    --    | ArrayType Position a (Expr a) (Type a)
-    --    | UnsizedArrayType Position a (Type a)
-    deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
+    --    | ArrayType Position (Expr a) (Type a) a
+    --    | UnsizedArrayType Position (Type a) a
+    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data Statement a
-    = NestedBlock Position a (Block a)
-    | -- | FunCall Position a Ident [Expr a]
-      Break Position a
+    = NestedBlock (Block a) a
+    | Break Position a
     | Continue Position a
     | ReturnVoid Position a
-    | ReturnExp Position a (Expr a)
-    | While Position a (Expr a) (Block a)
-    | IfThen Position a (Expr a) (Block a)
-    | IfThenElse Position a (Expr a) (Block a) (Block a)
-    | Assignment Position a (Expr a) AssignmentOp (Expr a)
-    | Expression Position a (Expr a)
-    deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
-
--- \| IncrDecr Position a UnaryOp (Expr a)
---  | IncDec Position a (IncDec a)
+    | ReturnExp Position (Expr a) a
+    | While Position (Expr a) (Block a) a
+    | IfThen Position (Expr a) (Block a) a
+    | IfThenElse Position (Expr a) (Block a) (Block a) a
+    | Assignment Position (Expr a) AssignmentOp (Expr a) a
+    | Expression Position (Expr a) a
+    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data AssignmentOp = BasicAssignment | AssignMul | AssignAdd | AssignDiv | AssignSub | AssignPow | AssignAnd | AssignOr
-    deriving (C.Eq, C.Ord, C.Show, C.Read)
+    deriving (Eq, Ord, Show, Read)
 
 data ArithOp = Add | Sub | Mul | Mod | Pow | Div
-    deriving (C.Show, C.Eq, C.Ord, C.Read)
+    deriving (Show, Eq, Ord, Read)
 
 data BoolOp = Or | And
-    deriving (C.Show, C.Eq, C.Ord, C.Read)
+    deriving (Show, Eq, Ord, Read)
 
 data RelOp = NotEq | GreaterThanEq | GreaterThan | LessThanEq | LessThan | Eq
-    deriving (C.Show, C.Eq, C.Ord, C.Read)
+    deriving (Show, Eq, Ord, Read)
 
 data BasicLiteral a
-    = IntLiteral a Integer
-    | CharLiteral a Char
-    | StringLiteral a String
-    | FloatLiteral a Double
-    | BoolLiteral a Bool
-    deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
+    = IntLiteral Integer a
+    | CharLiteral Char a
+    | StringLiteral String a
+    | FloatLiteral Double a
+    | BoolLiteral Bool a
+    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data BinaryOp
     = ArithmeticOp ArithOp
     | RelationalOp RelOp
     | BooleanOp BoolOp
-    deriving (C.Show, C.Eq, C.Ord, C.Read)
+    deriving (Show, Eq, Ord, Read)
 
 data UnaryOp
     = Not
@@ -107,39 +91,30 @@ data UnaryOp
     | PreIncr
     | PostDecr
     | PostIncr
-    deriving (C.Show, C.Eq, C.Ord, C.Read)
-
--- data IncDec a
---    = PreIncr a (Expr a)
---    | PreDecr a (Expr a)
---    | PostIncr a (Expr a)
---    | PostDecr a (Expr a)
---     deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
+    deriving (Show, Eq, Ord, Read)
 
 data Expr a
-    = UnaryOp Position a UnaryOp (Expr a)
-    | BinaryOp Position a BinaryOp (Expr a) (Expr a)
-    | --    | IncDecExpr Position a (IncDec a)
-      Ref Position a (Expr a)
-    | Deref Position a (Expr a)
-    | ArrayAcc Position a (Expr a) (Expr a) -- to be CHecked!!!
-    | Id Position a Ident
-    | FunctionCall Position a Ident [Expr a]
-    | BasicLiteral Position a (BasicLiteral a)
-    | ArrayLiteral Position a [Expr a]
-    | RangedArray Position a (Expr a) (Expr a)
-    deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
+    = UnaryOp Position UnaryOp (Expr a) a
+    | BinaryOp Position BinaryOp (Expr a) (Expr a) a
+    | Ref Position (Expr a) a
+    | Deref Position (Expr a) a
+    | ArrayAcc Position (Expr a) (Expr a) a -- to be checked!!!
+    | Id Position Ident a
+    | FunctionCall Position Ident [Expr a] a
+    | BasicLiteral Position (BasicLiteral a) a
+    | ArrayLiteral Position [Expr a] a
+    | RangedArray Position (Expr a) (Expr a) a
+    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 newtype Ident = Ident String
-    deriving (C.Eq, C.Ord, C.Show, C.Read, Data.String.IsString)
+    deriving (Eq, Ord, Show, Read, Data.String.IsString)
 
 -- | Start position (line, column) of something.
-type Position = C.Maybe (C.Int, C.Int)
+type Position = Maybe (Int, Int)
 
 pattern NoPosition :: Position
-pattern NoPosition = C.Nothing
-
-pattern Position :: C.Int -> C.Int -> Position
-pattern Position line col = C.Just (line, col)
+pattern NoPosition = Nothing
 
 -- | Get the start position of something.
+pattern Position :: Int -> Int -> Position
+pattern Position line col = Just (line, col)
