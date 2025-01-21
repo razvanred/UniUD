@@ -1,12 +1,9 @@
-import AST2
-import Debug.Trace
-import Parser.ASTBuilder2
-import Parser.Par (myLexer, pBlock1)
-import TypeChecker.ConstantSolver qualified
-
--- import TypeChecker.ConstantSolver
+import AST
 import ConstantSolving.Solver
-import ConstantSolving.Solver qualified as TypeChecker
+import Debug.Trace
+import Parser.ASTBuilder
+import Parser.Par (myLexer, pBlock1)
+import TypeChecker.ConstantSolver qualified as ConstantSolver
 
 -- parse x = case pBlock1 (myLexer x) of
 --     Left _ -> show "error"
@@ -17,6 +14,6 @@ f x = do
     let t = buildBlock pt (Parse ())
     traceM $ show t
     traceM "---"
-    traceM $ show $ TypeChecker.ConstantSolver.resolveConstants 5 t
+    traceM $ show $ ConstantSolver.resolveConstants 5 t
     traceM "~~~"
     traceM $ show $ resolveConstants t

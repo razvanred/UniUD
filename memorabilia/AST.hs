@@ -6,15 +6,14 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 
 -- | The abstract syntax of language Parser.
-module AST2 where
+module AST where
 
 import Data.Map.Strict qualified as Map
 import Data.String qualified
 
 data ASTData
     = Parse ()
-    | ResolveConstants {replacedFromConstant :: Maybe (Instruction ())}
-    deriving (Eq, Ord, Show, Read)
+    | ResolveConstants {replacedFromConstant :: Maybe (Declaration ())}
 
 --  | TypeChecker {t::, errors::[String]}
 
@@ -30,8 +29,29 @@ data Type
     | PointerFType Type
     | FunctionFType [(Modality, Type)] Type
 
+data Block a = Block Position [Instruction a] a
+    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
+
+data Instruction a
+    = Statement (Statement a) a
+    | Declaration (Declaration a) a
+    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
+
+data Declaration a
+    = ConstantDecl Position Ident (Expr a) a
+    | VariableDecl Position Ident (DeclType a) (Expr a) a
+    | FunctionDecl Position Ident [Parameter a] (DeclType a) (Block a) a
+    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
+
+data Parameter a = Param Modality Ident (DeclType a) a
+    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
+
+data Modality = DefaultByValue | ModalityVal | ModalityRef
+    deriving (Eq, Ord, Show, Read)
+
 data DeclType a
-    = BoolType
+    = ErrorType String
+    | BoolType
     | CharType
     | IntType
     | StringType
@@ -39,16 +59,12 @@ data DeclType a
     | VoidType
     | ArrayType (Maybe (Expr a)) (DeclType a)
     | PointerType (DeclType a)
+    --    | ArrayType Position (Expr a) (DeclType a) a
+    --    | UnsizedArrayType Position (DeclType a) a
     deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
-type Block a = [Instruction a]
-
-data Instruction a
-    = NestedBlock Position (Block a) a
-    | -- \| NestedBlock (Block a) a
-      ConstantDecl Position Ident (Expr a) a
-    | VariableDecl Position Ident (DeclType a) (Expr a) a
-    | FunctionDecl Position Ident [Parameter a] (DeclType a) (Block a) a
+data Statement a
+    = NestedBlock (Block a) a
     | Break Position a
     | Continue Position a
     | ReturnVoid Position a
@@ -59,28 +75,6 @@ data Instruction a
     | Assignment Position (Expr a) AssignmentOp (Expr a) a
     | Expression Position (Expr a) a
     deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
-
-data Parameter a = Param Modality Ident (DeclType a) a
-    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
-
-data Modality = ModalityVal | ModalityRef
-    deriving (Eq, Ord, Show, Read)
-
-data Expr a
-    = UnaryOp Position UnaryOp (Expr a) a
-    | BinaryOp Position BinaryOp (Expr a) (Expr a) a
-    | Ref Position (Expr a) a
-    | Deref Position (Expr a) a
-    | ArrayAcc Position (Expr a) (Expr a) a
-    | Id Position Ident a
-    | FunctionCall Position Ident [Expr a] a
-    | BasicLiteral Position (BasicLiteral a) a
-    | ArrayLiteral Position [Expr a] a
-    | RangedArray Position (Expr a) (Expr a) a
-    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
-
-newtype Ident = Ident String
-    deriving (Eq, Ord, Show, Read, Data.String.IsString)
 
 data AssignmentOp = BasicAssignment | AssignMul | AssignAdd | AssignDiv | AssignSub | AssignPow | AssignAnd | AssignOr
     deriving (Eq, Ord, Show, Read)
@@ -117,6 +111,22 @@ data UnaryOp
     | PostDecr
     | PostIncr
     deriving (Show, Eq, Ord, Read)
+
+data Expr a
+    = UnaryOp Position UnaryOp (Expr a) a
+    | BinaryOp Position BinaryOp (Expr a) (Expr a) a
+    | Ref Position (Expr a) a
+    | Deref Position (Expr a) a
+    | ArrayAcc Position (Expr a) (Expr a) a -- to be checked!!!
+    | Id Position Ident a
+    | FunctionCall Position Ident [Expr a] a
+    | BasicLiteral Position (BasicLiteral a) a
+    | ArrayLiteral Position [Expr a] a
+    | RangedArray Position (Expr a) (Expr a) a
+    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
+
+newtype Ident = Ident String
+    deriving (Eq, Ord, Show, Read, Data.String.IsString)
 
 -- | Start position (line, column) of something.
 type Position = Maybe (Int, Int)

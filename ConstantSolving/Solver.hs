@@ -1,6 +1,6 @@
 module ConstantSolving.Solver (resolveConstants) where
 
-import AST2
+import AST
 import Data.Map.Strict (union, (!?))
 import Data.Map.Strict qualified as Map
 

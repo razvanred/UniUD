@@ -1,14 +1,10 @@
 module TypeChecker.ConstantSolver (resolveConstants) where
 
-import AST2
-import Data.Functor.Compose
+import AST
+import Control.Monad (void)
 import Data.Map.Strict (union, (!?))
 import Data.Map.Strict qualified as Map
 import Utils
-
--- demo funzionante (?) di sostituzione costanti e annotazione costante origine
--- manca: annotazione warning per ridefinizioni
--- su prova.hs
 
 type ConstantTable = Map.Map Ident (Instruction ASTData)
 none = ResolveConstants {replacedFromConstant = Nothing}
@@ -65,5 +61,5 @@ resolveConstants maxDepth instructions = resolveBlock instructions Map.empty Map
         resolve depth ident@(Id pos id _) env
             | depth == 0 = pass $ none <$ ident
             | otherwise = \x -> case env !? id of
-                Just decl@(ConstantDecl _ _ expr _) -> resolve (depth - 1) expr env (replacedFrom (() <$ decl))
+                Just decl@(ConstantDecl _ _ expr _) -> resolve (depth - 1) expr env (replacedFrom (void decl))
                 Nothing -> Id pos id x
