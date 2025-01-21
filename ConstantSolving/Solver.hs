@@ -1,76 +1,95 @@
-module ConstantSolving.Solver where
+module ConstantSolving.Solver (resolveConstants) where
 
-import AST
-
--- import Parser.OutputAST qualified
-
+import AST2
+import Data.Map.Strict (union, (!?))
 import Data.Map.Strict qualified as Map
 
--- trovo una dichiarazione di costante
--- la lascio scritta nel punto dov'è e me la copio nella tabella
--- vado avanti in tutto l'albero e faccio le sostituzioni
-
--- MARCO 2025-01-25
--- secondo me dobbiamo chiarire meglio cosa mettere dentro la ConstantTable
--- se usiamo come chiave id e come valore la dichiarazione mi pare vada bene
--- ma allora non mettiamo Expr di ASTData come valore
--- Expr ASTData lo useremo invece nella struttura dati che diamo un output
--- cioè invece di questo:
 -- type ConstantTable = Map.Map Ident (Expr ASTData)
--- mettiamo questo:
-type ConstantTable a = Map.Map Ident (Declaration a)
+type ConstantTable = Map.Map Ident (Instruction ())
 
--- però ora ho tenuto il parametro di tipo, perché secondo me se si parte con tipi polimorfi
--- bisogna tenersi il polimorfismo e semmai istanziare in seconda battuta con () se non ci frega
--- così possiamo scrivere codice sempre polimorfo (almeno così ora mi viene da pensare...)
--- secondo me anche su ASTData bisogna fare una ulteriore riflessione
+none = ResolveConstants {replacedFromConstant = Nothing}
+replacedFrom constantDecl = ResolveConstants {replacedFromConstant = Just constantDecl}
+maxDepth = 5
 
--- in seguito eviterei di usare il termine "env" perché ricorda l'environment mentre qui è solo una tabella di costanti, potremmo usare "ct"
--- inoltre, forse è questo il momento per aggiornare il currEnv con l'extEnv?
--- cioè nella chiamata a resolveInstructionList in modo tale che partiamo con un Env che si è preso tutte le cose esterne
-resolveConstants :: Block ASTData -> ConstantTable a -> ConstantTable a -> Block ASTData
-resolveConstants (Block p instructions ast) extEnv curEnv = Block p (resolveInstructionList instructions extEnv curEnv) (ResolveConstants Nothing)
+{-
+cose da ricordarsi:
+ok - resolveExpr al momento della sostituzione, non salvataggio in constantTable
+ok - limite ricorsione su risoluzione espressioni (contatore ad ogni chiamata di "resolveExpr")
+- annotazione errori di clashing sul record
+ -}
 
-resolveInstructionList :: [Instruction ASTData] -> ConstantTable a -> ConstantTable a -> [Instruction ASTData]
+resolveConstants :: Block ASTData -> Block ASTData
+resolveConstants instructionList = resolveBlock instructionList Map.empty Map.empty
+
+resolveBlock :: Block ASTData -> ConstantTable -> ConstantTable -> Block ASTData
+resolveBlock instructionList extCt curCt = resolveInstructionList instructionList extCt (union curCt extCt)
+
+resolveInstructionList :: [Instruction ASTData] -> ConstantTable -> ConstantTable -> [Instruction ASTData]
 resolveInstructionList [] _ _ = []
-resolveInstructionList (x : xs) extEnv curEnv = case x of
-    Declaration (ConstantDecl _ id expr _) ast -> (resolveInstruction x extEnv curEnv) : resolveInstructionList xs extEnv (Map.insert id expr curEnv) -- qui va updateCT
-    Declaration (VariableDecl pos id decltype expr _) ast -> (resolveInstruction x extEnv curEnv) : resolveInstructionList xs extEnv curEnv
-    Declaration (FunctionDecl pos id list decltype blk _) ast -> (resolveInstruction x extEnv curEnv) : resolveInstructionList xs extEnv curEnv
-    _ -> (resolveInstruction x extEnv curEnv) : resolveInstructionList xs extEnv curEnv
+resolveInstructionList (x : xs) extCt curCt = case x of
+    decl@(ConstantDecl _ id expr _) -> resolveInstruction x extCt curCt : resolveInstructionList xs extCt (updateCT decl curCt)
+    _ -> resolveInstruction x extCt curCt : resolveInstructionList xs extCt curCt
 
--- MARCO 2025-01-25
--- inserisce nella tabella id e relativa dichiarazione, torna errore se id già presente nella tabella
-updateCT :: Declaration a -> ConstantTable a -> ConstantTable a
-updateCT decl@(ConstantDecl _ id _ _) ct = case Map.lookup id ct of
-    Nothing -> Map.insert id decl ct
-    Just _ -> error "Una costante non può essere nuovamente dichiarata nello stesso scope." -- qui farà qualcosa di meglio
+updateCT :: Instruction ASTData -> ConstantTable -> ConstantTable
+updateCT (ConstantDecl pos id exp a) curtab = case Map.lookup id curtab of
+    Nothing -> Map.insert id (ConstantDecl pos id (turnExpr exp ()) ()) curtab
 
--- MARCO 2025-01-25
--- cerca a cosa corrisponde Ident (cerca nella constant table corrente perché dovrebbe essere già aggiornata quando si è entrati nel blocco, no?)
-lookupCT :: Expr a -> ConstantTable a -> Expr ASTData
-lookupCT (Id pos id a) ct = case Map.lookup id ct of
-    Nothing -> Id pos id (ResolveConstants Nothing)
-    Just (ConstantDecl pos2 id2 expr2 a) -> Id pos id (ResolveConstants (Just (ConstantDecl pos2 id2 expr2 ()))) -- però qui ricasca l'asino (io in questo caso)
-    -- si potrebbe risolvere con una funzione che trasforma Expr di un certo tipo in Expr di un altro (cosa che ci può servire anche in futuro)
+-- Just _ -> error "Una costante non può essere nuovamente dichiarata nello stesso scope." -- qui farà qualcosa di meglio
 
-resolveInstruction :: Instruction ASTData -> ConstantTable a -> ConstantTable a -> Instruction ASTData
-resolveInstruction (Statement statement ast) extEnv curEnv = Statement (resolveStatement statement extEnv curEnv) (ResolveConstants Nothing)
-resolveInstruction (Declaration declaration ast) extEnv curEnv = Declaration (resolveDeclaration declaration extEnv curEnv) (ResolveConstants Nothing)
+resolveInstruction :: Instruction ASTData -> ConstantTable -> ConstantTable -> Instruction ASTData
+resolveInstruction x extCt curCt = case x of
+    NestedBlock pos blk _ -> NestedBlock pos (resolveBlock blk extCt curCt) none
+    ConstantDecl pos id expr _ -> ConstantDecl pos id (resolveExpr expr extCt curCt) none
+    VariableDecl pos id declT expr _ -> VariableDecl pos id (resolveDeclType declT extCt curCt) (resolveExpr expr extCt curCt) none
+    FunctionDecl pos id parL declT blk _ -> FunctionDecl pos id (fmap (\x -> resolveParameter x extCt curCt) parL) (resolveDeclType declT extCt curCt) (resolveBlock blk extCt curCt) none
+    Break pos _ -> Break pos none
+    Continue pos _ -> Continue pos none
+    ReturnVoid pos _ -> ReturnVoid pos none
+    ReturnExp pos expr _ -> ReturnExp pos (resolveExpr expr extCt curCt) none
+    While pos expr blk _ -> While pos (resolveExpr expr extCt curCt) (resolveBlock blk extCt curCt) none
+    IfThen pos expr blk _ -> IfThen pos (resolveExpr expr extCt curCt) (resolveBlock blk extCt curCt) none
+    IfThenElse pos expr1 blk1 blk2 _ -> IfThenElse pos (resolveExpr expr1 extCt curCt) (resolveBlock blk1 extCt curCt) (resolveBlock blk2 extCt curCt) none
+    Assignment pos expr1 aop expr2 _ -> Assignment pos (resolveExpr expr1 extCt curCt) aop (resolveExpr expr2 extCt curCt) none
+    Expression pos expr _ -> Expression pos (resolveExpr expr extCt curCt) none
 
--- resolveStatement :: Statement ASTData -> ConstantTable -> ConstantTable -> Statement ASTData
--- resolveStatement x extEnv curEnv = case x of
---    NestedBlock blk ast -> resolveConstants blk extEnv curEnv
---    ReturnExp pos expr ast -> (ResolveConstants Nothing)
---    While pos expr blk ast -> (ResolveConstants Nothing)
---    IfThen pos expr blk ast -> (ResolveConstants Nothing)
---    IfThenElse pos expr blk1 blk2 ast -> IfThenElse pos expr blk1 (ResolveConstants Nothing)
---    Assignment pos expr1 assOp expr2 ast -> Assignment pos expr assOp expr (ResolveConstants Nothing)
---    Expression pos expr ast -> Expression pos resolve expr (ResolveConstants Nothing)
---    ReturnVoid pos ast -> (ResolveConstants Nothing)
---    Break pos ast -> (ResolveConstants Nothing)
---    Continue pos ast -> (ResolveConstants Nothing)
+resolveParameter :: Parameter ASTData -> ConstantTable -> ConstantTable -> Parameter ASTData
+resolveParameter (Param mod id declT _) extCt curCt = Param mod id (resolveDeclType declT extCt curCt) none
 
-resolveExpr :: Expr ASTData -> ConstantTable a -> ConstantTable a -> Expr ASTData
-resolveExpr (UnaryOp pos unop expr _) extEnv curEnv = UnaryOp pos (resolveOp unop) (resolveExpr expr) (ResolveConstants Nothing)
-resolveExpr (Id pos id _) extEnv curEnv = Id pos id
+resolveDeclType :: DeclType ASTData -> ConstantTable -> ConstantTable -> DeclType ASTData
+resolveDeclType x extCt curCt = case x of
+    ArrayType expr declT -> ArrayType (fmap (\x -> resolveExpr x extCt curCt) expr) (resolveDeclType declT extCt curCt)
+    PointerType declT -> PointerType (resolveDeclType declT extCt curCt)
+    _ -> fmap (const none) x
+
+resolveExpr :: Expr ASTData -> ConstantTable -> ConstantTable -> Expr ASTData
+resolveExpr x extCt curCt = resolveExprDepth maxDepth x extCt curCt none
+
+resolveExprDepth :: Int -> Expr ASTData -> ConstantTable -> ConstantTable -> ASTData -> Expr ASTData
+resolveExprDepth 0 x _ _ _ = turnExpr x none
+resolveExprDepth maxDepth (UnaryOp pos unop expr _) extCt curCt annotation = UnaryOp pos unop (resolveExprDepth maxDepth expr extCt curCt annotation) annotation
+resolveExprDepth maxDepth (BinaryOp pos bop expr1 expr2 _) extCt curCt annotation = BinaryOp pos bop (resolveExprDepth maxDepth expr1 extCt curCt annotation) (resolveExprDepth maxDepth expr2 extCt curCt annotation) annotation
+resolveExprDepth maxDepth (Ref pos expr _) extCt curCt annotation = Ref pos (resolveExprDepth maxDepth expr extCt curCt annotation) annotation
+resolveExprDepth maxDepth (Deref pos expr _) extCt curCt annotation = Deref pos (resolveExprDepth maxDepth expr extCt curCt annotation) annotation
+resolveExprDepth maxDepth (ArrayAcc pos expr1 expr2 _) extCt curCt annotation = ArrayAcc pos (resolveExprDepth maxDepth expr1 extCt curCt annotation) (resolveExprDepth maxDepth expr2 extCt curCt annotation) annotation
+resolveExprDepth maxDepth (FunctionCall pos id actualParameters _) extCt curCt annotation = FunctionCall pos id (map (\y -> resolveExprDepth maxDepth y extCt curCt annotation) actualParameters) annotation
+resolveExprDepth maxDepth (ArrayLiteral pos listExp _) extCt curCt annotation = ArrayLiteral pos (map (\y -> resolveExprDepth maxDepth y extCt curCt annotation) listExp) annotation
+resolveExprDepth maxDepth (RangedArray pos expr1 expr2 _) extCt curCt annotation = RangedArray pos (resolveExprDepth maxDepth expr1 extCt curCt annotation) (resolveExprDepth maxDepth expr2 extCt curCt annotation) annotation
+resolveExprDepth maxDepth (BasicLiteral pos bsl _) extCt curCt annotation = BasicLiteral pos (fmap (const none) bsl) annotation
+resolveExprDepth maxDepth (Id pos id _) extCt curCt annotation = case Map.lookup id curCt of
+    Nothing -> case Map.lookup id extCt of
+        Nothing -> Id pos id none
+        Just constDecl@(ConstantDecl pos2 id2 expr ast) -> resolveExprDepth (maxDepth - 1) (turnExpr expr (Parse ())) extCt curCt (replacedFrom constDecl)
+    -- Just _ -> ERROR
+    Just constDecl@(ConstantDecl pos2 id2 expr ast) -> resolveExprDepth (maxDepth - 1) (turnExpr expr (Parse ())) extCt curCt (replacedFrom constDecl)
+
+turnExpr :: Expr a -> b -> Expr b
+turnExpr (UnaryOp pos unop expr _) t = UnaryOp pos unop (turnExpr expr t) t
+turnExpr (BinaryOp pos bop expr1 expr2 _) t = BinaryOp pos bop (turnExpr expr1 t) (turnExpr expr2 t) t
+turnExpr (Ref pos expr _) t = Ref pos (turnExpr expr t) t
+turnExpr (Deref pos expr _) t = Deref pos (turnExpr expr t) t
+turnExpr (ArrayAcc pos expr1 expr2 _) t = ArrayAcc pos (turnExpr expr1 t) (turnExpr expr2 t) t
+turnExpr (FunctionCall pos id actualParameters _) t = FunctionCall pos id (map (\y -> turnExpr y t) actualParameters) t
+turnExpr (ArrayLiteral pos listExp _) t = ArrayLiteral pos (map (\y -> turnExpr y t) listExp) t
+turnExpr (RangedArray pos expr1 expr2 _) t = RangedArray pos (turnExpr expr1 t) (turnExpr expr2 t) t
+turnExpr (BasicLiteral pos bsl _) t = BasicLiteral pos (fmap (\x -> t) bsl) t
+turnExpr (Id pos id _) t = Id pos id t

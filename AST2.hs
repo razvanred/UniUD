@@ -31,8 +31,7 @@ data Type
     | FunctionFType [(Modality, Type)] Type
 
 data DeclType a
-    = ErrorType String
-    | BoolType
+    = BoolType
     | CharType
     | IntType
     | StringType
@@ -72,7 +71,7 @@ data Expr a
     | BinaryOp Position BinaryOp (Expr a) (Expr a) a
     | Ref Position (Expr a) a
     | Deref Position (Expr a) a
-    | ArrayAcc Position (Expr a) (Expr a) a -- to be checked!!!
+    | ArrayAcc Position (Expr a) (Expr a) a
     | Id Position Ident a
     | FunctionCall Position Ident [Expr a] a
     | BasicLiteral Position (BasicLiteral a) a

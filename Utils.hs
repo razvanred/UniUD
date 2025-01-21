@@ -15,4 +15,5 @@ pass3 :: (b1 -> b2 -> b3 -> a -> b4) -> (a -> b1) -> (a -> b2) -> (a -> b3) -> a
 -- pass3 cons1 cons2 cons3 cons4 = join $ liftM3 cons1 cons2 cons3 cons4
 pass3 cons1 cons2 cons3 cons4 x = cons1 (cons2 x) (cons3 x) (cons4 x) x
 
-shift f a b c = f c a b
+shift3 f a b c = f c a b
+shift4 f a b c d = f d a b c
