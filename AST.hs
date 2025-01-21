@@ -8,29 +8,48 @@
 -- | The abstract syntax of language Parser.
 module AST where
 
+import Data.Map.Strict qualified as Map
 import Data.String qualified
+
+data ASTData
+    = Parse ()
+    | ResolveConstants {replacedFromConstant :: Maybe (Declaration ())}
+
+--  | TypeChecker {t::, errors::[String]}
+
+data Type
+    = ErrorFType String
+    | VoidFType
+    | BoolFType
+    | CharFType
+    | IntFType
+    | StringFType
+    | FloatFType
+    | ArrayFType Int Type
+    | PointerFType Type
+    | FunctionFType [(Modality, Type)] Type
 
 data Block a = Block Position [Instruction a] a
     deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data Instruction a
-    = Statement  (Statement a) a
-    | Declaration  (Declaration a) a
+    = Statement (Statement a) a
+    | Declaration (Declaration a) a
     deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data Declaration a
     = ConstantDecl Position Ident (Expr a) a
-    | VariableDecl Position Ident (Type a) (Expr a) a
-    | FunctionDecl Position Ident [Parameter a] (Type a) (Block a) a
+    | VariableDecl Position Ident (DeclType a) (Expr a) a
+    | FunctionDecl Position Ident [Parameter a] (DeclType a) (Block a) a
     deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
-data Parameter a = Param Modality Ident (Type a) a
+data Parameter a = Param Modality Ident (DeclType a) a
     deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data Modality = DefaultByValue | ModalityVal | ModalityRef
     deriving (Eq, Ord, Show, Read)
 
-data Type a
+data DeclType a
     = ErrorType String
     | BoolType
     | CharType
@@ -38,10 +57,10 @@ data Type a
     | StringType
     | FloatType
     | VoidType
-    | ArrayType (Maybe (Expr a)) (Type a)
-    | Pointer (Type a)
-    --    | ArrayType Position (Expr a) (Type a) a
-    --    | UnsizedArrayType Position (Type a) a
+    | ArrayType (Maybe (Expr a)) (DeclType a)
+    | PointerType (DeclType a)
+    --    | ArrayType Position (Expr a) (DeclType a) a
+    --    | UnsizedArrayType Position (DeclType a) a
     deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data Statement a

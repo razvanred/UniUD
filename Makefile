@@ -30,7 +30,7 @@ test : ${BUILD}/Test
 buildDir :
 	mkdir -p ${BUILD}
 
-${CODEGEN}/Lex.x ${CODEGEN}/Par.y ${CODEGEN}/Abs.hs ${CODEGEN}/Print.hs ${CODEGEN}/Test.hs : grammar.cf
+${CODEGEN}/Lex.x ${CODEGEN}/Par.y ${CODEGEN}/Abs.hs ${CODEGEN}/Print.hs ${CODEGEN}/Test.hs : #grammar.cf
 	cp grammar.cf ${CODEGEN}/Parser.cf
 	bnfc --haskell --functor -d ${CODEGEN}/Parser.cf
 	rm ${CODEGEN}/*.bak
