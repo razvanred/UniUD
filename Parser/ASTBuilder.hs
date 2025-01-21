@@ -7,20 +7,24 @@ import Control.Monad (join, liftM2, liftM3)
 import Parser.Abs qualified
 
 pass :: b -> a -> b
-pass = return
+-- pass = return
+pass cons x = cons
 pass1 :: (b1 -> a -> b2) -> (a -> b1) -> a -> b2
-pass1 = (=<<)
+-- pass1 = (=<<)
+pass1 cons1 cons2 x = cons1 (cons2 x) x
 pass2 :: (b1 -> b2 -> a -> b3) -> (a -> b1) -> (a -> b2) -> a -> b3
-pass2 cons1 cons2 cons3 = join $ liftM2 cons1 cons2 cons3
+-- pass2 cons1 cons2 cons3 = join $ liftM2 cons1 cons2 cons3
+pass2 cons1 cons2 cons3 a = cons1 (cons2 a) (cons3 a) a
 pass3 :: (b1 -> b2 -> b3 -> a -> b4) -> (a -> b1) -> (a -> b2) -> (a -> b3) -> a -> b4
-pass3 cons1 cons2 cons3 cons4 = join $ liftM3 cons1 cons2 cons3 cons4
+-- pass3 cons1 cons2 cons3 cons4 = join $ liftM3 cons1 cons2 cons3 cons4
+pass3 cons1 cons2 cons3 cons4 x = cons1 (cons2 x) (cons3 x) (cons4 x) x
 
 buildBlock :: Parser.Abs.Block -> a -> Block a
 buildBlock (Parser.Abs.Blck position instructions) x = AST.Block position (flip buildInstruction x <$> instructions) x
 
 buildInstruction :: Parser.Abs.Instruction -> a -> Instruction a
-buildInstruction (Parser.Abs.Stmt position statement) = pass1 Statement  (buildStatement statement)
-buildInstruction (Parser.Abs.Decl position declaration) = pass1 Declaration  (buildDeclaration declaration)
+buildInstruction (Parser.Abs.Stmt position statement) = pass1 Statement (buildStatement statement)
+buildInstruction (Parser.Abs.Decl position declaration) = pass1 Declaration (buildDeclaration declaration)
 
 buildStatement :: Parser.Abs.Statement -> a -> Statement a
 buildStatement (Parser.Abs.Jump _ jumpstatement) = buildJumpStatement jumpstatement
@@ -52,13 +56,13 @@ buildModality (Parser.Abs.Modality1 _) = DefaultByValue
 buildModality (Parser.Abs.Modality_val _) = ModalityVal
 buildModality (Parser.Abs.Modality_ref _) = ModalityRef
 
-buildType :: Parser.Abs.Type -> a -> Type a
+buildType :: Parser.Abs.Type -> a -> DeclType a
 buildType (Parser.Abs.BsType _ basicType) = pass $ buildBasicType basicType
 buildType (Parser.Abs.ArrayType _ expr declType) = liftM2 ArrayType (Just . buildExpr expr) (buildType declType)
 buildType (Parser.Abs.UnsizedArrayType _ declType) = ArrayType Nothing . buildType declType
-buildType (Parser.Abs.Pointer _ declType) = Pointer . buildType declType
+buildType (Parser.Abs.Pointer _ declType) = PointerType . buildType declType
 
-buildBasicType :: Parser.Abs.BasicType -> Type a
+buildBasicType :: Parser.Abs.BasicType -> DeclType a
 buildBasicType (Parser.Abs.BasicType_bool _) = BoolType
 buildBasicType (Parser.Abs.BasicType_char _) = CharType
 buildBasicType (Parser.Abs.BasicType_int _) = IntType
