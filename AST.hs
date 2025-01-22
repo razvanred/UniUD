@@ -13,10 +13,16 @@ import Data.String qualified
 
 data ASTData
     = Parse ()
-    | ResolveConstants {replacedFromConstant :: Maybe (Instruction ())}
+    | ResolveConstants
+        { replacedFromConstant :: Maybe (Instruction ()),
+          maxRecursion :: Bool,
+          constantAlreadyDefined :: Maybe (Instruction ())
+        }
+    | TypeChecker {t :: Type, lrexpr :: Maybe LeftRightExpr, instr :: Instruction ()}
     deriving (Eq, Ord, Show, Read)
 
---  | TypeChecker {t::, errors::[String]}
+data LeftRightExpr = LeftExpr | RightExpr
+    deriving (Eq, Ord, Show, Read)
 
 data Type
     = ErrorFType String
@@ -29,17 +35,7 @@ data Type
     | ArrayFType Int Type
     | PointerFType Type
     | FunctionFType [(Modality, Type)] Type
-
-data DeclType a
-    = BoolType
-    | CharType
-    | IntType
-    | StringType
-    | FloatType
-    | VoidType
-    | ArrayType (Maybe (Expr a)) (DeclType a)
-    | PointerType (DeclType a)
-    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
+    deriving (Eq, Ord, Show, Read)
 
 type Block a = [Instruction a]
 
@@ -60,10 +56,7 @@ data Instruction a
     | Expression Position (Expr a) a
     deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
-data Parameter a = Param Modality Ident (DeclType a) a
-    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
-
-data Modality = ModalityVal | ModalityRef
+data AssignmentOp = BasicAssignment | AssignMul | AssignAdd | AssignDiv | AssignSub | AssignPow | AssignAnd | AssignOr
     deriving (Eq, Ord, Show, Read)
 
 data Expr a
@@ -79,34 +72,22 @@ data Expr a
     | RangedArray Position (Expr a) (Expr a) a
     deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
-newtype Ident = Ident String
-    deriving (Eq, Ord, Show, Read, Data.String.IsString)
-
-data AssignmentOp = BasicAssignment | AssignMul | AssignAdd | AssignDiv | AssignSub | AssignPow | AssignAnd | AssignOr
-    deriving (Eq, Ord, Show, Read)
-
-data ArithOp = Add | Sub | Mul | Mod | Pow | Div
-    deriving (Show, Eq, Ord, Read)
-
-data BoolOp = Or | And
-    deriving (Show, Eq, Ord, Read)
-
-data RelOp = NotEq | GreaterThanEq | GreaterThan | LessThanEq | LessThan | Eq
-    deriving (Show, Eq, Ord, Read)
-
-data BasicLiteral a
-    = IntLiteral Integer a
-    | CharLiteral Char a
-    | StringLiteral String a
-    | FloatLiteral Double a
-    | BoolLiteral Bool a
+data DeclType a
+    = BoolType
+    | CharType
+    | IntType
+    | StringType
+    | FloatType
+    | VoidType
+    | ArrayType (Maybe (Expr a)) (DeclType a)
+    | PointerType (DeclType a)
     deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
-data BinaryOp
-    = ArithmeticOp ArithOp
-    | RelationalOp RelOp
-    | BooleanOp BoolOp
-    deriving (Show, Eq, Ord, Read)
+data Parameter a = Param Modality Ident (DeclType a) a
+    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
+
+data Modality = ModalityVal | ModalityRef
+    deriving (Eq, Ord, Show, Read)
 
 data UnaryOp
     = Not
@@ -117,6 +98,32 @@ data UnaryOp
     | PostDecr
     | PostIncr
     deriving (Show, Eq, Ord, Read)
+
+data BinaryOp
+    = ArithmeticOp ArithOp
+    | RelationalOp RelOp
+    | BooleanOp BoolOp
+    deriving (Show, Eq, Ord, Read)
+
+data ArithOp = Add | Sub | Mul | Mod | Pow | Div
+    deriving (Show, Eq, Ord, Read)
+
+data RelOp = NotEq | GreaterThanEq | GreaterThan | LessThanEq | LessThan | Eq
+    deriving (Show, Eq, Ord, Read)
+
+data BoolOp = Or | And
+    deriving (Show, Eq, Ord, Read)
+
+newtype Ident = Ident String
+    deriving (Eq, Ord, Show, Read, Data.String.IsString)
+
+data BasicLiteral a
+    = IntLiteral Integer a
+    | CharLiteral Char a
+    | StringLiteral String a
+    | FloatLiteral Double a
+    | BoolLiteral Bool a
+    deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 -- | Start position (line, column) of something.
 type Position = Maybe (Int, Int)
