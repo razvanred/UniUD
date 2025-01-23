@@ -53,18 +53,15 @@ common shared-properties
     array,
     base ==4.19.1.0,
     containers,
-
-  -- Other library packages from which modules are imported.
-  build-depends:
-    array,
-    base ==4.19.1.0,
-    containers,
+    transformers
 
   -- cabal-gild: discover --exclude=Main.hs --exclude=Parser/*
   other-modules:
     AST
     ConstantSolving.Solver
     Itest
+    TACEmitter.TAC
+    TACEmitter.TACgenerator
     TypeChecker.Algs
     TypeChecker.Checker
     Utils
