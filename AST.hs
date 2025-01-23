@@ -17,10 +17,18 @@ data ASTData
           maxRecursion :: Bool,
           constantAlreadyDefined :: Maybe (Instruction ())
         }
-    | TypeChecker {t :: Type, lrexpr :: Maybe LeftRightExpr, instr :: Instruction ()}
+    | TypeChecker {t :: Type, lrv :: Maybe LeftRightValue, modality :: Maybe Modality ,instr :: Instruction ()}
     deriving (Eq, Ord, Show, Read)
 
-data LeftRightExpr = LeftExpr | RightExpr
+-- lrv is used to give information about the fact wether we want to generate
+--  the l-value or right-value of an expression.
+--Recall that for every expressions representing a binaryOP I need the R-VALUE!!! 
+-- modality is used to give information about the modality of every identifier.     
+--Default: for identifiers not being formal parameters the modality is by-value!
+--do we permit the following case: f(ref &int i) ??????
+--that is a formal paratameter having pointer type and modality by ref!!!
+
+data LeftRightValue = LeftValue | RightValue
     deriving (Eq, Ord, Show, Read)
 
 data Type
