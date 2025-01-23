@@ -49,25 +49,24 @@ common shared-properties
     alex:alex,
     happy:happy,
 
--- Directories containing source files.
--- hs-source-dirs:   .
-common warnings
-  ghc-options: -Wall
+  build-depends:
+    array,
+    base ==4.19.1.0,
+    containers,
 
--- package happy
---   configure-options: --ghc --array --coerce --info
-executable main
-  -- Import common warning flags.
-  import: shared-properties, warnings
-  -- .hs or .lhs file containing the Main module.
-  main-is: Main.hs
-  -- Modules included in this executable, other than Main.
+  -- Other library packages from which modules are imported.
+  build-depends:
+    array,
+    base ==4.19.1.0,
+    containers,
+
   -- cabal-gild: discover --exclude=Main.hs --exclude=Parser/*
   other-modules:
     AST
     ConstantSolving.Solver
+    Itest
+    TypeChecker.Algs
     TypeChecker.Checker
-    TypeChecker.ConstantSolver
     Utils
 
   -- manually specified modules
@@ -78,10 +77,24 @@ executable main
     Parser.Par
     Parser.Print
 
-  -- LANGUAGE extensions used by modules in this package.
-  -- other-extensions:
-  -- Other library packages from which modules are imported.
-  build-depends:
-    array,
-    base ==4.19.1.0,
-    containers,
+-- Directories containing source files.
+-- hs-source-dirs:   .
+common warnings
+  ghc-options: -Wall
+
+--   configure-options: --ghc --array --coerce --info
+executable main
+  -- Import common warning flags.
+  import: shared-properties, warnings
+  -- .hs or .lhs file containing the Main module.
+  main-is: Main.hs
+
+-- Modules included in this executable, other than Main.
+-- LANGUAGE extensions used by modules in this package.
+-- other-extensions:
+-- fake target to make HLS happy
+executable itest-fake
+  scope: private
+  import: shared-properties
+  main-is: ITest.hs
+  buildable: False

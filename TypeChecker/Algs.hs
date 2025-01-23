@@ -1,4 +1,4 @@
-module TypeChecker.ConstantSolver (resolveConstants) where
+module TypeChecker.Algs (resolveConstants) where
 
 import AST
 import Control.Monad (void)

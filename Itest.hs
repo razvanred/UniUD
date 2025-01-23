@@ -1,9 +1,11 @@
+module ITest where
+
 import AST
 import ConstantSolving.Solver
 import Debug.Trace
 import Parser.ASTBuilder
 import Parser.Par (myLexer, pBlock1)
-import TypeChecker.ConstantSolver qualified as ConstantSolver
+import TypeChecker.Algs qualified as CS2
 
 -- parse x = case pBlock1 (myLexer x) of
 --     Left _ -> show "error"
@@ -14,6 +16,6 @@ f x = do
     let t = buildBlock pt (Parse ())
     traceM $ show t
     traceM "---"
-    traceM $ show $ ConstantSolver.resolveConstants 5 t
+    traceM $ show $ CS2.resolveConstants 5 t
     traceM "~~~"
     traceM $ show $ resolveConstants t

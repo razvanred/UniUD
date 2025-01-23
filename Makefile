@@ -62,5 +62,3 @@ clean :
 distclean : clean
 	$(DISTCLEAN)
 	find $(CODEGEN) -maxdepth 1 -type f ! \( -name 'ASTBuilder.hs' \) -delete
-
-# EOF
