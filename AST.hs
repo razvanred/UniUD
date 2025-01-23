@@ -8,7 +8,6 @@
 -- | The abstract syntax of language Parser.
 module AST where
 
-import Data.Map.Strict qualified as Map
 import Data.String qualified
 
 data ASTData

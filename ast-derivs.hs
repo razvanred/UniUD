@@ -1,4 +1,4 @@
-[1 of 1] Compiling AST2             ( AST2.hs, AST2.o )
+-- [1 of 1] Compiling AST2             ( AST2.hs, AST2.o )
 
 ==================== Derived instances ====================
 Derived class instances:

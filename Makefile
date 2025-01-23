@@ -2,56 +2,65 @@
 
 # Makefile for building the parser and test program.
 
-BUILD      = build
-CODEGEN    = Parser
-GHC        = ghc
-GHC_OPTS   = -outputdir ${BUILD}
-HAPPY      = happy
-HAPPY_OPTS = --array --info --ghc --coerce
-ALEX       = alex
-ALEX_OPTS  = --ghc
+BUILD      := build
+CODEGEN    := Parser
+GHC        := ghc
+GHC_OPTS   := -outputdir $(BUILD)
+HAPPY      := happy
+HAPPY_OPTS := --ghc --array --coerce --info
+ALEX       := alex
+ALEX_OPTS  := --ghc
+RUN_BNFC ?= $(error BNFC overwrite disabled by default)
+DISTCLEAN ?= $(error Distclean flag must be explicitly set)
+USE_MAKE ?= $(error Compilation should be handled by cabal)
+MAKEFLAGS += --warn-undefined-variables
+MAKEFLAGS += --no-builtin-rules
+.ONESHELL:
 
 # List of goals not corresponding to file names.
 
-.PHONY : all clean distclean test parser lexer buildDir
+.PHONY : all clean distclean test parser lexer main
 
-# Default goal.
+# Default goal
 
-all : ${BUILD}/Test
+all : $(BUILD)/Test
 
 # Rules for building
 
-lexer : ${CODEGEN}/Lex.hs
+lexer : $(CODEGEN)/Lex.hs
 
-parser : lexer ${CODEGEN}/Par.hs
+parser : lexer $(CODEGEN)/Par.hs
 
-test : ${BUILD}/Test
+$(BUILD) :
+	mkdir -p $(BUILD)
 
-buildDir :
-	mkdir -p ${BUILD}
+$(addprefix $(CODEGEN)/,Lex.x Par.y Abs.hs Print.hs Test.hs) : grammar.cf
+	$(RUN_BNFC)
+	cp grammar.cf $(@D)/Parser.cf
+	bnfc --haskell --functor -d $(@D)/Parser.cf
+	rm $(@D)/*.bak
 
-${CODEGEN}/Lex.x ${CODEGEN}/Par.y ${CODEGEN}/Abs.hs ${CODEGEN}/Print.hs ${CODEGEN}/Test.hs : #grammar.cf
-	cp grammar.cf ${CODEGEN}/Parser.cf
-	bnfc --haskell --functor -d ${CODEGEN}/Parser.cf
-	rm ${CODEGEN}/*.bak
+$(CODEGEN)/Par.hs : $(CODEGEN)/Par.y
+	$(HAPPY) $(HAPPY_OPTS) $<
 
-${CODEGEN}/%.hs : ${CODEGEN}/%.y
-	${HAPPY} ${HAPPY_OPTS} $<
+$(CODEGEN)/Lex.hs : $(CODEGEN)/Lex.x
+	$(ALEX) $(ALEX_OPTS) $<
 
-${CODEGEN}/%.hs : ${CODEGEN}/%.x
-	${ALEX} ${ALEX_OPTS} $<
+$(BUILD)/Main : parser $(addprefix $(CODEGEN)/,Abs.hs Print.hs Test.hs) | $(BUILD)
+	$(USE_MAKE)
+	$(GHC) $(GHC_OPTS) Main.hs -o $@
 
-${BUILD}/Test : buildDir parser ${CODEGEN}/Abs.hs ${CODEGEN}/Print.hs ${CODEGEN}/Test.hs
-	${GHC} ${GHC_OPTS} ${CODEGEN}/Test.hs -o $@
+main :
+	cabal build main
 
 # Rules for cleaning generated files.
 
 clean :
-	rm -rf ${BUILD}
+	rm -rf $(BUILD)
+	rm -f $(CODEGEN)/Parser.cf $(CODEGEN)/Par.hs $(CODEGEN)/Lex.hs
 
 distclean : clean
-# -rm -f parser/Abs.hs parser/Abs.hs.bak parser/ComposOp.hs parser/ComposOp.hs.bak parser/Doc.txt parser/Doc.txt.bak parser/ErrM.hs parser/ErrM.hs.bak parser/Layout.hs parser/Layout.hs.bak parser/Lex.x parser/Lex.x.bak parser/Par.y parser/Par.y.bak parser/Print.hs parser/Print.hs.bak parser/Skel.hs parser/Skel.hs.bak parser/Test.hs parser/Test.hs.bak parser/XML.hs parser/XML.hs.bak parser/AST.agda parser/AST.agda.bak parser/Parser.agda parser/Parser.agda.bak parser/IOLib.agda parser/IOLib.agda.bak parser/Main.agda parser/Main.agda.bak parser/grammatica.dtd parser/grammatica.dtd.bak parser/Test parser/Lex.hs parser/Par.hs parser/Par.info parser/ParData.hs Makefile
-# ${RM} ${CODEGEN}/*.log ${CODEGEN}/*.aux ${CODEGEN}/*.dvi
-	find ${CODEGEN} -maxdepth 1 -type f ! \( -name 'ASTBuilder.hs' \) -delete
+	$(DISTCLEAN)
+	find $(CODEGEN) -maxdepth 1 -type f ! \( -name 'ASTBuilder.hs' \) -delete
 
 # EOF
