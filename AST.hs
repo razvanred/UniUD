@@ -17,7 +17,7 @@ data ASTData
           maxRecursion :: Bool,
           constantAlreadyDefined :: Maybe (Instruction ())
         }
-    | TypeChecker {t :: Type, lrv :: Maybe LeftRightValue, modality :: Maybe Modality ,instr :: Instruction ()}
+    | TypeChecker {t :: Type, lrv :: Maybe LeftRightValue, modality :: Maybe Modality ,arityFunction :: Maybe Int}
     deriving (Eq, Ord, Show, Read)
 
 -- lrv is used to give information about the fact wether we want to generate
@@ -125,7 +125,7 @@ newtype Ident = Ident String
     deriving (Eq, Ord, Show, Read, Data.String.IsString)
 
 data BasicLiteral a
-    = IntLiteral Integer a
+    = IntLiteral Int a
     | CharLiteral Char a
     | StringLiteral String a
     | FloatLiteral Double a
