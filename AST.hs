@@ -125,7 +125,7 @@ newtype Ident = Ident String
     deriving (Eq, Ord, Show, Read, Data.String.IsString)
 
 data BasicLiteral a
-    = IntLiteral Int a
+    = IntLiteral Integer a
     | CharLiteral Char a
     | StringLiteral String a
     | FloatLiteral Double a

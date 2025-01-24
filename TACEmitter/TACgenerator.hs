@@ -32,7 +32,7 @@ genCode gen = reverse $ snd $ execState gen (0 ,[])
 
 
 tacExpr :: Expr ASTData -> MyMon XAddr
-tacExpr (UnaryOp pos uop expr (TypeChecker t lr  m _) ) =  do
+tacExpr (UnaryOp pos uop expr (TypeChecker t lr _ _) ) =  do
         f <- newtemp    
         let temp = f t
         xaddr <- tacExpr expr
@@ -49,9 +49,46 @@ tacExpr (UnaryOp pos uop expr (TypeChecker t lr  m _) ) =  do
          --(ArraAddr base offset ) -> TODO
 
 
-buildProgVariable id pos type modality = TacProgVar{varName=VarId{vLoc=pos,vId=id},varModality=modality, varType=type}  
+--expr should have leftvalue information otherwise the semantic static inference is wrong
+tacExpr (Deref pos expr (TypeChecker t lr _ _ )) = do
+    xaddr <- tacExpr expr
+    case (xaddr,lr) of
+        (Addr a,Just LeftValue) -> return $ RefAddr a
+        (RefAddr a, Just LeftValue) -> return $ RefAddr a
+        (Addr a, Just RightValue) -> do
+                                     f <- newtemp
+                                     let temp = f t
+                                     out $ TacPointerLoad temp t a                                                   
+                                     return $ Addr temp
+        (RefAddr a, Just RightValue) -> do
+                                        f <- newtemp
+                                        let temp = f t
+                                        out $ TacNullary temp t a
+                                        return $ Addr temp
 
---tacExpr (Id pos id (TypeChecker t lr m _ ) ) = case m of
---       (ModalityVal) -> return $ ProgVar{progVar= TacProgVar{varName= VarId{vLoc=pos,vId=id},varModality=ModalityRef, varType=t} ,addrT = t}
---       (ModalityRef) -> 
+
+--here lr should be lefvalue otherwise the semantic static inference is wrong
+tacExpr (Ref pos expr (TypeChecker t lr _ _ )) = do
+    xaddr <- tacExpr expr
+    case (xaddr) of
+        (Addr a) -> return $ RefAddr a
+        (RefAddr a) -> return $ RefAddr a
+
+
+tacExpr (Id pos (Ident ident) (TypeChecker t lr m _ ) ) = case m of
+       (Just ModalityVal) -> return . Addr $ ProgVar{progVar= buildProgVariable ident pos t ModalityVal ,addrT = t}
+       (Just ModalityRef) -> return . RefAddr $ ProgVar{progVar= buildProgVariable ident pos t ModalityRef ,addrT = t}
+
+tacExpr(BasicLiteral pos bs (TypeChecker t lr m _))  = case bs of 
+    IntLiteral i (TypeChecker _ _ _ _) -> return . Addr $ TacLit{tacLit= TacLitInt i, addrT=t}     
+    CharLiteral c (TypeChecker _ _ _ _) -> return . Addr $ TacLit{tacLit= TacLitChar c, addrT=t}
+    FloatLiteral f (TypeChecker _ _ _ _) -> return . Addr $ TacLit{tacLit= TacLitFloat f, addrT=t}
+    BoolLiteral b (TypeChecker _ _ _ _) -> return . Addr $ TacLit{tacLit= TacLitBool b, addrT=t}
+    --StringLiteral str (TypeChecker _ _ _ _) ->  Here I give university up!!!!!!!!
+          
+                 
+  
+buildProgVariable :: String -> Position -> Type -> Modality -> TacProgVariable
+buildProgVariable ident pos t modality = TacProgVar{varName=VarId{vLoc=pos,vId=ident},varModality=modality, varType=t}  
+
 
