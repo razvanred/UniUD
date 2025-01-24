@@ -20,14 +20,14 @@ data Addr = ProgVar { progVar :: TacProgVariable, addrT :: Type }
 data TacProgVariable
   = TacProgVar {
     varName      :: VarIdent,
-    varOwningFun :: FunIdent,
-    varIsMutable :: Bool,
+    --varOwningFun :: FunIdent,
+    --varIsMutable :: Bool,
     varModality  :: Modality,
     varType :: Type}
   deriving (Show,Eq)
  
 data TacLit
-   = TacLitInt Int
+   = TacLitInt Integer
    | TacLitFloat Double
    | TacLitChar Char
    | TacLitBool Bool
@@ -35,19 +35,19 @@ data TacLit
  
  
 data TacInstruction
-  = TacBinary XAddr BinaryOp Type XAddr XAddr
-  | TacUnary XAddr UnaryOp Type XAddr
-  | TacNullary XAddr Type XAddr
+  = TacBinary Addr BinaryOp Type Addr Addr
+  | TacUnary Addr UnaryOp Type Addr
+  | TacNullary Addr Type Addr
   | TacJumpUnc
   | TacJumpBool
   | TacJumpRel
-  | TacIndexedStore TacProgVariable XAddr Type XAddr -- ^ Indexed store (a[i] =ty x)
-  | TacIndexedLoad XAddr Type TacProgVariable XAddr  -- ^ Indexed load (x =ty a[i])
-  | TacPointerStore XAddr Type XAddr  -- ^ Indirect store (*x =ty y)
-  | TacPointerLoad XAddr Type XAddr  -- ^ Indirect load (x =ty *y)
-  | TacParam Type XAddr  -- ^ Parameter of a call
-  | TacReturn (Maybe (Type, XAddr))  -- ^ Return from a call
-  | TacCall (Maybe (Type, XAddr)) FunIdent -- ^ Call operation t = fcall f/n or pcall f/n
+  | TacIndexedStore TacProgVariable Addr Type Addr -- ^ Indexed store (a[i] =ty x)
+  | TacIndexedLoad Addr Type TacProgVariable Addr  -- ^ Indexed load (x =ty a[i])
+  | TacPointerStore Addr Type Addr  -- ^ Indirect store (*x =ty y)
+  | TacPointerLoad Addr Type Addr  -- ^ Indirect load (x =ty *y)
+  | TacParam Type Addr  -- ^ Parameter of a call
+  | TacReturn (Maybe (Type, Addr))  -- ^ Return from a call
+  | TacCall (Maybe (Type, Addr)) FunIdent -- ^ Call operation t = fcall f/n or pcall f/n
 
  
  
