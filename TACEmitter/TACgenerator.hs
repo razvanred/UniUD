@@ -3,6 +3,7 @@ module TACEmitter.TACgenerator where
 import TACEmitter.TAC
 import AST
 import Control.Monad.Trans.State
+import Foreign (new)
 
 type MyMon = State (Int, [TAC])
 
@@ -25,10 +26,11 @@ genCode gen = reverse $ snd $ execState gen (0 ,[])
 
 
 
---extractType addr = case addr of
---    ProgVar _ t -> t
---    TacLit _ t -> t
---    Temporary _ t -> t
+extractType :: Addr -> Type
+extractType addr = case addr of
+    ProgVar _ t -> t
+    TacLit _ t -> t
+    Temporary _ t -> t
 
 
 tacExpr :: Expr ASTData -> MyMon XAddr
@@ -47,6 +49,43 @@ tacExpr (UnaryOp pos uop expr (TypeChecker t lr _ _) ) =  do
                             out $ TacUnary temp uop t temp1
                             return $ Addr temp                               
          --(ArraAddr base offset ) -> TODO
+tacExpr (BinaryOp pos bop expr1 expr2 (TypeChecker t lr _ _)) = do
+    xaddr1 <- tacExpr expr1
+    xaddr2 <- tacExpr expr2
+    case (xaddr1,xaddr2) of
+        (Addr addr1,Addr addr2) -> do
+                                    f <- newtemp
+                                    let temp = f t
+                                    out $ TacBinary temp bop t addr1 addr2
+                                    return $ Addr temp
+        (RefAddr addr1,Addr addr2) -> do
+                                    f <- newtemp
+                                    let temp = f t
+                                    out $ TacPointerLoad temp t addr1
+                                    f' <- newtemp
+                                    let temp' = f t
+                                    out $ TacBinary temp' bop t temp addr2
+                                    return $ Addr temp'
+        (Addr addr1,RefAddr addr2) -> do
+                                    f <- newtemp
+                                    let temp = f t
+                                    out $ TacPointerLoad temp t addr2
+                                    f' <- newtemp
+                                    let temp' = f t
+                                    out $ TacBinary temp' bop t addr1 temp
+                                    return $ Addr temp'                            
+        (RefAddr addr1,RefAddr addr2) -> do
+                                    f1 <- newtemp
+                                    let temp1 = f1 t
+                                    out $ TacPointerLoad temp1 t addr1
+                                    f2 <- newtemp
+                                    let temp2 = f2 t
+                                    out $ TacPointerLoad temp2 t addr2
+                                    f3 <- newtemp
+                                    let temp3 = f3 t
+                                    out $ TacBinary temp3 bop t temp1 temp2
+                                    return $ Addr temp3
+
 
 
 --expr should have leftvalue information otherwise the semantic static inference is wrong
@@ -54,7 +93,11 @@ tacExpr (Deref pos expr (TypeChecker t lr _ _ )) = do
     xaddr <- tacExpr expr
     case (xaddr,lr) of
         (Addr a,Just LeftValue) -> return $ RefAddr a
-        (RefAddr a, Just LeftValue) -> return $ RefAddr a
+        (RefAddr a, Just LeftValue) -> do
+            case extractType a of
+                PointerFType t -> f <- newtemp
+                                        let temp = f t
+                                        out $ TacPointerLoad 
         (Addr a, Just RightValue) -> do
                                      f <- newtemp
                                      let temp = f t
@@ -67,7 +110,6 @@ tacExpr (Deref pos expr (TypeChecker t lr _ _ )) = do
                                         return $ Addr temp
 
 
---here lr should be lefvalue otherwise the semantic static inference is wrong
 tacExpr (Ref pos expr (TypeChecker t lr _ _ )) = do
     xaddr <- tacExpr expr
     case (xaddr) of
@@ -87,7 +129,6 @@ tacExpr(BasicLiteral pos bs (TypeChecker t lr m _))  = case bs of
     --StringLiteral str (TypeChecker _ _ _ _) ->  Here I give university up!!!!!!!!
           
                  
-  
 buildProgVariable :: String -> Position -> Type -> Modality -> TacProgVariable
 buildProgVariable ident pos t modality = TacProgVar{varName=VarId{vLoc=pos,vId=ident},varModality=modality, varType=t}  
 
