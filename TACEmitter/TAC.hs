@@ -46,6 +46,7 @@ data TacInstruction
   | TacIndexedLoad Addr Type TacProgVariable Addr  -- ^ Indexed load (x =ty a[i])
   | TacPointerStore Addr Type Addr  -- ^ Indirect store (*x =ty y)
   | TacPointerLoad Addr Type Addr  -- ^ Indirect load (x =ty *y)
+  | TacReferenceLoad Addr Type Addr
   | TacParam Type Addr  -- ^ Parameter of a call
   | TacReturn (Maybe (Type, Addr))  -- ^ Return from a call
   | TacCall (Maybe (Type, Addr)) FunIdent -- ^ Call operation t = fcall f/n or pcall f/n

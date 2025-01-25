@@ -108,7 +108,6 @@ tacExpr (Deref pos expr (TypeCheckerOutput t lr _ )) = do
             out $ TacNullary temp t a
             return $ Addr temp
 
-
 tacExpr (Ref pos expr (TypeCheckerOutput t lr _ )) = do
     xaddr <- tacExpr expr
     case xaddr of
