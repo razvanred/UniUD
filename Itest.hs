@@ -1,7 +1,6 @@
 module ITest where
 
-import AST
-import ConstantSolving.Solver
+import ConstantSolver.Solver
 import Debug.Trace
 import Parser.ASTBuilder
 import Parser.Par (myLexer, pBlock1)
@@ -13,9 +12,9 @@ import TypeChecker.Algs qualified as CS2
 
 f x = do
     pt <- pBlock1 $ myLexer x
-    let t = buildBlock pt (Parse ())
+    let t = buildBlock pt ()
     traceM $ show t
     traceM "---"
-    traceM $ show $ CS2.resolveConstants 5 t
+    traceM $ show $ CS2.resolveConstantsDemo 1 t
     traceM "~~~"
     traceM $ show $ resolveConstants t

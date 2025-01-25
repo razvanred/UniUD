@@ -10,23 +10,23 @@ module AST where
 
 import Data.String qualified
 
-data ASTData
-    = Parse ()
-    | ResolveConstants
-        { replacedFromConstant :: Maybe (Instruction ()),
-          maxRecursion :: Bool,
-          constantAlreadyDefined :: Maybe (Instruction ())
-        }
-    | TypeChecker {t :: Type, lrv :: Maybe LeftRightValue, modality :: Maybe Modality ,arityFunction :: Maybe Int}
+type ParserOutput = ()
+data ConstantSolverOutput = ConstantSolverOutput
+    { replacedFromConstant :: Maybe (Instruction ParserOutput),
+      maxRecursion :: Bool,
+      constantAlreadyDefined :: Maybe (Instruction ParserOutput)
+    }
+    deriving (Eq, Ord, Show, Read)
+data TypeCheckerOutput = TypeCheckerOutput {t :: Type, lrv :: Maybe LeftRightValue, modality :: Maybe Modality, arityFunction :: Maybe Int}
     deriving (Eq, Ord, Show, Read)
 
 -- lrv is used to give information about the fact wether we want to generate
 --  the l-value or right-value of an expression.
---Recall that for every expressions representing a binaryOP I need the R-VALUE!!! 
--- modality is used to give information about the modality of every identifier.     
---Default: for identifiers not being formal parameters the modality is by-value!
---do we permit the following case: f(ref &int i) ??????
---that is a formal paratameter having pointer type and modality by ref!!!
+-- Recall that for every expressions representing a binaryOP I need the R-VALUE!!!
+-- modality is used to give information about the modality of every identifier.
+-- Default: for identifiers not being formal parameters the modality is by-value!
+-- do we permit the following case: f(ref &int i) ??????
+-- that is a formal paratameter having pointer type and modality by ref!!!
 
 data LeftRightValue = LeftValue | RightValue
     deriving (Eq, Ord, Show, Read)
@@ -48,8 +48,7 @@ type Block a = [Instruction a]
 
 data Instruction a
     = NestedBlock Position (Block a) a
-    | -- \| NestedBlock (Block a) a
-      ConstantDecl Position Ident (Expr a) a
+    | ConstantDecl Position Ident (Expr a) a
     | VariableDecl Position Ident (DeclType a) (Expr a) a
     | FunctionDecl Position Ident [Parameter a] (DeclType a) (Block a) a
     | Break Position a

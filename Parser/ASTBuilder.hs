@@ -5,6 +5,11 @@ import Control.Monad (liftM2)
 import Parser.Abs qualified
 import Utils (pass, pass1, pass2, pass3)
 
+-- buildAST :: Parser.Abs.Block -> a -> [Instruction a]
+-- buildAST block@(Parser.Abs.Blck pos instructions) = case pos of
+--     Just _ -> buildBlock block
+--     Nothing -> buildBlock $ Parser.Abs.Blck (Just (0, 0)) instructions
+
 buildBlock :: Parser.Abs.Block -> a -> [Instruction a]
 buildBlock (Parser.Abs.Blck pos instructions) x = flip buildInstruction x <$> instructions
 
