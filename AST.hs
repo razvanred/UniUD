@@ -17,7 +17,8 @@ data ConstantSolverOutput = ConstantSolverOutput
       constantAlreadyDefined :: Maybe (Instruction ParserOutput)
     }
     deriving (Eq, Ord, Show, Read)
-data TypeCheckerOutput = TypeCheckerOutput {t :: Type, lrv :: Maybe LeftRightValue, modality :: Maybe Modality, arityFunction :: Maybe Int}
+
+data TypeCheckerOutput = TypeCheckerOutput {t :: Type, lrv :: Maybe LeftRightValue, modality :: Maybe Modality}
     deriving (Eq, Ord, Show, Read)
 
 -- lrv is used to give information about the fact wether we want to generate
