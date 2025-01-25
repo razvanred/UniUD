@@ -33,5 +33,7 @@
         "\\vdecl": "v^\\mathrm{decl}",
         "\\fonly": "\\mathrm{fonly}(#1)"
     },
-    "markdown.extension.math.enabled": false
+    "markdown.extension.math.enabled": false,
+    "haskell.formattingProvider": "fourmolu",
+    "haskell.plugin.stan.globalOn": true
 }
