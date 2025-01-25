@@ -16,7 +16,8 @@ data XAddr = Addr Addr
 data Addr = ProgVar { progVar :: TacProgVariable, addrT :: Type }
           | TacLit { tacLit :: TacLit , addrT :: Type }
           | Temporary { tempInt :: Int , addrT :: Type }
- 
+ deriving (Show,Eq)
+
 data TacProgVariable
   = TacProgVar {
     varName      :: VarIdent,
@@ -48,6 +49,7 @@ data TacInstruction
   | TacParam Type Addr  -- ^ Parameter of a call
   | TacReturn (Maybe (Type, Addr))  -- ^ Return from a call
   | TacCall (Maybe (Type, Addr)) FunIdent -- ^ Call operation t = fcall f/n or pcall f/n
+   deriving(Show,Eq)
 
  
  

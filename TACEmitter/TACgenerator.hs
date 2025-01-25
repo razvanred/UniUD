@@ -32,7 +32,7 @@ extractType addr = case addr of
     Temporary _ t -> t
 
 tacExpr :: Expr In -> MyMon XAddr
-tacExpr (UnaryOp pos uop expr (TypeCheckerOutput t lr _ _)) = do
+tacExpr (UnaryOp pos uop expr (TypeCheckerOutput t lr _ )) = do
     f <- newtemp
     let temp = f t
     xaddr <- tacExpr expr
@@ -47,7 +47,7 @@ tacExpr (UnaryOp pos uop expr (TypeCheckerOutput t lr _ _)) = do
             out $ TacUnary temp uop t temp1
             return $ Addr temp
 -- (ArraAddr base offset ) -> TODO
-tacExpr (BinaryOp pos bop expr1 expr2 (TypeCheckerOutput t lr _ _)) = do
+tacExpr (BinaryOp pos bop expr1 expr2 (TypeCheckerOutput t lr _ )) = do
     xaddr1 <- tacExpr expr1
     xaddr2 <- tacExpr expr2
     case (xaddr1, xaddr2) of
@@ -85,16 +85,18 @@ tacExpr (BinaryOp pos bop expr1 expr2 (TypeCheckerOutput t lr _ _)) = do
             return $ Addr temp3
 
 -- expr should have leftvalue information otherwise the semantic static inference is wrong
-tacExpr (Deref pos expr (TypeCheckerOutput t lr _ _)) = do
+tacExpr (Deref pos expr (TypeCheckerOutput t lr _ )) = do
     xaddr <- tacExpr expr
     case (xaddr, lr) of
-        (Addr a, Just LeftValue) -> return $ RefAddr a
+        (Addr a, Just LeftValue) -> do
+            return $ RefAddr a
         (RefAddr a, Just LeftValue) -> do
             case extractType a of
                 PointerFType t -> do
                     f <- newtemp
                     let temp = f t
-                    out $ TacPointerLoad
+                    out $ TacPointerLoad temp t a
+                    return $ Addr temp 
         (Addr a, Just RightValue) -> do
             f <- newtemp
             let temp = f t
@@ -105,20 +107,27 @@ tacExpr (Deref pos expr (TypeCheckerOutput t lr _ _)) = do
             let temp = f t
             out $ TacNullary temp t a
             return $ Addr temp
-tacExpr (Ref pos expr (TypeCheckerOutput t lr _ _)) = do
+
+
+tacExpr (Ref pos expr (TypeCheckerOutput t lr _ )) = do
     xaddr <- tacExpr expr
-    case (xaddr) of
-        (Addr a) -> return $ RefAddr a
+    case xaddr of
+        (Addr a) -> do
+                    f <- newtemp
+                    let temp = f t
+                    out $ TacReferenceLoad temp t a
+                    return $ Addr temp 
         (RefAddr a) -> return $ RefAddr a
-tacExpr (Id pos (Ident ident) (TypeCheckerOutput t lr m _)) = case m of
+
+tacExpr (Id pos (Ident ident) (TypeCheckerOutput t lr m )) = case m of
     (Just ModalityVal) -> return . Addr $ ProgVar {progVar = buildProgVariable ident pos t ModalityVal, addrT = t}
     (Just ModalityRef) -> return . RefAddr $ ProgVar {progVar = buildProgVariable ident pos t ModalityRef, addrT = t}
-tacExpr (BasicLiteral pos bs (TypeCheckerOutput t lr m _)) = case bs of
-    IntLiteral i (TypeCheckerOutput _ _ _ _) -> return . Addr $ TacLit {tacLit = TacLitInt i, addrT = t}
-    CharLiteral c (TypeCheckerOutput _ _ _ _) -> return . Addr $ TacLit {tacLit = TacLitChar c, addrT = t}
-    FloatLiteral f (TypeCheckerOutput _ _ _ _) -> return . Addr $ TacLit {tacLit = TacLitFloat f, addrT = t}
-    BoolLiteral b (TypeCheckerOutput _ _ _ _) -> return . Addr $ TacLit {tacLit = TacLitBool b, addrT = t}
 
+tacExpr (BasicLiteral pos bs (TypeCheckerOutput t lr m )) = case bs of
+    IntLiteral i (TypeCheckerOutput _ _ _ ) -> return . Addr $ TacLit {tacLit = TacLitInt i, addrT = t}
+    CharLiteral c (TypeCheckerOutput _ _ _ ) -> return . Addr $ TacLit {tacLit = TacLitChar c, addrT = t}
+    FloatLiteral f (TypeCheckerOutput _ _ _ ) -> return . Addr $ TacLit {tacLit = TacLitFloat f, addrT = t}
+    BoolLiteral b (TypeCheckerOutput _ _ _ ) -> return . Addr $ TacLit {tacLit = TacLitBool b, addrT = t}
 -- StringLiteral str (TypeCheckerOutput _ _ _ _) ->  Here I give university up!!!!!!!!
 
 buildProgVariable :: String -> Position -> Type -> Modality -> TacProgVariable
