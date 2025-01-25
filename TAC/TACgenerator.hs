@@ -1,9 +1,9 @@
-module TACEmitter.TACgenerator where
+module TAC.TACgenerator where
 
 import AST
 import Control.Monad.Trans.State
 import Foreign (new)
-import TACEmitter.TAC
+import TAC.TAC
 
 type In = TypeCheckerOutput
 type MyMon = State (Int, [TAC])
@@ -30,6 +30,10 @@ extractType addr = case addr of
     ProgVar _ t -> t
     TacLit _ t -> t
     Temporary _ t -> t
+
+tacBlock :: [Instruction TypeCheckerOutput] -> [TAC] 
+tacBlock [] = []
+tacBlock (x:xs) = genCode (tacInstr x) ++ tacBlock xs
 
 tacExpr :: Expr In -> MyMon XAddr
 tacExpr (UnaryOp pos uop expr (TypeCheckerOutput t lr _ )) = do
@@ -91,12 +95,10 @@ tacExpr (Deref pos expr (TypeCheckerOutput t lr _ )) = do
         (Addr a, Just LeftValue) -> do
             return $ RefAddr a
         (RefAddr a, Just LeftValue) -> do
-            case extractType a of
-                PointerFType t -> do
                     f <- newtemp
-                    let temp = f t
+                    let temp = f (extractType a)
                     out $ TacPointerLoad temp t a
-                    return $ Addr temp 
+                    return $ RefAddr temp 
         (Addr a, Just RightValue) -> do
             f <- newtemp
             let temp = f t
@@ -105,7 +107,7 @@ tacExpr (Deref pos expr (TypeCheckerOutput t lr _ )) = do
         (RefAddr a, Just RightValue) -> do
             f <- newtemp
             let temp = f t
-            out $ TacNullary temp t a
+            out $ TacPointerLoad temp t a
             return $ Addr temp
 
 tacExpr (Ref pos expr (TypeCheckerOutput t lr _ )) = do
@@ -116,7 +118,12 @@ tacExpr (Ref pos expr (TypeCheckerOutput t lr _ )) = do
                     let temp = f t
                     out $ TacReferenceLoad temp t a
                     return $ Addr temp 
-        (RefAddr a) -> return $ RefAddr a
+        (RefAddr a) -> return $ Addr a
+
+tacExpr (ArrayAcc _ _ _ (TypeCheckerOutput t lr m )) = do
+    f <- newtemp
+    let temp = f t
+    return $ Addr temp
 
 tacExpr (Id pos (Ident ident) (TypeCheckerOutput t lr m )) = case m of
     (Just ModalityVal) -> return . Addr $ ProgVar {progVar = buildProgVariable ident pos t ModalityVal, addrT = t}
@@ -128,6 +135,28 @@ tacExpr (BasicLiteral pos bs (TypeCheckerOutput t lr m )) = case bs of
     FloatLiteral f (TypeCheckerOutput _ _ _ ) -> return . Addr $ TacLit {tacLit = TacLitFloat f, addrT = t}
     BoolLiteral b (TypeCheckerOutput _ _ _ ) -> return . Addr $ TacLit {tacLit = TacLitBool b, addrT = t}
 -- StringLiteral str (TypeCheckerOutput _ _ _ _) ->  Here I give university up!!!!!!!!
+
+tacInstr :: Instruction TypeCheckerOutput -> MyMon ()
+tacInstr (Assignment pos expr1 aop expr2 (TypeCheckerOutput t lr _ )) = do
+    xaddr1 <- tacExpr expr1
+    xaddr2 <- tacExpr expr2
+    case (xaddr1, xaddr2) of
+        (Addr addr1, Addr addr2) -> do 
+            out $ TacNullary addr1 t addr2
+            return ()
+        (RefAddr addr1, Addr addr2) -> do
+            out $ TacPointerStore addr1 t addr2
+            return ()
+        (Addr addr1, RefAddr addr2) -> do
+            out $ TacPointerLoad addr1 t addr2
+            return ()
+        (RefAddr addr1, RefAddr addr2) -> do
+            f <- newtemp
+            let temp = f t
+            out $ TacPointerLoad temp t addr1
+            out $ TacPointerStore addr2 t temp
+            return ()
+
 
 buildProgVariable :: String -> Position -> Type -> Modality -> TacProgVariable
 buildProgVariable ident pos t modality = TacProgVar {varName = VarId {vLoc = pos, vId = ident}, varModality = modality, varType = t}

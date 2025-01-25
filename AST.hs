@@ -7,7 +7,7 @@
 
 -- | The abstract syntax of language Parser.
 module AST where
-
+import PrettyPrinter
 import Data.String qualified
 
 type ParserOutput = ()
@@ -44,6 +44,15 @@ data Type
     | PointerFType Type
     | FunctionFType [(Modality, Type)] Type
     deriving (Eq, Ord, Show, Read)
+
+instance PrettyPrinter Type where
+    pp(IntFType) = "int"
+    pp(BoolFType) = "bool"
+    pp(CharFType) = "char"
+    pp(FloatFType) = "float"
+    pp(PointerFType _) = "ref"
+    pp(_) = ""
+
 
 type Block a = [Instruction a]
 
@@ -106,20 +115,55 @@ data UnaryOp
     | PostIncr
     deriving (Show, Eq, Ord, Read)
 
+instance PrettyPrinter UnaryOp where
+    pp (Not) = "!"
+    pp (Neg) = "-"
+    pp (Coercion) = "()"
+    pp (PreDecr) = "--"
+    pp (PreIncr) = "++"
+    pp (PostDecr) = "--"
+    pp (PostIncr) = "++"
+
 data BinaryOp
     = ArithmeticOp ArithOp
     | RelationalOp RelOp
     | BooleanOp BoolOp
     deriving (Show, Eq, Ord, Read)
 
+instance PrettyPrinter BinaryOp where
+    pp (ArithmeticOp ar) = pp ar
+    pp (RelationalOp rel) = pp rel
+    pp (BooleanOp bol) = pp bol
+
+
 data ArithOp = Add | Sub | Mul | Mod | Pow | Div
     deriving (Show, Eq, Ord, Read)
+
+instance PrettyPrinter ArithOp where
+    pp (Add) = "+"
+    pp (Sub) = "-"
+    pp (Mul) = "*"
+    pp (Mod) = "%"   
+    pp (Pow) = "^"
+    pp (Div) = "/"
 
 data RelOp = NotEq | GreaterThanEq | GreaterThan | LessThanEq | LessThan | Eq
     deriving (Show, Eq, Ord, Read)
 
+instance PrettyPrinter RelOp where
+    pp (NotEq) = "!="
+    pp (GreaterThanEq) = ">="
+    pp (GreaterThan) = ">"
+    pp (LessThanEq) = "<="   
+    pp (LessThan) = "<"
+    pp (Eq) = "=="
+
 data BoolOp = Or | And
     deriving (Show, Eq, Ord, Read)
+
+instance PrettyPrinter BoolOp where
+    pp (Or) = "||"
+    pp (And) = "&&"
 
 newtype Ident = Ident String
     deriving (Eq, Ord, Show, Read, Data.String.IsString)

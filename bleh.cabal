@@ -60,11 +60,13 @@ common shared-properties
     AST
     ConstantSolver.Solver
     Itest
-    TACEmitter.TAC
-    TACEmitter.TACgenerator
+    TAC.TAC
+    TAC.TACgenerator
     TypeChecker.Algs
     TypeChecker.Checker
     Utils
+    TACtest
+    PrettyPrinter
 
   -- manually specified modules
   other-modules:
