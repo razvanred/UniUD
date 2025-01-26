@@ -1,5 +1,7 @@
 module Utils where
 
+import Text.Pretty.Simple (CheckColorTty (..), OutputOptions (..), defaultOutputOptionsDarkBg, pPrintOpt)
+
 pass :: b -> a -> b
 pass = return
 
@@ -17,3 +19,6 @@ pass3 cons1 cons2 cons3 cons4 x = cons1 (cons2 x) (cons3 x) (cons4 x) x
 
 shift3 f a b c = f c a b
 shift4 f a b c d = f d a b c
+
+prp :: (Show a) => a -> IO ()
+prp = pPrintOpt CheckColorTty defaultOutputOptionsDarkBg {outputOptionsIndentAmount = 1, outputOptionsPageWidth = 0, outputOptionsCompactParens = True}
