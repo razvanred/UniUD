@@ -25,6 +25,11 @@ int2AddrTempName = Temporary
 genCode :: MyMon a -> [TAC]
 genCode gen = reverse $ snd $ execState gen (0, [])
 
+extractAddrFromXAddr :: XAddr -> Addr
+extractAddrFromXAddr xaddr = case xaddr  of 
+        Addr addr -> addr
+        RefAddr addr -> addr    
+
 extractType :: Addr -> Type
 extractType addr = case addr of
     ProgVar _ t -> t
@@ -51,6 +56,7 @@ tacExpr (UnaryOp pos uop expr (TypeCheckerOutput t lr _ )) = do
             out $ TacUnary temp uop t temp1
             return $ Addr temp
 -- (ArraAddr base offset ) -> TODO
+
 tacExpr (BinaryOp pos bop expr1 expr2 (TypeCheckerOutput t lr _ )) = do
     xaddr1 <- tacExpr expr1
     xaddr2 <- tacExpr expr2
@@ -88,43 +94,44 @@ tacExpr (BinaryOp pos bop expr1 expr2 (TypeCheckerOutput t lr _ )) = do
             out $ TacBinary temp3 bop t temp1 temp2
             return $ Addr temp3
 
--- expr should have leftvalue information otherwise the semantic static inference is wrong
 tacExpr (Deref pos expr (TypeCheckerOutput t lr _ )) = do
     xaddr <- tacExpr expr
     case (xaddr, lr) of
-        (Addr a, Just LeftValue) -> do
-            return $ RefAddr a
-        (RefAddr a, Just LeftValue) -> do
-                    f <- newtemp
-                    let temp = f (extractType a)
-                    out $ TacPointerLoad temp t a
-                    return $ RefAddr temp 
-        (Addr a, Just RightValue) -> do
-            f <- newtemp
-            let temp = f t
-            out $ TacPointerLoad temp t a
-            return $ Addr temp
-        (RefAddr a, Just RightValue) -> do
-            f <- newtemp
-            let temp = f t
-            out $ TacPointerLoad temp t a
-            return $ Addr temp
-
-tacExpr (Ref pos expr (TypeCheckerOutput t lr _ )) = do
+        (Addr a, Just LeftValue) -> do return $ RefAddr a
+        (RefAddr a, Just LeftValue) -> buildTempANDIndirectLoad a True 
+        (Addr a, Just RightValue) -> do return $ RefAddr a
+        (RefAddr a, Just RightValue) -> buildTempANDIndirectLoad a True
+            
+bBuildTempANDIndirectLoad :: Addr -> Bool -> MyMon XAddr
+buildTempANDIndirectLoad addr wannaRefAddr = do
+    f <- newtemp
+    let ta = case (extractType addr) of
+                PointerFType t -> t
+             -- _ -> error!!!  
+    let temp = f ta
+    out $ TacPointerLoad temp ta addr
+    case wannaRefAddr of
+        True -> return $ RefAddr temp
+        False -> return $ Addr temp
+        
+--Here lr should be RightValue!!
+tacExpr (Ref pos expr (TypeCheckerOutput t _ _ )) = do
     xaddr <- tacExpr expr
-    case xaddr of
+    case xaddr of 
         (Addr a) -> do
                     f <- newtemp
                     let temp = f t
                     out $ TacReferenceLoad temp t a
                     return $ Addr temp 
-        (RefAddr a) -> return $ Addr a
+        (RefAddr a) -> do
+             case a of
+                  ProgVar pv _ -> do return . Addr $ ProgVar pv t 
+                  TacLit tl _ -> do return . Addr $ TacLit tl t 
+                  Temporary i _ -> do return . Addr $ Temporary i t 
+            
+        --return $ Addr a
 
-tacExpr (ArrayAcc _ _ _ (TypeCheckerOutput t lr m )) = do
-    f <- newtemp
-    let temp = f t
-    return $ Addr temp
-
+    
 tacExpr (Id pos (Ident ident) (TypeCheckerOutput t lr m )) = case m of
     (Just ModalityVal) -> return . Addr $ ProgVar {progVar = buildProgVariable ident pos t ModalityVal, addrT = t}
     (Just ModalityRef) -> return . RefAddr $ ProgVar {progVar = buildProgVariable ident pos t ModalityRef, addrT = t}
@@ -137,26 +144,31 @@ tacExpr (BasicLiteral pos bs (TypeCheckerOutput t lr m )) = case bs of
 -- StringLiteral str (TypeCheckerOutput _ _ _ _) ->  Here I give university up!!!!!!!!
 
 tacInstr :: Instruction TypeCheckerOutput -> MyMon ()
-tacInstr (Assignment pos expr1 aop expr2 (TypeCheckerOutput t lr _ )) = do
+tacInstr (Assignment pos expr1 aop expr2 tco) = do
     xaddr1 <- tacExpr expr1
     xaddr2 <- tacExpr expr2
     case (xaddr1, xaddr2) of
         (Addr addr1, Addr addr2) -> do 
+            let t = extractType . extractAddrFromXAddr $ xaddr2 
             out $ TacNullary addr1 t addr2
             return ()
         (RefAddr addr1, Addr addr2) -> do
+            let t = extractType . extractAddrFromXAddr $ xaddr2 
             out $ TacPointerStore addr1 t addr2
             return ()
         (Addr addr1, RefAddr addr2) -> do
+            let t = extractType . extractAddrFromXAddr $ xaddr1 
             out $ TacPointerLoad addr1 t addr2
             return ()
         (RefAddr addr1, RefAddr addr2) -> do
-            f <- newtemp
-            let temp = f t
-            out $ TacPointerLoad temp t addr1
-            out $ TacPointerStore addr2 t temp
+            let temp = buildTempANDIndirectLoad addr2 False
+            out $ TacPointerStore addr1 t temp
             return ()
 
+                                
+--TacPointerStore Addr Type Addr  -- ^ Indirect store (*x =ty y)
+--TacPointerLoad Addr Type Addr  -- ^ Indirect load (x =ty *y)
+  
 
 buildProgVariable :: String -> Position -> Type -> Modality -> TacProgVariable
 buildProgVariable ident pos t modality = TacProgVar {varName = VarId {vLoc = pos, vId = ident}, varModality = modality, varType = t}
