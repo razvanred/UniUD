@@ -8,15 +8,10 @@ import System.IO
 import Text.Pretty.Simple (pPrint)
 import TypeChecker.Algs qualified as CS2
 
--- parse x = case pBlock1 (myLexer x) of
---     Left _ -> show "error"
---     Right t -> show (resolveConstants 100 (buildBlock t ()))
-
-f :: String -> IO ()
 f x = do
     let Right pt = pBlock1 $ myLexer x
     let t = buildBlock pt ()
-    pPrint $ t
+    putStrLn $ show t
     putStrLn "---"
     pPrint $ CS2.resolveConstantsDemo 1 t
     putStrLn "~~~"

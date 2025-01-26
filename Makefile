@@ -34,7 +34,7 @@ parser : lexer $(CODEGEN)/Par.hs
 $(BUILD) :
 	mkdir -p $(BUILD)
 
-$(addprefix $(CODEGEN)/,Lex.x Par.y Abs.hs Print.hs Test.hs) : grammar.cf
+$(addprefix $(CODEGEN)/,Lex.x Par.y Abs.hs Print.hs Test.hs) : | grammar.cf
 	$(RUN_BNFC)
 	cp grammar.cf $(@D)/Parser.cf
 	bnfc --haskell --functor -d $(@D)/Parser.cf

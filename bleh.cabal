@@ -43,6 +43,7 @@ extra-doc-files: readme.md
 common shared-properties
   -- Base language which the package is written in.
   default-language: GHC2021
+  -- List of Haskell executables needed to build this component
   build-tool-depends:
     alex:alex,
     happy:happy,
@@ -54,15 +55,13 @@ common shared-properties
     pretty-simple >=4.1.3.0,
     transformers,
 
-  -- cabal-gild: discover --exclude=Main.hs --exclude ITest.hs --exclude=Parser/* --exclude=TACEmitter/*
+  -- cabal-gild: discover --include Utils.hs --include AST.hs --include */* --exclude Parser/* --exclude TAC/*
   other-modules:
     AST
     ConstantSolver.Solver
     TypeChecker.Algs
     TypeChecker.Checker
     Utils
-    TACtest
-    PrettyPrinter
 
   -- manually specified modules
   other-modules:
@@ -72,8 +71,6 @@ common shared-properties
     Parser.Par
     Parser.Print
 
--- Directories containing source files.
--- hs-source-dirs:   .
 common warnings
   ghc-options:
     -Wall
@@ -84,10 +81,11 @@ common warnings
 library noBuild
   buildable: False
   other-modules:
-    TACEmitter.TAC
-    TACEmitter.TACgenerator
+    -- PrettyPrinter
+    TAC.TAC
+    TAC.TACgenerator
+    TACTest
 
---   configure-options: --ghc --array --coerce --info
 executable main
   -- Import common warning flags.
   import: shared-properties, warnings
