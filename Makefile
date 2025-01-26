@@ -53,6 +53,9 @@ $(BUILD)/Main : parser $(addprefix $(CODEGEN)/,Abs.hs Print.hs Test.hs) | $(BUIL
 main :
 	cabal build main
 
+itest:
+	cabal repl itest --repl-options="-interactive-print=Text.Pretty.Simple.pPrint"
+
 # Rules for cleaning generated files.
 
 clean :

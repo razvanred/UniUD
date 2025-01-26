@@ -40,8 +40,6 @@ build-type: Simple
 -- Extra doc files to be distributed with the package, such as a CHANGELOG or a README.
 extra-doc-files: readme.md
 
--- Extra source files to be distributed with the package, such as examples, or a tutorial module.
--- extra-source-files:
 common shared-properties
   -- Base language which the package is written in.
   default-language: GHC2021
@@ -51,17 +49,15 @@ common shared-properties
 
   build-depends:
     array,
-    base ==4.19.1.0,
+    base >=4.19.1.0,
     containers,
+    pretty-simple >=4.1.3.0,
     transformers,
 
-  -- cabal-gild: discover --exclude=Main.hs --exclude=Parser/*
+  -- cabal-gild: discover --exclude=Main.hs --exclude ITest.hs --exclude=Parser/* --exclude=TACEmitter/*
   other-modules:
     AST
     ConstantSolver.Solver
-    Itest
-    TAC.TAC
-    TAC.TACgenerator
     TypeChecker.Algs
     TypeChecker.Checker
     Utils
@@ -84,6 +80,13 @@ common warnings
     -Wno-name-shadowing
     -Wno-missing-signatures
 
+-- fake target to make HLS happy
+library noBuild
+  buildable: False
+  other-modules:
+    TACEmitter.TAC
+    TACEmitter.TACgenerator
+
 --   configure-options: --ghc --array --coerce --info
 executable main
   -- Import common warning flags.
@@ -91,12 +94,6 @@ executable main
   -- .hs or .lhs file containing the Main module.
   main-is: Main.hs
 
--- Modules included in this executable, other than Main.
--- LANGUAGE extensions used by modules in this package.
--- other-extensions:
--- fake target to make HLS happy
-executable itest-fake
-  scope: private
+library itest
   import: shared-properties
-  main-is: ITest.hs
-  buildable: False
+  exposed-modules: ITest
