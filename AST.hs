@@ -18,7 +18,7 @@ data ConstantSolverOutput = ConstantSolverOutput
     }
     deriving (Eq, Ord, Show, Read)
 
-data TypeCheckerOutput = TypeCheckerOutput {t :: Type, lrv :: Maybe LeftRightValue, modality :: Maybe Modality}
+data ErrorCollectorOutput = ErrorCollectorOutput {t :: Type, lrv :: Maybe LeftRightValue, modality :: Maybe Modality}
     deriving (Eq, Ord, Show, Read)
 
 -- lrv is used to give information about the fact wether we want to generate
