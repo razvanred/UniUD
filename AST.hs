@@ -12,12 +12,17 @@ import Data.String qualified
 
 type ParserOutput = ()
 data ConstantSolverOutput = ConstantSolverOutput
-    { replacedFromConstant :: Maybe (Instruction ParserOutput),
-      maxRecursion :: Bool,
-      constantAlreadyDefined :: Maybe (Instruction ParserOutput)
+    { csReplacedFromConstant :: Maybe (Instruction ParserOutput),
+      csMaxRecursion :: Bool,
+      csConstantAlreadyDefined :: Maybe (Instruction ParserOutput)
     }
     deriving (Eq, Ord, Show, Read)
-
+data TypeCheckerOutput = TypeCheckerOutput
+    { tcReplacedFromConstant :: Maybe (Instruction ParserOutput),
+      tcMaxRecursion :: Bool,
+      tcConstantAlreadyDefined :: Maybe (Instruction ParserOutput)
+    }
+    deriving (Eq, Ord, Show, Read)
 data ErrorCollectorOutput = ErrorCollectorOutput {t :: Type, lrv :: Maybe LeftRightValue, modality :: Maybe Modality}
     deriving (Eq, Ord, Show, Read)
 

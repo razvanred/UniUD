@@ -10,7 +10,7 @@ import Prelude hiding (id)
 type In = ParserOutput
 type Out = ConstantSolverOutput
 type ConstantTable = Map Ident (Instruction In)
-none = ConstantSolverOutput {replacedFromConstant = Nothing, maxRecursion = False, constantAlreadyDefined = Nothing}
+none = ConstantSolverOutput{csReplacedFromConstant = Nothing, csMaxRecursion = False, csConstantAlreadyDefined = Nothing}
 
 resolveConstantsDemo maxDepth instructions = resolveBlock instructions Map.empty Map.empty
   where
@@ -22,7 +22,7 @@ resolveConstantsDemo maxDepth instructions = resolveBlock instructions Map.empty
     resolveInstructions (i : is) extEnv curEnv = case i of
         decl@(ConstantDecl _ id _ _) -> case curEnv !? id of
             Nothing -> (none <$ decl) : resolveInstructions is extEnv (insert id decl curEnv)
-            Just previousDecl -> (none {constantAlreadyDefined = Just previousDecl} <$ decl) : rest -- warn constant redefined
+            Just previousDecl -> (none{csConstantAlreadyDefined = Just previousDecl} <$ decl) : rest -- warn constant redefined
         (NestedBlock pos blockIs _) -> NestedBlock pos (resolveBlock blockIs extEnv curEnv) none : rest
         (FunctionDecl pos id params declType blockIs _) ->
             FunctionDecl pos id ((fmap . (<$)) none params) (resolveDeclType declType mergedEnv) (resolveBlock blockIs extEnv curEnv) none : rest
@@ -49,17 +49,17 @@ resolveConstantsDemo maxDepth instructions = resolveBlock instructions Map.empty
     resolveExpr expr env = resolve maxDepth expr none
       where
         resolve :: Int -> Expr In -> Out -> Expr Out
-        resolve 0 expr = \x -> x {maxRecursion = True} <$ expr
+        resolve 0 expr = \x -> x{csMaxRecursion = True} <$ expr
         resolve depth (UnaryOp pos op expr _) = pass1 (UnaryOp pos op) (resolve depth expr)
         resolve depth (BinaryOp pos op expr1 expr2 _) = pass2 (BinaryOp pos op) (resolve depth expr1) (resolve depth expr2)
         resolve depth (Ref pos expr _) = pass1 (Ref pos) (resolve depth expr)
         resolve depth (Deref pos expr _) = pass1 (Deref pos) (resolve depth expr)
         resolve depth (ArrayAcc pos expr1 expr2 _) = pass2 (ArrayAcc pos) (resolve depth expr1) (resolve depth expr2)
         resolve depth (FunctionCall pos id exprs _) = pass1 (FunctionCall pos id) ((<$> exprs) . flip (resolve depth))
-        resolve _ bl@(BasicLiteral {}) = (<$ bl)
+        resolve _ bl@(BasicLiteral{}) = (<$ bl)
         resolve depth (ArrayLiteral pos exprs _) = pass1 (ArrayLiteral pos) ((<$> exprs) . flip (resolve depth))
         resolve depth (RangedArray pos expr1 expr2 _) = pass2 (RangedArray pos) (resolve depth expr1) (resolve depth expr2)
         resolve depth ident@(Id _ id _) = \x -> case env !? id of
-            Just decl@(ConstantDecl _ _ expr _) -> resolve (depth - 1) expr x {replacedFromConstant = Just (void decl)}
+            Just decl@(ConstantDecl _ _ expr _) -> resolve (depth - 1) expr x{csReplacedFromConstant = Just (void decl)}
             Just _ -> "instruction" `unexpectedIn` "ConstantTable"
             Nothing -> x <$ ident

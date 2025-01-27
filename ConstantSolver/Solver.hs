@@ -10,7 +10,7 @@ import Prelude hiding (id)
 type In = ParserOutput
 type Out = ConstantSolverOutput
 type ConstantTable = Map Ident (Instruction In)
-none = ConstantSolverOutput {replacedFromConstant = Nothing, maxRecursion = False, constantAlreadyDefined = Nothing}
+none = ConstantSolverOutput{csReplacedFromConstant = Nothing, csMaxRecursion = False, csConstantAlreadyDefined = Nothing}
 
 -- changeTypeParameterExpr :: b -> Expr a -> Expr b
 -- changeTypeParameterExpr = (<$)
@@ -40,7 +40,7 @@ resolveInstructionList (i : is) extCt curCt = case i of
         Nothing -> (none <$ decl) : resolveInstructionList is extCt updatedCt
           where
             updatedCt = insert id (void decl) curCt
-        Just previousDecl -> (none {constantAlreadyDefined = Just (void previousDecl)} <$ decl) : resolveInstructionList is extCt curCt
+        Just previousDecl -> (none{csConstantAlreadyDefined = Just (void previousDecl)} <$ decl) : resolveInstructionList is extCt curCt
     _ -> resolveInstruction i extCt curCt : resolveInstructionList is extCt curCt
 
 resolveInstruction :: Instruction In -> ConstantTable -> ConstantTable -> Instruction Out
@@ -58,7 +58,7 @@ resolveInstruction x extCt curCt = case x of
     IfThenElse pos expr1 blk1 blk2 _ -> IfThenElse pos (resolveExpr expr1 extCt curCt) (resolveBlock blk1 extCt curCt) (resolveBlock blk2 extCt curCt) none
     Assignment pos expr1 aop expr2 _ -> Assignment pos (resolveExpr expr1 extCt curCt) aop (resolveExpr expr2 extCt curCt) none
     Expression pos expr _ -> Expression pos (resolveExpr expr extCt curCt) none
-    ConstantDecl {} -> "instruction" `unexpectedDuring` "resolveInstruction"
+    ConstantDecl{} -> "instruction" `unexpectedDuring` "resolveInstruction"
 
 resolveParameter :: Parameter In -> ConstantTable -> ConstantTable -> Parameter Out
 resolveParameter (Param mod id declT _) extCt curCt = Param mod id (resolveDeclType declT extCt curCt) none
@@ -73,7 +73,7 @@ resolveExpr :: Expr In -> ConstantTable -> ConstantTable -> Expr Out
 resolveExpr x extCt curCt = resolveExprDepth maxDepth x extCt curCt none
 
 resolveExprDepth :: Int -> Expr In -> ConstantTable -> ConstantTable -> Out -> Expr Out
-resolveExprDepth 0 expr _ _ annotation = annotation {maxRecursion = True} <$ expr
+resolveExprDepth 0 expr _ _ annotation = annotation{csMaxRecursion = True} <$ expr
 resolveExprDepth maxDepth (UnaryOp pos unop expr _) extCt curCt annotation = UnaryOp pos unop (resolveExprDepth maxDepth expr extCt curCt annotation) annotation
 resolveExprDepth maxDepth (BinaryOp pos bop expr1 expr2 _) extCt curCt annotation = BinaryOp pos bop (resolveExprDepth maxDepth expr1 extCt curCt annotation) (resolveExprDepth maxDepth expr2 extCt curCt annotation) annotation
 resolveExprDepth maxDepth (Ref pos expr _) extCt curCt annotation = Ref pos (resolveExprDepth maxDepth expr extCt curCt annotation) annotation
@@ -82,8 +82,8 @@ resolveExprDepth maxDepth (ArrayAcc pos expr1 expr2 _) extCt curCt annotation = 
 resolveExprDepth maxDepth (FunctionCall pos id actualParameters _) extCt curCt annotation = FunctionCall pos id (map (\y -> resolveExprDepth maxDepth y extCt curCt annotation) actualParameters) annotation
 resolveExprDepth maxDepth (ArrayLiteral pos listExp _) extCt curCt annotation = ArrayLiteral pos (map (\y -> resolveExprDepth maxDepth y extCt curCt annotation) listExp) annotation
 resolveExprDepth maxDepth (RangedArray pos expr1 expr2 _) extCt curCt annotation = RangedArray pos (resolveExprDepth maxDepth expr1 extCt curCt annotation) (resolveExprDepth maxDepth expr2 extCt curCt annotation) annotation
-resolveExprDepth _ bl@(BasicLiteral {}) _ _ annotation = annotation <$ bl
+resolveExprDepth _ bl@(BasicLiteral{}) _ _ annotation = annotation <$ bl
 resolveExprDepth maxDepth ident@(Id _ id _) extCt curCt annotation = case union curCt extCt !? id of
     Nothing -> annotation <$ ident
-    Just constDecl@(ConstantDecl _ _ expr _) -> resolveExprDepth (maxDepth - 1) expr extCt curCt annotation {replacedFromConstant = Just (void constDecl)}
+    Just constDecl@(ConstantDecl _ _ expr _) -> resolveExprDepth (maxDepth - 1) expr extCt curCt annotation{csReplacedFromConstant = Just (void constDecl)}
     Just _ -> "instruction" `unexpectedIn` "ConstantTable"
