@@ -40,6 +40,12 @@ build-type: Simple
 -- Extra doc files to be distributed with the package, such as a CHANGELOG or a README.
 extra-doc-files: readme.md
 
+common warnings
+  ghc-options:
+    -Wall
+    -Wno-name-shadowing
+    -Wno-missing-signatures
+
 common shared-properties
   -- Base language which the package is written in.
   default-language: GHC2021
@@ -71,12 +77,6 @@ common shared-properties
     Parser.Par
     Parser.Print
 
-common warnings
-  ghc-options:
-    -Wall
-    -Wno-name-shadowing
-    -Wno-missing-signatures
-
 -- fake target to make HLS happy
 library noBuild
   buildable: False
@@ -87,11 +87,10 @@ library noBuild
     TACTest
 
 executable main
-  -- Import common warning flags.
   import: shared-properties, warnings
   -- .hs or .lhs file containing the Main module.
   main-is: Main.hs
 
 library itest
-  import: shared-properties
+  import: shared-properties, warnings
   exposed-modules: ITest

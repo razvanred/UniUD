@@ -21,4 +21,7 @@ shift3 f a b c = f c a b
 shift4 f a b c d = f d a b c
 
 prp :: (Show a) => a -> IO ()
-prp = pPrintOpt CheckColorTty defaultOutputOptionsDarkBg {outputOptionsIndentAmount = 1, outputOptionsPageWidth = 0, outputOptionsCompactParens = True}
+prp = pPrintOpt CheckColorTty defaultOutputOptionsDarkBg {outputOptionsIndentAmount = 2, outputOptionsPageWidth = 0, outputOptionsCompact = False, outputOptionsCompactParens = True}
+
+thing `unexpectedDuring` functionName = error $ "unexpected " ++ thing ++ " during " ++ functionName ++ "()"
+thing `unexpectedIn` functionName = error $ "unexpected " ++ thing ++ " in " ++ functionName

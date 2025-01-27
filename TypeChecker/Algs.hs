@@ -49,6 +49,7 @@ resolveConstantsDemo maxDepth instructions = resolveBlock instructions Map.empty
     resolveExpr expr env = resolve maxDepth expr none
       where
         resolve :: Int -> Expr In -> Out -> Expr Out
+        resolve 0 expr = \x -> x {maxRecursion = True} <$ expr
         resolve depth (UnaryOp pos op expr _) = pass1 (UnaryOp pos op) (resolve depth expr)
         resolve depth (BinaryOp pos op expr1 expr2 _) = pass2 (BinaryOp pos op) (resolve depth expr1) (resolve depth expr2)
         resolve depth (Ref pos expr _) = pass1 (Ref pos) (resolve depth expr)
@@ -58,8 +59,7 @@ resolveConstantsDemo maxDepth instructions = resolveBlock instructions Map.empty
         resolve _ bl@(BasicLiteral {}) = (<$ bl)
         resolve depth (ArrayLiteral pos exprs _) = pass1 (ArrayLiteral pos) ((<$> exprs) . flip (resolve depth))
         resolve depth (RangedArray pos expr1 expr2 _) = pass2 (RangedArray pos) (resolve depth expr1) (resolve depth expr2)
-        resolve 0 ident = \x -> x {maxRecursion = True} <$ ident
         resolve depth ident@(Id _ id _) = \x -> case env !? id of
             Just decl@(ConstantDecl _ _ expr _) -> resolve (depth - 1) expr x {replacedFromConstant = Just (void decl)}
-            Just _ -> error "unexpected instruction in ConstantTable"
+            Just _ -> "instruction" `unexpectedIn` "ConstantTable"
             Nothing -> x <$ ident

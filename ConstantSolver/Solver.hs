@@ -4,6 +4,7 @@ import AST
 import Control.Monad (void)
 import Data.Map.Strict (Map, insert, union, (!?))
 import Data.Map.Strict qualified as Map
+import Utils (unexpectedDuring, unexpectedIn)
 import Prelude hiding (id)
 
 type In = ParserOutput
@@ -57,7 +58,7 @@ resolveInstruction x extCt curCt = case x of
     IfThenElse pos expr1 blk1 blk2 _ -> IfThenElse pos (resolveExpr expr1 extCt curCt) (resolveBlock blk1 extCt curCt) (resolveBlock blk2 extCt curCt) none
     Assignment pos expr1 aop expr2 _ -> Assignment pos (resolveExpr expr1 extCt curCt) aop (resolveExpr expr2 extCt curCt) none
     Expression pos expr _ -> Expression pos (resolveExpr expr extCt curCt) none
-    ConstantDecl {} -> error "unexcpected instruction during resolveInstruction"
+    ConstantDecl {} -> "instruction" `unexpectedDuring` "resolveInstruction"
 
 resolveParameter :: Parameter In -> ConstantTable -> ConstantTable -> Parameter Out
 resolveParameter (Param mod id declT _) extCt curCt = Param mod id (resolveDeclType declT extCt curCt) none
@@ -72,7 +73,7 @@ resolveExpr :: Expr In -> ConstantTable -> ConstantTable -> Expr Out
 resolveExpr x extCt curCt = resolveExprDepth maxDepth x extCt curCt none
 
 resolveExprDepth :: Int -> Expr In -> ConstantTable -> ConstantTable -> Out -> Expr Out
-resolveExprDepth 0 expr _ _ annotation = (annotation {maxRecursion = True}) <$ expr
+resolveExprDepth 0 expr _ _ annotation = annotation {maxRecursion = True} <$ expr
 resolveExprDepth maxDepth (UnaryOp pos unop expr _) extCt curCt annotation = UnaryOp pos unop (resolveExprDepth maxDepth expr extCt curCt annotation) annotation
 resolveExprDepth maxDepth (BinaryOp pos bop expr1 expr2 _) extCt curCt annotation = BinaryOp pos bop (resolveExprDepth maxDepth expr1 extCt curCt annotation) (resolveExprDepth maxDepth expr2 extCt curCt annotation) annotation
 resolveExprDepth maxDepth (Ref pos expr _) extCt curCt annotation = Ref pos (resolveExprDepth maxDepth expr extCt curCt annotation) annotation
@@ -85,4 +86,4 @@ resolveExprDepth _ bl@(BasicLiteral {}) _ _ annotation = annotation <$ bl
 resolveExprDepth maxDepth ident@(Id _ id _) extCt curCt annotation = case union curCt extCt !? id of
     Nothing -> annotation <$ ident
     Just constDecl@(ConstantDecl _ _ expr _) -> resolveExprDepth (maxDepth - 1) expr extCt curCt annotation {replacedFromConstant = Just (void constDecl)}
-    Just _ -> error "unexpected instruction in ConstantTable"
+    Just _ -> "instruction" `unexpectedIn` "ConstantTable"

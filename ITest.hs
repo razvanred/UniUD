@@ -1,9 +1,10 @@
+{-# OPTIONS_GHC -w #-}
+
 module ITest where
 
 import ConstantSolver.Solver
 import Parser.ASTBuilder
 import Parser.Par (myLexer, pBlock1)
-import System.IO
 import TypeChecker.Algs qualified as CS2
 import Utils (prp)
 

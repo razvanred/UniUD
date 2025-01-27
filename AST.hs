@@ -133,11 +133,4 @@ data BasicLiteral a
     deriving (Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 -- | Start position (line, column) of something.
-type Position = Maybe (Int, Int)
-
-pattern NoPosition :: Position
-pattern NoPosition = Nothing
-
--- | Get the start position of something.
-pattern Position :: Int -> Int -> Position
-pattern Position line col = Just (line, col)
+type Position = (Int, Int)
