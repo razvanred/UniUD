@@ -1,4 +1,4 @@
-module ConstantSolver.Solver (resolveConstants) where
+module ConstantSolver.Solver {- resolveConstants -}() where
 
 import AST
 import Control.Monad (void)
@@ -8,8 +8,11 @@ import Utils (unexpectedDuring, unexpectedIn)
 import Prelude hiding (id)
 
 type In = ParserOutput
+
 type Out = ConstantSolverOutput
+
 type ConstantTable = Map Ident (Instruction In)
+
 none = ConstantSolverOutput{csReplacedFromConstant = Nothing, csMaxRecursion = False, csConstantAlreadyDefined = Nothing}
 
 -- changeTypeParameterExpr :: b -> Expr a -> Expr b
@@ -38,8 +41,8 @@ resolveInstructionList [] _ _ = []
 resolveInstructionList (i : is) extCt curCt = case i of
     decl@(ConstantDecl _ id _ _) -> case Map.lookup id curCt of
         Nothing -> (none <$ decl) : resolveInstructionList is extCt updatedCt
-          where
-            updatedCt = insert id (void decl) curCt
+            where
+                updatedCt = insert id (void decl) curCt
         Just previousDecl -> (none{csConstantAlreadyDefined = Just (void previousDecl)} <$ decl) : resolveInstructionList is extCt curCt
     _ -> resolveInstruction i extCt curCt : resolveInstructionList is extCt curCt
 
