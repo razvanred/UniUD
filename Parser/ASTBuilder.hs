@@ -1,29 +1,43 @@
 {-# LANGUAGE PatternSynonyms #-}
 
-module Parser.ASTBuilder (buildBlock) where
+module Parser.ASTBuilder (buildTree) where
 
 import AST
 import Control.Monad (liftM2)
-import Data.Char (toUpper)
+import Data.Char (isUpper, toUpper)
+import Data.Set qualified as Set
 import Parser.Abs qualified
-import Utils (pass, pass1, pass2, pass3, unexpectedDuring)
+import Utils
 
--- buildAST :: Parser.Abs.Block -> a -> [Instruction a]
--- buildAST block@(Parser.Abs.Blck pos instructions) = case pos of
---     Just _ -> buildBlock block
---     Nothing -> buildBlock $ Parser.Abs.Blck (Just (0, 0)) instructions
+buildTree :: Parser.Abs.Block -> [Instruction ParserOutput]
+-- unfortunate choices
+buildTree block = buildBlock block ParserOutput{pswarnings = Set.empty}
 
 buildFail e@(c : cs) = e `unexpectedDuring` ("build" ++ toUpper (c) : cs)
 buildFail "" = "empty string" `unexpectedDuring` "buildFail"
 
-buildBlock :: Parser.Abs.Block -> a -> [Instruction a]
+buildBlock :: Parser.Abs.Block -> ParserOutput -> [Instruction ParserOutput]
 buildBlock (Parser.Abs.Blck _ instructions) x = flip buildInstruction x <$> instructions
 
-buildInstruction :: Parser.Abs.Instruction -> a -> Instruction a
+buildInstruction :: Parser.Abs.Instruction -> ParserOutput -> Instruction ParserOutput
 buildInstruction (Parser.Abs.Decl _ declaration) = case declaration of
-    (Parser.Abs.ConstDecl (Just pos) ident expr) -> pass1 (ConstantDecl pos (buildIdent ident)) (buildExpr expr)
-    (Parser.Abs.VarDecl (Just pos) ident declType expr) -> pass2 (VariableDecl pos (buildIdent ident)) (buildDeclType declType) (buildExpr expr)
-    (Parser.Abs.FunDecl (Just pos) ident parameters declType block) -> \x -> FunctionDecl pos (buildIdent ident) (flip buildParameter x <$> parameters) (buildDeclType declType x) (buildBlock block x) x
+    (Parser.Abs.ConstDecl (Just pos) (Parser.Abs.Ident ident) expr) ->
+        ( if all isUpper ident
+            then
+                id
+            else
+                (pass1 (|<) LowercaseConstant)
+        )
+            . pass1 (ConstantDecl pos ident) (buildExpr expr)
+    (Parser.Abs.VarDecl (Just pos) (Parser.Abs.Ident ident@(h : _)) declType expr) ->
+        ( if isUpper h
+            then
+                (UpperCaseSymbol |<)
+            else
+                id
+        )
+            . pass2 (VariableDecl pos ident) (buildDeclType declType) (buildExpr expr)
+    (Parser.Abs.FunDecl (Just pos) (Parser.Abs.Ident ident) parameters declType block) -> \x -> FunctionDecl pos ident (flip buildParameter x <$> parameters) (buildDeclType declType x) (buildBlock block x) x
     _ -> buildFail "instruction"
 buildInstruction (Parser.Abs.Stmt _ statement) = case statement of
     (Parser.Abs.Compound (Just pos) block) -> pass1 (NestedBlock pos) (buildBlock block)
@@ -43,26 +57,26 @@ buildInstruction (Parser.Abs.Stmt _ statement) = case statement of
     (Parser.Abs.Assign (Just pos) expr1 assignmentop expr2) -> \x -> Assignment pos (buildExpr expr1 x) (buildAssignment_op assignmentop) (buildExpr expr2 x) x
     (Parser.Abs.StmntExpr (Just pos) expr) -> pass1 (Expression pos) (buildExpr expr)
     _ -> fail
-  where
-    fail = buildFail "instruction"
+    where
+        fail = buildFail "instruction"
 
-buildIdent :: Parser.Abs.Ident -> Ident
-buildIdent (Parser.Abs.Ident str) = Ident str
+-- buildIdent :: Parser.Abs.Ident -> Ident
+-- buildIdent (Parser.Abs.Ident str) = toUpper <$> str
 
-buildDeclType :: Parser.Abs.Type -> a -> DeclType a
+buildDeclType :: Parser.Abs.Type -> ParserOutput -> DeclType ParserOutput
 buildDeclType (Parser.Abs.BsType _ basicType) = pass $ buildBasicType basicType
-buildDeclType (Parser.Abs.ArrayType _ expr declType) = liftM2 ArrayType (Just . buildExpr expr) (buildDeclType declType)
-buildDeclType (Parser.Abs.UnsizedArrayType _ declType) = ArrayType Nothing . buildDeclType declType
-buildDeclType (Parser.Abs.Pointer _ declType) = PointerType . buildDeclType declType
+buildDeclType (Parser.Abs.ArrayType _ expr declType) = liftM2 DArrayType (Just . buildExpr expr) (buildDeclType declType)
+buildDeclType (Parser.Abs.UnsizedArrayType _ declType) = DArrayType Nothing . buildDeclType declType
+buildDeclType (Parser.Abs.Pointer _ declType) = DPointerType . buildDeclType declType
 
-buildParameter :: Parser.Abs.Parameter -> a -> Parameter a
-buildParameter (Parser.Abs.Param _ modality ident declType) = pass1 (Param (buildModality modality) (buildIdent ident)) (buildDeclType declType)
+buildParameter :: Parser.Abs.Parameter -> ParserOutput -> Parameter ParserOutput
+buildParameter (Parser.Abs.Param _ modality (Parser.Abs.Ident ident) declType) = pass1 (Param (buildModality modality) ident) (buildDeclType declType)
 
 buildModality :: Parser.Abs.Modality -> Modality
 buildModality (Parser.Abs.Modality_ref _) = ModalityRef
 buildModality _ = ModalityVal
 
-buildExpr :: Parser.Abs.Expr -> a -> Expr a
+buildExpr :: Parser.Abs.Expr -> ParserOutput -> Expr ParserOutput
 buildExpr (Parser.Abs.Or (Just pos) expr1 expr2) = pass2 (BinaryOp pos $ BooleanOp Or) (buildExpr expr1) (buildExpr expr2)
 buildExpr (Parser.Abs.And (Just pos) expr1 expr2) = pass2 (BinaryOp pos $ BooleanOp And) (buildExpr expr1) (buildExpr expr2)
 buildExpr (Parser.Abs.Not (Just pos) expr) = pass1 (UnaryOp pos Not) (buildExpr expr)
@@ -86,28 +100,28 @@ buildExpr (Parser.Abs.PostDecr (Just pos) expr) = pass1 (UnaryOp pos PostDecr) (
 buildExpr (Parser.Abs.Ref (Just pos) expr) = pass1 (Ref pos) (buildExpr expr)
 buildExpr (Parser.Abs.Deref (Just pos) expr) = pass1 (Deref pos) (buildExpr expr)
 buildExpr (Parser.Abs.ArrayAcc (Just pos) expr1 expr2) = pass2 (ArrayAcc pos) (buildExpr expr1) (buildExpr expr2)
-buildExpr (Parser.Abs.Id (Just pos) ident) = Id pos (buildIdent ident)
-buildExpr (Parser.Abs.FunCall (Just pos) ident exprs) = \x -> FunctionCall pos (buildIdent ident) (flip buildExpr x <$> exprs) x
-buildExpr (Parser.Abs.Int (Just pos) integer) = pass1 (BasicLiteral pos) (IntLiteral integer)
-buildExpr (Parser.Abs.Char (Just pos) char) = pass1 (BasicLiteral pos) (CharLiteral char)
-buildExpr (Parser.Abs.String (Just pos) string) = pass1 (BasicLiteral pos) (StringLiteral string)
-buildExpr (Parser.Abs.Float (Just pos) double) = pass1 (BasicLiteral pos) (FloatLiteral double)
-buildExpr (Parser.Abs.Bool (Just pos) boolean) = pass1 (BasicLiteral pos) (buildBoolean boolean)
+buildExpr (Parser.Abs.Id (Just pos) (Parser.Abs.Ident ident)) = Id pos ident
+buildExpr (Parser.Abs.FunCall (Just pos) (Parser.Abs.Ident ident) exprs) = \x -> FunctionCall pos ident (flip buildExpr x <$> exprs) x
+buildExpr (Parser.Abs.Int (Just pos) integer) = IntLiteral pos integer
+buildExpr (Parser.Abs.Char (Just pos) char) = CharLiteral pos char
+buildExpr (Parser.Abs.String (Just pos) string) = StringLiteral pos string
+buildExpr (Parser.Abs.Float (Just pos) double) = FloatLiteral pos double
+buildExpr (Parser.Abs.Bool (Just pos) boolean) = BoolLiteral pos (buildBoolean boolean)
 buildExpr (Parser.Abs.Array (Just pos) exprs) = \x -> ArrayLiteral pos (flip buildExpr x <$> exprs) x
 buildExpr (Parser.Abs.RangedArray (Just pos) expr1 expr2) = pass2 (RangedArray pos) (buildExpr expr1) (buildExpr expr2)
 buildExpr _ = "expression" `unexpectedDuring` "buildExpr"
 
-buildBasicType :: Parser.Abs.BasicType -> DeclType a
-buildBasicType (Parser.Abs.BasicType_bool _) = BoolType
-buildBasicType (Parser.Abs.BasicType_char _) = CharType
-buildBasicType (Parser.Abs.BasicType_int _) = IntType
-buildBasicType (Parser.Abs.BasicType_string _) = StringType
-buildBasicType (Parser.Abs.BasicType_float _) = FloatType
-buildBasicType (Parser.Abs.BasicType_void _) = VoidType
+buildBasicType :: Parser.Abs.BasicType -> DeclType ParserOutput
+buildBasicType (Parser.Abs.BasicType_bool _) = DBoolType
+buildBasicType (Parser.Abs.BasicType_char _) = DCharType
+buildBasicType (Parser.Abs.BasicType_int _) = DIntType
+buildBasicType (Parser.Abs.BasicType_string _) = DStringType
+buildBasicType (Parser.Abs.BasicType_float _) = DFloatType
+buildBasicType (Parser.Abs.BasicType_void _) = DVoidType
 
-buildBoolean :: Parser.Abs.Boolean -> a -> BasicLiteral a
-buildBoolean (Parser.Abs.Boolean_True _) = BoolLiteral True
-buildBoolean (Parser.Abs.Boolean_False _) = BoolLiteral False
+buildBoolean :: Parser.Abs.Boolean -> Bool
+buildBoolean (Parser.Abs.Boolean_True _) = True
+buildBoolean (Parser.Abs.Boolean_False _) = False
 
 buildAssignment_op :: Parser.Abs.Assignment_op -> AssignmentOp
 buildAssignment_op (Parser.Abs.AssignOp _) = BasicAssignment

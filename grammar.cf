@@ -1,15 +1,14 @@
--- commenti singola linea
 comment "#" ;
 comment "#<" ">#" ;
 
 entrypoints Block1;
 
 -- un blocco è una sequenza di istruzioni
-_.           Block ::= "{" Block1 "}" ;
-Blck.        Block1 ::= [ Instruction ];
+_.          Block ::= "{" Block1 "}" ;
+Blck.       Block1 ::= [ Instruction ];
 -- un'istruzione è una dichiarazione o uno statement
-Stmt.         Instruction ::= Statement;
-Decl.         Instruction ::= Declaration;
+Stmt.       Instruction ::= Statement;
+Decl.       Instruction ::= Declaration;
 separator Instruction ";";
 
 -- dichiarazione di costante
@@ -22,7 +21,7 @@ VarDecl.    Declaration ::= "var" Ident ":" Type ":=" Expr ;
 FunDecl.    Declaration ::= "def" Ident "(" [Parameter] ")" ":" Type Block ;
 separator   Parameter "," ;
 Param.      Parameter ::= Modality Ident ":" Type ;
--- | "const" | "res" | "valres" | "name"
+
 rules  Modality ::= {-empty-} | "val" | "ref" ; 
 
 -- sintassi tipi
@@ -34,13 +33,10 @@ rules BasicType ::= "bool" | "char" | "int" | "string" | "float" | "void" ;
 
 -- statements
 Compound.   Statement ::= Block ;
--- ProcCall.   Statement ::= FunCall ;
 Jump.       Statement ::= JumpStatement  ;
 Iter.       Statement ::= IterStatement ;
 Branch.     Statement ::= BranchStatement ;
 Assign.     Statement ::= Expr Assignment_op Expr ;
-
--- _.          Statement ::= Statement1 ;
 
 StmntExpr.   Statement ::= Expr ;
 
@@ -85,7 +81,6 @@ Pow.        Expr6 ::= Expr7 "**" Expr6 ;
 
 Neg.        Expr7 ::= "-" Expr8 ;
 
--- increment handling
 PreInc.     Expr8 ::= "++" Expr9 ;
 PreDecr.    Expr8 ::= "--" Expr9 ;
 PostInc.    Expr8 ::= Expr9 "++" ;
@@ -109,6 +104,6 @@ rules Boolean ::= "True" | "False" ;
 
 Array.        Expr12 ::= "[" [Expr4] "]" ;
 separator nonempty Expr4 "," ;
-RangedArray.  Expr12 ::= "[" Expr4 "..." Expr4 "]" ;
+RangedArray.  Expr12 ::= "[" Expr4 "..." Expr4 "]" ; -- al momento bloccato in analisi di semantica statica
 
 coercions Expr 12 ;

@@ -44,13 +44,25 @@
 # - warn: {name: Use explicit module export list}
 #
 # Replace a $ b $ c with a . b $ c
-# - group: {name: dollar, enabled: true}
+- group: { name: dollar, enabled: true }
 #
 # Generalise map to fmap, ++ to <>
-# - group: {name: generalise, enabled: true}
+# - group: { name: generalise, enabled: true }
 #
 # Warn on use of partial functions
-# - group: {name: partial, enabled: true}
+- group: { name: partial, enabled: true }
+#
+# Switch return for pure
+- group: { name: future, enabled: true }
+
+# Replacements which introduce a dependency on the extra library
+- group: { name: extra, enabled: true }
+
+# Suggests more generic methods, but only when they are shorter, e.g. maybe True becomes all
+- group: { name: generalise-for-conciseness, enabled: true }
+
+# Encourage a simple beginner friendly style, learning about related functions
+- group: { name: teaching, enabled: true }
 
 # Ignore some builtin hints
 # - ignore: {name: Use let}
@@ -61,7 +73,7 @@
       within:
         [Parser.ASTBuilder, Parser.Abs, Parser.Lex, Parser.Par, Parser.Print],
     }
-- ignore: { "Use camelCase", within Parser.ASTBuilder }
+- ignore: { "Use camelCase", within: Parser.ASTBuilder }
 # Define some custom infix operators
 # - fixity: infixr 3 ~^#^~
 

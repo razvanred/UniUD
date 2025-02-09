@@ -7,3 +7,8 @@ scope = "all"
 type = "Exclude"
 id = "STAN-0206"
 scope = "all"
+
+[[check]]
+type = "Exclude"
+id = "STAN-0301"
+scope = "all"
