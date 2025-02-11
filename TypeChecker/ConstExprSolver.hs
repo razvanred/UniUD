@@ -71,7 +71,9 @@ fRelationalOp _ = Nothing
 
 -- helpers
 
-checkLiteral = isLiteral . assertEGeqStep 2
+checkLiteral e
+  | ErrorType /= eType e = isLiteral e
+  | otherwise = False
 
 rStep2 = fillOutStep2 RightValue
 

@@ -48,6 +48,9 @@ fromLeft either = Either.fromLeft either $ error "fromLeft failed"
 
 fromRight either = Either.fromRight either $ error "fromRight failed"
 
+allEqual [] = True
+allEqual (x : xs) = all (== x) xs
+
 type Endo a = a -> a
 
 -- not quite, these are "boxes", more than a functor as they can be

@@ -1,7 +1,9 @@
 module TypeChecker.TypeUtils where
 
 import AST
-import Algebra.Lattice (joinLeq, (\/))
+import Algebra.Lattice (joinLeq, (/\))
+import Control.Applicative ((<|>))
+import Control.Monad (void)
 import Data.Map.Strict (Map)
 import Data.Set (Set, union)
 import Data.Set qualified as Set
@@ -33,7 +35,7 @@ data Step
         sReplacedFromConstant :: Maybe (Instruction ConstantSolverOutput),
         sType :: Type,
         sSide :: LeftRightValue,
-        sBinding :: Maybe (Int, Instruction Step)
+        sBinding :: Maybe (Int, Modality, Instruction Step)
       }
   deriving (Show)
 
@@ -72,10 +74,12 @@ stepnToOut x' =
       tswarnings = swarnings x,
       tcReplacedFromConstant = sReplacedFromConstant x,
       tcType = sType x,
-      tcSide = sSide x
+      tcSide = sSide x,
+      tcBinding = maybe Nothing f (sBinding x)
     }
   where
-    x = assertGeqStep 2 x'
+    f (depth, modty, is) = Just (depth, modty, void is)
+    x = assertGeqStep 3 x'
 
 x |<> oldX = x{serrors = serrors x `union` serrors oldX, swarnings = swarnings x `union` swarnings oldX}
 
@@ -113,17 +117,30 @@ isLiteral _ = False
 popPointer (PointerType tpe) = tpe
 popPointer _ = "unexpected" `unexpectedIn` "popPointer"
 
+popArray (ArrayType _ tpe) = tpe
+popArray _ = "unexpected" `unexpectedIn` "popArray"
+
+ePopPointer tpe e' = updateAnn x{sType = popPointer tpe, sSide = LeftValue} e
+  where
+    x = ann e
+    e = assertEGeqStep 2 e'
+
+ePopArray tpe e' = updateAnn x{sType = popArray tpe} e
+  where
+    x = ann e
+    e = assertEGeqStep 2 e'
+
 pushPointer = PointerType
 
-ePopPointer e' = updateAnn x{sType = (popPointer . sType) x} e
+ePushPointer tpe e' = updateAnn x{sType = pushPointer tpe, sSide = RightValue} e
   where
     x = ann e
     e = assertEGeqStep 2 e'
 
-ePushPointer e' = updateAnn x{sType = (pushPointer . sType) x} e
-  where
-    x = ann e
-    e = assertEGeqStep 2 e'
+isAssignOp Not = False
+isAssignOp Neg = False
+isAssignOp Coercion = False
+isAssignOp _ = True
 
 unOpSup Not = BoolType
 unOpSup Neg = BoolType
@@ -144,42 +161,103 @@ binOpSup (ArithmeticOp Div) = FloatType
 binOpSup (RelationalOp _) = FloatType
 binOpSup (BooleanOp _) = BoolType
 
-satisfiesUnOp op e =
-  maybeBool
-    (not (tpe `joinLeq` opSup))
-    ( tpe,
-      case op of
-        Neg -> Right "numeric"
-        Not -> Left opSup
-        _ -> ("operator " ++ show op) `unexpectedDuring` "satisfiesUnOp"
-    )
+satisfiesUnOp op expr
+  | isAssignOp op, RightValue <- eSide expr = Just (eType expr, Right "LValue")
+  | otherwise =
+      maybeBool
+        (not (tpe `joinLeq` opSup))
+        . (,) tpe
+        $ ( case op of
+              Neg -> Right "numeric"
+              Not -> Left opSup
+              _ -> ("operator " ++ show op) `unexpectedDuring` "satisfiesUnOp"
+          )
   where
-    tpe = eType e
+    tpe = eType expr
     opSup = unOpSup op
 
-satisfiesAssignOp op e' = eType e `joinLeq` assignOpSup op && eSide e == LeftValue
-  where
-    e = assertEGeqStep 2 e'
-
-satisfiesRef e'
-  | PointerType _ <- eType e,
-    LeftValue <- eSide e =
-      True
-  | otherwise = False
-  where
-    e = assertEGeqStep 2 e'
-
-satisfiesDeref e'
-  | PointerType _ <- eType e = True
-  | otherwise = False
-  where
-    e = assertEGeqStep 2 e'
-
-satisfiesBinOp op e1 e2 =
+satisfiesBinOp op expr1 expr2 =
   ( maybeBool (not (tpe1 `joinLeq` opSup)) (tpe1, Left opSup),
     maybeBool (not (tpe2 `joinLeq` opSup)) (tpe2, Left opSup)
   )
   where
-    tpe1 = eType (assertEGeqStep 2 e1)
-    tpe2 = eType (assertEGeqStep 2 e2)
+    tpe1 = eType expr1
+    tpe2 = eType expr2
     opSup = binOpSup op
+
+satisfiesRef expr
+  | ErrorType /= tpe,
+    LeftValue <- eSide expr =
+      Nothing
+  | otherwise = Just $ case tpe of
+      (PointerType _) -> (tpe, Right "LValue")
+      _ -> (tpe, Right "Pointer")
+  where
+    tpe = eType expr
+
+satisfiesDeref expr
+  | PointerType _ <- tpe =
+      Nothing
+  | otherwise = Just (tpe, Right "Pointer")
+  where
+    tpe = eType expr
+
+satisfiesAccessor indExpr expr =
+  ( maybeBool (IntType /= indType) (indType, Left IntType),
+    maybeBool isArray (tpe, Right "Array")
+  )
+  where
+    isArray = case tpe of
+      (ArrayType _ _) -> True
+      _ -> False
+    indType = eType indExpr
+    tpe = eType expr
+
+satisfiesFCall (FunctionType argTypes _) exprs =
+  case (argCount, foldl (<|>) Nothing argErrors) of
+    (False, Nothing) -> (False, argErrors)
+    _ -> (argCount, argErrors)
+  where
+    argCount = length argTypes /= length exprs
+    argErrors = zipWith f argTypes (liftA2 (,) eSide eType <$> exprs)
+    f (modty, argType) (side, tpe) = case modty of
+      ModalityVal | tpe `joinLeq` argType -> Nothing
+      ModalityRef
+        | argType == tpe ->
+            if LeftValue == side
+              then Nothing
+              else
+                Just (tpe, Right "LValue")
+      _ -> Just (tpe, Left argType)
+satisfiesFCall _ _ = "input" `unexpectedIn` "satisfiesFCall"
+
+satisfiesArrayLiteral (ArrayLiteral _ exprs _)
+  | null exprs = (True, False)
+  | ErrorType <- sup = (False, True)
+  | otherwise = (False, False)
+  where
+    exprTypes = eType <$> exprs
+    sup = foldl1 (/\) exprTypes
+    f tpe
+      | tpe `joinLeq` sup = Nothing
+      | otherwise = Just (tpe, sup)
+satisfiesArrayLiteral _ = "input" `unexpectedIn` "satisfiesFCall"
+
+satisfiesAssignment op expr1 expr2 = 0
+  where
+    err1 = maybeBool (ErrorType == eType expr1 || RightValue == eSide expr1) $ TypeMismatch tpe1 (Right "LValue")
+    err2 = maybeBool (tpe2 `joinLeq` tpe1) $ TypeMismatch tpe2 (Left tpe1)
+    tpe1 = eType expr1
+    tpe2 = eType expr2
+
+-- argErrors = zipWith3 f argTypes (liftA2 (,) eSide eType <$> exprs) (argName <$> args)
+--     f (modty, argType) (side, tpe) name = case modty of
+--       ModalityVal | argType == tpe -> Nothing
+--       ModalityRef
+--         | argType == tpe ->
+--             if side == LeftValue
+--               then Nothing
+--               else
+--                 Just (name, tpe, Right "LValue")
+--       _ -> Just (name, tpe, Left argType)
+--     argName (Param _ id _ _) = id

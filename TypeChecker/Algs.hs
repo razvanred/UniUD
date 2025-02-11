@@ -76,7 +76,7 @@ solveConstants maxDepth instructions = resolveBlock instructions Map.empty Map.e
                         (ArrayLiteral pos exprs _) -> ArrayLiteral pos (resolve depth fAnn <$> exprs) x
                         (RangedArray pos expr1 expr2 _) -> RangedArray pos (resolve depth fAnn expr1) (resolve depth fAnn expr2) x
                         ident@(Id _ id _) -> case env !? id of
-                            Just decl@(ConstantDecl _ _ expr _) -> resolve (depth - 1) (fillOutOut $ Just decl) $ {-rollback anns-} {-rollback anns-} {-rollback anns-} outToIn <$> expr
+                            Just decl@(ConstantDecl _ _ expr _) -> resolve (depth - 1) (fillOutOut $ Just decl) $ {-rollback anns-} outToIn <$> expr
                             Nothing -> x <$ ident
                             _ -> "instruction" `unexpectedIn` "constanTable"
                         expr -> x <$ expr -- no recursion

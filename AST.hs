@@ -19,7 +19,10 @@ data Error
     | TypeMismatch Type (Either Type String) -- halts
     | UnsolvableType
     | UnknownSymbol
-    | UnexpectedRightValue
+    | ArgCount
+    | EmptyArray
+    | VariableAlreadyDefined (Instruction ())
+    | FunctionAlreadyDefined (Instruction ())
     deriving (Show)
 
 errorRank = \case
@@ -27,7 +30,10 @@ errorRank = \case
     TypeMismatch tpe1 tpe2 -> "2" ++ show tpe1 ++ show tpe2
     UnsolvableType -> "3"
     UnknownSymbol -> "4"
-    UnexpectedRightValue -> "5"
+    ArgCount -> "5"
+    EmptyArray -> "6"
+    VariableAlreadyDefined{} -> "7"
+    FunctionAlreadyDefined{} -> "8"
 
 instance Eq Error where
     (==) = (==) `on` errorRank
@@ -82,7 +88,8 @@ data TypeCheckerOutput = TypeCheckerOutput
       tswarnings :: Set Warning,
       tcReplacedFromConstant :: Maybe (Instruction ConstantSolverOutput),
       tcType :: Type,
-      tcSide :: LeftRightValue
+      tcSide :: LeftRightValue,
+      tcBinding :: Maybe (Int, Modality, Instruction ())
     }
     deriving (Show)
 
@@ -98,8 +105,7 @@ data ErrorCollectorOutput = ErrorCollectorOutput
       modality :: Maybe Modality,
       posID :: Maybe (Instruction ())
     }
-
--- deriving (Eq, Ord, Show, Read)
+    deriving (Show)
 
 -- lrv is used to give information about the fact wether we want to generate
 --  the l-value or right-value of an expression.
@@ -218,7 +224,7 @@ instance Annotated Instruction a where
     updateAnn x (NestedBlock pos block _) = NestedBlock pos block x
     updateAnn x (ConstantDecl pos id expr _) = ConstantDecl pos id expr x
     updateAnn x (VariableDecl pos id declType expr _) = VariableDecl pos id declType expr x
-    updateAnn x (FunctionDecl pos id params declType expr _) = FunctionDecl pos id params declType expr x
+    updateAnn x (FunctionDecl pos id params declType block _) = FunctionDecl pos id params declType block x
     updateAnn x (Break pos _) = Break pos x
     updateAnn x (Continue pos _) = Continue pos x
     updateAnn x (ReturnVoid pos _) = ReturnVoid pos x
@@ -234,6 +240,19 @@ instance (StatusCollector Error a) => StatusCollector Error (Instruction a) wher
 
 instance (StatusCollector Warning a) => StatusCollector Warning (Instruction a) where
     (|<) e = pass1 updateAnn ((e |<) . ann)
+
+data Parameter a = Param Modality Ident (DeclType a) a
+    deriving (Show, Functor, Foldable, Traversable)
+
+instance (StatusCollector Error a) => StatusCollector Error (Parameter a) where
+    (|<) e = pass1 updateAnn ((e |<) . ann)
+
+instance (StatusCollector Warning a) => StatusCollector Warning (Parameter a) where
+    (|<) e = pass1 updateAnn ((e |<) . ann)
+
+instance Annotated Parameter a where
+    ann (Param _ _ _ x) = x
+    updateAnn x (Param modty id declType _) = Param modty id declType x
 
 data AssignmentOp = BasicAssignment | AssignMul | AssignAdd | AssignDiv | AssignSub | AssignPow | AssignAnd | AssignOr
     deriving (Show)
@@ -268,9 +287,6 @@ instance EndoFunctor DeclType where
                     (newAcc, newDeclType) = f acc declType
                     r = emapAccumL f newAcc
                     cnv e = (newAcc,) <$> e
-
-data Parameter a = Param Modality Ident (DeclType a) a
-    deriving (Show, Functor, Foldable, Traversable)
 
 data Modality = ModalityVal | ModalityRef
     deriving (Show)
@@ -450,10 +466,11 @@ astEmap :: (Instruction a -> Instruction a) -> Endo (DeclType a) -> Endo (Expr a
 astEmap fInstruction fDeclType fExpr = emapBlock f
     where
         f instruction = fInstruction $ case instruction of
-            (FunctionDecl pos id parameters declType block x) -> FunctionDecl pos id parameters (emap g declType) block x
+            (FunctionDecl pos id parameters declType block x) -> FunctionDecl pos id (parameters) (emap g declType) block x
             (While pos expr block x) -> While pos (emap fExpr expr) block x
             (IfThen pos expr block x) -> IfThen pos (emap fExpr expr) block x
             (IfThenElse pos expr block1 block2 x) -> IfThenElse pos (emap fExpr expr) block1 block2 x
+            (Expression pos expr x) -> Expression pos (emap fExpr expr) x
             _ -> instruction
         g declType = fDeclType $ case declType of
             (DArrayType (Just expr) declType) -> DArrayType (Just $ emap fExpr expr) (emap g declType)

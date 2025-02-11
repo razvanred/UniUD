@@ -67,6 +67,7 @@ common shared-properties
   -- cabal-gild: discover --include Utils.hs --include AST.hs --include */* --exclude Parser/* --exclude ConstantSolver/*
   other-modules:
     AST
+    ErrorCollector.ConvertForTAC
     TAC.TAC
     TAC.TACInstruction
     TAC.TACexpr
