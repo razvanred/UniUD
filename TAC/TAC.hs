@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-unused-matches #-}
+
 module TAC.TAC where
 
 import AST

@@ -75,10 +75,10 @@ stepnToOut x' =
       tcReplacedFromConstant = sReplacedFromConstant x,
       tcType = sType x,
       tcSide = sSide x,
-      tcBinding = maybe Nothing f (sBinding x)
+      tcBinding = f <$> sBinding x
     }
   where
-    f (depth, modty, is) = Just (depth, modty, void is)
+    f (depth, modty, is) = (depth, modty, void is)
     x = assertGeqStep 3 x'
 
 x |<> oldX = x{serrors = serrors x `union` serrors oldX, swarnings = swarnings x `union` swarnings oldX}
@@ -146,11 +146,11 @@ unOpSup Not = BoolType
 unOpSup Neg = BoolType
 unOpSup op = ("operator " ++ show op) `unexpectedDuring` "unOpSup"
 
-assignOpSup PreDecr = FloatType
-assignOpSup PreIncr = FloatType
-assignOpSup PostDecr = FloatType
-assignOpSup PostIncr = FloatType
-assignOpSup op = ("operator " ++ show op) `unexpectedDuring` "assignOpSup"
+fixOpSup PreDecr = FloatType
+fixOpSup PreIncr = FloatType
+fixOpSup PostDecr = FloatType
+fixOpSup PostIncr = FloatType
+fixOpSup op = ("operator " ++ show op) `unexpectedDuring` "assignOpSup"
 
 binOpSup (ArithmeticOp Add) = FloatType
 binOpSup (ArithmeticOp Sub) = FloatType
@@ -160,6 +160,9 @@ binOpSup (ArithmeticOp Pow) = FloatType
 binOpSup (ArithmeticOp Div) = FloatType
 binOpSup (RelationalOp _) = FloatType
 binOpSup (BooleanOp _) = BoolType
+
+assignOpSup BasicAssignment = ErrorType
+assignOpSup _ = FloatType
 
 satisfiesUnOp op expr
   | isAssignOp op, RightValue <- eSide expr = Just (eType expr, Right "LValue")
@@ -177,13 +180,17 @@ satisfiesUnOp op expr
     opSup = unOpSup op
 
 satisfiesBinOp op expr1 expr2 =
-  ( maybeBool (not (tpe1 `joinLeq` opSup)) (tpe1, Left opSup),
-    maybeBool (not (tpe2 `joinLeq` opSup)) (tpe2, Left opSup)
+  ( maybeBool (not (tpe1 `joinLeq` opSup)) (tpe1, Left expType),
+    maybeBool (not (tpe2 `joinLeq` opSup)) (tpe2, Left expType)
   )
   where
+    opSup = binOpSup op
     tpe1 = eType expr1
     tpe2 = eType expr2
-    opSup = binOpSup op
+    expType
+      | tpe1 `joinLeq` opSup = tpe1
+      | tpe2 `joinLeq` opSup = tpe2
+      | otherwise = opSup
 
 satisfiesRef expr
   | ErrorType /= tpe,
@@ -238,15 +245,18 @@ satisfiesArrayLiteral (ArrayLiteral _ exprs _)
   where
     exprTypes = eType <$> exprs
     sup = foldl1 (/\) exprTypes
-    f tpe
-      | tpe `joinLeq` sup = Nothing
-      | otherwise = Just (tpe, sup)
 satisfiesArrayLiteral _ = "input" `unexpectedIn` "satisfiesFCall"
 
-satisfiesAssignment op expr1 expr2 = 0
+satisfiesAssignment op expr1 expr2 =
+  ( error1,
+    maybeBool (tpe1 `joinLeq` tpe2) (tpe2, Left tpe1)
+  )
   where
-    err1 = maybeBool (ErrorType == eType expr1 || RightValue == eSide expr1) $ TypeMismatch tpe1 (Right "LValue")
-    err2 = maybeBool (tpe2 `joinLeq` tpe1) $ TypeMismatch tpe2 (Left tpe1)
+    error1
+      | RightValue <- eSide expr1 = Just (tpe1, Right "LValue")
+      | not (tpe1 `joinLeq` opSup) || ErrorType == tpe1 = Just (tpe1, Left opSup)
+      | otherwise = Nothing
+    opSup = assignOpSup op
     tpe1 = eType expr1
     tpe2 = eType expr2
 

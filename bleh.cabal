@@ -46,6 +46,9 @@ common warnings
     -Wno-name-shadowing
     -Wno-missing-signatures
     -fno-ignore-asserts
+    -- -fbreak-on-error
+
+
 
 common shared-properties
   -- Base language which the package is written in.
@@ -92,9 +95,6 @@ library noBuild
   buildable: False
   other-modules:
     -- PrettyPrinter
-    TAC.TAC
-    TAC.TACgenerator
-    TypeChecker.Test
 
 executable main
   import: shared-properties, warnings

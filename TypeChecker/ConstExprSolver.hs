@@ -140,15 +140,22 @@ solveExpr expr@(BinaryOp pos op lt1 lt2 x)
       | IntType <- sup,
         Just op <- liftA2 (<|>) fFloatOp fIntOp op =
           makeIntLit op
-      | Just op <- fRelationalOp op =
-          makeBoolLit op
+      | FloatType <- sup,
+        Just op <- fRelationalOp op =
+          makeBoolLit (biunpackPromoteFloat lt1 lt2) (op :: Double -> Double -> Bool)
+      | IntType <- sup,
+        Just op <- fRelationalOp op =
+          makeBoolLit (biunpackPromoteInt lt1 lt2) (op :: Integer -> Integer -> Bool)
+      | CharType <- sup,
+        Just op <- fRelationalOp op =
+          makeBoolLit (biunpackChar lt1 lt2) (op :: Char -> Char -> Bool)
       | Just op <- fBBoolOp op =
-          makeBoolLit op
+          makeBoolLit (biunpackBool lt1 lt2) op
       | otherwise = "mismatch" `unexpectedDuring` "solveBinOp"
       where
         newX = rStep2 sup x |<> ann lt2 |<> ann lt1
         makeCharLit op = CharLiteral pos (uncurry op (biunpackChar lt1 lt2)) newX
         makeIntLit op = IntLiteral pos (uncurry op (biunpackPromoteInt lt1 lt2)) newX
         makeFloatLit op = FloatLiteral pos (uncurry op (biunpackPromoteFloat lt1 lt2)) newX
-        makeBoolLit op = BoolLiteral pos (uncurry op (biunpackBool lt1 lt2)) newX
+        makeBoolLit vs op = BoolLiteral pos (uncurry op vs) newX
 solveExpr expr = expr

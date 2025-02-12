@@ -1,5 +1,6 @@
 {-# HLINT ignore "Avoid partial function" #-}
 {-# LANGUAGE ParallelListComp #-}
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 
 module TypeChecker.Checker where
@@ -28,7 +29,7 @@ type SymStack = [Map SymType (Map Ident SymEntry)]
 data Status = Status
     { symStack :: SymStack,
       function :: Maybe Type,
-      loop :: Maybe Type
+      loop :: Bool
     }
 
 -- todo
@@ -58,8 +59,8 @@ we |?< e
 
 addBind :: SymStack -> Modality -> Instruction Step -> Either SymEntry SymStack
 addBind symStack modality decl
-    | (VariableDecl _ id _ _ _) <- decl = f id modality Variable
-    | (FunctionDecl _ id _ _ _ _) <- decl = f id ModalityRef Function
+    | (VariableDecl _ id _ _ _) <- decl = trace "foo32" $ f id modality Variable
+    | (FunctionDecl _ id _ _ _ _) <- decl = trace "foo21w" $ (trace "foo2f3" $ f) id ModalityRef Function
     | otherwise = "instruction" `unexpectedIn` "addBind"
     where
         f id modality symType = case findIndex (\t -> id `member` (t Map.! symType)) symStack of
@@ -92,7 +93,7 @@ pushEnv :: SymStack -> SymStack
 pushEnv symStack = Map.fromList [(Variable, Map.empty), (Function, Map.empty)] : symStack
 
 buildDeclType :: DeclType Step -> Type
-buildDeclType declType = case solveVarDeclType declType ErrorType of
+buildDeclType declType = case solveVarDeclType (trace "pippus" declType) (trace "ppp" ErrorType) of
     (False, ErrorType) -> ErrorType
     (False, tpe) -> tpe
     _ -> "status" `unexpectedDuring` "buildDeclType"
@@ -113,6 +114,9 @@ solveVarDeclType DStringType initType
 solveVarDeclType DFloatType initType
     | FloatType == initType = (True, FloatType)
     | ErrorType == initType = (False, FloatType)
+solveVarDeclType DVoidType initType
+    | VoidType == initType = (True, VoidType)
+    | ErrorType == initType = (False, VoidType)
 solveVarDeclType (DPointerType declType) initType
     | PointerType tpe <- initType = PointerType <$> solveVarDeclType declType tpe
     | ErrorType == initType = PointerType <$> solveVarDeclType declType ErrorType
@@ -129,54 +133,54 @@ solveVarDeclType (DArrayType (Just (IntLiteral _ len1 Step2{sType = IntType})) d
                 ArrayType len1 <$> solveVarDeclType declType ErrorType
     | ErrorType == initType = ArrayType len1 <$> solveVarDeclType declType ErrorType
 solveVarDeclType (DArrayType{}) _ = (False, ErrorType)
-solveVarDeclType declType _ = solveVarDeclType declType ErrorType
+solveVarDeclType declType _ = solveVarDeclType (trace "a" declType) ErrorType
 
-functionDeclPass (FunctionDecl pos id args declType block x) =
-    case FunctionDecl pos id newArgDeclTypes declType block (rStep3 (FunctionType argTypes tpe) x) of
-        t | ErrorType <- returnType -> UnsolvableType |< t
-        t -> t
+functionDeclPass symStack (FunctionDecl pos id args' declType block x) =
+    case FunctionDecl pos id args declType block (rStep3 (FunctionType argTypes tpe) x) of
+        fDecl | ErrorType <- returnType -> (symStack, UnsolvableType |< fDecl)
+        fDecl | ErrorType <- tpe -> (symStack, fDecl)
+        fDecl -> case trace "foo76" $ addBind symStack ModalityRef fDecl of
+            Left (_, _, oldFDecl) -> (symStack, FunctionAlreadyDefined (void oldFDecl) |< fDecl)
+            Right symStack -> (symStack, fDecl)
     where
-        tpe =
-            if ErrorType `notElem` (snd <$> argTypes)
-                then
-                    returnType
-                else
-                    ErrorType
-        returnType = buildDeclType declType
-        newArgDeclTypes =
-            [ let newArg = eRStep3 tpe arg
+        returnType = trace "foo123" $ buildDeclType declType
+        argTypes = trace "foo1sdgew" $ [(modty, buildDeclType declType) | (Param modty _ declType _) <- args']
+        tpe
+            | ErrorType `notElem` (snd <$> argTypes) = trace "foo11sdfv1" $ returnType
+            | otherwise = trace "foo235f1" $ ErrorType
+        args =
+            [ let arg = eRStep3 tpe arg'
               in  if ErrorType == tpe
-                    then UnsolvableType |< newArg
-                    else newArg
+                    then UnsolvableType |< arg
+                    else arg
               | (_, tpe) <- argTypes
-              | arg <- args
+              | arg' <- args'
             ]
-        argTypes = [(modty, buildDeclType declType) | (Param modty _ declType _) <- args]
-functionDeclPass is = is
+functionDeclPass symStack is = (symStack, is)
 
-buildArrayLiteral (ArrayLiteral pos exprs x) = ArrayLiteral pos (promoteList (sup <$ exprTypes) exprs) newX
+buildArrayLiteral (ArrayLiteral pos exprs x) = ArrayLiteral pos (promoteTo sup <$> exprs) newX
     where
         newX = rStep3 (ArrayType (toInteger $ length exprs) sup) x
         exprTypes = eType <$> exprs
         sup = foldl1 (/\) exprTypes
 buildArrayLiteral _ = "expression" `unexpectedIn` "buildArrayLiteral"
 
-promote expr1 expr2 = (f expr1, f expr2)
+promoteTo tpe expr
+    | tpe /= ErrorType,
+      exprType `joinLeq` tpe =
+        UnaryOp (position expr) Coercion expr $ newStep3 RightValue tpe
+    | otherwise = expr
+    where
+        exprType = eType expr
+
+promote expr1 expr2 = (promoteTo sup expr1, promoteTo sup expr2)
     where
         sup = eType expr1 \/ eType expr2
-        f expr
-            | eType expr /= sup = UnaryOp (position expr) Coercion expr $ newStep3 RightValue sup
-            | otherwise = expr
 
-promoteList = zipWith f
-    where
-        f tpe expr
-            | eType expr `joinLeq` tpe = UnaryOp (position expr) Coercion expr $ newStep3 RightValue tpe
-            | otherwise = expr
+promoteList = zipWith promoteTo
 
-checkTree = checkBlock (Status (pushEnv []) Nothing Nothing)
+checkTree = checkBlock (Status (pushEnv []) Nothing False)
 
-checkExpr :: SymStack -> Expr Step -> Expr Step
 checkExpr symStack = emap f
     where
         f :: Expr Step -> Expr Step
@@ -241,80 +245,110 @@ checkExpr symStack = emap f
 -- (FloatLiteral pos v x) -> FloatLiteral pos v x
 -- (BoolLiteral pos v x) -> BoolLiteral pos v x
 
-checkBlock status@Status{symStack} block = emapAccumLBlock checkInstruction status{symStack = newSymStack} block2
+checkBlock status@Status{symStack} block' =
+    snd $ emapAccumLBlock (trace "foo12d7t" $ checkInstruction) status{symStack = newSymStack} block
     where
-        (newSymStack, block2) = mapAccumL f (pushEnv symStack) block1
-        block1 = emapBlock functionDeclPass block
-        f symStack fdecl@FunctionDecl{}
-            | ErrorType <- eType fdecl = (symStack, fdecl)
-            | otherwise = case addBind symStack ModalityRef fdecl of
-                Left (_, _, decl) -> (symStack, VariableAlreadyDefined (void decl) |< fdecl)
-                Right symStack -> (symStack, fdecl)
-        f symStack is = (symStack, is)
+        (newSymStack, block) = trace "foo1" $ emapAccumLBlock (trace "foo000" $ functionDeclPass) symStack block'
 
 checkInstruction :: Status -> Instruction Step -> (Status, Instruction Step)
-checkInstruction status@Status{symStack} (VariableDecl pos id declType expr x) =
-    if ok -- no, todo
-        then case addBind symStack ModalityVal variableDecl of
+checkInstruction status@Status{symStack} (VariableDecl pos id declType expr' x) =
+    case solveResult of
+        (False, ErrorType) -> (status, UnsolvableType |< variableDecl)
+        _ -> case addBind symStack ModalityVal variableDecl of
             (Left (_, _, oldDecl)) -> (status, VariableAlreadyDefined (void oldDecl) |< variableDecl)
             (Right symStack) -> (status{symStack}, variableDecl)
-        else case tpe of
-            ErrorType -> (status, UnsolvableType |< variableDecl)
-            _ -> (status, variableDecl)
     where
-        variableDecl = VariableDecl pos id declType newExpr (rStep3 tpe x)
-        exprType = eType newExpr
-        (ok, tpe) = solveVarDeclType declType exprType
-        newExpr = case emap (checkExpr symStack) expr of
-            t | not ok && ErrorType /= tpe -> TypeMismatch exprType (Left tpe) |?< t
-            t -> t
-checkInstruction status@Status{symStack} (FunctionDecl pos id args declType block x@Step3{sType = FunctionType argTypes retType}) =
-    (status, FunctionDecl pos id newArgs declType newBlock x)
+        tExpr = emap (checkExpr symStack) expr'
+        solveResult@(ok, tpe) = solveVarDeclType declType (eType tExpr)
+        expr
+            | ok || ErrorType == tpe = tExpr
+            | otherwise = TypeMismatch (eType expr) (Left tpe) |?< tExpr
+        variableDecl = VariableDecl pos id declType (promoteTo tpe expr) (rStep3 tpe x)
+checkInstruction status@Status{symStack} (FunctionDecl pos id args' declType block' x@Step3{sType = FunctionType argTypes retType}) =
+    (status, FunctionDecl pos id args declType block x)
     where
-        newBlock = checkBlock status{symStack = newSymStack, function = Just retType, loop = Nothing} block
-        (newSymStack, newArgs) = mapAccumL f (pushEnv symStack) $ zip bindings args
         bindings =
-            -- this was tragic mistake
-            [ (modty, VariableDecl pos id declType (Id pos id x) x)
-              | ((modty, _), Param _ id declType x) <-
-                    zip argTypes args
-            ]
+            trace "foo4" $
+                -- this was tragic mistake
+                [ (modty, VariableDecl pos id declType (Id pos id (trace "foo5" $ newStep3 RightValue tpe)) (trace "foo5" $ newStep3 RightValue tpe)) -- binding has fdecl x
+                  | ((modty, tpe), Param _ id declType x) <-
+                        zip argTypes args'
+                ]
+        (newSymStack, args) = trace "foo6" $ mapAccumL (trace "foocwewwq" $ f) (pushEnv symStack) $ zip bindings args'
+        block = trace "foo2002" $ checkBlock status{symStack = trace "foo7" $ newSymStack, function = Just retType, loop = False} block'
         f symStack (binding@(_, decl), arg)
             | ErrorType <- eType decl = (symStack, arg)
             | otherwise = case uncurry (addBind symStack) binding of
                 Left (_, _, decl) -> (symStack, VariableAlreadyDefined (void decl) |< arg)
                 Right symStack -> (symStack, arg)
-checkInstruction status@Status{symStack} e@(Assignment pos expr1 op expr2 x) = (status, e) -- TODO
-checkInstruction status@Status{symStack} (NestedBlock pos block x) =
-    (status, NestedBlock pos newBlock (rStep3 VoidType x))
+checkInstruction status@Status{symStack} (Assignment pos expr1' op expr2' x) =
+    case satisfiesAssignment op expr1 expr2 of
+        (Nothing, Nothing) ->
+            (status, Assignment pos expr1 op (promoteTo (eType expr1) expr2) (rStep3 VoidType x))
+        (err1, err2) ->
+            let f = maybe idty $ \(got, expected) -> (TypeMismatch got expected |?<)
+            in  (status, Assignment pos (f err1 expr1) op (f err2 expr2) (rStep3 VoidType x))
     where
-        newBlock = checkBlock status{symStack = pushEnv symStack} block
-checkInstruction status@Status{symStack} (While pos expr block x) =
-    (status, While pos newExpr newBlock (rStep3 VoidType x))
+        expr1 = checkExpr symStack expr1'
+        expr2 = checkExpr symStack expr2'
+checkInstruction status@Status{symStack} (NestedBlock pos block' x) =
+    (status, NestedBlock pos block (rStep3 VoidType x))
     where
-        newExpr = case checkExpr symStack expr of
+        block = checkBlock status{symStack = pushEnv symStack} block'
+checkInstruction status@Status{symStack} (While pos expr' block' x) =
+    (status, While pos expr block (rStep3 VoidType x))
+    where
+        block = checkBlock status{symStack = pushEnv symStack, loop = True} block'
+        expr = case checkExpr symStack expr' of
             t | BoolType <- eType t -> t
             t -> TypeMismatch (eType t) (Left BoolType) |?< t
-        newBlock = checkBlock status{symStack = pushEnv symStack} block
-checkInstruction status@Status{symStack} (IfThen pos expr block x) =
-    (status, IfThen pos newExpr newBlock (rStep3 VoidType x))
+checkInstruction status@Status{symStack} (IfThen pos expr' block' x) =
+    (status, IfThen pos expr block (rStep3 VoidType x))
     where
-        newExpr = case checkExpr symStack expr of
+        expr = case checkExpr symStack expr' of
             t | BoolType <- eType t -> t
             t -> TypeMismatch (eType t) (Left BoolType) |?< t
-        newBlock = checkBlock status{symStack = pushEnv symStack} block
-checkInstruction status@Status{symStack} (IfThenElse pos expr block1 block2 x) =
-    (status, IfThenElse pos newExpr newBlock1 newBlock2 (rStep3 VoidType x))
+        block = checkBlock status{symStack = pushEnv symStack} block'
+checkInstruction status@Status{symStack} (IfThenElse pos expr' block1' block2' x) =
+    (status, IfThenElse pos expr block1 block2 (rStep3 VoidType x))
     where
-        newExpr = case checkExpr symStack expr of
+        expr = case checkExpr symStack expr' of
             t | BoolType <- eType t -> t
             t -> TypeMismatch (eType t) (Left BoolType) |?< t
-        newBlock1 = checkBlock status{symStack = pushEnv symStack} block1
-        newBlock2 = checkBlock status{symStack = pushEnv symStack} block2
-checkInstruction status@Status{symStack} (Expression pos expr x) =
-    (status, Expression pos newExpr (rStep3 VoidType x))
+        block1 = checkBlock status{symStack = pushEnv symStack} block1'
+        block2 = checkBlock status{symStack = pushEnv symStack} block2'
+checkInstruction status@Status{loop} is@(Break{}) =
+    (,) status $ case eRStep3 VoidType is of
+        t | loop -> t
+        t -> JumpOutsideLoop |< t
+checkInstruction status@Status{loop} is@(Continue{}) =
+    (,) status $ case eRStep3 VoidType is of
+        t | loop -> t
+        t -> JumpOutsideLoop |< t
+checkInstruction status@Status{function} is@(ReturnVoid{}) = (,) status . eRStep3 VoidType $
+    case function of
+        Nothing -> ReturnOutsideFunction |< is
+        Just tpe | ErrorType /= tpe, VoidType /= tpe -> TypeMismatch VoidType (Left tpe) |< is
+        _ -> is
+checkInstruction status@Status{symStack, function} (ReturnExp pos expr' x) = (,) status $
+    case ReturnExp pos expr (rStep3 VoidType x) of
+        t | Nothing <- function -> ReturnOutsideFunction |< t
+        t -> t
     where
-        newExpr = checkExpr symStack expr
-checkInstruction status e = (status, e) -- TODO -- TODO
+        expr = case checkExpr symStack expr' of
+            t
+                | Just fType <- function,
+                  tpe <- eType t,
+                  not (tpe `joinLeq` fType) ->
+                    TypeMismatch tpe (Left fType) |?< t
+            t
+                | Just fType <- function ->
+                    promoteTo fType t
+            t -> t
+checkInstruction status@Status{symStack} (Expression pos expr' x) =
+    (status, Expression pos expr (rStep3 VoidType x))
+    where
+        expr = checkExpr symStack expr'
+checkInstruction _ _ = "instruction" `unexpectedDuring` "checkInstruction"
 
 -- Param Modality Ident (DeclType a) a

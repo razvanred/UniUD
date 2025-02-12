@@ -23,6 +23,8 @@ data Error
     | EmptyArray
     | VariableAlreadyDefined (Instruction ())
     | FunctionAlreadyDefined (Instruction ())
+    | JumpOutsideLoop
+    | ReturnOutsideFunction
     deriving (Show)
 
 errorRank = \case
@@ -34,6 +36,8 @@ errorRank = \case
     EmptyArray -> "6"
     VariableAlreadyDefined{} -> "7"
     FunctionAlreadyDefined{} -> "8"
+    JumpOutsideLoop -> "9"
+    ReturnOutsideFunction -> "10"
 
 instance Eq Error where
     (==) = (==) `on` errorRank
@@ -167,13 +171,14 @@ instance BoundedMeetSemiLattice Type where
 type Block a = [Instruction a]
 
 emapAccumBlock :: (c -> Instruction a -> (c, Instruction a)) -> (c -> Instruction a -> (c, Block a)) -> c -> Block a -> (c, Block a)
-emapAccumBlock fDes fAsc acc instructions1 = (acc2, fold instructions3)
+emapAccumBlock fDes fAsc acc1 instructions1 = (acc3, fold instructions3)
     where
-        (acc1, instructions2) = mapAccumL fDes acc instructions1
-        (acc2, instructions3) = mapAccumR fAsc acc1 instructions2
+        (acc2, instructions2) = mapAccumL fDes acc1 instructions1
+        (acc3, instructions3) = mapAccumR fAsc acc2 instructions2
 
-emapAccumLBlock :: (c -> Instruction a -> (c, Instruction a)) -> c -> Block a -> Block a
-emapAccumLBlock f acc = snd . emapAccumBlock f ((. List.singleton) . (,)) acc
+emapAccumLBlock :: (c -> Instruction a -> (c, Instruction a)) -> c -> Block a -> (c, Block a)
+-- emapAccumLBlock f acc = emapAccumBlock f ((. List.singleton) . (,)) acc
+emapAccumLBlock = mapAccumL
 
 emapAccumRBlock :: (c -> Instruction a -> (c, Block a)) -> c -> Block a -> (c, Block a)
 emapAccumRBlock f acc = emapAccumBlock (const (acc,)) f acc
@@ -466,10 +471,15 @@ astEmap :: (Instruction a -> Instruction a) -> Endo (DeclType a) -> Endo (Expr a
 astEmap fInstruction fDeclType fExpr = emapBlock f
     where
         f instruction = fInstruction $ case instruction of
-            (FunctionDecl pos id parameters declType block x) -> FunctionDecl pos id (parameters) (emap g declType) block x
-            (While pos expr block x) -> While pos (emap fExpr expr) block x
-            (IfThen pos expr block x) -> IfThen pos (emap fExpr expr) block x
-            (IfThenElse pos expr block1 block2 x) -> IfThenElse pos (emap fExpr expr) block1 block2 x
+            (NestedBlock pos block x) -> NestedBlock pos (emapBlock f block) x
+            (ConstantDecl pos id expr x) -> ConstantDecl pos id (emap fExpr expr) x
+            (VariableDecl pos id declType expr x) -> VariableDecl pos id (emap g declType) (emap fExpr expr) x
+            (FunctionDecl pos id parameters declType block x) -> FunctionDecl pos id (parameters) (emap g declType) (emapBlock f block) x
+            (ReturnExp pos expr x) -> ReturnExp pos (emap fExpr expr) x
+            (While pos expr block x) -> While pos (emap fExpr expr) (emapBlock f block) x
+            (IfThen pos expr block x) -> IfThen pos (emap fExpr expr) (emapBlock f block) x
+            (IfThenElse pos expr block1 block2 x) -> IfThenElse pos (emap fExpr expr) (emapBlock f block1) (emapBlock f block2) x
+            (Assignment pos expr1 op expr2 x) -> Assignment pos (emap fExpr expr1) op (emap fExpr expr2) x
             (Expression pos expr x) -> Expression pos (emap fExpr expr) x
             _ -> instruction
         g declType = fDeclType $ case declType of

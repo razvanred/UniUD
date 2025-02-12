@@ -1,7 +1,8 @@
+{-# OPTIONS_GHC -Wno-unused-matches #-}
+
 module TAC.TACutils where
 
 import AST
-import Control.Monad.Trans.Class
 import Control.Monad.Trans.State
 import Data.List (sort)
 import Data.Map.Strict qualified as Map

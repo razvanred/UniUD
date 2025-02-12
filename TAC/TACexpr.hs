@@ -1,9 +1,10 @@
+{-# OPTIONS_GHC -Wno-overlapping-patterns #-}
+{-# OPTIONS_GHC -Wno-unused-matches #-}
 {-# OPTIONS_GHC -fno-warn-incomplete-patterns #-}
 
 module TAC.TACexpr where
 
 import AST
-import Control.Monad.Trans.Class
 import Control.Monad.Trans.State
 import Data.Map.Strict qualified as Map
 import TAC.TAC

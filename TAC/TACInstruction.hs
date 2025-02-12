@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-unused-matches #-}
 {-# OPTIONS_GHC -fno-warn-incomplete-patterns #-}
 
 module TAC.TACInstruction where
