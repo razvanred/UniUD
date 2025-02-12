@@ -95,6 +95,9 @@ library noBuild
   buildable: False
   other-modules:
     -- PrettyPrinter
+    TAC.TAC
+    --TAC.TACgenerator
+    TypeChecker.Test
 
 executable main
   import: shared-properties, warnings

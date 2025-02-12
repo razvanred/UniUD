@@ -76,9 +76,8 @@ printProgram orderedLabels orderedTac strings = do
     putStrLn "### STATIC DATA ###"
     let listStrings = Map.toList strings
     let orderedStrings = sort listStrings
-    putStrLn "### PROGRAM ###"
     mapM_ (\(x, y) -> putStrLn (y ++ ":" ++ x)) orderedStrings
-    putStrLn ""
+    putStrLn "### PROGRAM ###"
     let out = zip orderedLabels orderedTac
     mapM_ (\(x, y) -> putStrLn (pp y ++ ":" ++ pp x)) out
 
