@@ -167,7 +167,8 @@ buildArrayLiteral _ = "expression" `unexpectedIn` "buildArrayLiteral"
 
 promoteTo tpe expr
     | tpe /= ErrorType,
-      exprType `joinLeq` tpe =
+      exprType `joinLeq` tpe,
+      exprType /= tpe =
         UnaryOp (position expr) Coercion expr $ newStep3 RightValue tpe
     | otherwise = expr
     where
