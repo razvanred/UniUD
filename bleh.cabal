@@ -46,7 +46,7 @@ common warnings
     -Wno-name-shadowing
     -Wno-missing-signatures
     -fno-ignore-asserts
-    -- -fbreak-on-error
+    -fbreak-on-error
 
 
 

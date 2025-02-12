@@ -472,7 +472,6 @@ astEmap fInstruction fDeclType fExpr = emapBlock f
     where
         f instruction = fInstruction $ case instruction of
             (NestedBlock pos block x) -> NestedBlock pos (emapBlock f block) x
-            (ConstantDecl pos id expr x) -> ConstantDecl pos id (emap fExpr expr) x
             (VariableDecl pos id declType expr x) -> VariableDecl pos id (emap g declType) (emap fExpr expr) x
             (FunctionDecl pos id parameters declType block x) -> FunctionDecl pos id (parameters) (emap g declType) (emapBlock f block) x
             (ReturnExp pos expr x) -> ReturnExp pos (emap fExpr expr) x

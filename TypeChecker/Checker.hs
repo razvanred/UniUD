@@ -81,7 +81,7 @@ addBind symStack modality decl
 
 queryBind :: SymStack -> Expr Step -> Maybe SymEntry
 queryBind symStack decl
-    | (Id _ id Step2{}) <- decl = f id Variable
+    | (Id _ id _) <- decl = f id Variable
     | (FunctionCall _ id _ _) <- decl = f id Function
     | otherwise = "expression" `unexpectedIn` "queryBind"
     where
@@ -185,7 +185,7 @@ checkExpr symStack = emap f
     where
         f :: Expr Step -> Expr Step
         f expr
-            | Step2{} <- ann expr = step2ToStep3 . assertGeqStep 2 <$> expr -- literals
+            | Step2{} <- ann expr = step2ToStep3 <$> expr -- literals
         f ident@(Id{}) = case queryBind symStack ident of
             Just binding@(_, _, decl) -> eLBindStep3 (eType decl) binding ident
             Nothing -> UnknownSymbol |< eLStep3 ErrorType ident

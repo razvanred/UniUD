@@ -72,7 +72,9 @@ fRelationalOp _ = Nothing
 -- helpers
 
 checkLiteral e
-  | ErrorType /= eType e = isLiteral e
+  | isLiteral e = case ann e of
+      Step2{sType = ErrorType} -> False
+      _ -> True
   | otherwise = False
 
 rStep2 = fillOutStep2 RightValue
