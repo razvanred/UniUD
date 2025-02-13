@@ -1,7 +1,7 @@
 module TypeChecker.TypeUtils where
 
 import AST
-import Algebra.Lattice (joinLeq, (/\))
+import Algebra.Lattice (joinLeq, (\/))
 import Control.Applicative ((<|>))
 import Control.Monad (void)
 import Data.Map.Strict (Map)
@@ -53,7 +53,7 @@ fillOutStep2 sSide sType x@(Step1{}) = Step2 (serrors x) (swarnings x) (sReplace
 fillOutStep2 _ _ _ = "record" `unexpectedDuring` "fillOut2"
 
 fillOutStep3 sSide sType sBinding x@(Step1{}) = Step3 (serrors x) (swarnings x) (sReplacedFromConstant x) sType sSide sBinding
-fillOutStep3 _ _ _ _ = "record" `unexpectedDuring` "fillOut3"
+fillOutStep3 _ _ _ x = "record" ++ show x `unexpectedDuring` "fillOutStep3"
 
 newStep3 sSide sType = Step3 Set.empty Set.empty Nothing sType sSide Nothing
 
@@ -120,16 +120,6 @@ popPointer _ = "unexpected" `unexpectedIn` "popPointer"
 popArray (ArrayType _ tpe) = tpe
 popArray _ = "unexpected" `unexpectedIn` "popArray"
 
-ePopPointer tpe e' = updateAnn x{sType = popPointer tpe, sSide = LeftValue} e
-  where
-    x = ann e
-    e = assertEGeqStep 2 e'
-
-ePopArray tpe e' = updateAnn x{sType = popArray tpe} e
-  where
-    x = ann e
-    e = assertEGeqStep 2 e'
-
 pushPointer = PointerType
 
 ePushPointer tpe e' = updateAnn x{sType = pushPointer tpe, sSide = RightValue} e
@@ -144,13 +134,11 @@ isAssignOp _ = True
 
 unOpSup Not = BoolType
 unOpSup Neg = BoolType
-unOpSup op = ("operator " ++ show op) `unexpectedDuring` "unOpSup"
-
-fixOpSup PreDecr = FloatType
-fixOpSup PreIncr = FloatType
-fixOpSup PostDecr = FloatType
-fixOpSup PostIncr = FloatType
-fixOpSup op = ("operator " ++ show op) `unexpectedDuring` "assignOpSup"
+unOpSup PreDecr = FloatType
+unOpSup PreIncr = FloatType
+unOpSup PostDecr = FloatType
+unOpSup PostIncr = FloatType
+unOpSup op = "operator " ++ show op `unexpectedDuring` "unOpSup"
 
 binOpSup (ArithmeticOp Add) = FloatType
 binOpSup (ArithmeticOp Sub) = FloatType
@@ -173,7 +161,7 @@ satisfiesUnOp op expr
         $ ( case op of
               Neg -> Right "numeric"
               Not -> Left opSup
-              _ -> ("operator " ++ show op) `unexpectedDuring` "satisfiesUnOp"
+              _ -> "operator " ++ show op `unexpectedDuring` "satisfiesUnOp"
           )
   where
     tpe = eType expr
@@ -209,9 +197,9 @@ satisfiesDeref expr
   where
     tpe = eType expr
 
-satisfiesAccessor indExpr expr =
-  ( maybeBool (IntType /= indType) (indType, Left IntType),
-    maybeBool isArray (tpe, Right "Array")
+satisfiesAccessor expr indExpr =
+  ( maybeBool (not isArray) (tpe, Right "Array"),
+    maybeBool (IntType /= indType) (indType, Left IntType)
   )
   where
     isArray = case tpe of
@@ -244,12 +232,12 @@ satisfiesArrayLiteral (ArrayLiteral _ exprs _)
   | otherwise = (False, False)
   where
     exprTypes = eType <$> exprs
-    sup = foldl1 (/\) exprTypes
+    sup = foldl1 (\/) exprTypes
 satisfiesArrayLiteral _ = "input" `unexpectedIn` "satisfiesFCall"
 
 satisfiesAssignment op expr1 expr2 =
   ( error1,
-    maybeBool (tpe1 `joinLeq` tpe2) (tpe2, Left tpe1)
+    maybeBool (tpe1 `joinLeq` tpe2 && tpe1 /= tpe2) (tpe2, Left tpe1)
   )
   where
     error1
@@ -259,6 +247,22 @@ satisfiesAssignment op expr1 expr2 =
     opSup = assignOpSup op
     tpe1 = eType expr1
     tpe2 = eType expr2
+
+satisfiesTypeExpr expr =
+  if isLiteral expr
+    then
+      if tpe `joinLeq` IntType
+        then case litVal expr of
+          len | len >= 1 -> Nothing -- TAC team said ok
+          _ -> Just $ TypeMismatch tpe (Right "Positive value")
+        else
+          Just $ TypeMismatch tpe (Right "Integral")
+    else Just NonConstExpr
+  where
+    tpe = eType expr
+    litVal (IntLiteral _ v _) = v
+    litVal (CharLiteral _ v _) = fromIntegral $ fromEnum v
+    litVal _ = "literal" `unexpectedDuring` "litVal"
 
 -- argErrors = zipWith3 f argTypes (liftA2 (,) eSide eType <$> exprs) (argName <$> args)
 --     f (modty, argType) (side, tpe) name = case modty of

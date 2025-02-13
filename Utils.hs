@@ -39,7 +39,11 @@ error msg = trace msg $ assert False undefined
 
 thing `unexpectedDuring` functionName = error $ "unexpected " ++ thing ++ " during " ++ functionName ++ "()"
 
+infix 4 `unexpectedDuring`
+
 thing `unexpectedIn` functionName = error $ "unexpected " ++ thing ++ " in " ++ functionName
+
+infix 4 `unexpectedIn`
 
 maybeBool True val = Just val
 maybeBool False _ = Nothing
