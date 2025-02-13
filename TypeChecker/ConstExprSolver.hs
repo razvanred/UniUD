@@ -81,7 +81,7 @@ rStep2 = fillOutStep2 RightValue
 
 eRStep2 tpe = pass1 updateAnn (rStep2 tpe . ann)
 
-solveConstExpr = astEmap idty idty solveExpr
+solveConstExpr = astEmap idty idty idty solveExpr
 
 fixRange expr@(CharLiteral pos c x)
   | isLatin1 c = expr

@@ -45,15 +45,13 @@ instance StatusCollector Error Step where
 instance StatusCollector Warning Step where
   w |< step = step{swarnings = Set.insert w (swarnings step)}
 
-tree1 tree = inToStep1 <$> tree
-
-treeOut tree = stepnToOut <$> tree
+inToStep1 x = Step1 (cserrors x) (cswarnings x) (csReplacedFromConstant x)
 
 fillOutStep2 sSide sType x@(Step1{}) = Step2 (serrors x) (swarnings x) (sReplacedFromConstant x) sType sSide
-fillOutStep2 _ _ _ = "record" `unexpectedDuring` "fillOut2"
+fillOutStep2 _ _ _ = "record " `unexpectedDuring` "fillOutStep2"
 
 fillOutStep3 sSide sType sBinding x@(Step1{}) = Step3 (serrors x) (swarnings x) (sReplacedFromConstant x) sType sSide sBinding
-fillOutStep3 _ _ _ x = "record" ++ show x `unexpectedDuring` "fillOutStep3"
+fillOutStep3 _ _ _ x = "record " ++ show x `unexpectedDuring` "fillOutStep3"
 
 newStep3 sSide sType = Step3 Set.empty Set.empty Nothing sType sSide Nothing
 
@@ -64,14 +62,13 @@ stepToConstantSolverOutput x =
       csReplacedFromConstant = sReplacedFromConstant x
     }
 
-inToStep1 x = Step1 (cserrors x) (cswarnings x) (csReplacedFromConstant x)
+step2ToStep3 x@Step2{} = Step3 (serrors x) (swarnings x) (sReplacedFromConstant x) (sType x) (sSide x) Nothing
+step2ToStep3 x = "record " ++ show x `unexpectedDuring` "step2ToStep3"
 
-step2ToStep3 x = Step3 (serrors x) (swarnings x) (sReplacedFromConstant x) (sType x) (sSide x) Nothing
-
-stepnToOut x' =
+step3ToOut x@Step3{} =
   TypeCheckerOutput
-    { tserrors = serrors x,
-      tswarnings = swarnings x,
+    { tcerrors = serrors x,
+      tcwarnings = swarnings x,
       tcReplacedFromConstant = sReplacedFromConstant x,
       tcType = sType x,
       tcSide = sSide x,
@@ -79,7 +76,12 @@ stepnToOut x' =
     }
   where
     f (depth, modty, is) = (depth, modty, void is)
-    x = assertGeqStep 3 x'
+step3ToOut x = "record " ++ show x `unexpectedDuring` "stepnToOut"
+
+treeStep1 :: (Functor f) => f ConstantSolverOutput -> f Step
+treeStep1 tree = inToStep1 <$> tree
+
+treeOut tree = step3ToOut <$> tree
 
 x |<> oldX = x{serrors = serrors x `union` serrors oldX, swarnings = swarnings x `union` swarnings oldX}
 
@@ -104,8 +106,10 @@ eType e = sType $ ann (assertEGeqStep 2 e)
 
 eSide e = sSide $ ann (assertEGeqStep 2 e)
 
-isErrorType ErrorType = True
-isErrorType _ = False
+-- isErrorType ErrorType = True
+-- isErrorType _ = False
+
+-- notErrorType = not . isErrorType
 
 isLiteral (IntLiteral{}) = True
 isLiteral (CharLiteral{}) = True
@@ -121,11 +125,6 @@ popArray (ArrayType _ tpe) = tpe
 popArray _ = "unexpected" `unexpectedIn` "popArray"
 
 pushPointer = PointerType
-
-ePushPointer tpe e' = updateAnn x{sType = pushPointer tpe, sSide = RightValue} e
-  where
-    x = ann e
-    e = assertEGeqStep 2 e'
 
 isAssignOp Not = False
 isAssignOp Neg = False

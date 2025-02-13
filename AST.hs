@@ -90,8 +90,8 @@ instance StatusCollector Warning ConstantSolverOutput where
     w |< constantSolverOutput = constantSolverOutput{cswarnings = Set.insert w (cswarnings constantSolverOutput)}
 
 data TypeCheckerOutput = TypeCheckerOutput
-    { tserrors :: Set Error,
-      tswarnings :: Set Warning,
+    { tcerrors :: Set Error,
+      tcwarnings :: Set Warning,
       tcReplacedFromConstant :: Maybe (Instruction ConstantSolverOutput),
       tcType :: Type,
       tcSide :: LeftRightValue,
@@ -100,10 +100,10 @@ data TypeCheckerOutput = TypeCheckerOutput
     deriving (Show)
 
 instance StatusCollector Error TypeCheckerOutput where
-    e |< constantSolverOutput = constantSolverOutput{tserrors = Set.insert e (tserrors constantSolverOutput)}
+    e |< constantSolverOutput = constantSolverOutput{tcerrors = Set.insert e (tcerrors constantSolverOutput)}
 
 instance StatusCollector Warning TypeCheckerOutput where
-    w |< constantSolverOutput = constantSolverOutput{tswarnings = Set.insert w (tswarnings constantSolverOutput)}
+    w |< constantSolverOutput = constantSolverOutput{tcwarnings = Set.insert w (tcwarnings constantSolverOutput)}
 
 data ErrorCollectorOutput = ErrorCollectorOutput
     { t :: Type,
@@ -469,13 +469,13 @@ class Positioned a where
 type Position = (Int, Int)
 
 -- sooner or later..
-astEmap :: (Instruction a -> Instruction a) -> Endo (DeclType a) -> Endo (Expr a) -> Endo (Block a)
-astEmap fInstruction fDeclType fExpr = emapBlock f
+astEmap :: (Instruction a -> Instruction a) -> Endo (Parameter a) -> Endo (DeclType a) -> Endo (Expr a) -> Endo (Block a)
+astEmap fInstruction fParameter fDeclType fExpr = emapBlock f
     where
         f instruction = fInstruction $ case instruction of
             (NestedBlock pos block x) -> NestedBlock pos (emapBlock f block) x
-            (VariableDecl pos id declType expr x) -> VariableDecl pos id (emap g declType) (emap fExpr expr) x
-            (FunctionDecl pos id parameters declType block x) -> FunctionDecl pos id parameters (emap g declType) (emapBlock f block) x -- parameters ignored
+            (VariableDecl pos id declType expr x) -> VariableDecl pos id (emap h declType) (emap fExpr expr) x
+            (FunctionDecl pos id parameters declType block x) -> FunctionDecl pos id (g <$> parameters) (emap h declType) (emapBlock f block) x -- parameters ignored
             (ReturnExp pos expr x) -> ReturnExp pos (emap fExpr expr) x
             (While pos expr block x) -> While pos (emap fExpr expr) (emapBlock f block) x
             (IfThen pos expr block x) -> IfThen pos (emap fExpr expr) (emapBlock f block) x
@@ -483,6 +483,7 @@ astEmap fInstruction fDeclType fExpr = emapBlock f
             (Assignment pos expr1 op expr2 x) -> Assignment pos (emap fExpr expr1) op (emap fExpr expr2) x
             (Expression pos expr x) -> Expression pos (emap fExpr expr) x
             _ -> instruction
-        g declType = fDeclType $ case declType of
+        g (Param modty id declType x) = fParameter $ Param modty id (emap h declType) x
+        h declType = fDeclType $ case declType of
             (DArrayType (Just expr) declType) -> DArrayType (Just $ emap fExpr expr) declType
             _ -> declType

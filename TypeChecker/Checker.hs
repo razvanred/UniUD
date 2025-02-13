@@ -234,7 +234,7 @@ checkExpr symStack = emap check
             case queryBind symStack fcall of
                 Just binding@(_, _, decl) ->
                     case satisfiesFCall fType subExprs of
-                        (False, argErrors)
+                        (False, argErrors) -- todo revise
                             | Nothing <- foldl (<|>) Nothing argErrors ->
                                 FunctionCall pos id (promoteList (snd <$> argTypes) subExprs) (rBindStep3 retType (Just binding) x)
                         (argCount, argErrors) ->
