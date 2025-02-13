@@ -19,7 +19,7 @@ data FunIdent = FunId {fLoc :: Position, fId :: String, numParameters :: Int}
   deriving (Show, Eq)
 
 instance PrettyPrinter FunIdent where
-  pp (FunId (line, _) fId _) = fId ++ "@" ++ show line
+  pp (FunId (line, _) fId numPar) = fId ++ " /" ++ show numPar
 
 data XAddr
   = Addr {addr :: Addr}
@@ -102,14 +102,14 @@ instance PrettyPrinter TacInstruction where
   pp (TacPointerStore addr1 t addr2) = "$" ++ pp addr1 ++ " =" ++ pp t ++ " " ++ pp addr2
   pp (TacPointerLoad addr1 t addr2) = pp addr1 ++ " =" ++ pp t ++ " " ++ "$" ++ pp addr2
   pp (TacReferenceLoad addr1 t addr2) = pp addr1 ++ " =" ++ pp t ++ " " ++ "&" ++ pp addr2
-  pp (TacParam t addr) = "param" ++ pp t ++ " " ++ pp addr
+  pp (TacParam t addr) = "param_" ++ pp t ++ " " ++ pp addr
   pp (TacReturn Nothing) = "return void"
   pp (TacReturn (Just (t, addr))) = "return " ++ pp addr
   pp (TacBoolCondJump True addr label) = "if True" ++ " " ++ pp addr ++ " jump to " ++ pp label
   pp (TacBoolCondJump False addr label) = "if False" ++ " " ++ pp addr ++ " jump to " ++ pp label
   pp (TacRelCondJump addr1 relop t addr2 label) = "if " ++ pp addr1 ++ " " ++ pp relop ++ " " ++ pp addr2 ++ " jump to " ++ pp label
   pp (TacUnCondJump label) = "goto " ++ pp label
-  pp (TacCall Nothing f) = "pcall" ++ " " ++ pp f
+  pp (TacCall Nothing f) = "pcall " ++ pp f
   pp (TacCall (Just (t, a)) f) = pp a ++ " =" ++ pp t ++ " " ++ pp f
 
 data Label
@@ -125,12 +125,12 @@ data Label
   deriving (Show, Eq)
 
 instance PrettyPrinter Label where
-  pp (LabInstr i) = "Instr" ++ show i
+  pp (LabInstr i) = "Instr" ++ show i 
   pp (LabTrueOr i) = "TrueOr" ++ show i
   pp (LabFalseAnd i) = "FalseAnd" ++ show i
-  pp (LabIfFalse i) = "IfFalse"
+  pp (LabIfFalse i) = "IfFalse" ++ show i
   pp (LabEmpty) = ""
-  pp (LabFunId s i1 i2) = "FunId" ++ s ++ show i1 ++ show i2
-  pp (LabGuard i) = "Guard" ++ show i
+  pp (LabFunId s i1 i2) = "Fun_" ++ s ++ "@" ++ "(" ++ show i1 ++ "," ++ show i2 ++ ")" 
+  pp (LabGuard i) = "Guard" ++ show i 
   pp (LabBodyStart i) = "Body" ++ show i
   pp (FALL) = ""

@@ -69,7 +69,22 @@ int2AddrTempName = Temporary
 
 genCode :: Stato a -> (Int, Int, [Label], [TAC], [Label], [(Label, Label)], Stringhe)
 -- genCode gen = reverse $ snd $ execState gen (0, [])
-genCode gen = evalState (execStateT gen (0, 0, [], [], [], [], Map.empty)) ([])
+genCode gen = evalState (execStateT gen (0, 0, [], [], [], [], Map.empty)) []
+
+printOutput :: Stato a -> IO ()
+printOutput x = do
+    let (_, _, labels, tac, _, _, strings) = genCode x
+    let orderedLabelsToPrint = map pp . reverse $ labels
+    let orderedTACToPrint = map pp . reverse $ tac
+    let listStrings = Map.toList strings
+    let orderedStrings = sort listStrings
+    let maxpadding = maximum . map length $ orderedLabelsToPrint
+    let paddedLabels = map (\x -> x ++ (replicate (maxpadding - length x) ' ')) orderedLabelsToPrint
+    putStrLn "### STATIC DATA ###"
+    mapM_ (\(x, y) -> putStrLn (y ++ " " ++ x)) orderedStrings
+    putStrLn "### PROGRAM ###"
+    let out = zip paddedLabels orderedTACToPrint
+    mapM_ (\(x, y) -> putStrLn (x ++ " " ++ y)) out
 
 printProgram :: [Label] -> [TAC] -> Stringhe -> IO ()
 printProgram orderedLabels orderedTac strings = do
@@ -79,9 +94,7 @@ printProgram orderedLabels orderedTac strings = do
     mapM_ (\(x, y) -> putStrLn (y ++ ":" ++ x)) orderedStrings
     putStrLn "### PROGRAM ###"
     let out = zip orderedLabels orderedTac
-    mapM_ (\(x, y) -> putStrLn (pp y ++ ":" ++ pp x)) out
-
--- trovare max della lista delle labels, fare padding su tutte fino a quella lunghezza
+    mapM_ (\(x, y) -> putStrLn (pp x ++ ":" ++ pp y)) out
 
 buildTempANDIndirectLoad :: Addr -> Type -> Bool -> Stato XAddr
 buildTempANDIndirectLoad addr t wannaRefAddr = do
@@ -198,9 +211,6 @@ oppositeRel relOp = case relOp of
     GreaterThan -> LessThanEq
     LessThanEq -> GreaterThan
 
-labelWRTBoolOp bop = case bop of
-    And -> LabFalseAnd
-    Or -> LabTrueOr
 
 getLocFromDecl :: Instruction () -> Position
 getLocFromDecl x = case x of

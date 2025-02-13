@@ -1,0 +1,6 @@
+var y :int := x + 3;
+var x :int := 3;
+
+#def f1() :int { return f2() };
+#def f1() :int { def f2() :void {}};
+#def f2() :int { return f1() };

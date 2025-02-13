@@ -87,7 +87,7 @@ tacExpr (UnaryOp pos PostIncr expr (ErrorCollectorOutput t _ _ _)) = do
             xtmp1 <- buildTempANDTacBinary (ArithmeticOp Add) t (addr xtmp) (buildTacLiteralOneType t)
             outWithSuspendedLabel $ TacIndexedStore xaddr t (addr xtmp1)
             return xtmp
-tacExpr expr@(UnaryOp pos Not _ _) = boolExprAux LabIfFalse expr
+tacExpr expr@(UnaryOp pos Not _ _) = boolExprAux  expr
 tacExpr (UnaryOp pos uop expr (ErrorCollectorOutput t _ _ _)) = do
     f <- newtemp
     let temp = f t
@@ -102,7 +102,7 @@ tacExpr (UnaryOp pos uop expr (ErrorCollectorOutput t _ _ _)) = do
             return xtmp
 tacExpr (BinaryOp _ _ _ _ (ErrorCollectorOutput _ (Just LeftValue) _ _)) = error "Bop should produce a right-value"
 tacExpr (BinaryOp _ _ _ _ (ErrorCollectorOutput _ Nothing _ _)) = error "Bop should produce a right-value"
-tacExpr expr@(BinaryOp _ (BooleanOp boolop) _ _ _) = boolExprAux (labelWRTBoolOp boolop) expr
+tacExpr expr@(BinaryOp _ (BooleanOp boolop) _ _ _) = boolExprAux expr
 tacExpr (BinaryOp pos bop expr1 expr2 (ErrorCollectorOutput t _ _ _)) = do
     xaddr1 <- tacExpr expr1
     xaddr2 <- tacExpr expr2
@@ -330,7 +330,7 @@ tacActualParameters (e : es) ((Param m _ _ _) : ps) = do
     tacActualParameters es ps
 
 tacBoolExpr :: Expr ErrorCollectorOutput -> Label -> Label -> Stato ()
-tacBoolExpr bs@boolLit btrue bfalse = do
+tacBoolExpr bs@(BoolLiteral _ _ _) btrue bfalse = do
     lit <- tacExpr bs
     let content = contentBool . tacLit . addr $ lit
     case (btrue, bfalse, content) of
@@ -352,15 +352,23 @@ tacBoolExpr ident@(Id _ id _) btrue bfalse = do
             outWithSuspendedLabel $ TacBoolCondJump True a btrue
 tacBoolExpr (UnaryOp _ Not expr _) btrue bfalse = tacBoolExpr expr bfalse btrue
 tacBoolExpr (BinaryOp _ (BooleanOp And) b1 b2 _) btrue bfalse = do
-    tacBoolExpr b1 FALL bfalse
-    tacBoolExpr b2 btrue bfalse
+    case bfalse of
+        FALL -> do
+            numId <- newLabelNum
+            let newLabel = LabFalseAnd numId
+            tacBoolExpr b1 FALL newLabel
+            tacBoolExpr b2 btrue bfalse
+            labelNext newLabel
+        _ -> do
+            tacBoolExpr b1 FALL bfalse
+            tacBoolExpr b2 btrue bfalse
 tacBoolExpr (BinaryOp _ (BooleanOp Or) b1 b2 _) btrue bfalse = do
     case btrue of
         FALL -> do
             numId <- newLabelNum
             let newlabel = LabTrueOr numId
             tacBoolExpr b1 newlabel FALL
-            tacBoolExpr b2 FALL bfalse
+            tacBoolExpr b2 btrue bfalse
             labelNext newlabel
         _ -> do
             tacBoolExpr b1 btrue FALL
@@ -402,9 +410,10 @@ resolveIdAux id = do
             xtmp <- buildTempANDIndirectLoad a (addrT a) False
             return . addr $ xtmp
 
-boolExprAux labelIn expr = do
+boolExprAux :: Expr ErrorCollectorOutput -> Stato XAddr
+boolExprAux expr = do
     int <- newLabelNum
-    let label = labelIn int
+    let label = LabIfFalse int
     f <- newtemp
     let temp = f BoolType
     tacBoolExpr expr FALL label
@@ -416,3 +425,4 @@ boolExprAux labelIn expr = do
     outWithSuspendedLabel $ TacNullary temp BoolType (buildTacLiteral . TacLitBool $ False)
     labelNext label2
     return . Addr $ temp
+

@@ -1,7 +1,6 @@
-def x := 5; def y := x;{ def y := 10; def z := y; {def z := 5;} } 
 
-def x := 5; def y := x;{ def y := 10; def z := y; }
-
+def x := 5; def y := x; { def y := 10; def z := y; {def z := 5;} };
+def x := 5; def y := x;{ def y := 10; def z := y; };
 def x := 5; def y := x; def z := y;
 
 def x := 5; def y := 3; def z := x + y + 5;

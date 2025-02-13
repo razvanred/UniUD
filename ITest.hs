@@ -11,7 +11,7 @@ import TypeChecker.ConstExprSolver qualified as Checker
 import TypeChecker.TypeUtils (inToStep1, stepnToOut)
 import Utils (prp)
 import TAC.TACInstruction
-import TAC.TACutils (genCode,printProgram)
+import TAC.TACutils (genCode,printProgram, printOutput)
 
 f x = do
     let Right pt = pBlock1 $ myLexer x
@@ -24,8 +24,8 @@ f x = do
     putStrLn "---demo"
     --prp t2
     prp t3
-    -- let (_, _, labels, tac, _, _, strings) = genCode t4
-    -- let orderedLabels = reverse labels
-    -- let orderedTac = reverse tac
-    -- printProgram orderedLabels orderedTac strings
+    printOutput t4
 
+testFile fileName = do
+    contents <- readFile fileName
+    f contents

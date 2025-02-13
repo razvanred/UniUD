@@ -10,6 +10,7 @@ import TAC.TAC
 import TAC.TACexpr
 import TAC.TACutils
 
+
 tacBlock :: [Instruction ErrorCollectorOutput] -> Stato ()
 tacBlock [] = return ()
 tacBlock (x : xs) = tacInstr x >> tacBlock xs
@@ -18,12 +19,16 @@ tacInstr :: Instruction ErrorCollectorOutput -> Stato ()
 tacInstr (NestedBlock _ block _) = tacBlock block
 tacInstr (VariableDecl _ _ _ _ (ErrorCollectorOutput _ _ (Just ModalityRef) _)) = error "variable declaration must have byvalue modality"
 tacInstr (VariableDecl _ _ _ _ (ErrorCollectorOutput _ _ Nothing _)) = error "variable declaration must have byvalue modality"
-tacInstr (VariableDecl pos s decl expr tp@(ErrorCollectorOutput t _ (Just mod@ModalityVal) _)) = case expr of
+tacInstr (VariableDecl pos s decl expr (ErrorCollectorOutput t _ (Just mod@ModalityVal) _)) = case expr of
     ArrayLiteral _ _ _ -> do
         let initialization = flatten (expr : [])
         tacArrInit (ProgVar (buildProgVariable s pos t mod) t) (buildTacLiteral . TacLitInt $ 0) initialization (getPrimitiveTypeArr t)
     _ -> do
+        let unusedDecl = DVoidType
+        let unusedExpr = StringLiteral (0,0) "" ()
+        let tp = ErrorCollectorOutput t Nothing (Just mod) (Just (VariableDecl pos s unusedDecl unusedExpr ()))
         tacInstr (Assignment pos (Id pos s tp) BasicAssignment expr emptyTCO)
+
 tacInstr (FunctionDecl (line, col) id _ _ body _) = do
     currentState@(ci, cs, cl, cTac, sl, bclabels, strings) <- get
     l <- lift get
@@ -40,6 +45,7 @@ tacInstr (FunctionDecl (line, col) id _ _ body _) = do
                 (ci, cs, lab, tac, suslab, bclabels, previousstrings) : rest -> do
                     lift (put rest)
                     put (ci, completedStrings, lab ++ completedLabels, tac ++ completedTAC, suslab, bclabels, strings)
+                    
 tacInstr (IfThen _ expr block _) = do
     int <- newLabelNum
     let label = LabIfFalse int
