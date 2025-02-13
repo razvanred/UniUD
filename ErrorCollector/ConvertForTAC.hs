@@ -1,6 +1,6 @@
 module ErrorCollector.ConvertForTAC where
 
-import AST
+import AST hiding (astEmap)
 import Control.Monad (void)
 -- import TypeChecker.TypeUtils hiding (In, Out)
 import Utils
@@ -13,31 +13,26 @@ overrideLValue e = updateAnn ((ann e){tcSide = LeftValue}) e
 
 overrideRValue e = updateAnn ((ann e){tcSide = RightValue}) e
 
--- tree traversa, access to nodes
-
 eType e = tcType (ann e)
 
 eSide e = tcSide (ann e)
 
-cnvBlock = astEmap cnvInstruction idty cnvDeclType cnvExpr
+cnvBlock = emapBlock cnvInstruction
 
 cnvInstruction :: Instruction In -> Instruction In
+cnvInstruction (Assignment pos expr1 op expr2' x) = Assignment pos expr1 op expr2 x
+    where
+        expr2 = emap cnvRAssignExpr expr2'
 cnvInstruction is = is
 
--- cnvInstruction (Assignment pos expr1 op expr2' x)
---     | ArrayAcc{} <- expr2',
---       ArrayType{} <- eType expr2' =
---         Assignment pos expr1 op expr2 x
---     where
---         expr2 = updateAnn ((ann expr2){tcSide = LeftValue}) expr2
+-- cnvDeclType :: DeclType In -> DeclType In
+-- cnvDeclType = idty
 
-cnvDeclType :: DeclType In -> DeclType In
-cnvDeclType = idty
-
-cnvExpr :: Expr In -> Expr In
-cnvExpr expr@(ArrayAcc _ _ _ TypeCheckerOutput{tcType = ArrayType{}}) = overrideLValue expr
-cnvExpr expr@(ArrayAcc _ _ _ TypeCheckerOutput{}) = overrideRValue expr
-cnvExpr expr = expr
+cnvRAssignExpr :: Expr In -> Expr In
+cnvRAssignExpr expr@ArrayAcc{} = case eType expr of
+    ArrayType{} -> overrideLValue expr
+    _ -> overrideRValue expr
+cnvRAssignExpr expr = expr
 
 -- fmap, only works on annotations (f a -> f b)
 
