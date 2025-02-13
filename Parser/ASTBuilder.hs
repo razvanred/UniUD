@@ -13,7 +13,7 @@ buildTree :: Parser.Abs.Block -> [Instruction ParserOutput]
 -- unfortunate choices
 buildTree block = buildBlock block ParserOutput{pswarnings = Set.empty}
 
-buildFail e@(c : cs) = e `unexpectedDuring` ("build" ++ toUpper (c) : cs)
+buildFail e@(c : cs) = e `unexpectedDuring` "build" ++ toUpper (c) : cs
 buildFail "" = "empty string" `unexpectedDuring` "buildFail"
 
 buildBlock :: Parser.Abs.Block -> ParserOutput -> [Instruction ParserOutput]

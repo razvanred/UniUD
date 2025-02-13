@@ -6,7 +6,7 @@
 module TypeChecker.Checker where
 
 import AST
-import Algebra.Lattice (Lattice ((/\)), joinLeq, (\/))
+import Algebra.Lattice (joinLeq, (\/))
 import Control.Applicative ((<|>))
 import Control.Monad (void)
 import Data.Either.Extra
@@ -14,7 +14,7 @@ import Data.List (find, findIndex)
 import Data.Map.Strict (Map, insert, member, (!))
 import Data.Map.Strict qualified as Map
 import Data.Traversable (mapAccumL)
-import Debug.Trace (trace)
+-- import Debug.Trace (trace)
 import TypeChecker.TypeUtils
 import Utils
 import Prelude hiding (error, id)
@@ -53,14 +53,16 @@ eRStep3 tpe = pass1 updateAnn (rStep3 tpe . ann)
 
 eLStep3 tpe = pass1 updateAnn (lStep3 tpe . ann)
 
+eStep3 side tpe = pass1 updateAnn (fillOutStep3 side tpe Nothing . ann)
+
 we |?< e
     | ErrorType <- eType e = e
     | otherwise = we |< e
 
 addBind :: SymStack -> Modality -> Instruction Step -> Either SymEntry SymStack
 addBind symStack modality decl
-    | (VariableDecl _ id _ _ _) <- decl = trace "foo32" $ f id modality Variable
-    | (FunctionDecl _ id _ _ _ _) <- decl = trace "foo21w" $ (trace "foo2f3" $ f) id ModalityRef Function
+    | (VariableDecl _ id _ _ _) <- decl = f id modality Variable
+    | (FunctionDecl _ id _ _ _ _) <- decl = f id ModalityRef Function
     | otherwise = "instruction" `unexpectedIn` "addBind"
     where
         f id modality symType = case findIndex (\t -> id `member` (t Map.! symType)) symStack of
@@ -92,82 +94,93 @@ queryBind symStack decl
 pushEnv :: SymStack -> SymStack
 pushEnv symStack = Map.fromList [(Variable, Map.empty), (Function, Map.empty)] : symStack
 
-buildDeclType :: DeclType Step -> Type
-buildDeclType declType = case solveVarDeclType (trace "pippus" declType) (trace "ppp" ErrorType) of
-    (False, ErrorType) -> ErrorType
-    (False, tpe) -> tpe
-    _ -> "status" `unexpectedDuring` "buildDeclType"
+emapAccumLDeclType :: (a -> DeclType a1 -> (a, DeclType a1)) -> a -> DeclType a1 -> (a, DeclType a1)
+emapAccumLDeclType f oldAcc declType = case f oldAcc declType of
+    (acc, DArrayType expr declType) -> (newAcc, DArrayType expr newDeclType)
+        where
+            (newAcc, newDeclType) = emapAccumLDeclType f acc declType
+    (acc, DPointerType declType) -> (newAcc, newDeclType)
+        where
+            (newAcc, newDeclType) = emapAccumLDeclType f acc declType
+    leaf -> leaf
 
-solveVarDeclType :: DeclType Step -> Type -> (Bool, Type)
-solveVarDeclType DBoolType initType
-    | BoolType == initType = (True, BoolType)
-    | ErrorType == initType = (False, BoolType)
-solveVarDeclType DCharType initType
-    | CharType == initType = (True, CharType)
-    | ErrorType == initType = (False, CharType)
-solveVarDeclType DIntType initType
-    | IntType == initType = (True, IntType)
-    | ErrorType == initType = (False, IntType)
-solveVarDeclType DStringType initType
-    | StringType == initType = (True, StringType)
-    | ErrorType == initType = (False, StringType)
-solveVarDeclType DFloatType initType
-    | FloatType == initType = (True, FloatType)
-    | ErrorType == initType = (False, FloatType)
-solveVarDeclType DVoidType initType
-    | VoidType == initType = (True, VoidType)
-    | ErrorType == initType = (False, VoidType)
-solveVarDeclType (DPointerType declType) initType
-    | PointerType tpe <- initType = PointerType <$> solveVarDeclType declType tpe
-    | ErrorType == initType = PointerType <$> solveVarDeclType declType ErrorType
-solveVarDeclType (DArrayType Nothing declType) initType
-    | ArrayType len initType <- initType = ArrayType len <$> solveVarDeclType declType initType
-    | otherwise = (False, ErrorType)
-solveVarDeclType (DArrayType (Just (IntLiteral _ len1 Step2{sType = IntType})) declType) initType -- perhaps too rigid
-    | len1 < 1 = (False, ErrorType) -- TODO, better error?
-    | (ArrayType len2 tpe) <- initType =
-        if len1 == len2
-            then
-                ArrayType len1 <$> solveVarDeclType declType tpe
-            else
-                ArrayType len1 <$> solveVarDeclType declType ErrorType
-    | ErrorType == initType = ArrayType len1 <$> solveVarDeclType declType ErrorType
-solveVarDeclType (DArrayType{}) _ = (False, ErrorType)
-solveVarDeclType declType _ = solveVarDeclType (trace "a" declType) ErrorType
+buildDeclType declType' = case solveVarDeclType declType' ErrorType of
+    (_, tpe, declType) -> (tpe, declType)
 
-functionDeclPass symStack (FunctionDecl pos id args' declType block x) =
-    case FunctionDecl pos id args declType block (rStep3 (FunctionType argTypes tpe) x) of
-        fDecl | ErrorType <- returnType -> (symStack, UnsolvableType |< fDecl)
-        fDecl | ErrorType <- tpe -> (symStack, fDecl)
-        fDecl -> case trace "foo76" $ addBind symStack ModalityRef fDecl of
-            Left (_, _, oldFDecl) -> (symStack, FunctionAlreadyDefined (void oldFDecl) |< fDecl)
-            Right symStack -> (symStack, fDecl)
+solveVarDeclType declType initType = (ErrorType == accType, tpe, newDeclType)
     where
-        returnType = trace "foo123" $ buildDeclType declType
-        argTypes = trace "foo1sdgew" $ [(modty, buildDeclType declType) | (Param modty _ declType _) <- args']
-        tpe
-            | ErrorType `notElem` (snd <$> argTypes) = trace "foo11sdfv1" $ returnType
-            | otherwise = trace "foo235f1" $ ErrorType
-        args =
-            [ let arg = eRStep3 tpe arg'
-              in  if ErrorType == tpe
-                    then UnsolvableType |< arg
-                    else arg
-              | (_, tpe) <- argTypes
-              | arg' <- args'
-            ]
+        tpe = cons VoidType
+        ((_, cons, accType), newDeclType) = emapAccumLDeclType fDes (False, idty, initType) declType
+        fDes (True, _, _) declType = (,) (True, const ErrorType, ErrorType) declType
+        fDes (False, cons, initType) declType@(DPointerType _)
+            | PointerType initType <- initType = (,) (False, cons . PointerType, initType) declType
+            | otherwise = (,) (False, cons . PointerType, ErrorType) declType
+        fDes (False, cons, initType) declType@(DArrayType Nothing _)
+            | ArrayType len initType <- initType = (,) (False, cons . ArrayType len, initType) declType
+            | otherwise = (,) (True, const ErrorType, ErrorType) declType
+        fDes (False, cons, initType') (DArrayType (Just expr') declType) =
+            case satisfiesTypeExpr expr of
+                Nothing -> (,) (False, cons . ArrayType len1, initType) (DArrayType (Just $ promoteTo IntType expr) declType) -- TAC team said ok
+                Just err -> (,) (True, const ErrorType, ErrorType) (DArrayType (Just $ err |?< expr) declType)
+            where
+                initType = case initType' of
+                    (ArrayType len2 initType) | len2 == len1 -> initType
+                    _ -> ErrorType
+                len1 = litVal expr
+                expr
+                    | isLiteral expr' = step2ToStep3 <$> expr'
+                    | otherwise = rStep3 ErrorType <$> expr'
+                litVal (IntLiteral _ v _) = v
+                litVal (CharLiteral _ v _) = fromIntegral $ fromEnum v
+                litVal _ = "literal" `unexpectedDuring` "litVal"
+        fDes (False, cons, initType) declType = (,) (False, cons . const (g declType), f initType declType) declType
+
+        f initType declType
+            | initType == g declType = initType
+            | otherwise = ErrorType
+
+        g DBoolType = BoolType
+        g DCharType = CharType
+        g DIntType = IntType
+        g DStringType = StringType
+        g DFloatType = FloatType
+        g DVoidType = VoidType
+        g _ = ErrorType
+
+functionDeclPass symStack (FunctionDecl pos id args' return' block x) =
+    case addBind symStack ModalityRef fDecl of
+        Left (_, _, oldFDecl) -> (symStack, FunctionAlreadyDefined (void oldFDecl) |< fDecl)
+        Right symStack -> (symStack, fDecl)
+    where
+        (retType, ret) = buildDeclType return'
+        (argTypes, args) =
+            unzip
+                [ ( (modty, tpe),
+                    if ErrorType == tpe
+                        then UnsolvableType |< arg
+                        else arg
+                  )
+                  | (Param modty id argDecl' x) <- args',
+                    let (tpe, argDecl) = buildDeclType argDecl',
+                    let arg = Param modty id argDecl (rStep3 tpe x)
+                ]
+        finalType
+            | ErrorType `notElem` (snd <$> argTypes) = retType
+            | otherwise = ErrorType
+        fDecl = case FunctionDecl pos id args ret block (rStep3 (FunctionType argTypes retType) x) of
+            t | ErrorType <- finalType -> UnsolvableType |< t
+            t -> t
 functionDeclPass symStack is = (symStack, is)
 
 buildArrayLiteral (ArrayLiteral pos exprs x) = ArrayLiteral pos (promoteTo sup <$> exprs) newX
     where
         newX = rStep3 (ArrayType (toInteger $ length exprs) sup) x
         exprTypes = eType <$> exprs
-        sup = foldl1 (/\) exprTypes
+        sup = foldl1 (\/) exprTypes
 buildArrayLiteral _ = "expression" `unexpectedIn` "buildArrayLiteral"
 
 promoteTo tpe expr
-    | tpe /= ErrorType,
-      exprType `joinLeq` tpe,
+    | exprType `joinLeq` tpe,
       exprType /= tpe =
         UnaryOp (position expr) Coercion expr $ newStep3 RightValue tpe
     | otherwise = expr
@@ -182,19 +195,19 @@ promoteList = zipWith promoteTo
 
 checkTree = checkBlock (Status (pushEnv []) Nothing False)
 
-checkExpr symStack = emap f
+checkExpr symStack = emap check
     where
-        f :: Expr Step -> Expr Step
-        f expr
-            | Step2{} <- ann expr = step2ToStep3 <$> expr -- literals
-        f ident@(Id{}) = case queryBind symStack ident of
+        check :: Expr Step -> Expr Step
+        check expr
+            | Step2{} <- ann expr = updateAnn (step2ToStep3 $ ann expr) expr -- literals
+        check ident@(Id{}) = case queryBind symStack ident of
             Just binding@(_, _, decl) -> eLBindStep3 (eType decl) binding ident
             Nothing -> UnknownSymbol |< eLStep3 ErrorType ident
-        f expr@(UnaryOp pos op subExpr x) =
+        check expr@(UnaryOp pos op subExpr x) =
             case satisfiesUnOp op subExpr of
                 Nothing -> eRStep3 (eType subExpr) expr
                 Just (got, expected) -> UnaryOp pos op (TypeMismatch got expected |?< subExpr) (rStep3 ErrorType x)
-        f (BinaryOp pos op subExpr1 subExpr2 x) =
+        check (BinaryOp pos op subExpr1 subExpr2 x) =
             case satisfiesBinOp op subExpr1 subExpr2 of
                 (Nothing, Nothing) ->
                     let sup = eType subExpr1 \/ eType subExpr2
@@ -203,21 +216,21 @@ checkExpr symStack = emap f
                 (err1, err2) ->
                     let f = maybe idty $ \(got, expected) -> (TypeMismatch got expected |?<)
                     in  BinaryOp pos op (f err1 subExpr1) (f err2 subExpr2) (rStep3 ErrorType x)
-        f expr@(Ref pos subExpr x) =
+        check expr@(Ref pos subExpr x) =
             case satisfiesRef subExpr of
-                Nothing -> ePushPointer (eType subExpr) expr
+                Nothing -> eRStep3 (pushPointer $ eType subExpr) expr
                 Just (got, expected) -> Ref pos (TypeMismatch got expected |?< subExpr) (rStep3 ErrorType x)
-        f expr@(Deref pos subExpr x) =
+        check expr@(Deref pos subExpr x) =
             case satisfiesDeref subExpr of
-                Nothing -> ePopPointer (eType subExpr) expr
+                Nothing -> eLStep3 (popPointer $ eType subExpr) expr
                 Just (got, expected) -> Deref pos (TypeMismatch got expected |?< subExpr) (lStep3 ErrorType x)
-        f expr@(ArrayAcc pos indExpr subExpr x) =
-            case satisfiesAccessor indExpr subExpr of
-                (Nothing, Nothing) -> ePopArray (eType subExpr) expr
+        check expr@(ArrayAcc pos subExpr indExpr x) =
+            case satisfiesAccessor subExpr indExpr of
+                (Nothing, Nothing) -> eStep3 (eSide subExpr) (popArray $ eType subExpr) expr
                 (err1, err2) ->
                     let f = maybe idty $ \(got, expected) -> (TypeMismatch got expected |?<)
-                    in  ArrayAcc pos (f err1 indExpr) (f err2 subExpr) (rStep3 ErrorType x)
-        f fcall@(FunctionCall pos id subExprs x) =
+                    in  ArrayAcc pos (f err1 subExpr) (f err2 indExpr) (rStep3 ErrorType x)
+        check fcall@(FunctionCall pos id subExprs x) =
             case queryBind symStack fcall of
                 Just binding@(_, _, decl) ->
                     case satisfiesFCall fType subExprs of
@@ -232,51 +245,44 @@ checkExpr symStack = emap f
                         (FunctionType argTypes retType) = fType
                         f = maybe idty $ \(got, expected) -> (TypeMismatch got expected |?<)
                 Nothing -> UnknownSymbol |< eRStep3 ErrorType fcall
-        f expr@(ArrayLiteral{}) =
+        check expr@(ArrayLiteral{}) =
             case satisfiesArrayLiteral expr of
                 (False, False) -> buildArrayLiteral expr
                 (True, _) -> EmptyArray |?< eRStep3 ErrorType expr
                 _ -> eRStep3 ErrorType expr
-        f (RangedArray pos expr1 expr2 x) = RangedArray pos expr1 expr2 x
-        f expr = ("expression annotation (" ++ show (ann expr) ++ ")") `unexpectedDuring` "checkExpr"
-
--- (IntLiteral pos v x) -> IntLiteral pos v x
--- (CharLiteral pos v x) -> CharLiteral pos v x
--- (StringLiteral pos v x) -> StringLiteral pos v x
--- (FloatLiteral pos v x) -> FloatLiteral pos v x
--- (BoolLiteral pos v x) -> BoolLiteral pos v x
+        check (RangedArray pos expr1 expr2 x) = RangedArray pos expr1 expr2 x
+        check expr = "expression " ++ show expr `unexpectedDuring` "checkExpr"
 
 checkBlock status@Status{symStack} block' =
-    snd $ emapAccumLBlock (trace "foo12d7t" $ checkInstruction) status{symStack = newSymStack} block
+    snd $ emapAccumLBlock checkInstruction status{symStack = newSymStack} block
     where
-        (newSymStack, block) = trace "foo1" $ emapAccumLBlock (trace "foo000" $ functionDeclPass) symStack block'
+        (newSymStack, block) = emapAccumLBlock functionDeclPass symStack block'
 
 checkInstruction :: Status -> Instruction Step -> (Status, Instruction Step)
-checkInstruction status@Status{symStack} (VariableDecl pos id declType expr' x) =
-    case solveResult of
-        (False, ErrorType) -> (status, UnsolvableType |< variableDecl)
-        _ -> case addBind symStack ModalityVal variableDecl of
-            (Left (_, _, oldDecl)) -> (status, VariableAlreadyDefined (void oldDecl) |< variableDecl)
-            (Right symStack) -> (status{symStack}, variableDecl)
+checkInstruction status@Status{symStack} (VariableDecl pos id declType' expr' x) =
+    case addBind symStack ModalityVal variableDecl of
+        (Left (_, _, oldDecl)) -> (status, VariableAlreadyDefined (void oldDecl) |< variableDecl)
+        (Right symStack) -> (status{symStack}, variableDecl)
     where
-        tExpr = emap (checkExpr symStack) expr'
-        solveResult@(ok, tpe) = solveVarDeclType declType (eType tExpr)
+        tExpr = checkExpr symStack expr'
+        solveResult@(error, tpe, declType) = solveVarDeclType declType' (eType tExpr)
         expr
-            | ok || ErrorType == tpe = tExpr
-            | otherwise = TypeMismatch (eType expr) (Left tpe) |?< tExpr
-        variableDecl = VariableDecl pos id declType (promoteTo tpe expr) (rStep3 tpe x)
+            | error && ErrorType /= tpe = TypeMismatch (eType expr) (Left tpe) |?< tExpr
+            | otherwise = tExpr
+        variableDecl = case VariableDecl pos id declType (promoteTo tpe expr) (rStep3 tpe x) of
+            t | (False, ErrorType, _) <- solveResult -> UnsolvableType |< t
+            t -> t
 checkInstruction status@Status{symStack} (FunctionDecl pos id args' declType block' x@Step3{sType = FunctionType argTypes retType}) =
     (status, FunctionDecl pos id args declType block x)
     where
         bindings =
-            trace "foo4" $
-                -- this was tragic mistake
-                [ (modty, VariableDecl pos id declType (Id pos id (trace "foo5" $ newStep3 RightValue tpe)) (trace "foo5" $ newStep3 RightValue tpe)) -- binding has fdecl x
-                  | ((modty, tpe), Param _ id declType x) <-
-                        zip argTypes args'
-                ]
-        (newSymStack, args) = trace "foo6" $ mapAccumL (trace "foocwewwq" $ f) (pushEnv symStack) $ zip bindings args'
-        block = trace "foo2002" $ checkBlock status{symStack = trace "foo7" $ newSymStack, function = Just retType, loop = False} block'
+            -- this was tragic mistake
+            [ (modty, VariableDecl pos id declType (Id pos id x) x) -- binding has param x
+              | ((modty, _), Param _ id declType x) <-
+                    zip argTypes args'
+            ]
+        (newSymStack, args) = mapAccumL f (pushEnv symStack) $ zip bindings args'
+        block = checkBlock status{symStack = newSymStack, function = Just retType, loop = False} block'
         f symStack (binding@(_, decl), arg)
             | ErrorType <- eType decl = (symStack, arg)
             | otherwise = case uncurry (addBind symStack) binding of

@@ -12,16 +12,16 @@ import Prelude hiding (error, id)
 -- unpackers
 
 unpackBool (BoolLiteral _ v Step2{sType = BoolType}) = v
-unpackBool lt = ("literal " ++ show lt) `unexpectedDuring` "unpackToBool"
+unpackBool lt = "literal " ++ show lt `unexpectedDuring` "unpackToBool"
 
 unpackChar (CharLiteral _ v Step2{sType = CharType}) = v
-unpackChar lt = ("literal " ++ show lt) `unexpectedDuring` "unpackToChar"
+unpackChar lt = "literal " ++ show lt `unexpectedDuring` "unpackToChar"
 
 unpackInt (IntLiteral _ v Step2{sType = IntType}) = v
-unpackInt lt = ("literal " ++ show lt) `unexpectedDuring` "unpackToInt"
+unpackInt lt = "literal " ++ show lt `unexpectedDuring` "unpackToInt"
 
 unpackFloat (FloatLiteral _ v Step2{sType = FloatType}) = v
-unpackFloat lt = ("literal " ++ show lt) `unexpectedDuring` "unpackToFloat"
+unpackFloat lt = "literal " ++ show lt `unexpectedDuring` "unpackToFloat"
 
 biunpackBool lit1 lit2 = (unpackBool lit1, unpackBool lit2)
 
@@ -31,19 +31,19 @@ biunpackPromoteInt lit1 lit2 = (promote lit1, promote lit2)
   where
     promote (CharLiteral _ v Step2{sType = CharType}) = fromIntegral $ fromEnum v
     promote (IntLiteral _ v Step2{sType = IntType}) = fromIntegral v
-    promote lt = ("literal " ++ show lt) `unexpectedDuring` "biunpackPromoteToInt"
+    promote lt = "literal " ++ show lt `unexpectedDuring` "biunpackPromoteToInt"
 
 biunpackPromoteFloat lit1 lit2 = (promote lit1, promote lit2)
   where
     promote (CharLiteral _ v Step2{sType = CharType}) = fromIntegral $ fromEnum v
     promote (IntLiteral _ v Step2{sType = IntType}) = fromIntegral v
     promote (FloatLiteral _ v Step2{sType = FloatType}) = v
-    promote lt = ("literal " ++ show lt) `unexpectedDuring` "biunpackPromoteToFloat"
+    promote lt = "literal " ++ show lt `unexpectedDuring` "biunpackPromoteToFloat"
 
 isZero (FloatLiteral _ v Step2{sType = FloatType}) = v == 0
 isZero (CharLiteral _ v Step2{sType = CharType}) = v == 0
 isZero (IntLiteral _ v Step2{sType = IntType}) = v == 0
-isZero lt = ("literal " ++ show lt) `unexpectedDuring` "isZero"
+isZero lt = "literal " ++ show lt `unexpectedDuring` "isZero"
 
 -- operators
 
@@ -81,7 +81,7 @@ rStep2 = fillOutStep2 RightValue
 
 eRStep2 tpe = pass1 updateAnn (rStep2 tpe . ann)
 
-solveConstExpr = astEmap (assertEGeqStep 1) idty (solveExpr . assertEGeqStep 1)
+solveConstExpr = astEmap idty idty solveExpr
 
 fixRange expr@(CharLiteral pos c x)
   | isLatin1 c = expr
@@ -121,7 +121,7 @@ solveExpr expr@(BinaryOp pos op lt1 lt2 x)
   | checkLiteral lt1 && checkLiteral lt2 =
       case satisfiesBinOp op lt1 lt2 of
         (Nothing, Nothing) ->
-          if (ArithmeticOp Sub == op || ArithmeticOp Mod == op) && isZero lt2
+          if (ArithmeticOp Div == op || ArithmeticOp Mod == op) && isZero lt2
             then
               DivisionBy0 |< eRStep2 sup expr
             else

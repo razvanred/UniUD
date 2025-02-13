@@ -36,7 +36,7 @@ inTreeToOut tree = (fmap . fmap) f tree
                 } = ErrorCollectorOutput tcType (Just tcSide) (getModty tcBinding) (getBind tcBinding)
         getModty binding
             | Just (_, modty, _) <- binding = Just modty
-            | otherwise = Nothing
+            | otherwise = Just ModalityVal
         getBind binding
             | Just (_, _, is) <- binding = Just (void is)
             | otherwise = Nothing

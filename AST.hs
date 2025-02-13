@@ -5,10 +5,10 @@
 -- | The abstract syntax of language Parser.
 module AST where
 
-import Algebra.Lattice (BoundedMeetSemiLattice (top), Lattice ((/\), (\/)))
+import Algebra.Lattice (BoundedMeetSemiLattice (top), Lattice ((\/)))
+import Algebra.Lattice qualified
 import Data.Foldable (fold)
 import Data.Function (on)
-import Data.List qualified as List
 import Data.Set (Set)
 import Data.Set qualified as Set
 import Data.Traversable (mapAccumL, mapAccumR)
@@ -25,6 +25,7 @@ data Error
     | FunctionAlreadyDefined (Instruction ())
     | JumpOutsideLoop
     | ReturnOutsideFunction
+    | NonConstExpr
     deriving (Show)
 
 errorRank = \case
@@ -38,6 +39,7 @@ errorRank = \case
     FunctionAlreadyDefined{} -> "8"
     JumpOutsideLoop -> "9"
     ReturnOutsideFunction -> "10"
+    NonConstExpr -> "11"
 
 instance Eq Error where
     (==) = (==) `on` errorRank
@@ -145,7 +147,7 @@ instance PrettyPrinter Type where
 
 instance Lattice Type where
     (/\) :: Type -> Type -> Type
-    _ /\ _ = "meet operator" `unexpectedIn` "Lattice Type (todo)"
+    (/\) _ _ = "meet operator" `unexpectedIn` "Lattice Type (todo)"
     (\/) :: Type -> Type -> Type
     type1 \/ type2
         | type1 == type2 = type1
@@ -473,7 +475,7 @@ astEmap fInstruction fDeclType fExpr = emapBlock f
         f instruction = fInstruction $ case instruction of
             (NestedBlock pos block x) -> NestedBlock pos (emapBlock f block) x
             (VariableDecl pos id declType expr x) -> VariableDecl pos id (emap g declType) (emap fExpr expr) x
-            (FunctionDecl pos id parameters declType block x) -> FunctionDecl pos id (parameters) (emap g declType) (emapBlock f block) x
+            (FunctionDecl pos id parameters declType block x) -> FunctionDecl pos id parameters (emap g declType) (emapBlock f block) x -- parameters ignored
             (ReturnExp pos expr x) -> ReturnExp pos (emap fExpr expr) x
             (While pos expr block x) -> While pos (emap fExpr expr) (emapBlock f block) x
             (IfThen pos expr block x) -> IfThen pos (emap fExpr expr) (emapBlock f block) x
@@ -482,7 +484,5 @@ astEmap fInstruction fDeclType fExpr = emapBlock f
             (Expression pos expr x) -> Expression pos (emap fExpr expr) x
             _ -> instruction
         g declType = fDeclType $ case declType of
-            (DArrayType (Just expr) declType) -> DArrayType (Just $ emap fExpr expr) (emap g declType)
-            (DArrayType Nothing declType) -> DArrayType Nothing (emap g declType)
-            (DPointerType declType) -> DPointerType (emap g declType)
+            (DArrayType (Just expr) declType) -> DArrayType (Just $ emap fExpr expr) declType
             _ -> declType
