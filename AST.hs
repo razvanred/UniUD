@@ -145,7 +145,7 @@ instance PrettyPrinter Type where
     pp (PointerType _) = "ref"
     pp _ = ""
 
-instance Lattice Type where
+instance Lattice Type where -- fix
     (/\) :: Type -> Type -> Type
     (/\) _ _ = "meet operator" `unexpectedIn` "Lattice Type (todo)"
     (\/) :: Type -> Type -> Type
@@ -232,6 +232,7 @@ instance Annotated Instruction a where
     ann (While _ _ _ x) = x
     ann (IfThen _ _ _ x) = x
     ann (IfThenElse _ _ _ _ x) = x
+    ann (TryCatch _ _ _ x) = x
     ann (Assignment _ _ _ _ x) = x
     ann (Expression _ _ x) = x
 
@@ -246,6 +247,7 @@ instance Annotated Instruction a where
     updateAnn x (While pos expr block _) = While pos expr block x
     updateAnn x (IfThen pos expr block _) = IfThen pos expr block x
     updateAnn x (IfThenElse pos expr block1 block2 _) = IfThenElse pos expr block1 block2 x
+    updateAnn x (TryCatch pos block1 block2 _) = TryCatch pos block1 block2 x
     updateAnn x (Assignment pos expr1 op expr2 _) = Assignment pos expr1 op expr2 x
     updateAnn x (Expression pos expr _) = Expression pos expr x
 
@@ -261,6 +263,7 @@ instance Positioned (Instruction a) where
     position (While pos _ _ _) = pos
     position (IfThen pos _ _ _) = pos
     position (IfThenElse pos _ _ _ _) = pos
+    position (TryCatch pos _ _ _) = pos
     position (Assignment pos _ _ _ _) = pos
     position (Expression pos _ _) = pos
 
@@ -357,7 +360,7 @@ instance EndoFunctor Expr where
                 (ArrayAcc pos expr1 expr2 x) -> ArrayAcc pos (r expr1) (r expr2) x
                 (FunctionCall pos id exprs x) -> FunctionCall pos id (r <$> exprs) x
                 (ArrayLiteral pos exprs x) -> ArrayLiteral pos (r <$> exprs) x
-                (RangedArray pos expr1 expr2 x) -> RangedArray pos (r expr1) (r expr2) x
+                (CondExpr pos expr expr1 expr2 x) -> CondExpr pos (r expr) (r expr1) (r expr2) x
                 _ -> expr
                 where
                     r = emapAccumR f
@@ -369,7 +372,7 @@ instance EndoFunctor Expr where
                 (ArrayAcc pos expr1 expr2 x) -> ArrayAcc pos (r expr1) (r expr2) (newAcc, x)
                 (FunctionCall pos id exprs x) -> FunctionCall pos id (r <$> exprs) (newAcc, x)
                 (ArrayLiteral pos exprs x) -> ArrayLiteral pos (r <$> exprs) (newAcc, x)
-                (RangedArray pos expr1 expr2 x) -> RangedArray pos (r expr1) (r expr2) (newAcc, x)
+                (CondExpr pos expr expr1 expr2 x) -> CondExpr pos (r expr) (r expr1) (r expr2) (newAcc, x)
                 _ -> (acc,) <$> expr
                 where
                     (newAcc, newExpr) = f acc expr
@@ -395,7 +398,7 @@ instance Annotated Expr a where
     ann (FloatLiteral _ _ x) = x
     ann (BoolLiteral _ _ x) = x
     ann (ArrayLiteral _ _ x) = x
-    ann (RangedArray _ _ _ x) = x
+    ann (CondExpr _ _ _ _ x) = x
 
     updateAnn x (UnaryOp pos op expr _) = UnaryOp pos op expr x
     updateAnn x (BinaryOp pos op expr1 expr2 _) = BinaryOp pos op expr1 expr2 x
@@ -410,7 +413,7 @@ instance Annotated Expr a where
     updateAnn x (FloatLiteral pos v _) = FloatLiteral pos v x
     updateAnn x (BoolLiteral pos v _) = BoolLiteral pos v x
     updateAnn x (ArrayLiteral pos exprs _) = ArrayLiteral pos exprs x
-    updateAnn x (RangedArray pos expr1 expr2 _) = RangedArray pos expr1 expr2 x
+    updateAnn x (CondExpr pos expr expr1 expr2 _) = CondExpr pos expr expr1 expr2 x
 
 instance Positioned (Expr a) where
     position (UnaryOp pos _ _ _) = pos
@@ -426,7 +429,7 @@ instance Positioned (Expr a) where
     position (FloatLiteral pos _ _) = pos
     position (BoolLiteral pos _ _) = pos
     position (ArrayLiteral pos _ _) = pos
-    position (RangedArray pos _ _ _) = pos
+    position (CondExpr pos _ _ _ _) = pos
 
 data UnaryOp
     = Not
