@@ -132,7 +132,7 @@ data Type
     | IntType
     | FloatType
     | StringType
-    | ArrayType Integer Type
+    | ArrayType Bool Integer Type
     | PointerType Type
     | FunctionType [(Modality, Type)] Type
     deriving (Eq, Show)
@@ -201,6 +201,7 @@ data Instruction a
     | While Position (Expr a) (Block a) a
     | IfThen Position (Expr a) (Block a) a
     | IfThenElse Position (Expr a) (Block a) (Block a) a
+    | TryCatch Position (Block a) (Block a)
     | Assignment Position (Expr a) AssignmentOp (Expr a) a
     | Expression Position (Expr a) a
     deriving (Show, Functor, Foldable, Traversable)
@@ -340,7 +341,7 @@ data Expr a
     | FloatLiteral Position Double a
     | BoolLiteral Position Bool a
     | ArrayLiteral Position [Expr a] a
-    | RangedArray Position (Expr a) (Expr a) a
+    | CondExpr Position (Expr a) (Expr a) (Expr a)
     deriving (Show, Functor, Foldable, Traversable)
 
 instance EndoFunctor Expr where
