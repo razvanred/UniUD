@@ -1,32 +1,33 @@
--- {-# OPTIONS_GHC -w #-}
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
+{-# OPTIONS_GHC -Wno-unused-imports #-}
+{-# OPTIONS_GHC -Wno-unused-local-binds #-}
 
 module ITest where
 
-import ErrorCollector.ConvertForTAC (cnvTree, inTreeToOut)
+import ConstantSolver.Solver
+import ErrorCollector.Collector
+import ErrorCollector.ConvertForTAC (cnvBlock, inTreeToOut)
 import Parser.ASTBuilder
 import Parser.Par (myLexer, pBlock1)
 import TAC.TACInstruction
-import TAC.TACutils (genCode, printProgram)
-import TypeChecker.Algs qualified as CS2
-import TypeChecker.Checker qualified as Checker
-import TypeChecker.ConstExprSolver qualified as Checker
-import TypeChecker.TypeUtils (inToStep1, stepnToOut)
+import TAC.TACutils (genCode, printOutput, printProgram)
+import TypeChecker.Main
 import Utils (prp)
-import TAC.TACInstruction
-import TAC.TACutils (genCode,printProgram, printOutput)
 
 f x = do
     let Right pt = pBlock1 $ myLexer x
     let t = buildTree pt
-    let t1 = CS2.solveConstants 1 t
-    let t2 = {- (fmap . fmap) stepnToOut .  -} Checker.checkTree . Checker.solveConstExpr $ (fmap . fmap) inToStep1 t1
-    -- let t3 = inTreeToOut $ cnvTree t2
-    -- let t4 = tacBlock t3
+    let t1 = solveConstants 1 t
+    let t2 = staticAnalizer t1
+    let t3 = collectErrors True t2
+    -- let _t3 = inTreeToOut $ cnvTree t2
+    -- let _t4 = tacBlock t3
     -- print t
     putStrLn "---demo"
-    --prp t2
+    -- prp t2
     prp t3
-    printOutput t4
+
+-- printOutput t4
 
 testFile fileName = do
     contents <- readFile fileName

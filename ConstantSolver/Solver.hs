@@ -1,92 +1,85 @@
-module ConstantSolver.Solver {- resolveConstants -}() where
+module ConstantSolver.Solver (solveConstants) where
 
 import AST
 import Control.Monad (void)
 import Data.Map.Strict (Map, insert, union, (!?))
 import Data.Map.Strict qualified as Map
-import Utils (unexpectedDuring, unexpectedIn)
+import Data.Set qualified as Set
+import Utils
 import Prelude hiding (id)
 
 type In = ParserOutput
 
 type Out = ConstantSolverOutput
 
-type ConstantTable = Map Ident (Instruction In)
+type ConstantTable = Map Ident (Instruction Out)
 
-none = ConstantSolverOutput{csReplacedFromConstant = Nothing, csMaxRecursion = False, csConstantAlreadyDefined = Nothing}
+fillOutOut csReplacedFromConstant x =
+    ConstantSolverOutput
+        { cserrors = Set.empty,
+          cswarnings = pswarnings x,
+          csReplacedFromConstant = csReplacedFromConstant
+        }
 
--- changeTypeParameterExpr :: b -> Expr a -> Expr b
--- changeTypeParameterExpr = (<$)
+inToOut = fillOutOut Nothing
 
-maxDepth = 5
+outToIn x = ParserOutput{pswarnings = cswarnings x} -- lossless
 
-{-
-cose da ricordarsi:
-ok - resolveExpr al momento della sostituzione, non salvataggio in constantTable
-ok - limite ricorsione su risoluzione espressioni (contatore ad ogni chiamata di "resolveExpr")
-ok - annotazione errori di clashing sul record
-- maxdepth come argomento
- -}
+solveConstants maxDepth instructions = resolveBlock instructions Map.empty Map.empty
+    where
+        resolveBlock :: Block In -> ConstantTable -> ConstantTable -> Block Out
+        resolveBlock is extEnv curEnv = resolveInstructions is (curEnv `union` extEnv) Map.empty
 
-resolveConstants :: Block In -> Block Out
-resolveConstants instructionList = resolveBlock instructionList Map.empty Map.empty
-
-resolveBlock :: Block In -> ConstantTable -> ConstantTable -> Block Out
--- resolveBlock instructionList extCt curCt = resolveInstructionList instructionList extCt (union curCt extCt) --For it's wrong!!!!
--- It should be:
-resolveBlock instructionList extCt curCt = resolveInstructionList instructionList (curCt `union` extCt) Map.empty
-
-resolveInstructionList :: [Instruction In] -> ConstantTable -> ConstantTable -> [Instruction Out]
-resolveInstructionList [] _ _ = []
-resolveInstructionList (i : is) extCt curCt = case i of
-    decl@(ConstantDecl _ id _ _) -> case Map.lookup id curCt of
-        Nothing -> (none <$ decl) : resolveInstructionList is extCt updatedCt
+        resolveInstructions :: [Instruction In] -> ConstantTable -> ConstantTable -> [Instruction Out]
+        resolveInstructions [] _ _ = []
+        resolveInstructions (i : is) extEnv curEnv = case i of
+            decl@(ConstantDecl _ id _ _) ->
+                case curEnv !? id of
+                    Nothing ->
+                        resolveInstructions is extEnv (insert id (inToOut <$> decl) curEnv)
+                    Just previousDecl ->
+                        resolveInstructions is extEnv (insert id (ConstantAlreadyDefined (void previousDecl) |< (inToOut <$> decl)) curEnv)
+            (NestedBlock pos blockIs x) -> NestedBlock pos (resolveBlock blockIs extEnv curEnv) (inToOut x) : rest
+            (FunctionDecl pos id params declType blockIs x) ->
+                FunctionDecl pos id ((fmap . (<$>)) inToOut params) (resolveDeclType declType mergedEnv) (resolveBlock blockIs extEnv curEnv) (inToOut x) : rest
+            (While pos expr blockIs x) ->
+                While pos (resolveExpr expr mergedEnv) (resolveBlock blockIs extEnv curEnv) (inToOut x) : rest
+            (IfThen pos expr blockIs x) ->
+                IfThen pos (resolveExpr expr mergedEnv) (resolveBlock blockIs extEnv curEnv) (inToOut x) : rest
+            (IfThenElse pos expr blockIs1 blockIs2 x) ->
+                IfThenElse pos (resolveExpr expr mergedEnv) (resolveBlock blockIs1 extEnv curEnv) (resolveBlock blockIs2 extEnv curEnv) (inToOut x) : rest
+            (VariableDecl pos id declType expr x) -> VariableDecl pos id (resolveDeclType declType mergedEnv) (resolveExpr expr mergedEnv) (inToOut x) : rest
+            (Assignment pos expr1 op expr2 x) -> Assignment pos (resolveExpr expr1 mergedEnv) op (resolveExpr expr2 mergedEnv) (inToOut x) : rest
+            (Expression pos expr x) -> Expression pos (resolveExpr expr mergedEnv) (inToOut x) : rest
+            _ -> (inToOut <$> i) : rest
             where
-                updatedCt = insert id (void decl) curCt
-        Just previousDecl -> (none{csConstantAlreadyDefined = Just (void previousDecl)} <$ decl) : resolveInstructionList is extCt curCt
-    _ -> resolveInstruction i extCt curCt : resolveInstructionList is extCt curCt
+                mergedEnv = curEnv `union` extEnv
+                rest = resolveInstructions is extEnv curEnv
 
-resolveInstruction :: Instruction In -> ConstantTable -> ConstantTable -> Instruction Out
-resolveInstruction x extCt curCt = case x of
-    NestedBlock pos blk _ -> NestedBlock pos (resolveBlock blk extCt curCt) none
-    -- ConstantDecl pos id expr _ -> ConstantDecl pos id (resolveExpr expr extCt curCt) none
-    VariableDecl pos id declT expr _ -> VariableDecl pos id (resolveDeclType declT extCt curCt) (resolveExpr expr extCt curCt) none
-    FunctionDecl pos id parL declT blk _ -> FunctionDecl pos id (fmap (\x -> resolveParameter x extCt curCt) parL) (resolveDeclType declT extCt curCt) (resolveBlock blk extCt curCt) none
-    Break pos _ -> Break pos none
-    Continue pos _ -> Continue pos none
-    ReturnVoid pos _ -> ReturnVoid pos none
-    ReturnExp pos expr _ -> ReturnExp pos (resolveExpr expr extCt curCt) none
-    While pos expr blk _ -> While pos (resolveExpr expr extCt curCt) (resolveBlock blk extCt curCt) none
-    IfThen pos expr blk _ -> IfThen pos (resolveExpr expr extCt curCt) (resolveBlock blk extCt curCt) none
-    IfThenElse pos expr1 blk1 blk2 _ -> IfThenElse pos (resolveExpr expr1 extCt curCt) (resolveBlock blk1 extCt curCt) (resolveBlock blk2 extCt curCt) none
-    Assignment pos expr1 aop expr2 _ -> Assignment pos (resolveExpr expr1 extCt curCt) aop (resolveExpr expr2 extCt curCt) none
-    Expression pos expr _ -> Expression pos (resolveExpr expr extCt curCt) none
-    ConstantDecl{} -> "instruction" `unexpectedDuring` "resolveInstruction"
+        resolveDeclType :: DeclType In -> ConstantTable -> DeclType Out
+        resolveDeclType (DArrayType (Just expr) declType) env = DArrayType (Just $ resolveExpr expr env) (resolveDeclType declType env)
+        resolveDeclType (DPointerType declType) env = DPointerType (resolveDeclType declType env)
+        resolveDeclType declType _ = inToOut <$> declType
 
-resolveParameter :: Parameter In -> ConstantTable -> ConstantTable -> Parameter Out
-resolveParameter (Param mod id declT _) extCt curCt = Param mod id (resolveDeclType declT extCt curCt) none
-
-resolveDeclType :: DeclType In -> ConstantTable -> ConstantTable -> DeclType Out
-resolveDeclType x extCt curCt = case x of
-    ArrayType expr declT -> ArrayType (fmap (\x -> resolveExpr x extCt curCt) expr) (resolveDeclType declT extCt curCt)
-    PointerType declT -> PointerType (resolveDeclType declT extCt curCt)
-    _ -> fmap (const none) x
-
-resolveExpr :: Expr In -> ConstantTable -> ConstantTable -> Expr Out
-resolveExpr x extCt curCt = resolveExprDepth maxDepth x extCt curCt none
-
-resolveExprDepth :: Int -> Expr In -> ConstantTable -> ConstantTable -> Out -> Expr Out
-resolveExprDepth 0 expr _ _ annotation = annotation{csMaxRecursion = True} <$ expr
-resolveExprDepth maxDepth (UnaryOp pos unop expr _) extCt curCt annotation = UnaryOp pos unop (resolveExprDepth maxDepth expr extCt curCt annotation) annotation
-resolveExprDepth maxDepth (BinaryOp pos bop expr1 expr2 _) extCt curCt annotation = BinaryOp pos bop (resolveExprDepth maxDepth expr1 extCt curCt annotation) (resolveExprDepth maxDepth expr2 extCt curCt annotation) annotation
-resolveExprDepth maxDepth (Ref pos expr _) extCt curCt annotation = Ref pos (resolveExprDepth maxDepth expr extCt curCt annotation) annotation
-resolveExprDepth maxDepth (Deref pos expr _) extCt curCt annotation = Deref pos (resolveExprDepth maxDepth expr extCt curCt annotation) annotation
-resolveExprDepth maxDepth (ArrayAcc pos expr1 expr2 _) extCt curCt annotation = ArrayAcc pos (resolveExprDepth maxDepth expr1 extCt curCt annotation) (resolveExprDepth maxDepth expr2 extCt curCt annotation) annotation
-resolveExprDepth maxDepth (FunctionCall pos id actualParameters _) extCt curCt annotation = FunctionCall pos id (map (\y -> resolveExprDepth maxDepth y extCt curCt annotation) actualParameters) annotation
-resolveExprDepth maxDepth (ArrayLiteral pos listExp _) extCt curCt annotation = ArrayLiteral pos (map (\y -> resolveExprDepth maxDepth y extCt curCt annotation) listExp) annotation
-resolveExprDepth maxDepth (RangedArray pos expr1 expr2 _) extCt curCt annotation = RangedArray pos (resolveExprDepth maxDepth expr1 extCt curCt annotation) (resolveExprDepth maxDepth expr2 extCt curCt annotation) annotation
-resolveExprDepth _ bl@(BasicLiteral{}) _ _ annotation = annotation <$ bl
-resolveExprDepth maxDepth ident@(Id _ id _) extCt curCt annotation = case union curCt extCt !? id of
-    Nothing -> annotation <$ ident
-    Just constDecl@(ConstantDecl _ _ expr _) -> resolveExprDepth (maxDepth - 1) expr extCt curCt annotation{csReplacedFromConstant = Just (void constDecl)}
-    Just _ -> "instruction" `unexpectedIn` "ConstantTable"
+        resolveExpr :: Expr In -> ConstantTable -> Expr Out
+        resolveExpr expr env = resolve maxDepth inToOut expr
+            where
+                resolve :: Int -> (In -> Out) -> Expr In -> Expr Out
+                resolve depth fAnn expr
+                    | depth == 0 = (MaxRecursion |<) . fAnn <$> expr
+                    | otherwise = case expr of
+                        (UnaryOp pos op expr _) -> UnaryOp pos op (resolve depth fAnn expr) x
+                        (BinaryOp pos op expr1 expr2 _) -> BinaryOp pos op (resolve depth fAnn expr1) (resolve depth fAnn expr2) x
+                        (Ref pos expr _) -> Ref pos (resolve depth fAnn expr) x
+                        (Deref pos expr _) -> Deref pos (resolve depth fAnn expr) x
+                        (ArrayAcc pos expr1 expr2 _) -> ArrayAcc pos (resolve depth fAnn expr1) (resolve depth fAnn expr2) x
+                        (FunctionCall pos id exprs _) -> FunctionCall pos id (resolve depth fAnn <$> exprs) x
+                        (ArrayLiteral pos exprs _) -> ArrayLiteral pos (resolve depth fAnn <$> exprs) x
+                        (RangedArray pos expr1 expr2 _) -> RangedArray pos (resolve depth fAnn expr1) (resolve depth fAnn expr2) x
+                        ident@(Id _ id _) -> case env !? id of
+                            Just decl@(ConstantDecl _ _ expr _) -> resolve (depth - 1) (fillOutOut $ Just decl) $ {-rollback anns-} outToIn <$> expr
+                            Nothing -> x <$ ident
+                            _ -> "instruction" `unexpectedIn` "constanTable"
+                        expr -> x <$ expr -- no recursion
+                    where
+                        x = fAnn $ ann expr

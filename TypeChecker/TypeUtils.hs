@@ -3,18 +3,10 @@ module TypeChecker.TypeUtils where
 import AST
 import Algebra.Lattice (joinLeq, (\/))
 import Control.Applicative ((<|>))
-import Control.Monad (void)
-import Data.Map.Strict (Map)
 import Data.Set (Set, union)
 import Data.Set qualified as Set
 import Utils
 import Prelude hiding (error, id)
-
-type In = ConstantSolverOutput
-
-type Out = TypeCheckerOutput
-
-type VarTable = Map Ident (Instruction In)
 
 data Step
   = Step1
@@ -45,8 +37,6 @@ instance StatusCollector Error Step where
 instance StatusCollector Warning Step where
   w |< step = step{swarnings = Set.insert w (swarnings step)}
 
-inToStep1 x = Step1 (cserrors x) (cswarnings x) (csReplacedFromConstant x)
-
 fillOutStep2 sSide sType x@(Step1{}) = Step2 (serrors x) (swarnings x) (sReplacedFromConstant x) sType sSide
 fillOutStep2 _ _ _ = "record " `unexpectedDuring` "fillOutStep2"
 
@@ -55,33 +45,15 @@ fillOutStep3 _ _ _ x = "record " ++ show x `unexpectedDuring` "fillOutStep3"
 
 newStep3 sSide sType = Step3 Set.empty Set.empty Nothing sType sSide Nothing
 
-stepToConstantSolverOutput x =
-  ConstantSolverOutput
-    { cserrors = serrors x,
-      cswarnings = swarnings x,
-      csReplacedFromConstant = sReplacedFromConstant x
-    }
+-- stepToConstantSolverOutput x =
+--   ConstantSolverOutput
+--     { cserrors = serrors x,
+--       cswarnings = swarnings x,
+--       csReplacedFromConstant = sReplacedFromConstant x
+--     }
 
 step2ToStep3 x@Step2{} = Step3 (serrors x) (swarnings x) (sReplacedFromConstant x) (sType x) (sSide x) Nothing
 step2ToStep3 x = "record " ++ show x `unexpectedDuring` "step2ToStep3"
-
-step3ToOut x@Step3{} =
-  TypeCheckerOutput
-    { tcerrors = serrors x,
-      tcwarnings = swarnings x,
-      tcReplacedFromConstant = sReplacedFromConstant x,
-      tcType = sType x,
-      tcSide = sSide x,
-      tcBinding = f <$> sBinding x
-    }
-  where
-    f (depth, modty, is) = (depth, modty, void is)
-step3ToOut x = "record " ++ show x `unexpectedDuring` "stepnToOut"
-
-treeStep1 :: (Functor f) => f ConstantSolverOutput -> f Step
-treeStep1 tree = inToStep1 <$> tree
-
-treeOut tree = step3ToOut <$> tree
 
 x |<> oldX = x{serrors = serrors x `union` serrors oldX, swarnings = swarnings x `union` swarnings oldX}
 
@@ -105,11 +77,6 @@ assertGeqStep num x
 eType e = sType $ ann (assertEGeqStep 2 e)
 
 eSide e = sSide $ ann (assertEGeqStep 2 e)
-
--- isErrorType ErrorType = True
--- isErrorType _ = False
-
--- notErrorType = not . isErrorType
 
 isLiteral (IntLiteral{}) = True
 isLiteral (CharLiteral{}) = True

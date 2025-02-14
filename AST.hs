@@ -48,10 +48,10 @@ instance Ord Error where
     compare = compare `on` errorRank
 
 data Warning
-    = LowercaseConstant (Instruction ParserOutput) -- only constdecls
+    = LowercaseConstant (Instruction ()) -- only constdecls (csReplacedFromConstant)
     | UpperCaseSymbol -- only vardecls
-    | ConstantAlreadyDefined (Instruction ConstantSolverOutput) -- only constdecls
-    | LiteralOutOfRange (Expr ConstantSolverOutput) -- migrates
+    | ConstantAlreadyDefined (Instruction ()) -- only constdecls
+    | LiteralOutOfRange (Expr ()) -- migrates
     | DivisionBy0
     deriving (Show)
 
@@ -213,6 +213,12 @@ instance EndoFunctor Instruction where
             cnv1 (acc, instruction) = (acc,) <$> instruction
             cnv2 = liftA2 (,) (fst . ann) (snd <$>)
 
+instance (StatusCollector Error a) => StatusCollector Error (Instruction a) where
+    (|<) e = pass1 updateAnn ((e |<) . ann)
+
+instance (StatusCollector Warning a) => StatusCollector Warning (Instruction a) where
+    (|<) e = pass1 updateAnn ((e |<) . ann)
+
 instance Annotated Instruction a where
     ann (NestedBlock _ _ x) = x
     ann (ConstantDecl _ _ _ x) = x
@@ -242,11 +248,20 @@ instance Annotated Instruction a where
     updateAnn x (Assignment pos expr1 op expr2 _) = Assignment pos expr1 op expr2 x
     updateAnn x (Expression pos expr _) = Expression pos expr x
 
-instance (StatusCollector Error a) => StatusCollector Error (Instruction a) where
-    (|<) e = pass1 updateAnn ((e |<) . ann)
-
-instance (StatusCollector Warning a) => StatusCollector Warning (Instruction a) where
-    (|<) e = pass1 updateAnn ((e |<) . ann)
+instance Positioned (Instruction a) where
+    position (NestedBlock pos _ _) = pos
+    position (ConstantDecl pos _ _ _) = pos
+    position (VariableDecl pos _ _ _ _) = pos
+    position (FunctionDecl pos _ _ _ _ _) = pos
+    position (Break pos _) = pos
+    position (Continue pos _) = pos
+    position (ReturnVoid pos _) = pos
+    position (ReturnExp pos _ _) = pos
+    position (While pos _ _ _) = pos
+    position (IfThen pos _ _ _) = pos
+    position (IfThenElse pos _ _ _ _) = pos
+    position (Assignment pos _ _ _ _) = pos
+    position (Expression pos _ _) = pos
 
 data Parameter a = Param Modality Ident (DeclType a) a
     deriving (Show, Functor, Foldable, Traversable)
@@ -274,6 +289,16 @@ data DeclType a
     | DArrayType (Maybe (Expr a)) (DeclType a)
     | DPointerType (DeclType a)
     deriving (Show, Functor, Foldable, Traversable)
+
+emapAccumLDeclType :: (a -> DeclType a1 -> (a, DeclType a1)) -> a -> DeclType a1 -> (a, DeclType a1)
+emapAccumLDeclType f oldAcc declType = case f oldAcc declType of
+    (acc, DArrayType expr declType) -> (newAcc, DArrayType expr newDeclType)
+        where
+            (newAcc, newDeclType) = emapAccumLDeclType f acc declType
+    (acc, DPointerType declType) -> (newAcc, newDeclType)
+        where
+            (newAcc, newDeclType) = emapAccumLDeclType f acc declType
+    leaf -> leaf
 
 instance EndoFunctor DeclType where
     emapAccum :: (c -> DeclType a -> (c, DeclType a)) -> (DeclType (c, a) -> DeclType (c, a)) -> c -> DeclType a -> (c, DeclType a)
@@ -475,7 +500,7 @@ astEmap fInstruction fParameter fDeclType fExpr = emapBlock f
         f instruction = fInstruction $ case instruction of
             (NestedBlock pos block x) -> NestedBlock pos (emapBlock f block) x
             (VariableDecl pos id declType expr x) -> VariableDecl pos id (emap h declType) (emap fExpr expr) x
-            (FunctionDecl pos id parameters declType block x) -> FunctionDecl pos id (g <$> parameters) (emap h declType) (emapBlock f block) x -- parameters ignored
+            (FunctionDecl pos id parameters declType block x) -> FunctionDecl pos id (g <$> parameters) (emap h declType) (emapBlock f block) x
             (ReturnExp pos expr x) -> ReturnExp pos (emap fExpr expr) x
             (While pos expr block x) -> While pos (emap fExpr expr) (emapBlock f block) x
             (IfThen pos expr block x) -> IfThen pos (emap fExpr expr) (emapBlock f block) x

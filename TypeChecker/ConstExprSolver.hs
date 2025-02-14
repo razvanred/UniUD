@@ -3,6 +3,7 @@ module TypeChecker.ConstExprSolver (solveConstExpr) where
 import AST
 import Algebra.Lattice ((\/))
 import Control.Applicative ((<|>))
+import Control.Monad (void)
 import Data.Char (isLatin1)
 import Data.Int (Int32)
 import TypeChecker.TypeUtils
@@ -85,11 +86,10 @@ solveConstExpr = astEmap idty idty idty solveExpr
 
 fixRange expr@(CharLiteral pos c x)
   | isLatin1 c = expr
-  | otherwise = LiteralOutOfRange (stepToConstantSolverOutput <$> expr) |< CharLiteral pos '?' x
+  | otherwise = LiteralOutOfRange (void expr) |< CharLiteral pos '?' x
 fixRange expr@(IntLiteral pos num x)
   | num == fromIntegral @Int32 (fromIntegral num) = expr
-  | num < 0 = LiteralOutOfRange (stepToConstantSolverOutput <$> expr) |< IntLiteral pos (max num $ fromIntegral $ minBound @Int32) x
-  | otherwise = LiteralOutOfRange (stepToConstantSolverOutput <$> expr) |< IntLiteral pos (min num $ fromIntegral $ maxBound @Int32) x
+  | otherwise = LiteralOutOfRange (void expr) |< IntLiteral pos (num `mod` 2 ^ (32 :: Integer)) x
 fixRange expr@(FloatLiteral{}) = expr -- since isIEEE=True
 fixRange expr = expr
 
@@ -157,7 +157,7 @@ solveExpr expr@(BinaryOp pos op lt1 lt2 x)
       where
         newX = rStep2 sup x |<> ann lt2 |<> ann lt1
         makeCharLit op = CharLiteral pos (uncurry op (biunpackChar lt1 lt2)) newX
-        makeIntLit op = IntLiteral pos (uncurry op (biunpackPromoteInt lt1 lt2)) newX
+        makeIntLit op = IntLiteral pos (uncurry op (biunpackPromoteInt lt1 lt2) `mod` 2 ^ (32 :: Integer)) newX
         makeFloatLit op = FloatLiteral pos (uncurry op (biunpackPromoteFloat lt1 lt2)) newX
         makeBoolLit vs op = BoolLiteral pos (uncurry op vs) newX
 solveExpr expr = expr

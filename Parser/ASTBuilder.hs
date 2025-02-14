@@ -4,6 +4,7 @@ module Parser.ASTBuilder (buildTree) where
 
 import AST
 import Control.Monad (liftM2)
+import Control.Monad.Extra (void)
 import Data.Char (isUpper, toUpper)
 import Data.Set qualified as Set
 import Parser.Abs qualified
@@ -26,7 +27,7 @@ buildInstruction (Parser.Abs.Decl _ declaration) = case declaration of
             then
                 id
             else
-                (pass1 (|<) LowercaseConstant)
+                (pass1 (|<) (LowercaseConstant . void))
         )
             . pass1 (ConstantDecl pos ident) (buildExpr expr)
     (Parser.Abs.VarDecl (Just pos) (Parser.Abs.Ident ident@(h : _)) declType expr) ->

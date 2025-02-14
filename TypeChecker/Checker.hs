@@ -1,9 +1,8 @@
 {-# HLINT ignore "Avoid partial function" #-}
-{-# LANGUAGE ParallelListComp #-}
 {-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 
-module TypeChecker.Checker where
+module TypeChecker.Checker (checkTypes) where
 
 import AST
 import Algebra.Lattice (joinLeq, (\/))
@@ -94,16 +93,6 @@ queryBind symStack decl
 pushEnv :: SymStack -> SymStack
 pushEnv symStack = Map.fromList [(Variable, Map.empty), (Function, Map.empty)] : symStack
 
-emapAccumLDeclType :: (a -> DeclType a1 -> (a, DeclType a1)) -> a -> DeclType a1 -> (a, DeclType a1)
-emapAccumLDeclType f oldAcc declType = case f oldAcc declType of
-    (acc, DArrayType expr declType) -> (newAcc, DArrayType expr newDeclType)
-        where
-            (newAcc, newDeclType) = emapAccumLDeclType f acc declType
-    (acc, DPointerType declType) -> (newAcc, newDeclType)
-        where
-            (newAcc, newDeclType) = emapAccumLDeclType f acc declType
-    leaf -> leaf
-
 buildDeclType declType' = case solveVarDeclType declType' ErrorType of
     (_, tpe, declType) -> (tpe, declType)
 
@@ -193,7 +182,9 @@ promote expr1 expr2 = (promoteTo sup expr1, promoteTo sup expr2)
 
 promoteList = zipWith promoteTo
 
-checkTree = checkBlock (Status (pushEnv []) Nothing False)
+-- checking
+
+checkTypes = checkBlock (Status (pushEnv []) Nothing False)
 
 checkExpr symStack = emap check
     where
@@ -212,7 +203,10 @@ checkExpr symStack = emap check
                 (Nothing, Nothing) ->
                     let sup = eType subExpr1 \/ eType subExpr2
                         (newSubExpr1, newSubExpr2) = promote subExpr1 subExpr2
-                    in  BinaryOp pos op newSubExpr1 newSubExpr2 (rStep3 sup x)
+                        tpe
+                            | ArithmeticOp{} <- op = sup
+                            | otherwise = BoolType
+                    in  BinaryOp pos op newSubExpr1 newSubExpr2 (rStep3 tpe x)
                 (err1, err2) ->
                     let f = maybe idty $ \(got, expected) -> (TypeMismatch got expected |?<)
                     in  BinaryOp pos op (f err1 subExpr1) (f err2 subExpr2) (rStep3 ErrorType x)
@@ -357,5 +351,3 @@ checkInstruction status@Status{symStack} (Expression pos expr' x) =
     where
         expr = checkExpr symStack expr'
 checkInstruction _ _ = "instruction" `unexpectedDuring` "checkInstruction"
-
--- Param Modality Ident (DeclType a) a

@@ -57,21 +57,6 @@ allEqual (x : xs) = all (== x) xs
 
 type Endo a = a -> a
 
--- not quite, these are "boxes", more than a functor as they can be
--- unwrapped. names will do
--- class (Functor f) => CtFunctor f where
---     ctmap :: (f a -> b) -> f a -> f b
---     ctmap f = ctmapAccumL (const $ const ()) f ()
---     ctmapAccumL :: (c -> f a -> c) -> (f a -> b) -> c -> f a -> f b
-
--- class (Functor f) => EndoBiCtFunctor f where
---     ectmap :: (f b -> f b) -> (f a -> b) -> f a -> f b
---     ectmap f g = ectmapAccumL (const $ const ()) f g ()
---     ectmapAccumL :: (c -> f a -> c) -> (f b -> f b) -> (f a -> b) -> c -> f a -> f b
-
--- instance (Functor f, EndoBiCtFunctor f) => CtFunctor f where
---     ctmapAccumL f g = ectmapAccumL f idty g
-
 class (Functor f) => EndoFunctor f where
     emapAccum :: (c -> f a -> (c, f a)) -> (f (c, a) -> f (c, a)) -> c -> f a -> (c, f a) -- sad state of affairs
     emapAccumL :: (c -> f a -> (c, f a)) -> c -> f a -> f a
@@ -79,9 +64,13 @@ class (Functor f) => EndoFunctor f where
     emapAccumR :: (f (c, a) -> f (c, a)) -> c -> f a -> (c, f a)
     emapAccumR f acc = emapAccum (const (acc,)) f acc
     emap :: (f a -> f a) -> f a -> f a
-    emap f = snd . emapAccumR g ()
+    emap f = snd . emapAccumR g () -- this is incredibly bad performance-wise. too bad
         where
             g e = ((),) <$> f (snd <$> e)
+    efoldr :: (f (c, a) -> c) -> c -> f a -> c
+    efoldr f acc = fst . emapAccumR g acc
+        where
+            g e = (f e,) . snd <$> e
 
 class PrettyPrinter a where
     pp :: a -> String
@@ -102,7 +91,7 @@ class (Num a) => NumExtra a where
 
 instance Num Char where -- ext-ASCII ranged math
     c1 + c2 = toEnum $ ((+) `on` fromEnum) c1 c2 `mod` 256
-    c1 * c2 = toEnum $ ((+) `on` fromEnum) c1 c2 `mod` 256 -- todo recheck
+    c1 * c2 = toEnum $ ((+) `on` fromEnum) c1 c2 `mod` 256
     abs = id
     signum = pass $ toEnum 1
     fromInteger = toEnum . fromIntegral
