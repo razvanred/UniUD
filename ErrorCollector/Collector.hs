@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -Wno-orphans #-}
 
-module ErrorCollector.Collector (collectErrors) where
+module ErrorCollector.Collector (hasError, collect) where
 
 import AST
 import Data.Set (Set, toList)
@@ -15,7 +15,7 @@ sfilter = Set.filter
 hasError :: Block In -> Bool
 hasError block = not (all (all (null . tcerrors)) block)
 
-collectErrors alsoWarns block = maybeBool (hasError block) (collectBlock block)
+collect alsoWarns block = maybeBool (hasError block) (collectBlock block)
     where
         collectBlock = foldMap collectInstruction
 

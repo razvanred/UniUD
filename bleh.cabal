@@ -71,6 +71,7 @@ common shared-properties
     ConstantSolver.Solver
     ErrorCollector.Collector
     ErrorCollector.ConvertForTAC
+    ErrorCollector.Main
     TAC.TAC
     TAC.TACInstruction
     TAC.TACexpr

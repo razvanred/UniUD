@@ -5,8 +5,7 @@
 module ITest where
 
 import ConstantSolver.Solver
-import ErrorCollector.Collector
-import ErrorCollector.ConvertForTAC (cnvBlock, inTreeToOut)
+import ErrorCollector.Main
 import Parser.ASTBuilder
 import Parser.Par (myLexer, pBlock1)
 import TAC.TACInstruction
@@ -19,9 +18,8 @@ f x = do
     let t = buildTree pt
     let t1 = solveConstants 1 t
     let t2 = staticAnalizer t1
-    let t3 = collectErrors True t2
-    -- let _t3 = inTreeToOut $ cnvTree t2
-    -- let _t4 = tacBlock t3
+    let Right t3 = collectErrors True t2
+    let t4 = tacBlock t3
     -- print t
     putStrLn "---demo"
     -- prp t2

@@ -2,7 +2,6 @@ module ErrorCollector.ConvertForTAC where
 
 import AST hiding (astEmap)
 import Control.Monad (void)
--- import TypeChecker.TypeUtils hiding (In, Out)
 import Utils
 
 type In = TypeCheckerOutput
