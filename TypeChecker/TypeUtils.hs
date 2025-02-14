@@ -184,7 +184,7 @@ satisfiesFCall (FunctionType argTypes _) exprs =
     f (modty, argType) (side, tpe) = case modty of
       ModalityVal | tpe `joinLeq` argType -> Nothing
       ModalityRef
-        | argType == tpe ->
+        | tpe `joinLeq` argType ->
             if LeftValue == side
               then Nothing
               else
