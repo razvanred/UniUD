@@ -42,17 +42,17 @@ import Parser.Lex
   '-'        { PT _ (TS _ 17) }
   '--'       { PT _ (TS _ 18) }
   '-='       { PT _ (TS _ 19) }
-  '/'        { PT _ (TS _ 20) }
-  '/='       { PT _ (TS _ 21) }
-  ':'        { PT _ (TS _ 22) }
-  ':='       { PT _ (TS _ 23) }
-  ';'        { PT _ (TS _ 24) }
-  '<'        { PT _ (TS _ 25) }
-  '<='       { PT _ (TS _ 26) }
-  '=='       { PT _ (TS _ 27) }
-  '>'        { PT _ (TS _ 28) }
-  '>='       { PT _ (TS _ 29) }
-  '?'        { PT _ (TS _ 30) }
+  '...'      { PT _ (TS _ 20) }
+  '/'        { PT _ (TS _ 21) }
+  '/='       { PT _ (TS _ 22) }
+  ':'        { PT _ (TS _ 23) }
+  ':='       { PT _ (TS _ 24) }
+  ';'        { PT _ (TS _ 25) }
+  '<'        { PT _ (TS _ 26) }
+  '<='       { PT _ (TS _ 27) }
+  '=='       { PT _ (TS _ 28) }
+  '>'        { PT _ (TS _ 29) }
+  '>='       { PT _ (TS _ 30) }
   '@'        { PT _ (TS _ 31) }
   'False'    { PT _ (TS _ 32) }
   'True'     { PT _ (TS _ 33) }
@@ -61,32 +61,24 @@ import Parser.Lex
   '^='       { PT _ (TS _ 36) }
   'bool'     { PT _ (TS _ 37) }
   'break'    { PT _ (TS _ 38) }
-  'catch'    { PT _ (TS _ 39) }
-  'char'     { PT _ (TS _ 40) }
-  'checked'  { PT _ (TS _ 41) }
-  'continue' { PT _ (TS _ 42) }
-  'def'      { PT _ (TS _ 43) }
-  'do'       { PT _ (TS _ 44) }
-  'else'     { PT _ (TS _ 45) }
-  'float'    { PT _ (TS _ 46) }
-  'for'      { PT _ (TS _ 47) }
-  'if'       { PT _ (TS _ 48) }
-  'in'       { PT _ (TS _ 49) }
-  'int'      { PT _ (TS _ 50) }
-  'ref'      { PT _ (TS _ 51) }
-  'res'      { PT _ (TS _ 52) }
-  'return'   { PT _ (TS _ 53) }
-  'string'   { PT _ (TS _ 54) }
-  'try'      { PT _ (TS _ 55) }
-  'val'      { PT _ (TS _ 56) }
-  'valres'   { PT _ (TS _ 57) }
-  'var'      { PT _ (TS _ 58) }
-  'void'     { PT _ (TS _ 59) }
-  'while'    { PT _ (TS _ 60) }
-  '{'        { PT _ (TS _ 61) }
-  '|='       { PT _ (TS _ 62) }
-  '||'       { PT _ (TS _ 63) }
-  '}'        { PT _ (TS _ 64) }
+  'char'     { PT _ (TS _ 39) }
+  'continue' { PT _ (TS _ 40) }
+  'def'      { PT _ (TS _ 41) }
+  'else'     { PT _ (TS _ 42) }
+  'float'    { PT _ (TS _ 43) }
+  'if'       { PT _ (TS _ 44) }
+  'int'      { PT _ (TS _ 45) }
+  'ref'      { PT _ (TS _ 46) }
+  'return'   { PT _ (TS _ 47) }
+  'string'   { PT _ (TS _ 48) }
+  'val'      { PT _ (TS _ 49) }
+  'var'      { PT _ (TS _ 50) }
+  'void'     { PT _ (TS _ 51) }
+  'while'    { PT _ (TS _ 52) }
+  '{'        { PT _ (TS _ 53) }
+  '|='       { PT _ (TS _ 54) }
+  '||'       { PT _ (TS _ 55) }
+  '}'        { PT _ (TS _ 56) }
   L_Ident    { PT _ (TV _)    }
   L_charac   { PT _ (TC _)    }
   L_doubl    { PT _ (TD _)    }
@@ -150,16 +142,12 @@ Modality
   : {- empty -} { (Parser.Abs.BNFC'NoPosition, Parser.Abs.Modality1 Parser.Abs.BNFC'NoPosition) }
   | 'val' { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.Modality_val (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1))) }
   | 'ref' { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.Modality_ref (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1))) }
-  | 'valres' { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.Modality_valres (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1))) }
-  | 'res' { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.Modality_res (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1))) }
 
 Type :: { (Parser.Abs.BNFC'Position, Parser.Abs.Type) }
 Type
   : BasicType { (fst $1, Parser.Abs.BsType (fst $1) (snd $1)) }
   | '[' Expr ']' Type { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.ArrayType (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $2) (snd $4)) }
-  | 'checked' '[' Expr ']' Type { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.CArrType (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $3) (snd $5)) }
   | '[' ']' Type { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.UnsizedArrayType (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $3)) }
-  | 'checked' '[' ']' Type { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.UnsizedCArrayType (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $4)) }
   | '@' Type { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.Pointer (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $2)) }
 
 BasicType :: { (Parser.Abs.BNFC'Position, Parser.Abs.BasicType) }
@@ -178,7 +166,6 @@ Statement
   | IterStatement { (fst $1, Parser.Abs.Iter (fst $1) (snd $1)) }
   | BranchStatement { (fst $1, Parser.Abs.Branch (fst $1) (snd $1)) }
   | Expr Assignment_op Expr { (fst $1, Parser.Abs.Assign (fst $1) (snd $1) (snd $2) (snd $3)) }
-  | 'try' Statement 'catch' Statement { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.TryStmt (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $2) (snd $4)) }
   | Expr { (fst $1, Parser.Abs.StmntExpr (fst $1) (snd $1)) }
 
 Assignment_op :: { (Parser.Abs.BNFC'Position, Parser.Abs.Assignment_op) }
@@ -207,13 +194,10 @@ BranchStatement
 IterStatement :: { (Parser.Abs.BNFC'Position, Parser.Abs.IterStatement) }
 IterStatement
   : 'while' '(' Expr ')' Block { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.While (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $3) (snd $5)) }
-  | 'do' Block 'while' '(' Expr ')' { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.DoWhile (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $2) (snd $5)) }
-  | 'for' Ident 'in' Expr ',' Expr ',' Expr Block { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.For (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $2) (snd $4) (snd $6) (snd $8) (snd $9)) }
 
 Expr :: { (Parser.Abs.BNFC'Position, Parser.Abs.Expr) }
 Expr
-  : '(' Expr ')' '?' Expr ':' Expr { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.IfExpr (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $2) (snd $5) (snd $7)) }
-  | Expr '||' Expr1 { (fst $1, Parser.Abs.Or (fst $1) (snd $1) (snd $3)) }
+  : Expr '||' Expr1 { (fst $1, Parser.Abs.Or (fst $1) (snd $1) (snd $3)) }
   | Expr1 { (fst $1, (snd $1)) }
 
 Expr1 :: { (Parser.Abs.BNFC'Position, Parser.Abs.Expr) }
@@ -303,6 +287,7 @@ Boolean
 Expr12 :: { (Parser.Abs.BNFC'Position, Parser.Abs.Expr) }
 Expr12
   : '[' ListExpr4 ']' { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.Array (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $2)) }
+  | '[' Expr4 '...' Expr4 ']' { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.RangedArray (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $2) (snd $4)) }
   | '(' Expr ')' { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), (snd $2)) }
 
 ListExpr4 :: { (Parser.Abs.BNFC'Position, [Parser.Abs.Expr]) }

@@ -173,13 +173,17 @@ instance Print (Parser.Abs.Modality' a) where
     Parser.Abs.Modality1 _ -> prPrec i 0 (concatD [])
     Parser.Abs.Modality_val _ -> prPrec i 0 (concatD [doc (showString "val")])
     Parser.Abs.Modality_ref _ -> prPrec i 0 (concatD [doc (showString "ref")])
+    Parser.Abs.Modality_valres _ -> prPrec i 0 (concatD [doc (showString "valres")])
+    Parser.Abs.Modality_res _ -> prPrec i 0 (concatD [doc (showString "res")])
 
 instance Print (Parser.Abs.Type' a) where
   prt i = \case
     Parser.Abs.BsType _ basictype -> prPrec i 0 (concatD [prt 0 basictype])
     Parser.Abs.ArrayType _ expr type_ -> prPrec i 0 (concatD [doc (showString "["), prt 0 expr, doc (showString "]"), prt 0 type_])
+    Parser.Abs.CArrType _ expr type_ -> prPrec i 0 (concatD [doc (showString "checked"), doc (showString "["), prt 0 expr, doc (showString "]"), prt 0 type_])
     Parser.Abs.UnsizedArrayType _ type_ -> prPrec i 0 (concatD [doc (showString "["), doc (showString "]"), prt 0 type_])
-    Parser.Abs.Pointer _ type_ -> prPrec i 0 (concatD [doc (showString "&"), prt 0 type_])
+    Parser.Abs.UnsizedCArrayType _ type_ -> prPrec i 0 (concatD [doc (showString "checked"), doc (showString "["), doc (showString "]"), prt 0 type_])
+    Parser.Abs.Pointer _ type_ -> prPrec i 0 (concatD [doc (showString "@"), prt 0 type_])
 
 instance Print (Parser.Abs.BasicType' a) where
   prt i = \case
@@ -197,6 +201,7 @@ instance Print (Parser.Abs.Statement' a) where
     Parser.Abs.Iter _ iterstatement -> prPrec i 0 (concatD [prt 0 iterstatement])
     Parser.Abs.Branch _ branchstatement -> prPrec i 0 (concatD [prt 0 branchstatement])
     Parser.Abs.Assign _ expr1 assignmentop expr2 -> prPrec i 0 (concatD [prt 0 expr1, prt 0 assignmentop, prt 0 expr2])
+    Parser.Abs.TryStmt _ statement1 statement2 -> prPrec i 0 (concatD [doc (showString "try"), prt 0 statement1, doc (showString "catch"), prt 0 statement2])
     Parser.Abs.StmntExpr _ expr -> prPrec i 0 (concatD [prt 0 expr])
 
 instance Print (Parser.Abs.Assignment_op' a) where
@@ -225,9 +230,12 @@ instance Print (Parser.Abs.BranchStatement' a) where
 instance Print (Parser.Abs.IterStatement' a) where
   prt i = \case
     Parser.Abs.While _ expr block -> prPrec i 0 (concatD [doc (showString "while"), doc (showString "("), prt 0 expr, doc (showString ")"), prt 0 block])
+    Parser.Abs.DoWhile _ block expr -> prPrec i 0 (concatD [doc (showString "do"), prt 0 block, doc (showString "while"), doc (showString "("), prt 0 expr, doc (showString ")")])
+    Parser.Abs.For _ id_ expr1 expr2 expr3 block -> prPrec i 0 (concatD [doc (showString "for"), prt 0 id_, doc (showString "in"), prt 0 expr1, doc (showString ","), prt 0 expr2, doc (showString ","), prt 0 expr3, prt 0 block])
 
 instance Print (Parser.Abs.Expr' a) where
   prt i = \case
+    Parser.Abs.IfExpr _ expr1 expr2 expr3 -> prPrec i 0 (concatD [doc (showString "("), prt 0 expr1, doc (showString ")"), doc (showString "?"), prt 0 expr2, doc (showString ":"), prt 0 expr3])
     Parser.Abs.Or _ expr1 expr2 -> prPrec i 0 (concatD [prt 0 expr1, doc (showString "||"), prt 1 expr2])
     Parser.Abs.And _ expr1 expr2 -> prPrec i 1 (concatD [prt 1 expr1, doc (showString "&&"), prt 2 expr2])
     Parser.Abs.Not _ expr -> prPrec i 2 (concatD [doc (showString "!"), prt 3 expr])
@@ -259,7 +267,6 @@ instance Print (Parser.Abs.Expr' a) where
     Parser.Abs.Float _ d -> prPrec i 11 (concatD [prt 0 d])
     Parser.Abs.Bool _ boolean -> prPrec i 11 (concatD [prt 0 boolean])
     Parser.Abs.Array _ exprs -> prPrec i 12 (concatD [doc (showString "["), prt 4 exprs, doc (showString "]")])
-    Parser.Abs.RangedArray _ expr1 expr2 -> prPrec i 12 (concatD [doc (showString "["), prt 4 expr1, doc (showString "..."), prt 4 expr2, doc (showString "]")])
 
 instance Print [Parser.Abs.Expr' a] where
   prt 4 [x] = concatD [prt 4 x]

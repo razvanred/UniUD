@@ -39,14 +39,21 @@ data Parameter' a = Param a (Modality' a) Ident (Type' a)
   deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
 
 type Modality = Modality' BNFC'Position
-data Modality' a = Modality1 a | Modality_val a | Modality_ref a
+data Modality' a
+    = Modality1 a
+    | Modality_val a
+    | Modality_ref a
+    | Modality_valres a
+    | Modality_res a
   deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
 
 type Type = Type' BNFC'Position
 data Type' a
     = BsType a (BasicType' a)
     | ArrayType a (Expr' a) (Type' a)
+    | CArrType a (Expr' a) (Type' a)
     | UnsizedArrayType a (Type' a)
+    | UnsizedCArrayType a (Type' a)
     | Pointer a (Type' a)
   deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
 
@@ -67,6 +74,7 @@ data Statement' a
     | Iter a (IterStatement' a)
     | Branch a (BranchStatement' a)
     | Assign a (Expr' a) (Assignment_op' a) (Expr' a)
+    | TryStmt a (Statement' a) (Statement' a)
     | StmntExpr a (Expr' a)
   deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
 
@@ -94,12 +102,16 @@ data BranchStatement' a
   deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
 
 type IterStatement = IterStatement' BNFC'Position
-data IterStatement' a = While a (Expr' a) (Block' a)
+data IterStatement' a
+    = While a (Expr' a) (Block' a)
+    | DoWhile a (Block' a) (Expr' a)
+    | For a Ident (Expr' a) (Expr' a) (Expr' a) (Block' a)
   deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
 
 type Expr = Expr' BNFC'Position
 data Expr' a
-    = Or a (Expr' a) (Expr' a)
+    = IfExpr a (Expr' a) (Expr' a) (Expr' a)
+    | Or a (Expr' a) (Expr' a)
     | And a (Expr' a) (Expr' a)
     | Not a (Expr' a)
     | Eq a (Expr' a) (Expr' a)
@@ -130,7 +142,6 @@ data Expr' a
     | Float a Double
     | Bool a (Boolean' a)
     | Array a [Expr' a]
-    | RangedArray a (Expr' a) (Expr' a)
   deriving (C.Eq, C.Ord, C.Show, C.Read, C.Functor, C.Foldable, C.Traversable)
 
 type Boolean = Boolean' BNFC'Position
@@ -179,12 +190,16 @@ instance HasPosition Modality where
     Modality1 p -> p
     Modality_val p -> p
     Modality_ref p -> p
+    Modality_valres p -> p
+    Modality_res p -> p
 
 instance HasPosition Type where
   hasPosition = \case
     BsType p _ -> p
     ArrayType p _ _ -> p
+    CArrType p _ _ -> p
     UnsizedArrayType p _ -> p
+    UnsizedCArrayType p _ -> p
     Pointer p _ -> p
 
 instance HasPosition BasicType where
@@ -203,6 +218,7 @@ instance HasPosition Statement where
     Iter p _ -> p
     Branch p _ -> p
     Assign p _ _ _ -> p
+    TryStmt p _ _ -> p
     StmntExpr p _ -> p
 
 instance HasPosition Assignment_op where
@@ -231,9 +247,12 @@ instance HasPosition BranchStatement where
 instance HasPosition IterStatement where
   hasPosition = \case
     While p _ _ -> p
+    DoWhile p _ _ -> p
+    For p _ _ _ _ _ -> p
 
 instance HasPosition Expr where
   hasPosition = \case
+    IfExpr p _ _ _ -> p
     Or p _ _ -> p
     And p _ _ -> p
     Not p _ -> p
@@ -265,7 +284,6 @@ instance HasPosition Expr where
     Float p _ -> p
     Bool p _ -> p
     Array p _ -> p
-    RangedArray p _ _ -> p
 
 instance HasPosition Boolean where
   hasPosition = \case

@@ -41,22 +41,24 @@ The set of reserved words is the set of terminals appearing in the grammar. Thos
 
 The reserved words used in Parser are the following:
   | ``False`` | ``True`` | ``bool`` | ``break``
-  | ``char`` | ``continue`` | ``def`` | ``else``
-  | ``float`` | ``if`` | ``int`` | ``ref``
-  | ``return`` | ``string`` | ``val`` | ``var``
+  | ``catch`` | ``char`` | ``checked`` | ``continue``
+  | ``def`` | ``do`` | ``else`` | ``float``
+  | ``for`` | ``if`` | ``in`` | ``int``
+  | ``ref`` | ``res`` | ``return`` | ``string``
+  | ``try`` | ``val`` | ``valres`` | ``var``
   | ``void`` | ``while`` |  |
 
 The symbols used in Parser are the following:
   | { | } | ; | :=
   | : | ( | ) | ,
-  | [ | ] | & | *=
+  | [ | ] | @ | *=
   | += | /= | -= | ^=
-  | &= | |= | || | &&
-  | ! | == | != | <
-  | <= | > | >= | +
-  | - | * | / | %
-  | ** | ++ | -- | $
-  | ... |  |  |
+  | &= | |= | ? | ||
+  | && | ! | == | !=
+  | < | <= | > | >=
+  | + | - | * | /
+  | % | ** | ++ | --
+  | & | $ |  |
 
 ===Comments===
 Single-line comments begin with #.Multiple-line comments are  enclosed with #< and >#.
@@ -84,10 +86,14 @@ All other symbols are terminals.
   | //Modality// | -> | **eps**
   |  |  **|**  | ``val``
   |  |  **|**  | ``ref``
+  |  |  **|**  | ``valres``
+  |  |  **|**  | ``res``
   | //Type// | -> | //BasicType//
   |  |  **|**  | ``[`` //Expr// ``]`` //Type//
+  |  |  **|**  | ``checked`` ``[`` //Expr// ``]`` //Type//
   |  |  **|**  | ``[`` ``]`` //Type//
-  |  |  **|**  | ``&`` //Type//
+  |  |  **|**  | ``checked`` ``[`` ``]`` //Type//
+  |  |  **|**  | ``@`` //Type//
   | //BasicType// | -> | ``bool``
   |  |  **|**  | ``char``
   |  |  **|**  | ``int``
@@ -99,6 +105,7 @@ All other symbols are terminals.
   |  |  **|**  | //IterStatement//
   |  |  **|**  | //BranchStatement//
   |  |  **|**  | //Expr// //Assignment_op// //Expr//
+  |  |  **|**  | ``try`` //Statement// ``catch`` //Statement//
   |  |  **|**  | //Expr//
   | //Assignment_op// | -> | ``:=``
   |  |  **|**  | ``*=``
@@ -115,7 +122,10 @@ All other symbols are terminals.
   | //BranchStatement// | -> | ``if`` ``(`` //Expr// ``)`` //Block//
   |  |  **|**  | ``if`` ``(`` //Expr// ``)`` //Block// ``else`` //Block//
   | //IterStatement// | -> | ``while`` ``(`` //Expr// ``)`` //Block//
-  | //Expr// | -> | //Expr// ``||`` //Expr1//
+  |  |  **|**  | ``do`` //Block// ``while`` ``(`` //Expr// ``)``
+  |  |  **|**  | ``for`` //Ident// ``in`` //Expr// ``,`` //Expr// ``,`` //Expr// //Block//
+  | //Expr// | -> | ``(`` //Expr// ``)`` ``?`` //Expr// ``:`` //Expr//
+  |  |  **|**  | //Expr// ``||`` //Expr1//
   |  |  **|**  | //Expr1//
   | //Expr1// | -> | //Expr1// ``&&`` //Expr2//
   |  |  **|**  | //Expr2//
@@ -163,7 +173,6 @@ All other symbols are terminals.
   | //Boolean// | -> | ``True``
   |  |  **|**  | ``False``
   | //Expr12// | -> | ``[`` //[Expr4]// ``]``
-  |  |  **|**  | ``[`` //Expr4// ``...`` //Expr4// ``]``
   |  |  **|**  | ``(`` //Expr// ``)``
   | //[Expr4]// | -> | //Expr4//
   |  |  **|**  | //Expr4// ``,`` //[Expr4]//

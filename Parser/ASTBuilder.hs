@@ -74,8 +74,10 @@ buildParameter :: Parser.Abs.Parameter -> ParserOutput -> Parameter ParserOutput
 buildParameter (Parser.Abs.Param _ modality (Parser.Abs.Ident ident) declType) = pass1 (Param (buildModality modality) ident) (buildDeclType declType)
 
 buildModality :: Parser.Abs.Modality -> Modality
+buildModality (Parser.Abs.Modality_val _) = ModalityVal
 buildModality (Parser.Abs.Modality_ref _) = ModalityRef
-buildModality _ = ModalityVal
+buildModality (Parser.Abs.Modality_res _) = ModalityRes
+buildModality (Parser.Abs.Modality_valres _) = ModalityValRes
 
 buildExpr :: Parser.Abs.Expr -> ParserOutput -> Expr ParserOutput
 buildExpr (Parser.Abs.Or (Just pos) expr1 expr2) = pass2 (BinaryOp pos $ BooleanOp Or) (buildExpr expr1) (buildExpr expr2)
@@ -109,7 +111,7 @@ buildExpr (Parser.Abs.String (Just pos) string) = StringLiteral pos string
 buildExpr (Parser.Abs.Float (Just pos) double) = FloatLiteral pos double
 buildExpr (Parser.Abs.Bool (Just pos) boolean) = BoolLiteral pos (buildBoolean boolean)
 buildExpr (Parser.Abs.Array (Just pos) exprs) = \x -> ArrayLiteral pos (flip buildExpr x <$> exprs) x
-buildExpr (Parser.Abs.RangedArray (Just pos) expr1 expr2) = pass2 (RangedArray pos) (buildExpr expr1) (buildExpr expr2)
+--buildExpr (Parser.Abs.RangedArray (Just pos) expr1 expr2) = pass2 (RangedArray pos) (buildExpr expr1) (buildExpr expr2)
 buildExpr _ = "expression" `unexpectedDuring` "buildExpr"
 
 buildBasicType :: Parser.Abs.BasicType -> DeclType ParserOutput

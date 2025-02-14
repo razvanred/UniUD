@@ -29,7 +29,7 @@ $char = [c]
 
 -- Symbols and non-identifier-like reserved words
 
-@rsyms = \{ | \} | \; | \: \= | \: | \( | \) | \, | \[ | \] | \@ | \* \= | \+ \= | \/ \= | \- \= | \^ \= | \& \= | \| \= | \? | \| \| | \& \& | \! | \= \= | \! \= | \< | \< \= | \> | \> \= | \+ | \- | \* | \/ | \% | \* \* | \+ \+ | \- \- | \& | \$
+@rsyms = \{ | \} | \; | \: \= | \: | \( | \) | \, | \[ | \] | \@ | \* \= | \+ \= | \/ \= | \- \= | \^ \= | \& \= | \| \= | \| \| | \& \& | \! | \= \= | \! \= | \< | \< \= | \> | \> \= | \+ | \- | \* | \/ | \% | \* \* | \+ \+ | \- \- | \& | \$ | \. \. \.
 
 :-
 
@@ -171,37 +171,37 @@ eitherResIdent tv s = treeFind resWords
 -- | The keywords and symbols of the language organized as binary search tree.
 resWords :: BTree
 resWords =
-  b "True" 33
-    (b "-" 17
-       (b ")" 9
-          (b "&" 5
-             (b "$" 3 (b "!=" 2 (b "!" 1 N N) N) (b "%" 4 N N))
-             (b "&=" 7 (b "&&" 6 N N) (b "(" 8 N N)))
-          (b "+" 13
-             (b "**" 11 (b "*" 10 N N) (b "*=" 12 N N))
-             (b "+=" 15 (b "++" 14 N N) (b "," 16 N N))))
-       (b "<" 25
-          (b "/=" 21
-             (b "-=" 19 (b "--" 18 N N) (b "/" 20 N N))
-             (b ":=" 23 (b ":" 22 N N) (b ";" 24 N N)))
-          (b ">=" 29
-             (b "==" 27 (b "<=" 26 N N) (b ">" 28 N N))
-             (b "@" 31 (b "?" 30 N N) (b "False" 32 N N)))))
-    (b "in" 49
-       (b "checked" 41
-          (b "bool" 37
-             (b "]" 35 (b "[" 34 N N) (b "^=" 36 N N))
-             (b "catch" 39 (b "break" 38 N N) (b "char" 40 N N)))
-          (b "else" 45
-             (b "def" 43 (b "continue" 42 N N) (b "do" 44 N N))
-             (b "for" 47 (b "float" 46 N N) (b "if" 48 N N))))
-       (b "valres" 57
-          (b "return" 53
-             (b "ref" 51 (b "int" 50 N N) (b "res" 52 N N))
-             (b "try" 55 (b "string" 54 N N) (b "val" 56 N N)))
-          (b "{" 61
-             (b "void" 59 (b "var" 58 N N) (b "while" 60 N N))
-             (b "||" 63 (b "|=" 62 N N) (b "}" 64 N N)))))
+  b ">" 29
+    (b "+=" 15
+       (b "(" 8
+          (b "%" 4
+             (b "!=" 2 (b "!" 1 N N) (b "$" 3 N N))
+             (b "&&" 6 (b "&" 5 N N) (b "&=" 7 N N)))
+          (b "*=" 12
+             (b "*" 10 (b ")" 9 N N) (b "**" 11 N N))
+             (b "++" 14 (b "+" 13 N N) N)))
+       (b "/=" 22
+          (b "-=" 19
+             (b "-" 17 (b "," 16 N N) (b "--" 18 N N))
+             (b "/" 21 (b "..." 20 N N) N))
+          (b "<" 26
+             (b ":=" 24 (b ":" 23 N N) (b ";" 25 N N))
+             (b "==" 28 (b "<=" 27 N N) N))))
+    (b "float" 43
+       (b "^=" 36
+          (b "True" 33
+             (b "@" 31 (b ">=" 30 N N) (b "False" 32 N N))
+             (b "]" 35 (b "[" 34 N N) N))
+          (b "continue" 40
+             (b "break" 38 (b "bool" 37 N N) (b "char" 39 N N))
+             (b "else" 42 (b "def" 41 N N) N)))
+       (b "var" 50
+          (b "return" 47
+             (b "int" 45 (b "if" 44 N N) (b "ref" 46 N N))
+             (b "val" 49 (b "string" 48 N N) N))
+          (b "|=" 54
+             (b "while" 52 (b "void" 51 N N) (b "{" 53 N N))
+             (b "}" 56 (b "||" 55 N N) N))))
   where
   b s n = B bs (TS bs n)
     where
@@ -223,7 +223,6 @@ unescapeInitTail = id . unesc . tail . id
 
 removeC :: String -> String
 removeC x = (toEnum (read (take (length x - 1) x)) :: Char) : []
-
 -------------------------------------------------------------------
 -- Alex wrapper code.
 -- A modified "posn" wrapper.

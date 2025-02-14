@@ -324,7 +324,7 @@ instance EndoFunctor DeclType where
                     r = emapAccumL f newAcc
                     cnv e = (newAcc,) <$> e
 
-data Modality = ModalityVal | ModalityRef
+data Modality = ModalityVal | ModalityRef | ModalityRes | ModalityValRes
     deriving (Show)
 
 instance Eq Modality where

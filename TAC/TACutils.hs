@@ -98,12 +98,21 @@ printProgram orderedLabels orderedTac strings = do
 
 buildTempANDIndirectLoad :: Addr -> Type -> Bool -> Stato XAddr
 buildTempANDIndirectLoad addr t wannaRefAddr = do
-    f <- newtemp
-    let temp = f t
-    outWithSuspendedLabel $ TacPointerLoad temp t addr
-    case wannaRefAddr of
-        True -> return $ RefAddr temp
-        False -> return $ Addr temp
+    case t of
+        (PointerType p) -> do
+            f <- newtemp
+            let temp = f p
+            outWithSuspendedLabel $ TacPointerLoad temp t addr
+            case wannaRefAddr of
+                True -> return $ RefAddr temp
+                False -> return $ Addr temp
+        _ -> do
+            f <- newtemp
+            let temp = f t
+            outWithSuspendedLabel $ TacPointerLoad temp t addr
+            case wannaRefAddr of
+                True -> return $ RefAddr temp
+                False -> return $ Addr temp
 
 buildTempANDTacBinary :: BinaryOp -> Type -> Addr -> Addr -> Stato XAddr
 buildTempANDTacBinary bop t addr1 addr2 = do

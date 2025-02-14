@@ -9,10 +9,9 @@ import Control.Monad.Trans.State
 import Data.Map.Strict qualified as Map
 import TAC.TAC
 import TAC.TACutils
+import Debug.Trace (trace, traceM)
 
--- siamo sicuri che t sarà Int nei casi di pre/post incr/decr
 tacExpr :: Expr ErrorCollectorOutput -> Stato XAddr
-tacExpr (UnaryOp _ _ _ (ErrorCollectorOutput t (Just LeftValue) _ _)) = error "Uop should produce a right-value"
 tacExpr (UnaryOp pos PreDecr expr (ErrorCollectorOutput t _ _ _)) = do
     xaddr <- tacExpr expr
     case xaddr of
@@ -100,8 +99,6 @@ tacExpr (UnaryOp pos uop expr (ErrorCollectorOutput t _ _ _)) = do
             xtmp <- buildTempANDIndirectLoad a t False
             outWithSuspendedLabel $ TacUnary temp uop t (addr xtmp)
             return xtmp
-tacExpr (BinaryOp _ _ _ _ (ErrorCollectorOutput _ (Just LeftValue) _ _)) = error "Bop should produce a right-value"
-tacExpr (BinaryOp _ _ _ _ (ErrorCollectorOutput _ Nothing _ _)) = error "Bop should produce a right-value"
 tacExpr expr@(BinaryOp _ (BooleanOp boolop) _ _ _) = boolExprAux expr
 tacExpr (BinaryOp pos bop expr1 expr2 (ErrorCollectorOutput t _ _ _)) = do
     xaddr1 <- tacExpr expr1
@@ -134,23 +131,27 @@ tacExpr (Ref _ expr (ErrorCollectorOutput t (Just RightValue) _ _)) = do
             let temp = f t
             outWithSuspendedLabel $ TacReferenceLoad temp t base
             buildTempANDPointerTacBinary t temp offset
+
 tacExpr (Deref _ expr (ErrorCollectorOutput t lr _ _)) = do
     xaddr <- tacExpr expr
     case (xaddr, lr) of
-        (Addr a, Just LeftValue) -> return $ RefAddr a
-        (RefAddr a, _) -> buildTempANDIndirectLoad a t True
-        (Addr a, Just RightValue) -> buildTempANDIndirectLoad a t False
+        (Addr a, Just LeftValue) -> return $ RefAddr a{addrT = t}
+        (RefAddr a, _) -> buildTempANDIndirectLoad a (addrT a) True
+        (Addr a, Just RightValue) -> buildTempANDIndirectLoad a (addrT a) False
         (ArrayAddr b o, _) -> do
-            let txaddr = getPrimitiveTypeArr . addrT . base $ xaddr
-            xtmp <- buildTempANDTacIndexedLoad txaddr xaddr
-            return $ RefAddr (addr xtmp)
+            case t of
+                ArrayType _ _ -> do
+                    xtmp <- buildTempANDTacIndexedLoad (getPrimitiveTypeArr t) xaddr
+                    return $ RefAddr (addr xtmp)
+                _ -> do
+                    xtmp <- buildTempANDTacIndexedLoad t xaddr
+                    return $ RefAddr (addr xtmp)
 
--- expr2 type should be Int!!
 tacExpr (ArrayAcc pos expr1 expr2 (ErrorCollectorOutput t lr _ _)) = do
     xaddr1 <- tacExpr expr1
     xaddr2 <- tacExpr expr2
-    let aty = addrT . addr $ xaddr1
-    case (aty, xaddr1, xaddr2) of
+    --let pt =  getPrimitiveTypeArr . extractTypeFromExpr $ expr1
+    case (extractTypeFromExpr expr1, xaddr1, xaddr2) of
         (ArrayType _ ty, Addr a1, Addr a2) -> do
             case a2 of
                 TacLit _ _ -> do
@@ -166,6 +167,7 @@ tacExpr (ArrayAcc pos expr1 expr2 (ErrorCollectorOutput t lr _ _)) = do
                         Just LeftValue -> return $ ArrayAddr a1 (addr xtmp)
                         Just RightValue -> buildTempANDTacIndexedLoad t (ArrayAddr a1 (addr xtmp))
                         Nothing -> error "should be left/right value"
+
         (ArrayType _ ty, ArrayAddr a1 partialOffset, Addr a2) -> do
             case (partialOffset, a2) of
                 (TacLit _ _, TacLit _ _) -> do
@@ -229,11 +231,7 @@ tacExpr (Id _ _ (ErrorCollectorOutput _ _ Nothing _)) = error "An Identifier mus
 tacExpr (Id _ identifier (ErrorCollectorOutput t _ (Just m) (Just decl))) = case m of
     mv@ModalityVal -> return $ Addr{addr = ProgVar{progVar = buildProgVariable identifier (getLocFromDecl decl) t mv, addrT = t}}
     mr@ModalityRef -> return $ RefAddr{addr = ProgVar{progVar = buildProgVariable identifier (getLocFromDecl decl) t mr, addrT = t}}
--- consideriamo t il tipo di ritorno della funzione determinato in fase di type checking
-tacExpr (FunctionCall _ _ _ (ErrorCollectorOutput VoidType _ m Nothing)) = error "There cannot be an empty function declaration information"
-tacExpr (FunctionCall _ _ _ (ErrorCollectorOutput VoidType _ m (Just (FunctionDecl _ _ _ DVoidType _ _)))) = error "There cannot be a procedure in a Expr context"
--- noi non vedremo funzioni che tornano array, perché verranno modificate in analisi semantica statica
-tacExpr (FunctionCall _ id exprs (ErrorCollectorOutput t _ _ Nothing)) = error ""
+
 tacExpr (FunctionCall _ id exprs (ErrorCollectorOutput t _ _ (Just decl))) = do
     let funid = FunId (getLocFromDecl decl) id (length exprs)
     tacActualParameters exprs (getParamList decl)
@@ -241,6 +239,12 @@ tacExpr (FunctionCall _ id exprs (ErrorCollectorOutput t _ _ (Just decl))) = do
     let temp = f t
     outWithSuspendedLabel $ TacCall (Just (t, temp)) funid
     return . Addr $ temp
+-- consideriamo t il tipo di ritorno della funzione determinato in fase di type checking
+tacExpr (FunctionCall _ _ _ (ErrorCollectorOutput VoidType _ m Nothing)) = error "There cannot be an empty function declaration information"
+tacExpr (FunctionCall _ _ _ (ErrorCollectorOutput VoidType _ m (Just (FunctionDecl _ _ _ DVoidType _ _)))) = error "There cannot be a procedure in a Expr context"
+-- noi non vedremo funzioni che tornano array, perché verranno modificate in analisi semantica statica
+tacExpr (FunctionCall _ id exprs (ErrorCollectorOutput t _ _ Nothing)) = error ""
+
 tacExpr (IntLiteral _ i _) = return $ Addr{addr = buildTacLiteral (TacLitInt i)}
 tacExpr (CharLiteral _ c _) = return $ Addr{addr = buildTacLiteral (TacLitChar c)}
 tacExpr (FloatLiteral _ f _) = return $ Addr{addr = buildTacLiteral (TacLitFloat f)}
@@ -300,37 +304,36 @@ copyActualArray from baseType offset size = do
 
 tacActualParameters :: [Expr ErrorCollectorOutput] -> [Parameter a] -> Stato ()
 tacActualParameters [] [] = return ()
-tacActualParameters (e : es) ((Param m _ _ _) : ps) = do
+tacActualParameters esp@(e:es) pars@((Param m _ _ _):ps) = do
     xaddr <- tacExpr e
-    let t = addrT . addr $ xaddr
+    --let t = addrT . addr $ xaddr
+    let t = extractTypeFromExpr e
     let pt = PointerType t
-    case m of
-        ModalityVal -> case (t, xaddr) of
-            (ArrayType _ _, Addr a) -> copyActualArray (Addr a) (getPrimitiveTypeArr t) (buildTacLiteral . TacLitInt $ 0) (sizeof t)
-            (ArrayType _ _, RefAddr a) -> copyActualArray (RefAddr a) (getPrimitiveTypeArr t) (buildTacLiteral . TacLitInt $ 0) (sizeof t)
-            (ArrayType _ _, ArrayAddr b o) -> copyActualArray (Addr b) (getPrimitiveTypeArr t) o (sizeof t)
-            (_, Addr a) -> outWithSuspendedLabel $ TacParam t a
-            (_, RefAddr a) -> do
-                xtmp <- buildTempANDIndirectLoad a t False
-                outWithSuspendedLabel $ TacParam t (addr xtmp)
-            (_, ArrayAddr b o) -> error "should not be the case"
-        ModalityRef -> case xaddr of
-            (Addr a) -> do
+    case (m,t,xaddr) of
+        (ModalityVal, ArrayType _ _, Addr a) -> copyActualArray (Addr a) (getPrimitiveTypeArr t) (buildTacLiteral . TacLitInt $ 0) (sizeof t)
+        (ModalityVal, ArrayType _ _, RefAddr a) -> copyActualArray (RefAddr a) (getPrimitiveTypeArr t) (buildTacLiteral . TacLitInt $ 0) (sizeof t)
+        (ModalityVal, ArrayType _ _, ArrayAddr b o) -> copyActualArray (Addr b) (getPrimitiveTypeArr t) o (sizeof t)
+        (ModalityVal,_, Addr a) -> outWithSuspendedLabel $ TacParam t a
+        (ModalityVal,_, RefAddr a) -> do
+            xtmp <- buildTempANDIndirectLoad a t False
+            outWithSuspendedLabel $ TacParam t (addr xtmp)
+        (ModalityVal,_, ArrayAddr b o) -> error "should not be the case"
+        (ModalityRef, _, Addr a) -> do
                 f <- newtemp
                 let temp = f pt
                 outWithSuspendedLabel $ TacReferenceLoad temp pt a
                 outWithSuspendedLabel $ TacParam pt temp
-            (RefAddr a) -> outWithSuspendedLabel $ TacParam pt a
-            (ArrayAddr b o) -> do
+        (ModalityRef,_, RefAddr a) -> outWithSuspendedLabel $ TacParam pt a
+        (ModalityRef,_, ArrayAddr b o) -> do
                 f <- newtemp
                 let temp = f pt
                 outWithSuspendedLabel $ TacReferenceLoad temp pt b
                 xtmp1 <- buildTempANDPointerTacBinary pt temp o
                 outWithSuspendedLabel $ TacParam pt (addr xtmp1)
-    tacActualParameters es ps
-
+    tacActualParameters es ps             
+    
 tacBoolExpr :: Expr ErrorCollectorOutput -> Label -> Label -> Stato ()
-tacBoolExpr bs@(BoolLiteral _ _ _) btrue bfalse = do
+tacBoolExpr bs@BoolLiteral{} btrue bfalse = do
     lit <- tacExpr bs
     let content = contentBool . tacLit . addr $ lit
     case (btrue, bfalse, content) of

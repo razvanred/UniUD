@@ -1,0 +1,36 @@
+var x :int := 4;
+var y :@int := &x;
+var z :@@int := &y;
+
+# un livello di dereference
+$y := 4;
+x := $y;
+
+# due livelli di dereference
+x := $$z;
+$$z := 4;
+
+def f1(ref x :@int) :int { 
+    var y :int := $x;
+    $x := y;
+    return y;
+};
+
+def f2(val x :@int) :int {
+    var y :int := $x;
+    $x := y;
+    return y;
+};
+
+def f3(ref x :@@int) :int {
+    var y :int := $$x;
+    $$x := y;
+    return y;
+};
+
+def f4(val x :@@int) :int {
+    var y :int := $$x;
+    $$x := y;
+    return y;
+};
+

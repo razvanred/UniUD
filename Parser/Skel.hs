@@ -43,12 +43,16 @@ transModality x = case x of
   Parser.Abs.Modality1 _ -> failure x
   Parser.Abs.Modality_val _ -> failure x
   Parser.Abs.Modality_ref _ -> failure x
+  Parser.Abs.Modality_valres _ -> failure x
+  Parser.Abs.Modality_res _ -> failure x
 
 transType :: Show a => Parser.Abs.Type' a -> Result
 transType x = case x of
   Parser.Abs.BsType _ basictype -> failure x
   Parser.Abs.ArrayType _ expr type_ -> failure x
+  Parser.Abs.CArrType _ expr type_ -> failure x
   Parser.Abs.UnsizedArrayType _ type_ -> failure x
+  Parser.Abs.UnsizedCArrayType _ type_ -> failure x
   Parser.Abs.Pointer _ type_ -> failure x
 
 transBasicType :: Show a => Parser.Abs.BasicType' a -> Result
@@ -67,6 +71,7 @@ transStatement x = case x of
   Parser.Abs.Iter _ iterstatement -> failure x
   Parser.Abs.Branch _ branchstatement -> failure x
   Parser.Abs.Assign _ expr1 assignmentop expr2 -> failure x
+  Parser.Abs.TryStmt _ statement1 statement2 -> failure x
   Parser.Abs.StmntExpr _ expr -> failure x
 
 transAssignment_op :: Show a => Parser.Abs.Assignment_op' a -> Result
@@ -95,9 +100,12 @@ transBranchStatement x = case x of
 transIterStatement :: Show a => Parser.Abs.IterStatement' a -> Result
 transIterStatement x = case x of
   Parser.Abs.While _ expr block -> failure x
+  Parser.Abs.DoWhile _ block expr -> failure x
+  Parser.Abs.For _ ident expr1 expr2 expr3 block -> failure x
 
 transExpr :: Show a => Parser.Abs.Expr' a -> Result
 transExpr x = case x of
+  Parser.Abs.IfExpr _ expr1 expr2 expr3 -> failure x
   Parser.Abs.Or _ expr1 expr2 -> failure x
   Parser.Abs.And _ expr1 expr2 -> failure x
   Parser.Abs.Not _ expr -> failure x
@@ -129,7 +137,6 @@ transExpr x = case x of
   Parser.Abs.Float _ double -> failure x
   Parser.Abs.Bool _ boolean -> failure x
   Parser.Abs.Array _ exprs -> failure x
-  Parser.Abs.RangedArray _ expr1 expr2 -> failure x
 
 transBoolean :: Show a => Parser.Abs.Boolean' a -> Result
 transBoolean x = case x of

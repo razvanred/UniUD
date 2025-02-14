@@ -94,7 +94,7 @@ data TacInstruction
 instance PrettyPrinter TacInstruction where
   pp (TacBinary addr1 bop t addr2 addr3) = pp addr1 ++ " =" ++ pp t ++ " " ++ pp addr2 ++ " " ++ pp bop ++ " " ++ pp addr3
   pp (TacPointerBinary addr1 AddrPlusInt t addr2 addr3) = pp addr1 ++ " =" ++ pp t ++ " " ++ pp addr2 ++ " " ++ pp AddrPlusInt ++ " " ++ pp addr3
-  pp (TacUnary addr1 Coercion _ addr2) = pp addr1 ++ " =" ++ "(" ++ pp (addrT addr2) ++ ")" ++ " " ++ pp addr2
+  pp (TacUnary addr1 Coercion _ addr2) = pp addr1 ++ " =" ++ "(" ++ pp (addrT addr1) ++ ")" ++ " " ++ pp addr2
   pp (TacUnary addr1 uop t addr2) = pp addr1 ++ " =" ++ pp t ++ " " ++ pp uop ++ " " ++ pp addr2
   pp (TacNullary addr1 t addr2) = pp addr1 ++ " =" ++ pp t ++ " " ++ pp addr2
   pp (TacIndexedStore addr1 t addr2) = pp addr1 ++ " =" ++ pp t ++ " " ++ pp addr2
@@ -134,3 +134,4 @@ instance PrettyPrinter Label where
   pp (LabGuard i) = "Guard" ++ show i 
   pp (LabBodyStart i) = "Body" ++ show i
   pp (FALL) = ""
+
