@@ -17,22 +17,27 @@ data Status = Status
 -- totality
 
 -- checkTotality :: Block Step -> Block Step
-checkTotality = snd . checkBlock Status{total = True, annUnreachable = False}
+checkTotality = snd . checkFBlock (0, 0) VoidType Status{total = False, annUnreachable = False}
+
+checkFBlock :: Position -> Type -> Status -> Block Step -> (Status, Block Step)
+checkFBlock pos tpe status' block1 = (status, block3)
+    where
+        (status@Status{total}, block2) = fold <$> mapAccumL checkInstruction status' block1
+        block3
+            | not total,
+              VoidType <- tpe =
+                block2 ++ [ReturnVoid pos (newStep3 RightValue VoidType)]
+            | otherwise = block2
 
 checkBlock = ((fold <$>) .) . mapAccumL checkInstruction
 
 checkInstruction :: Status -> Instruction Step -> (Status, [Instruction Step])
-checkInstruction status (FunctionDecl pos id params declType block1 x) =
+checkInstruction status (FunctionDecl pos id params declType block' x) =
     (status, [fDecl])
     where
         (FunctionType _ retType) = sType x
-        (Status{total}, block2) = checkBlock Status{total = False, annUnreachable = False} block1
-        block3
-            | not total,
-              VoidType <- retType =
-                block2 ++ [ReturnVoid pos (newStep3 RightValue VoidType)]
-            | otherwise = block2
-        fDecl = case FunctionDecl pos id params declType block3 x of
+        (Status{total}, block) = checkFBlock pos retType Status{total = False, annUnreachable = False} block'
+        fDecl = case FunctionDecl pos id params declType block x of
             t
                 | not total,
                   VoidType /= retType ->
