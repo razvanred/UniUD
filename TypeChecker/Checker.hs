@@ -274,9 +274,10 @@ checkInstruction status@Status{symStack} (VariableDecl pos id declType' expr' x)
         (Right symStack) -> (status{symStack}, variableDecl)
     where
         tExpr = checkExpr symStack expr'
-        solveResult@(error, tpe, declType) = solveVarDeclType declType' (eType tExpr)
+        tExprType = eType tExpr
+        solveResult@(error, tpe, declType) = solveVarDeclType declType' tExprType
         expr
-            | error && ErrorType /= tpe = TypeMismatch (eType expr) (Left tpe) |?< tExpr
+            | error && ErrorType /= tpe && tExprType `notJoinLeq` tpe = TypeMismatch (eType expr) (Left tpe) |?< tExpr
             | otherwise = tExpr
         variableDecl = case VariableDecl pos id declType (promoteTo tpe expr) (lStep3 tpe x) of
             t | (False, ErrorType, _) <- solveResult -> UnsolvableType |< t
