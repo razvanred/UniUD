@@ -77,7 +77,7 @@ buildDeclType (Parser.Abs.Pointer _ declType) = DPointerType . buildDeclType dec
 
 buildParameter :: Parser.Abs.Parameter -> ParserOutput -> Parameter ParserOutput
 buildParameter (Parser.Abs.Param (Just pos) modality (Parser.Abs.Ident ident) declType) = pass1 (Param pos (buildModality modality) ident) (buildDeclType declType)
-buildParameter _ = buildFail "parameter"
+buildParameter p = buildFail ("parameter" ++ show p)
 
 buildModality :: Parser.Abs.Modality -> Modality
 buildModality (Parser.Abs.Modality_val _) = ModalityVal

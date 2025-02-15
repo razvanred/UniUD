@@ -230,7 +230,7 @@ satisfiesArrayLiteral _ = "input" `unexpectedIn` "satisfiesFCall"
 
 satisfiesAssignment op expr1 expr2 =
   ( error1,
-    maybeBool (tpe1 `joinLe` tpe2) (tpe2, Left tpe1)
+    maybeBool (tpe2 `notJoinLeq` tpe1) (tpe2, Left tpe1)
   )
   where
     error1
@@ -240,6 +240,8 @@ satisfiesAssignment op expr1 expr2 =
     opSup = assignOpSup op
     tpe1 = eType expr1
     tpe2 = eType expr2
+
+-- opSup FloatType
 
 satisfiesTypeExpr expr =
   if isLiteral expr

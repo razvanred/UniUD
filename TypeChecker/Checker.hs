@@ -28,7 +28,7 @@ type SymStack = [Map SymType (Map Ident SymEntry)]
 
 data Status = Status
     { symStack :: SymStack,
-      function :: Maybe Type,
+      function :: Type,
       loop :: Bool
     }
 
@@ -145,8 +145,8 @@ buildArrayLiteral (ArrayLiteral pos exprs x) = ArrayLiteral pos (promoteTo sup <
 buildArrayLiteral _ = "expression" `unexpectedIn` "buildArrayLiteral"
 
 promoteTo tpe expr
-    | exprType `joinLeq` tpe,
-      exprType /= tpe =
+    | exprType `joinLe` tpe,
+      ErrorType /= tpe =
         UnaryOp (position expr) Coercion expr $ newStep3 RightValue tpe
     | otherwise = expr
     where
@@ -160,7 +160,7 @@ promoteList = zipWith promoteTo
 
 -- checking
 
-checkTypes = checkBlock (Status (pushEnv []) Nothing False)
+checkTypes = checkBlock (Status (pushEnv []) VoidType False)
 
 functionDeclPass symStack (FunctionDecl pos id args' return' block x) =
     case addBind symStack ModalityRef fDecl of
@@ -225,7 +225,7 @@ checkExpr symStack = emap check
                     ArrayAcc pos subExpr (promoteTo IntType indExpr) (fillOutStep3 (eSide subExpr) (popArray $ eType subExpr) Nothing x)
                 (err1, err2) ->
                     let f = maybe idty $ \(got, expected) -> (TypeMismatch got expected |?<)
-                    in  ArrayAcc pos (f err1 subExpr) (f err2 indExpr) (rStep3 ErrorType x)
+                    in  ArrayAcc pos (f err1 subExpr) (f err2 indExpr) (fillOutStep3 (eSide subExpr) ErrorType Nothing x)
         check fcall@(FunctionCall pos id subExprs x) =
             case queryBind symStack fcall of
                 Just binding@(_, _, decl) ->
@@ -292,7 +292,7 @@ checkInstruction status@Status{symStack} (FunctionDecl pos id args' declType blo
                     zip argTypes args'
             ]
         (newSymStack, args) = mapAccumL f (pushEnv symStack) $ zip bindings args'
-        block = checkBlock status{symStack = newSymStack, function = Just retType, loop = False} block'
+        block = checkBlock status{symStack = newSymStack, function = retType, loop = False} block'
         f symStack (binding, arg) =
             case uncurry (addBind symStack) binding of
                 Left (_, _, decl) -> (symStack, VariableAlreadyDefined (void decl) |< arg)
@@ -372,26 +372,22 @@ checkInstruction status@Status{loop} is@(Continue{}) =
     (,) status $ case eRStep3 VoidType is of
         t | loop -> t
         t -> JumpOutsideLoop |< t
-checkInstruction status@Status{function} is@(ReturnVoid{}) = (,) status . eRStep3 VoidType $
-    case function of
-        Nothing -> ReturnOutsideFunction |< is
-        Just tpe | ErrorType /= tpe, VoidType /= tpe -> TypeMismatch VoidType (Left tpe) |< is
-        _ -> is
-checkInstruction status@Status{symStack, function} (ReturnExp pos expr' x) = (,) status $
-    case ReturnExp pos expr (rStep3 VoidType x) of
-        t | Nothing <- function -> ReturnOutsideFunction |< t
-        t -> t
+checkInstruction status@Status{function} is@(ReturnVoid{}) =
+    (,) status . eRStep3 VoidType $
+        if ErrorType /= function && VoidType /= function
+            then
+                TypeMismatch VoidType (Left function) |< is
+            else
+                is
+checkInstruction status@Status{symStack, function} (ReturnExp pos expr' x) =
+    (,) status $ ReturnExp pos expr (rStep3 VoidType x)
     where
         expr = case checkExpr symStack expr' of
             t
-                | Just fType <- function,
-                  tpe <- eType t,
-                  not (tpe `joinLeq` fType) ->
-                    TypeMismatch tpe (Left fType) |?< t
-            t
-                | Just fType <- function ->
-                    promoteTo fType t
-            t -> t
+                | tpe <- eType t,
+                  tpe `notJoinLeq` function ->
+                    TypeMismatch tpe (Left function) |?< t
+            t -> promoteTo function t
 checkInstruction status@Status{symStack} (Expression pos expr' x) =
     (status, Expression pos expr (rStep3 VoidType x))
     where

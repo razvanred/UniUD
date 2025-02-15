@@ -8,6 +8,6 @@ collectErrors alsoWarns block = out
         out = case collect alsoWarns block of
             (Just we) -> Left we
             Nothing ->
-                let t1 = cnvBlock block
+                let t1 = convertForTAC block
                     t2 = inTreeToOut t1
                 in  Right t2

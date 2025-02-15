@@ -4,6 +4,7 @@ import AST
 import Control.Monad (void)
 import TypeChecker.Checker
 import TypeChecker.ConstExprSolver
+import TypeChecker.Totality
 import TypeChecker.TypeUtils
 import Utils
 
@@ -17,7 +18,8 @@ staticAnalizer block = out
         step1 = (fmap . fmap) inToStep1 block
         step2 = solveConstExpr step1
         step3 = checkTypes step2
-        out = (fmap . fmap) step3ToOut step3
+        step3pass2 = checkTotality step3
+        out = (fmap . fmap) step3ToOut step3pass2
 
 inToStep1 x = Step1 (cserrors x) (cswarnings x) (csReplacedFromConstant x)
 

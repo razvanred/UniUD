@@ -1,6 +1,6 @@
-module ErrorCollector.ConvertForTAC where
+module ErrorCollector.ConvertForTAC (convertForTAC, inTreeToOut) where
 
-import AST hiding (astEmap)
+import AST
 import Control.Monad (void)
 import Utils
 
@@ -14,37 +14,63 @@ overrideRValue e = updateAnn ((ann e){tcSide = RightValue}) e
 
 eType e = tcType (ann e)
 
-eSide e = tcSide (ann e)
+-- eSide e = tcSide (ann e)
+
+convertForTAC = cnvBlock
 
 cnvBlock = emapBlock cnvInstruction
 
-cnvInstruction :: Instruction In -> Instruction In
 cnvInstruction (Assignment pos expr1 op expr2' x) = Assignment pos expr1 op expr2 x
     where
         expr2 = emap cnvRAssignExpr expr2'
 cnvInstruction (Expression pos expr@UnaryOp{} poli) = Expression pos expr' poli
     where
         expr' = emap cnvRAssignExpr expr
+cnvInstruction (FunctionDecl pos id args declType block' x) =
+    FunctionDecl pos id args declType block x
+    where
+        block = cnvBlock block'
+cnvInstruction (NestedBlock pos block' x) = NestedBlock pos block x
+    where
+        block = cnvBlock block'
+cnvInstruction (While pos expr block' x) = While pos expr block x
+    where
+        block = cnvBlock block'
+cnvInstruction (DoWhile pos expr block' x) = DoWhile pos expr block x
+    where
+        block = cnvBlock block'
+cnvInstruction (For pos id fromExpr toExpr incrExpr block' x) = For pos id fromExpr toExpr incrExpr block x
+    where
+        block = cnvBlock block'
+cnvInstruction (IfThen pos expr block' x) = IfThen pos expr block x
+    where
+        block = cnvBlock block'
+cnvInstruction (IfThenElse pos expr block1' block2' x) = IfThenElse pos expr block1 block2 x
+    where
+        block1 = cnvBlock block1'
+        block2 = cnvBlock block2'
+cnvInstruction (TryCatch pos block1' block2' x) = TryCatch pos block1 block2 x
+    where
+        block1 = cnvBlock block1'
+        block2 = cnvBlock block2'
 cnvInstruction is = is
-
--- cnvDeclType :: DeclType In -> DeclType In
--- cnvDeclType = idty
 
 cnvRAssignExpr :: Expr In -> Expr In
 cnvRAssignExpr expr@ArrayAcc{} = case eType expr of
     ArrayType{} -> overrideLValue expr
     _ -> overrideRValue expr
-cnvRAssignExpr (UnaryOp pos PreDecr expr@ArrayAcc{} poli) = UnaryOp pos PreDecr (overrideLValue expr) poli
-cnvRAssignExpr (UnaryOp pos PostDecr expr@ArrayAcc{} poli) = UnaryOp pos PostDecr (overrideLValue expr) poli
-cnvRAssignExpr (UnaryOp pos PreIncr expr@ArrayAcc{} poli) = UnaryOp pos PreIncr (overrideLValue expr) poli
-cnvRAssignExpr (UnaryOp pos PostIncr expr@ArrayAcc{} poli) = UnaryOp pos PostIncr (overrideLValue expr) poli
-cnvRAssignExpr (Ref pos expr@ArrayAcc{} poli) = Ref pos (overrideLValue expr) poli
-cnvRAssignExpr (Deref pos expr@ArrayAcc{} poli) = Deref pos (overrideLValue expr) poli
+cnvRAssignExpr (UnaryOp pos PreDecr expr@ArrayAcc{} x) = UnaryOp pos PreDecr (overrideLValue expr) x
+cnvRAssignExpr (UnaryOp pos PostDecr expr@ArrayAcc{} x) = UnaryOp pos PostDecr (overrideLValue expr) x
+cnvRAssignExpr (UnaryOp pos PreIncr expr@ArrayAcc{} x) = UnaryOp pos PreIncr (overrideLValue expr) x
+cnvRAssignExpr (UnaryOp pos PostIncr expr@ArrayAcc{} x) = UnaryOp pos PostIncr (overrideLValue expr) x
+cnvRAssignExpr (Ref pos expr@ArrayAcc{} x) = Ref pos (overrideLValue expr) x
+cnvRAssignExpr (Deref pos expr@ArrayAcc{} x) = Deref pos (overrideLValue expr) x
 cnvRAssignExpr expr = expr
 
 -- fmap, only works on annotations (f a -> f b)
 
-inTreeToOut tree = (fmap . fmap) f tree
+inTreeToOut :: Block In -> Block Out
+inTreeToOut = (fmap . fmap) f
     where
         f
             TypeCheckerOutput

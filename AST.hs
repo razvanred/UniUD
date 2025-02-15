@@ -24,8 +24,8 @@ data Error
     | VariableAlreadyDefined (Instruction ())
     | FunctionAlreadyDefined (Instruction ())
     | JumpOutsideLoop
-    | ReturnOutsideFunction
     | NonConstExpr
+    | NonTotalFunction
     deriving (Show)
 
 errorRank = \case
@@ -38,7 +38,7 @@ errorRank = \case
     VariableAlreadyDefined{} -> "7"
     FunctionAlreadyDefined{} -> "8"
     JumpOutsideLoop -> "9"
-    ReturnOutsideFunction -> "10"
+    NonTotalFunction -> "10"
     NonConstExpr -> "11"
 
 instance Eq Error where
@@ -53,6 +53,7 @@ data Warning
     | ConstantAlreadyDefined (Instruction ()) -- only constdecls
     | LiteralOutOfRange (Expr ()) -- migrates
     | DivisionBy0
+    | UnreachableCode
     deriving (Show)
 
 warningRank = \case
@@ -61,6 +62,7 @@ warningRank = \case
     ConstantAlreadyDefined decl -> "3" ++ show decl
     LiteralOutOfRange expr -> "4" ++ show expr
     DivisionBy0 -> "5"
+    UnreachableCode -> "6"
 
 instance Eq Warning where
     (==) = (==) `on` warningRank
@@ -112,7 +114,6 @@ data ErrorCollectorOutput = ErrorCollectorOutput
       posID :: Maybe (Instruction ())
     }
     deriving (Show)
-
 
 data LeftRightValue = LeftValue | RightValue
     deriving (Eq, Show)
@@ -235,6 +236,7 @@ instance Annotated Instruction a where
     ann (IfThen _ _ _ x) = x
     ann (IfThenElse _ _ _ _ x) = x
     ann (TryCatch _ _ _ x) = x
+    ann (Throw _ _ x) = x
     ann (Assignment _ _ _ _ x) = x
     ann (Expression _ _ x) = x
 
@@ -252,6 +254,7 @@ instance Annotated Instruction a where
     updateAnn x (IfThen pos expr block _) = IfThen pos expr block x
     updateAnn x (IfThenElse pos expr block1 block2 _) = IfThenElse pos expr block1 block2 x
     updateAnn x (TryCatch pos block1 block2 _) = TryCatch pos block1 block2 x
+    updateAnn x (Throw pos msg _) = Throw pos msg x
     updateAnn x (Assignment pos expr1 op expr2 _) = Assignment pos expr1 op expr2 x
     updateAnn x (Expression pos expr _) = Expression pos expr x
 
@@ -270,6 +273,7 @@ instance Positioned (Instruction a) where
     position (IfThen pos _ _ _) = pos
     position (IfThenElse pos _ _ _ _) = pos
     position (TryCatch pos _ _ _) = pos
+    position (Throw pos _ _) = pos
     position (Assignment pos _ _ _ _) = pos
     position (Expression pos _ _) = pos
 
