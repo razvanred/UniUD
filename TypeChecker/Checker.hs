@@ -15,6 +15,8 @@ import Data.Map.Strict (Map, insert, member, (!))
 import Data.Map.Strict qualified as Map
 import Data.Traversable (mapAccumL)
 -- import Debug.Trace (trace)
+
+import TypeChecker.Intrinsics qualified as Intrinsics
 import TypeChecker.TypeUtils
 import Utils
 import Prelude hiding (error, id)
@@ -29,17 +31,22 @@ type SymStack = [Map SymType (Map Ident SymEntry)]
 data Status = Status
     { symStack :: SymStack,
       function :: Type,
-      loop :: Bool
+      loop :: Bool,
+      try :: Bool
     }
 
 -- todo
--- array literal elimination with codegen
--- graph cycle detection for function initializations/function captures
+-- exotic args modalities
+-- array literal elimination with codegen - skip
+-- graph cycle detection for function initializations/function captures -skip
 
 -- requests:
 -- every var symbol annotated with ref/value
 -- every accessor must give lvalue, array valueness tracking must be done covertly
 -- resolve deref pairs on leftSides statically
+
+-- no indexed string access :c
+-- no literals, except on initializations. it is what it is :c
 
 rStep3 = flip (fillOutStep3 RightValue) Nothing
 
@@ -53,11 +60,19 @@ eRStep3 tpe = pass1 updateAnn (rStep3 tpe . ann)
 
 eLStep3 tpe = pass1 updateAnn (lStep3 tpe . ann)
 
--- eStep3 side tpe = pass1 updateAnn (fillOutStep3 side tpe Nothing . ann)
-
 we |?< e
     | ErrorType <- eType e = e
+    | TypeMismatch _ (Left ErrorType) <- we = e
     | otherwise = we |< e
+
+instrinsics = symStack
+    where
+        fDecls = Intrinsics.intrinsicsDecls
+        symStack = foldl f (pushEnv []) fDecls
+        f symStack fDecl =
+            case addBind symStack ModalityRef fDecl of
+                Right symStack -> symStack
+                Left binding -> error $ "failed to load intrinsics: " ++ show binding
 
 addBind :: SymStack -> Modality -> Instruction Step -> Either SymEntry SymStack
 addBind symStack modality decl
@@ -160,7 +175,7 @@ promoteList = zipWith promoteTo
 
 -- checking
 
-checkTypes = checkBlock (Status (pushEnv []) VoidType False)
+checkTypes = checkBlock (Status instrinsics VoidType False False)
 
 functionDeclPass symStack (FunctionDecl pos id args' return' block x) =
     case addBind symStack ModalityRef fDecl of
@@ -171,9 +186,9 @@ functionDeclPass symStack (FunctionDecl pos id args' return' block x) =
         (argTypes, args) =
             unzip
                 [ ( (modty, tpe),
-                    if ErrorType == tpe
-                        then UnsolvableType |< arg
-                        else arg
+                    case tpe of
+                        ErrorType -> UnsolvableType |< arg
+                        _ -> arg
                   )
                   | (Param pos modty id argDecl' x) <- args',
                     let (tpe, argDecl) = buildDeclType argDecl',
@@ -184,11 +199,14 @@ functionDeclPass symStack (FunctionDecl pos id args' return' block x) =
             | otherwise = ErrorType
         fDecl = case FunctionDecl pos id args ret block (rStep3 (FunctionType argTypes retType) x) of
             t | ErrorType <- finalType -> UnsolvableType |< t
+            t | ArrayType{} <- retType -> DisallowedType |< t
+            t | StringType <- retType -> DisallowedType |< t
             t -> t
 functionDeclPass symStack is = (symStack, is)
 
 checkExpr symStack = emap check
     where
+        disallowLiteral expr = if isCompLiteral expr then DisallowedLiteral |< expr else expr
         check :: Expr Step -> Expr Step
         check expr
             | Step2{} <- ann expr = updateAnn (step2ToStep3 $ ann expr) expr -- literals
@@ -222,7 +240,7 @@ checkExpr symStack = emap check
         check (ArrayAcc pos subExpr indExpr x) =
             case satisfiesAccessor subExpr indExpr of
                 (Nothing, Nothing) ->
-                    ArrayAcc pos subExpr (promoteTo IntType indExpr) (fillOutStep3 (eSide subExpr) (popArray $ eType subExpr) Nothing x)
+                    ArrayAcc pos (disallowLiteral subExpr) (promoteTo IntType indExpr) (fillOutStep3 (eSide subExpr) (popArray $ eType subExpr) Nothing x)
                 (err1, err2) ->
                     let f = maybe idty $ \(got, expected) -> (TypeMismatch got expected |?<)
                     in  ArrayAcc pos (f err1 subExpr) (f err2 indExpr) (fillOutStep3 (eSide subExpr) ErrorType Nothing x)
@@ -232,7 +250,7 @@ checkExpr symStack = emap check
                     case satisfiesFCall fType subExprs of
                         (False, argErrors)
                             | Nothing <- foldl (<|>) Nothing argErrors ->
-                                FunctionCall pos id (promoteList (snd <$> argTypes) subExprs) (rBindStep3 retType (Just binding) x)
+                                FunctionCall pos id (promoteList (snd <$> argTypes) (disallowLiteral <$> subExprs)) (rBindStep3 retType (Just binding) x)
                         (argCount, argErrors) ->
                             let newX = if argCount then ArgCount |< x else x
                             in  FunctionCall pos id (f <$> argErrors <*> subExprs) (rBindStep3 ErrorType (Just binding) newX)
@@ -247,12 +265,13 @@ checkExpr symStack = emap check
                 t ->
                     let newExpr = eRStep3 ErrorType expr
                     in  case t of
-                            (True, False) -> EmptyArray |?< newExpr
-                            (False, True) -> UnsolvableType |?< newExpr
+                            (True, False) -> EmptyArray |< newExpr
+                            (False, True) -> UnsolvableType |< newExpr
                             (True, True) -> newExpr
         check (CondExpr pos subExpr subExpr1 subExpr2 x) =
             case satisfiesCondExpr subExpr subExpr1 subExpr2 of
-                (0, Nothing) -> CondExpr pos subExpr (promoteTo sup subExpr1) (promoteTo sup subExpr2) (rStep3 sup x)
+                (0, Nothing) ->
+                    CondExpr pos subExpr (promoteTo sup (disallowLiteral subExpr1)) (promoteTo sup (disallowLiteral subExpr2)) (rStep3 sup x)
                 (n, condErr) ->
                     let expr = CondExpr pos (maybe subExpr (\(got, expected) -> TypeMismatch got expected |?< subExpr) condErr) subExpr1 subExpr2 (rStep3 ErrorType x)
                     in  case n of
@@ -341,7 +360,7 @@ checkInstruction status@Status{symStack} (For pos id fromExpr' toExpr' incrExpr'
         newSymStack = case uncurry (addBind (pushEnv symStack)) binding of
             Left _ -> "bound accumulator " ++ id `unexpectedIn` "newSymStack"
             Right symStack -> symStack
-        block = checkBlock status{symStack = newSymStack, loop = True} block'
+        block = checkBlock status{symStack = newSymStack, loop = False} block'
         eToRValue e = updateAnn (ann e){sSide = RightValue} e
 checkInstruction status@Status{symStack} (IfThen pos expr' block' x) =
     (status, IfThen pos expr block (rStep3 VoidType x))
@@ -361,8 +380,7 @@ checkInstruction status@Status{symStack} (IfThenElse pos expr' block1' block2' x
 checkInstruction status@Status{symStack} (TryCatch pos block1' block2' x) =
     (status, TryCatch pos block1 block2 (rStep3 VoidType x))
     where
-        -- ?
-        block1 = checkBlock status{symStack = pushEnv symStack} block1'
+        block1 = checkBlock status{symStack = pushEnv symStack, try = True} block1'
         block2 = checkBlock status{symStack = pushEnv symStack} block2'
 checkInstruction status@Status{loop} is@(Break{}) =
     (,) status $ case eRStep3 VoidType is of
@@ -379,6 +397,10 @@ checkInstruction status@Status{function} is@(ReturnVoid{}) =
                 TypeMismatch VoidType (Left function) |< is
             else
                 is
+checkInstruction status@Status{try} is@(Throw{}) =
+    (,) status $ case eRStep3 VoidType is of
+        t | try -> t
+        t -> ThrowOutsideTry |< t
 checkInstruction status@Status{symStack, function} (ReturnExp pos expr' x) =
     (,) status $ ReturnExp pos expr (rStep3 VoidType x)
     where

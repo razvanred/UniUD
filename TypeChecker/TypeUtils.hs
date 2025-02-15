@@ -85,6 +85,10 @@ isLiteral (FloatLiteral{}) = True
 isLiteral (BoolLiteral{}) = True
 isLiteral _ = False
 
+isCompLiteral (ArrayLiteral{}) = True
+isCompLiteral (StringLiteral{}) = True
+isCompLiteral _ = False
+
 popPointer (PointerType tpe) = tpe
 popPointer _ = "unexpected" `unexpectedIn` "popPointer"
 
@@ -174,7 +178,6 @@ satisfiesDeref expr
     tpe = eType expr
 
 satisfiesAccessor expr indExpr =
-  -- todo check <=?
   ( maybeBool (not isArray) (tpe, Right "Array"),
     maybeBool (indType `notJoinLeq` IntType) (indType, Left IntType)
   )
@@ -240,8 +243,6 @@ satisfiesAssignment op expr1 expr2 =
     opSup = assignOpSup op
     tpe1 = eType expr1
     tpe2 = eType expr2
-
--- opSup FloatType
 
 satisfiesTypeExpr expr =
   if isLiteral expr

@@ -4,16 +4,13 @@ module ErrorCollector.Collector (hasError, collect) where
 
 import AST
 import Data.Set (toList)
-import Data.Set qualified as Set
 import Utils
 import Prelude hiding (error)
 
 type In = TypeCheckerOutput
 
-sfilter = Set.filter
-
 hasError :: Block In -> Bool
-hasError block = not (all (all (null . tcerrors)) block)
+hasError = not . all (all (null . tcerrors))
 
 collect alsoWarns block = maybeBool (hasError block) (collectBlock block)
     where
@@ -126,11 +123,11 @@ collect alsoWarns block = maybeBool (hasError block) (collectBlock block)
 
         -- toLists :: String -> Position -> (Set Error, Set Warning) -> ([String], [String])
         toLists header' e x =
-            ( if null newErrs
+            ( if null errs
                 then
                     []
                 else
-                    header ++ (errPrefix <$> toList newErrs),
+                    header ++ (errPrefix <$> toList errs),
               if not alsoWarns || null warns
                 then
                     []
@@ -143,10 +140,6 @@ collect alsoWarns block = maybeBool (hasError block) (collectBlock block)
                     | otherwise = ["-- " ++ header' ++ ":"]
                 errPrefix s = "error: at " ++ show (position e) ++ " " ++ show s
                 warnPrefix s = "warning: at " ++ show (position e) ++ show s
-                newErrs = sfilter f errs
-                f err = case err of -- hackish
-                    (TypeMismatch _ (Left ErrorType)) -> False
-                    _ -> True
                 TypeCheckerOutput
                     { tcwarnings = warns,
                       tcerrors = errs,

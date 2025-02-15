@@ -78,6 +78,7 @@ common shared-properties
     TAC.TACutils
     TypeChecker.Checker
     TypeChecker.ConstExprSolver
+    TypeChecker.Intrinsics
     TypeChecker.Main
     TypeChecker.Totality
     TypeChecker.TypeUtils

@@ -2,6 +2,8 @@
 {-# LANGUAGE LambdaCase #-}
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 
+{-# HLINT ignore "Use newtype instead of data" #-}
+
 -- | The abstract syntax of language Parser.
 module AST where
 
@@ -26,6 +28,9 @@ data Error
     | JumpOutsideLoop
     | NonConstExpr
     | NonTotalFunction
+    | DisallowedLiteral
+    | DisallowedType
+    | ThrowOutsideTry
     deriving (Show)
 
 errorRank = \case
@@ -40,6 +45,9 @@ errorRank = \case
     JumpOutsideLoop -> "9"
     NonTotalFunction -> "10"
     NonConstExpr -> "11"
+    DisallowedLiteral -> "12"
+    DisallowedType -> "13"
+    ThrowOutsideTry -> "14"
 
 instance Eq Error where
     (==) = (==) `on` errorRank
@@ -181,9 +189,8 @@ emapAccumLBlock :: (c -> Instruction a -> (c, Instruction a)) -> c -> Block a ->
 emapAccumLBlock = mapAccumL
 
 emapAccumRBlock :: (c -> Instruction a -> (c, Block a)) -> c -> Block a -> (c, Block a)
-emapAccumRBlock f acc = emapAccumBlock (const (acc,)) f acc
+emapAccumRBlock f acc = emapAccumBlock (const (acc,)) f acc -- codegen visit
 
--- no codegen for now
 emapBlock :: (Instruction a -> Instruction a) -> Block a -> Block a
 emapBlock = fmap
 
