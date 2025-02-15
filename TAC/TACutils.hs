@@ -24,10 +24,11 @@ instance Eq CoppiaStringhe where
 instance Ord CoppiaStringhe where
     (<=) (CoppiaStringhe (i, j)) (CoppiaStringhe (p, q)) = j <= q
 
-type AuxStack = State [(Int, Int, [Label], [TAC], [Label], [(Label, Label)], Stringhe)]
+type AuxStack = State [(Bool, Int, Int, [Label], [TAC], [Label], [(Label, Label)], Stringhe)]
 
-type Stato = StateT (Int, Int, [Label], [TAC], [Label], [(Label, Label)], Stringhe) AuxStack
+type Stato = StateT (Bool, Int, Int, [Label], [TAC], [Label], [(Label, Label)], Stringhe) AuxStack
 
+-- bool per indicare se è stata tirata una eccezione
 -- intero per temporanei/label,
 -- intero per stringhe statiche
 -- listalabel a rovescio
@@ -38,49 +39,49 @@ type Stato = StateT (Int, Int, [Label], [TAC], [Label], [(Label, Label)], String
 
 checkIfSuspendedLabel :: Stato Bool
 checkIfSuspendedLabel = do
-    (k, j, labels, tac, suspendedLabels, bclabels, strings) <- get
+    (b, k, j, labels, tac, suspendedLabels, bclabels, strings) <- get
     return . not . null $ suspendedLabels
 
 outWithSuspendedLabel :: TAC -> Stato ()
 outWithSuspendedLabel tacInstr = do
-    (k, j, labels, tac, sl, bcl, strings) <- get
+    (b, k, j, labels, tac, sl, bcl, strings) <- get
     case sl of
-        [] -> put (k, j, LabEmpty : labels, tacInstr : tac, sl, bcl, strings)
-        (x : xs) -> put (k, j, x : labels, tacInstr : tac, xs, bcl, strings)
+        [] -> put (b, k, j, LabEmpty : labels, tacInstr : tac, sl, bcl, strings)
+        (x : xs) -> put (b, k, j, x : labels, tacInstr : tac, xs, bcl, strings)
 
 labelNext :: Label -> Stato ()
 labelNext l = do
-    (k, j, labels, tac, suspendedLabels, bcl, strings) <- get
-    put (k, j, labels, tac, l : suspendedLabels, bcl, strings)
+    (b, k, j, labels, tac, suspendedLabels, bcl, strings) <- get
+    put (b, k, j, labels, tac, l : suspendedLabels, bcl, strings)
 
 newtemp :: Stato (Type -> Addr)
 newtemp = do
-    (k, j, labels, tac, suspendedLabels, bcl, strings) <- get
-    put (k + 1, j, labels, tac, suspendedLabels, bcl, strings)
+    (b, k, j, labels, tac, suspendedLabels, bcl, strings) <- get
+    put (b, k + 1, j, labels, tac, suspendedLabels, bcl, strings)
     return $ int2AddrTempName k
 
 newLabelNum :: Stato Int
 newLabelNum = do
-    (k, j, labels, tac, suspendedLabels, bcl, strings) <- get
-    put (k + 1, j, labels, tac, suspendedLabels, bcl, strings)
+    (b, k, j, labels, tac, suspendedLabels, bcl, strings) <- get
+    put (b, k + 1, j, labels, tac, suspendedLabels, bcl, strings)
     return k
 
 int2AddrTempName :: Int -> Type -> Addr
 int2AddrTempName = Temporary
 
-genCode :: Stato a -> (Int, Int, [Label], [TAC], [Label], [(Label, Label)], Stringhe)
+genCode :: Stato a -> (Bool, Int, Int, [Label], [TAC], [Label], [(Label, Label)], Stringhe)
 -- genCode gen = reverse $ snd $ execState gen (0, [])
-genCode gen = evalState (execStateT gen (0, 0, [], [], [], [], Map.empty)) []
+genCode gen = evalState (execStateT gen (False,0, 0, [], [], [], [], Map.empty)) []
 
 printOutput :: Stato a -> IO ()
 printOutput x = do
-    let (_, _, labels, tac, _, _, strings) = genCode x
+    let (_, _, _, labels, tac, _, _, strings) = genCode x
     let orderedLabelsToPrint = map pp . reverse $ labels
     let orderedTACToPrint = map pp . reverse $ tac
     let listStrings = Map.toList strings
     let orderedStrings = sort listStrings
     let maxpadding = maximum . map length $ orderedLabelsToPrint
-    let paddedLabels = map (\x -> x ++ (replicate (maxpadding - length x) ' ')) orderedLabelsToPrint
+    let paddedLabels = map (\x -> x ++ replicate (maxpadding - length x) ' ') orderedLabelsToPrint
     putStrLn "### STATIC DATA ###"
     mapM_ (\(x, y) -> putStrLn (y ++ " " ++ x)) orderedStrings
     putStrLn "### PROGRAM ###"
@@ -165,14 +166,12 @@ sizeof x = case x of
     _ -> error "Cannot be another type"
 
 flatten :: [Expr a] -> [Expr a]
-flatten listExpr = reverse $ (flatten' listExpr [])
+flatten listExpr = reverse $ flatten' listExpr []
     where
         flatten' [] acc = acc
         flatten' (x : xs) acc = case x of
             (ArrayLiteral _ (y : ys) _) -> flatten' xs (flatten' ys (flatten' (y : []) acc))
             _ -> flatten' xs (x : acc)
-
--- flatten' (x:[]) acc = x : acc
 
 getPrimitiveTypeArr :: Type -> Type
 getPrimitiveTypeArr (ArrayType _ _ t) = getPrimitiveTypeArr t

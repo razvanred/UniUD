@@ -135,7 +135,7 @@ ListParameter
 
 Parameter :: { (Parser.Abs.BNFC'Position, Parser.Abs.Parameter) }
 Parameter
-  : Modality Ident ':' Type { (fst $1, Parser.Abs.Param (fst $1) (snd $1) (snd $2) (snd $4)) }
+  : Modality Ident ':' Type { (fst $1, Parser.Abs.Param (fst $1) (snd $1) (snd $2) (snd $4)) } -- modificata la posizione di Parser.Abs.Param in fst $2 invece di fst $1
 
 Modality :: { (Parser.Abs.BNFC'Position, Parser.Abs.Modality) }
 Modality

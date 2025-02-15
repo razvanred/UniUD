@@ -1,0 +1,5 @@
+var a1 :checked [2] checked [3] int := [[1,2,3],[4,5,6]];
+var a2 :checked []  checked [] int := [[8,7],[3,4]];
+
+a1[1] := 7;
+

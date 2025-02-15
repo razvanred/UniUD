@@ -77,16 +77,17 @@ import Parser.Lex
   'res'      { PT _ (TS _ 52) }
   'return'   { PT _ (TS _ 53) }
   'string'   { PT _ (TS _ 54) }
-  'try'      { PT _ (TS _ 55) }
-  'val'      { PT _ (TS _ 56) }
-  'valres'   { PT _ (TS _ 57) }
-  'var'      { PT _ (TS _ 58) }
-  'void'     { PT _ (TS _ 59) }
-  'while'    { PT _ (TS _ 60) }
-  '{'        { PT _ (TS _ 61) }
-  '|='       { PT _ (TS _ 62) }
-  '||'       { PT _ (TS _ 63) }
-  '}'        { PT _ (TS _ 64) }
+  'throw'    { PT _ (TS _ 55) }
+  'try'      { PT _ (TS _ 56) }
+  'val'      { PT _ (TS _ 57) }
+  'valres'   { PT _ (TS _ 58) }
+  'var'      { PT _ (TS _ 59) }
+  'void'     { PT _ (TS _ 60) }
+  'while'    { PT _ (TS _ 61) }
+  '{'        { PT _ (TS _ 62) }
+  '|='       { PT _ (TS _ 63) }
+  '||'       { PT _ (TS _ 64) }
+  '}'        { PT _ (TS _ 65) }
   L_Ident    { PT _ (TV _)    }
   L_charac   { PT _ (TC _)    }
   L_doubl    { PT _ (TD _)    }
@@ -143,7 +144,7 @@ ListParameter
 
 Parameter :: { (Parser.Abs.BNFC'Position, Parser.Abs.Parameter) }
 Parameter
-  : Modality Ident ':' Type { (fst $1, Parser.Abs.Param (fst $1) (snd $1) (snd $2) (snd $4)) }
+  : Modality Ident ':' Type { (fst $1, Parser.Abs.Param (fst $2) (snd $1) (snd $2) (snd $4)) } -- modificata la posizione di Parser.Abs.Param in fst $2 invece di fst $1
 
 Modality :: { (Parser.Abs.BNFC'Position, Parser.Abs.Modality) }
 Modality
@@ -179,6 +180,7 @@ Statement
   | BranchStatement { (fst $1, Parser.Abs.Branch (fst $1) (snd $1)) }
   | Expr Assignment_op Expr { (fst $1, Parser.Abs.Assign (fst $1) (snd $1) (snd $2) (snd $3)) }
   | 'try' Block 'catch' Block { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.TryStmt (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $2) (snd $4)) }
+  | 'throw' String { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.Throw (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $2)) }
   | Expr { (fst $1, Parser.Abs.StmntExpr (fst $1) (snd $1)) }
 
 Assignment_op :: { (Parser.Abs.BNFC'Position, Parser.Abs.Assignment_op) }

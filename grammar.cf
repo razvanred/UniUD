@@ -41,6 +41,7 @@ Iter.       Statement ::= IterStatement ;
 Branch.     Statement ::= BranchStatement ;
 Assign.     Statement ::= Expr Assignment_op Expr ;
 TryStmt.    Statement ::= "try" Block "catch" Block ;
+Throw.      Statement ::= "throw" String ;
 
 StmntExpr.   Statement ::= Expr ;
 

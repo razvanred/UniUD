@@ -113,6 +113,7 @@ data ErrorCollectorOutput = ErrorCollectorOutput
     }
     deriving (Show)
 
+
 data LeftRightValue = LeftValue | RightValue
     deriving (Eq, Show)
 
@@ -200,6 +201,7 @@ data Instruction a
     | IfThen Position (Expr a) (Block a) a
     | IfThenElse Position (Expr a) (Block a) (Block a) a
     | TryCatch Position (Block a) (Block a) a
+    | Throw Position String a
     | Assignment Position (Expr a) AssignmentOp (Expr a) a
     | Expression Position (Expr a) a
     deriving (Show, Functor, Foldable, Traversable)

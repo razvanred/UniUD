@@ -1,0 +1,26 @@
+var a :int := 5;
+var b :float := 4.5;
+var c :char := 'f';
+var c1 :char := 6c;
+var d1 :string := "ciao";
+var d2 :string := "cibo";
+var e :bool := True;
+
+# interi compatibili con float
+b := a;
+
+# bool compatibili con float
+a := e;
+
+# char compatibili con interi
+a := c + 3;
+
+# somma fra caratteri
+c := c1 + 'd';
+
+# uguaglianza fra stringhe
+e := d1 == d2;
+
+# disuguaglianza fra stringhe
+e := d1 != d2;
+

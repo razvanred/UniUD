@@ -221,8 +221,12 @@ unescapeInitTail = id . unesc . tail . id
     c:cs         -> c : unesc cs
     _            -> []
 
+-- removeC :: String -> String
+-- removeC x = (toEnum (read (take (length x - 1) x)) :: Char) : []
+
 removeC :: String -> String
-removeC x = (toEnum (read (take (length x - 1) x)) :: Char) : []
+removeC x = show (toEnum (read (take (length x - 1) x) :: Int) ::Char)
+
 -------------------------------------------------------------------
 -- Alex wrapper code.
 -- A modified "posn" wrapper.

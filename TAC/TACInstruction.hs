@@ -48,8 +48,8 @@ setupStringEqualityFunction addr1 addr2 = do
     outWithSuspendedLabel $ TacPointerLoad temp2 CharType addr2
     f4 <- newtemp
     let temp4 = f4 BoolType
-    outWithSuspendedLabel $ TacBinary temp4 (RelationalOp Eq) BoolType temp1 temp2
     labelNext labelGuard
+    outWithSuspendedLabel $ TacBinary temp4 (RelationalOp Eq) BoolType temp1 temp2
     outWithSuspendedLabel $ TacBoolCondJump True temp4 labelBody
     labelNext labelAfter
     outWithSuspendedLabel $ TacReturn (Just (BoolType, buildTacLiteral . TacLitBool $ False))
@@ -70,7 +70,9 @@ setupStringEqualityFunction addr1 addr2 = do
 
 tacBlock :: [Instruction ErrorCollectorOutput] -> Stato ()
 tacBlock [] = return ()
-tacBlock (x : xs) = tacInstr x >> tacBlock xs
+tacBlock (x : xs) = case x of
+    throw@(Throw{}) -> tacBlock xs
+    _ -> tacInstr x >> tacBlock xs
 
 tacBlockForResParam :: [Instruction ErrorCollectorOutput] -> [Parameter ErrorCollectorOutput] -> [(Modality, Type)] -> Stato ()
 tacBlockForResParam [] _ _ = return ()
@@ -94,28 +96,25 @@ tacInstr (VariableDecl pos s decl expr (ErrorCollectorOutput t _ (Just mod@Modal
         tacInstr (Assignment pos (Id pos s tp) BasicAssignment expr emptyTCO)
 
 -- we assume to have the return instruction as the last one
-tacInstr (FunctionDecl (line, col) id params _ body (ErrorCollectorOutput (FunctionType mt@[(mod, ty)] _) _ _ _)) = do
-    currentState@(ci, cs, cl, cTac, sl, bclabels, strings) <- get
+tacInstr (FunctionDecl (line, col) id params _ body (ErrorCollectorOutput (FunctionType mt _) _ _ _)) = do
+    currentState@(b, ci, cs, cl, cTac, sl, bclabels, strings) <- get
     l <- lift get
-    put (0, cs, [], [], [LabFunId id line col], [], strings)
+    put (b, 0, cs, [], [], [LabFunId id line col], [], strings)
     lift (put (currentState : l))
     preambleValResParam params mt
     if paramsContainsResOrValResMod mt
         then tacBlockForResParam body params mt
         else tacBlock body
-    -- tacBlock body
-    -- when (paramContainsResMod mt) $ do
-    -- let listTac = (resAfter mt [])
-    (completedInt, completedStrings, completedLabels, completedTAC, suspendedLabels, bclabels, strings) <- get
+    (b, completedInt, completedStrings, completedLabels, completedTAC, suspendedLabels, bclabels, strings) <- get
     case suspendedLabels of
         x : [] -> error "At this point there cannot be suspended labels"
         [] -> do
             xs <- lift get
             case xs of
                 [] -> return ()
-                (ci, cs, lab, tac, suslab, bclabels, previousstrings) : rest -> do
+                (b, ci, cs, lab, tac, suslab, bclabels, previousstrings) : rest -> do
                     lift (put rest)
-                    put (ci, completedStrings, lab ++ completedLabels, tac ++ completedTAC, suslab, bclabels, strings)
+                    put (b, ci, completedStrings, lab ++ completedLabels, tac ++ completedTAC, suslab, bclabels, strings)
 tacInstr (IfThen _ expr block _) = do
     int <- newLabelNum
     let label = LabIfFalse int
@@ -138,8 +137,8 @@ tacInstr (While _ expr block _) = do
     let labelGuard = LabGuard int
     int1 <- newLabelNum
     let labelAfter = LabInstr int1
-    (ci, cs, cl, cTac, sl, bclabels, strings) <- get
-    put (ci, cs, cl, cTac, sl, (labelGuard, labelAfter) : bclabels, strings)
+    (b, ci, cs, cl, cTac, sl, bclabels, strings) <- get
+    put (b, ci, cs, cl, cTac, sl, (labelGuard, labelAfter) : bclabels, strings)
     outWithSuspendedLabel $ TacUnCondJump labelGuard
     int2 <- newLabelNum
     let labelBody = LabBodyStart int2
@@ -148,17 +147,17 @@ tacInstr (While _ expr block _) = do
     labelNext labelGuard
     tacBoolExpr expr labelBody FALL
     labelNext labelAfter
-    (ci, cs, cl, cTac, sl, bclabels, strings) <- get
+    (b, ci, cs, cl, cTac, sl, bclabels, strings) <- get
     case bclabels of
         [] -> error "in a while there must be at least a couple of suspended bc labels"
-        (x : xs) -> put (ci, cs, cl, cTac, sl, xs, strings)
+        (x : xs) -> put (b, ci, cs, cl, cTac, sl, xs, strings)
 tacInstr (DoWhile _ expr block _) = do
     int <- newLabelNum
     let labelGuard = LabGuard int
     int1 <- newLabelNum
     let labelAfter = LabInstr int1
-    (ci, cs, cl, cTac, sl, bclabels, strings) <- get
-    put (ci, cs, cl, cTac, sl, (labelGuard, labelAfter) : bclabels, strings)
+    (b, ci, cs, cl, cTac, sl, bclabels, strings) <- get
+    put (b, ci, cs, cl, cTac, sl, (labelGuard, labelAfter) : bclabels, strings)
     int2 <- newLabelNum
     let labelBody = LabBodyStart int2
     labelNext labelBody
@@ -166,24 +165,17 @@ tacInstr (DoWhile _ expr block _) = do
     labelNext labelGuard
     tacBoolExpr expr labelBody FALL
     labelNext labelAfter
-    (ci, cs, cl, cTac, sl, bclabels, strings) <- get
+    (b, ci, cs, cl, cTac, sl, bclabels, strings) <- get
     case bclabels of
         [] -> error "in a while there must be at least a couple of suspended bc labels"
-        (x : xs) -> put (ci, cs, cl, cTac, sl, xs, strings)
+        (x : xs) -> put (b, ci, cs, cl, cTac, sl, xs, strings)
 tacInstr (For pos id from step to block _) = do
-    -- let unusedExpr = StringLiteral (0, 0) "" ()
-    -- let tp = ErrorCollectorOutput IntType Nothing (Just ModalityVal) (Just (VariableDecl pos id DIntType unusedExpr ()))
-    -- tacInstr (Assignment pos (Id pos id tp) BasicAssignment from emptyTCO)
-    -- let guard = BinaryOp pos (RelationalOp LessThanEq) from to tp
-    -- let exprIncr = BinaryOp pos (ArithmeticOp Add) (Id pos id tp) (IntLiteral pos 1 tp) tp
-    -- let incr = Assignment pos (Id pos id tp) BasicAssignment exprIncr tp
-    -- tacInstr (While pos guard (block ++ [incr]) emptyTCO)
     let unusedExpr = StringLiteral (0, 0) "" ()
     let tp = ErrorCollectorOutput IntType Nothing (Just ModalityVal) (Just (VariableDecl pos id DIntType unusedExpr ()))
     tacInstr (Assignment pos (Id pos id tp) BasicAssignment from emptyTCO)
     f1 <- newtemp
     let temp1 = f1 IntType
-    xaddr1 <- tacExpr from
+    xaddr1 <- tacExpr step
     case xaddr1 of
         RefAddr a -> do
             xtmp <- buildTempANDIndirectLoad a IntType False
@@ -195,18 +187,23 @@ tacInstr (For pos id from step to block _) = do
     case xaddr2 of
         RefAddr a -> do
             xtmp <- buildTempANDIndirectLoad a IntType False
-            outWithSuspendedLabel $ TacNullary temp1 IntType (addr xtmp)
-        Addr a -> outWithSuspendedLabel $ TacNullary temp1 IntType a
-    let exprIncr = BinaryOp pos (ArithmeticOp Add) (Id pos id tp) (IntLiteral pos 1 tp) tp
-    let incr = Assignment pos (Id pos id tp) BasicAssignment exprIncr tp
-    tacWhileCustom LessThanEq temp1 temp2 (block ++ [incr])
+            outWithSuspendedLabel $ TacNullary temp2 IntType (addr xtmp)
+        Addr a -> outWithSuspendedLabel $ TacNullary temp2 IntType a
+    index <- tacExpr (Id pos id tp)
+    f3 <- newtemp
+    let temp3 = f3 IntType
+    let exprIncr = TacBinary temp3 (ArithmeticOp Add) IntType (addr index) temp1
+    let incr = TacNullary (addr index) IntType temp3
+    --let exprIncr = BinaryOp pos (ArithmeticOp Add) (Id pos id tp) (IntLiteral pos 1 tp) tp
+    -- let incr = Assignment pos (Id pos id tp) BasicAssignment exprIncr tp
+    tacWhileCustom LessThanEq (addr index) temp2 block [exprIncr,incr]
 tacInstr Break{} = do
-    (ci, cs, cl, cTac, sl, bclabels, strings) <- get
+    (b, ci, cs, cl, cTac, sl, bclabels, strings) <- get
     case bclabels of
         [] -> error "a break must find at least a bclabel"
         (x : xs) -> outWithSuspendedLabel $ TacUnCondJump (snd x)
 tacInstr Continue{} = do
-    (ci, cs, cl, cTac, sl, bclabels, strings) <- get
+    (b, ci, cs, cl, cTac, sl, bclabels, strings) <- get
     case bclabels of
         [] -> error "a continue must find at least a bclabel"
         (x : xs) -> outWithSuspendedLabel $ TacUnCondJump (fst x)
@@ -262,6 +259,28 @@ tacInstr (Assignment _ expr1 aop expr2 _) = do
                     sliceCopyArrayToPointer addr1 xaddr2 baseType sliceSize aop
         -- _ -> assignTypeDiffFromArr xaddr1 xaddr2 (addrT . addr $ xaddr1) aop >> return ()
         t -> assignTypeDiffFromArr xaddr1 xaddr2 t aop >> return ()
+
+tacInstr (TryCatch pos block1 block2 _) = do
+    int <- newLabelNum
+    let labelException = LabGuard int
+    tacTCBlock block1 labelException
+    labelNext labelException
+    tacBlock block2
+
+tacInstr (Throw _ str _) = do
+    (b, ci, cs, cl, cTac, sl, bclabels, strings) <- get
+    put (True, ci, cs, cl, cTac, sl, bclabels, strings)
+    outWithSuspendedLabel $ TacThrowException str
+
+tacTCBlock :: [Instruction ErrorCollectorOutput] -> Label -> Stato ()
+tacTCBlock [] _ = return ()
+tacTCBlock (x : xs) label = case x of
+    throw@(Throw{}) -> do
+        tacInstr throw
+        outWithSuspendedLabel $ TacUnCondJump label
+    _ -> do
+        tacInstr x
+        tacTCBlock xs label
 
 sliceCopyBasic :: XAddr -> Type -> Integer -> XAddr -> AssignmentOp -> Stato ()
 sliceCopyBasic _ _ 0 _ _ = return ()
@@ -419,23 +438,25 @@ preambleValResParam ((Param pos _ id _ _) : ps) ((mod, ty) : modtys) = case mod 
         tacInstr (Assignment (0, 0) localId BasicAssignment formalParam emptyTCO)
     _ -> preambleValResParam ps modtys
 
-tacWhileCustom :: RelOp -> Addr -> Addr -> Block ErrorCollectorOutput -> Stato ()
-tacWhileCustom relop addr1 addr2 block = do
+tacWhileCustom :: RelOp -> Addr -> Addr -> Block ErrorCollectorOutput -> [TAC] -> Stato ()
+tacWhileCustom relop addr1 addr2 block lastInstrs = do
     int <- newLabelNum
     let labelGuard = LabGuard int
     int1 <- newLabelNum
     let labelAfter = LabInstr int1
-    (ci, cs, cl, cTac, sl, bclabels, strings) <- get
-    put (ci, cs, cl, cTac, sl, (labelGuard, labelAfter) : bclabels, strings)
+    (b,ci, cs, cl, cTac, sl, bclabels, strings) <- get
+    put (b,ci, cs, cl, cTac, sl, (labelGuard, labelAfter) : bclabels, strings)
     outWithSuspendedLabel $ TacUnCondJump labelGuard
     int2 <- newLabelNum
     let labelBody = LabBodyStart int2
     labelNext labelBody
     tacBlock block
+    mapM_ outWithSuspendedLabel lastInstrs
     labelNext labelGuard
     outWithSuspendedLabel $ TacRelCondJump addr1 relop BoolType addr2 labelBody
     labelNext labelAfter
-    (ci, cs, cl, cTac, sl, bclabels, strings) <- get
+    (b,ci, cs, cl, cTac, sl, bclabels, strings) <- get
     case bclabels of
         [] -> error "in a while there must be at least a couple of suspended bc labels"
-        (x : xs) -> put (ci, cs, cl, cTac, sl, xs, strings)
+        (x : xs) -> put (b,ci, cs, cl, cTac, sl, xs, strings)
+

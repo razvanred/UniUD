@@ -89,6 +89,7 @@ data TacInstruction
   | TacRelCondJump Addr RelOp Type Addr Label -- Conditional jump on comparison
   | TacUnCondJump Label -- Unconditional jump
   | TacCall (Maybe (Type, Addr)) FunIdent -- Call operation fcall f/n or pcall f/n
+  | TacThrowException String
   deriving (Show, Eq)
 
 instance PrettyPrinter TacInstruction where
@@ -111,6 +112,7 @@ instance PrettyPrinter TacInstruction where
   pp (TacUnCondJump label) = "goto " ++ pp label
   pp (TacCall Nothing f) = "pcall " ++ pp f
   pp (TacCall (Just (t, a)) f) = pp a ++ " =" ++ pp t ++ " " ++ pp f
+  pp (TacThrowException string) = "throw exception " ++ string
 
 data Label
   = LabInstr Int

@@ -59,6 +59,7 @@ buildInstruction (Parser.Abs.Stmt _ statement) = case statement of
     (Parser.Abs.Assign (Just pos) expr1 assignmentop expr2) -> \x -> Assignment pos (buildExpr expr1 x) (buildAssignment_op assignmentop) (buildExpr expr2 x) x
     (Parser.Abs.StmntExpr (Just pos) expr) -> pass1 (Expression pos) (buildExpr expr)
     (Parser.Abs.TryStmt (Just pos) block1 block2) -> \x -> TryCatch pos (buildBlock block1 x) (buildBlock block2 x) x
+    (Parser.Abs.Throw (Just pos) string) -> \x -> Throw pos string x
     _ -> fail
     where
         fail = buildFail "instruction"

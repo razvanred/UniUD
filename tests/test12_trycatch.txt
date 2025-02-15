@@ -1,0 +1,14 @@
+var x :int := 4;
+
+try {
+
+if (x % 2 != 0) { throw "exception"; };
+}
+catch
+{
+x := 3;
+}
+
+
+
+

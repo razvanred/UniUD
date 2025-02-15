@@ -187,21 +187,21 @@ resWords =
           (b ">=" 29
              (b "==" 27 (b "<=" 26 N N) (b ">" 28 N N))
              (b "@" 31 (b "?" 30 N N) (b "False" 32 N N)))))
-    (b "in" 49
-       (b "checked" 41
-          (b "bool" 37
-             (b "]" 35 (b "[" 34 N N) (b "^=" 36 N N))
-             (b "catch" 39 (b "break" 38 N N) (b "char" 40 N N)))
-          (b "else" 45
-             (b "def" 43 (b "continue" 42 N N) (b "do" 44 N N))
-             (b "for" 47 (b "float" 46 N N) (b "if" 48 N N))))
-       (b "valres" 57
-          (b "return" 53
-             (b "ref" 51 (b "int" 50 N N) (b "res" 52 N N))
-             (b "try" 55 (b "string" 54 N N) (b "val" 56 N N)))
-          (b "{" 61
-             (b "void" 59 (b "var" 58 N N) (b "while" 60 N N))
-             (b "||" 63 (b "|=" 62 N N) (b "}" 64 N N)))))
+    (b "int" 50
+       (b "continue" 42
+          (b "break" 38
+             (b "^=" 36 (b "]" 35 (b "[" 34 N N) N) (b "bool" 37 N N))
+             (b "char" 40 (b "catch" 39 N N) (b "checked" 41 N N)))
+          (b "float" 46
+             (b "do" 44 (b "def" 43 N N) (b "else" 45 N N))
+             (b "if" 48 (b "for" 47 N N) (b "in" 49 N N))))
+       (b "valres" 58
+          (b "string" 54
+             (b "res" 52 (b "ref" 51 N N) (b "return" 53 N N))
+             (b "try" 56 (b "throw" 55 N N) (b "val" 57 N N)))
+          (b "{" 62
+             (b "void" 60 (b "var" 59 N N) (b "while" 61 N N))
+             (b "||" 64 (b "|=" 63 N N) (b "}" 65 N N)))))
   where
   b s n = B bs (TS bs n)
     where
@@ -222,7 +222,7 @@ unescapeInitTail = id . unesc . tail . id
     _            -> []
 
 removeC :: String -> String
-removeC x = (toEnum (read (take (length x - 1) x)) :: Char) : []
+removeC x = show (toEnum (read (take (length x - 1) x) :: Int) ::Char)
 
 -------------------------------------------------------------------
 -- Alex wrapper code.

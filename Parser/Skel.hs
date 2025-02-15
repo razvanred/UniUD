@@ -72,6 +72,7 @@ transStatement x = case x of
   Parser.Abs.Branch _ branchstatement -> failure x
   Parser.Abs.Assign _ expr1 assignmentop expr2 -> failure x
   Parser.Abs.TryStmt _ block1 block2 -> failure x
+  Parser.Abs.Throw _ string -> failure x
   Parser.Abs.StmntExpr _ expr -> failure x
 
 transAssignment_op :: Show a => Parser.Abs.Assignment_op' a -> Result
