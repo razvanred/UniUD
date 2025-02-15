@@ -514,8 +514,11 @@ astEmap fInstruction fParameter fDeclType fExpr = emapBlock f
             (FunctionDecl pos id parameters declType block x) -> FunctionDecl pos id (g <$> parameters) (emap h declType) (emapBlock f block) x
             (ReturnExp pos expr x) -> ReturnExp pos (emap fExpr expr) x
             (While pos expr block x) -> While pos (emap fExpr expr) (emapBlock f block) x
+            (DoWhile pos expr block x) -> DoWhile pos (emap fExpr expr) (emapBlock f block) x
+            (For pos id fromExpr toExpr incrExpr block x) -> For pos id (emap fExpr fromExpr) (emap fExpr toExpr) (emap fExpr incrExpr) (emapBlock f block) x
             (IfThen pos expr block x) -> IfThen pos (emap fExpr expr) (emapBlock f block) x
             (IfThenElse pos expr block1 block2 x) -> IfThenElse pos (emap fExpr expr) (emapBlock f block1) (emapBlock f block2) x
+            (TryCatch pos block1 block2 x) -> TryCatch pos (emapBlock f block1) (emapBlock f block2) x
             (Assignment pos expr1 op expr2 x) -> Assignment pos (emap fExpr expr1) op (emap fExpr expr2) x
             (Expression pos expr x) -> Expression pos (emap fExpr expr) x
             _ -> instruction
