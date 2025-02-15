@@ -105,7 +105,7 @@ All other symbols are terminals.
   |  |  **|**  | //IterStatement//
   |  |  **|**  | //BranchStatement//
   |  |  **|**  | //Expr// //Assignment_op// //Expr//
-  |  |  **|**  | ``try`` //Statement// ``catch`` //Statement//
+  |  |  **|**  | ``try`` //Block// ``catch`` //Block//
   |  |  **|**  | //Expr//
   | //Assignment_op// | -> | ``:=``
   |  |  **|**  | ``*=``

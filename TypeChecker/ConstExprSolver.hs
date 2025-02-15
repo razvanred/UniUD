@@ -24,18 +24,24 @@ unpackInt lt = "literal " ++ show lt `unexpectedDuring` "unpackToInt"
 unpackFloat (FloatLiteral _ v Step2{sType = FloatType}) = v
 unpackFloat lt = "literal " ++ show lt `unexpectedDuring` "unpackToFloat"
 
-biunpackBool lit1 lit2 = (unpackBool lit1, unpackBool lit2)
+biunpackBool lt1 lt2 = (unpackBool lt1, unpackBool lt2)
 
-biunpackChar lit1 lit2 = (unpackChar lit1, unpackChar lit2)
-
-biunpackPromoteInt lit1 lit2 = (promote lit1, promote lit2)
+biunpackPromoteChar lt1 lt2 = (promote lt1, promote lt2)
   where
+    promote (BoolLiteral _ v Step2{sType = BoolType}) = toEnum $ fromEnum v
+    promote (CharLiteral _ v Step2{sType = CharType}) = v
+    promote lt = "literal " ++ show lt `unexpectedDuring` "biunpackPromoteChar"
+
+biunpackPromoteInt lt1 lt2 = (promote lt1, promote lt2)
+  where
+    promote (BoolLiteral _ v Step2{sType = BoolType}) = fromIntegral $ fromEnum v
     promote (CharLiteral _ v Step2{sType = CharType}) = fromIntegral $ fromEnum v
-    promote (IntLiteral _ v Step2{sType = IntType}) = fromIntegral v
+    promote (IntLiteral _ v Step2{sType = IntType}) = v
     promote lt = "literal " ++ show lt `unexpectedDuring` "biunpackPromoteToInt"
 
-biunpackPromoteFloat lit1 lit2 = (promote lit1, promote lit2)
+biunpackPromoteFloat lt1 lt2 = (promote lt1, promote lt2)
   where
+    promote (BoolLiteral _ v Step2{sType = BoolType}) = fromIntegral $ fromEnum v
     promote (CharLiteral _ v Step2{sType = CharType}) = fromIntegral $ fromEnum v
     promote (IntLiteral _ v Step2{sType = IntType}) = fromIntegral v
     promote (FloatLiteral _ v Step2{sType = FloatType}) = v
@@ -44,6 +50,7 @@ biunpackPromoteFloat lit1 lit2 = (promote lit1, promote lit2)
 isZero (FloatLiteral _ v Step2{sType = FloatType}) = v == 0
 isZero (CharLiteral _ v Step2{sType = CharType}) = v == 0
 isZero (IntLiteral _ v Step2{sType = IntType}) = v == 0
+isZero (BoolLiteral _ v Step2{sType = IntType}) = not v
 isZero lt = "literal " ++ show lt `unexpectedDuring` "isZero"
 
 -- operators
@@ -150,13 +157,13 @@ solveExpr expr@(BinaryOp pos op lt1 lt2 x)
           makeBoolLit (biunpackPromoteInt lt1 lt2) (op :: Integer -> Integer -> Bool)
       | CharType <- sup,
         Just op <- fRelationalOp op =
-          makeBoolLit (biunpackChar lt1 lt2) (op :: Char -> Char -> Bool)
+          makeBoolLit (biunpackPromoteChar lt1 lt2) (op :: Char -> Char -> Bool)
       | Just op <- fBBoolOp op =
           makeBoolLit (biunpackBool lt1 lt2) op
       | otherwise = "mismatch" `unexpectedDuring` "solveBinOp"
       where
         newX = rStep2 sup x |<> ann lt2 |<> ann lt1
-        makeCharLit op = CharLiteral pos (uncurry op (biunpackChar lt1 lt2)) newX
+        makeCharLit op = CharLiteral pos (uncurry op (biunpackPromoteChar lt1 lt2)) newX
         makeIntLit op = IntLiteral pos (uncurry op (biunpackPromoteInt lt1 lt2) `mod` 2 ^ (32 :: Integer)) newX
         makeFloatLit op = FloatLiteral pos (uncurry op (biunpackPromoteFloat lt1 lt2)) newX
         makeBoolLit vs op = BoolLiteral pos (uncurry op vs) newX

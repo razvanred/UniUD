@@ -19,7 +19,9 @@ f x = do
     let t1 = solveConstants 1 t
     let t2 = staticAnalizer t1
     case collectErrors True t2 of
-        Left x -> prp x
+        Left msgs -> do
+            -- prp t2
+            prp msgs
         Right t3 -> do
             let t4 = tacBlock t3
             putStrLn "---demo"

@@ -3,7 +3,7 @@
 module ErrorCollector.Collector (hasError, collect) where
 
 import AST
-import Data.Set (Set, toList)
+import Data.Set (toList)
 import Data.Set qualified as Set
 import Utils
 import Prelude hiding (error)
@@ -30,17 +30,27 @@ collect alsoWarns block = maybeBool (hasError block) (collectBlock block)
                     where
                         declTypeWE = collectDeclType declType
                         exprWE = efoldr collectExpr mempty expr
-                (FunctionDecl pos id args declType block _) -> err ("fun decl " ++ id) <> argsWE <> declTypeWE <> blockWE
+                (FunctionDecl _ id args declType block _) -> err ("fun decl " ++ id) <> argsWE <> declTypeWE <> blockWE
                     where
                         declTypeWE = collectDeclType declType
                         blockWE = collectBlock block
-                        argsWE = foldMap (collectArg pos) args
+                        argsWE = foldMap collectArg args
                 (ReturnExp _ expr _) -> err "" <> exprWE
                     where
                         exprWE = efoldr collectExpr mempty expr
                 (While _ expr block _) -> err "" <> exprWE <> blockWE
                     where
                         exprWE = efoldr collectExpr mempty expr
+                        blockWE = collectBlock block
+                (DoWhile _ expr block _) -> err "" <> exprWE <> blockWE
+                    where
+                        exprWE = efoldr collectExpr mempty expr
+                        blockWE = collectBlock block
+                (For _ _ fromExpr toExpr incrExpr block _) -> err "" <> fromExprWE <> toExprWE <> incrExprWE <> blockWE
+                    where
+                        fromExprWE = efoldr collectExpr mempty fromExpr
+                        toExprWE = efoldr collectExpr mempty toExpr
+                        incrExprWE = efoldr collectExpr mempty incrExpr
                         blockWE = collectBlock block
                 (IfThen _ expr block _) -> err "" <> exprWE <> blockWE
                     where
@@ -49,6 +59,10 @@ collect alsoWarns block = maybeBool (hasError block) (collectBlock block)
                 (IfThenElse _ expr block1 block2 _) -> err "" <> exprWE <> block1WE <> block2WE
                     where
                         exprWE = efoldr collectExpr mempty expr
+                        block1WE = collectBlock block1
+                        block2WE = collectBlock block2
+                (TryCatch _ block1 block2 _) -> err "" <> block1WE <> block2WE
+                    where
                         block1WE = collectBlock block1
                         block2WE = collectBlock block2
                 (Assignment _ expr1 op expr2 _) -> err ("op " ++ show op) <> expr1WE <> expr2WE
@@ -60,7 +74,7 @@ collect alsoWarns block = maybeBool (hasError block) (collectBlock block)
                         exprWE = efoldr collectExpr mempty expr
                 _ -> err ""
             where
-                err = makeError (position is) (ann is)
+                err = makeError is (ann is)
 
         collectExpr :: Expr (([String], [String]), In) -> ([String], [String])
         collectExpr expr = case expr of
@@ -87,38 +101,31 @@ collect alsoWarns block = maybeBool (hasError block) (collectBlock block)
             (ArrayLiteral _ exprs _) -> err "" <> exprsWE
                 where
                     exprsWE = foldMap (fst . ann) exprs
-            (RangedArray _ expr1 expr2 _) -> err "" <> expr1WE <> expr2WE
+            (CondExpr _ expr expr1 expr2 _) -> err "" <> exprWE <> expr1WE <> expr2WE
                 where
+                    exprWE = fst $ ann expr
                     expr1WE = fst $ ann expr1
                     expr2WE = fst $ ann expr2
             _ -> err ""
             where
-                err = makeError (position expr) (snd $ ann expr)
+                err = makeError expr (snd $ ann expr)
 
-        collectArg pos arg@(Param modty id declType _) = err ("argument " ++ show modty ++ id) <> declTypeWE
+        collectArg arg@(Param _ modty id declType _) = err ("argument " ++ show modty ++ id) <> declTypeWE
             where
                 declTypeWE = collectDeclType declType
-                err = makeError pos (ann arg)
+                err = makeError arg (ann arg)
 
         collectDeclType :: DeclType In -> ([String], [String])
         collectDeclType = fst . emapAccumLDeclType f mempty
             where
                 f acc declType = (,declType) $ case declType of
-                    (DArrayType (Just expr) _) -> acc <> efoldr collectExpr mempty expr
+                    (DArrayType _ (Just expr) _) -> acc <> efoldr collectExpr mempty expr
                     _ -> acc
 
-        makeError pos x header = toLists header pos (errs, warns)
-            where
-                TypeCheckerOutput
-                    { tcwarnings = warns,
-                      tcerrors = errs,
-                      tcType = _tpe,
-                      tcSide = _side,
-                      tcBinding = _binding
-                    } = x
+        makeError pos x header = toLists header pos x
 
-        toLists :: String -> Position -> (Set Error, Set Warning) -> ([String], [String])
-        toLists header' pos (errs, warns) =
+        -- toLists :: String -> Position -> (Set Error, Set Warning) -> ([String], [String])
+        toLists header' e x =
             ( if null newErrs
                 then
                     []
@@ -134,9 +141,17 @@ collect alsoWarns block = maybeBool (hasError block) (collectBlock block)
                 header
                     | null header' = []
                     | otherwise = ["-- " ++ header' ++ ":"]
-                errPrefix s = "error: at " ++ show pos ++ " " ++ show s
-                warnPrefix s = "warning: at " ++ show pos ++ show s
+                errPrefix s = "error: at " ++ show (position e) ++ " " ++ show s
+                warnPrefix s = "warning: at " ++ show (position e) ++ show s
                 newErrs = sfilter f errs
                 f err = case err of -- hackish
                     (TypeMismatch _ (Left ErrorType)) -> False
                     _ -> True
+                TypeCheckerOutput
+                    { tcwarnings = warns,
+                      tcerrors = errs,
+                      tcReplacedFromConstant = _replacedFrom,
+                      tcType = _tpe,
+                      tcSide = _side,
+                      tcBinding = _binding
+                    } = x

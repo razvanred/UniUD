@@ -13,20 +13,24 @@ import Prelude hiding (error)
 
 idty = id
 
-pass :: b -> a -> b
+-- pass :: b -> a -> b
 pass = pure
 
-pass1 :: (b1 -> a -> b2) -> (a -> b1) -> a -> b2
+-- pass1 :: (b1 -> a -> b2) -> (a -> b1) -> a -> b2
 -- pass1 = (=<<)
 pass1 f g x = f (g x) x
 
-pass2 :: (b1 -> b2 -> a -> b3) -> (a -> b1) -> (a -> b2) -> a -> b3
+-- pass2 :: (b1 -> b2 -> a -> b3) -> (a -> b1) -> (a -> b2) -> a -> b3
 -- pass2 f g h = join $ liftM2 f g h
 pass2 f g h a = f (g a) (h a) a
 
-pass3 :: (b1 -> b2 -> b3 -> a -> b4) -> (a -> b1) -> (a -> b2) -> (a -> b3) -> a -> b4
+-- pass3 :: (b1 -> b2 -> b3 -> a -> b4) -> (a -> b1) -> (a -> b2) -> (a -> b3) -> a -> b4
 -- pass3 f g h u = join $ liftM3 f g h u
 pass3 f g h u x = f (g x) (h x) (u x) x
+
+pass4 f g h u z x = f (g x) (h x) (u x) (z x) x
+
+pass5 f g h u x z y = f (g x) (h x) (u x) (z x) (y x) x
 
 shift3 f a b c = f c a b
 

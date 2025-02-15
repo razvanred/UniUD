@@ -3,7 +3,6 @@
 module Parser.ASTBuilder (buildTree) where
 
 import AST
-import Control.Monad (liftM2)
 import Control.Monad.Extra (void)
 import Data.Char (isUpper, toUpper)
 import Data.Set qualified as Set
@@ -50,6 +49,8 @@ buildInstruction (Parser.Abs.Stmt _ statement) = case statement of
         _ -> fail
     (Parser.Abs.Iter _ iterstatement) -> case iterstatement of
         (Parser.Abs.While (Just pos) expr block) -> pass2 (While pos) (buildExpr expr) (buildBlock block)
+        (Parser.Abs.DoWhile (Just pos) block expr) -> pass2 (DoWhile pos) (buildExpr expr) (buildBlock block)
+        (Parser.Abs.For (Just pos) (Parser.Abs.Ident ident) expr1 expr2 expr3 block) -> pass4 (For pos ident) (buildExpr expr1) (buildExpr expr2) (buildExpr expr3) (buildBlock block)
         _ -> fail
     (Parser.Abs.Branch _ branchstatement) -> case branchstatement of
         (Parser.Abs.If (Just pos) expr block) -> pass2 (IfThen pos) (buildExpr expr) (buildBlock block)
@@ -57,6 +58,7 @@ buildInstruction (Parser.Abs.Stmt _ statement) = case statement of
         _ -> fail
     (Parser.Abs.Assign (Just pos) expr1 assignmentop expr2) -> \x -> Assignment pos (buildExpr expr1 x) (buildAssignment_op assignmentop) (buildExpr expr2 x) x
     (Parser.Abs.StmntExpr (Just pos) expr) -> pass1 (Expression pos) (buildExpr expr)
+    (Parser.Abs.TryStmt (Just pos) block1 block2) -> \x -> TryCatch pos (buildBlock block1 x) (buildBlock block2 x) x
     _ -> fail
     where
         fail = buildFail "instruction"
@@ -65,19 +67,23 @@ buildInstruction (Parser.Abs.Stmt _ statement) = case statement of
 -- buildIdent (Parser.Abs.Ident str) = toUpper <$> str
 
 buildDeclType :: Parser.Abs.Type -> ParserOutput -> DeclType ParserOutput
-buildDeclType (Parser.Abs.BsType _ basicType) = pass $ buildBasicType basicType
-buildDeclType (Parser.Abs.ArrayType _ expr declType) = liftM2 DArrayType (Just . buildExpr expr) (buildDeclType declType)
-buildDeclType (Parser.Abs.UnsizedArrayType _ declType) = DArrayType Nothing . buildDeclType declType
+buildDeclType (Parser.Abs.BsType _ basicType) = (\_ -> buildBasicType basicType)
+buildDeclType (Parser.Abs.ArrayType _ expr declType) = liftA2 (DArrayType False) (Just . buildExpr expr) (buildDeclType declType)
+buildDeclType (Parser.Abs.CArrType _ expr declType) = liftA2 (DArrayType True) (Just . buildExpr expr) (buildDeclType declType)
+buildDeclType (Parser.Abs.UnsizedArrayType _ declType) = DArrayType False Nothing . buildDeclType declType
+buildDeclType (Parser.Abs.UnsizedCArrayType _ declType) = DArrayType True Nothing . buildDeclType declType
 buildDeclType (Parser.Abs.Pointer _ declType) = DPointerType . buildDeclType declType
 
 buildParameter :: Parser.Abs.Parameter -> ParserOutput -> Parameter ParserOutput
-buildParameter (Parser.Abs.Param _ modality (Parser.Abs.Ident ident) declType) = pass1 (Param (buildModality modality) ident) (buildDeclType declType)
+buildParameter (Parser.Abs.Param (Just pos) modality (Parser.Abs.Ident ident) declType) = pass1 (Param pos (buildModality modality) ident) (buildDeclType declType)
+buildParameter _ = buildFail "parameter"
 
 buildModality :: Parser.Abs.Modality -> Modality
 buildModality (Parser.Abs.Modality_val _) = ModalityVal
 buildModality (Parser.Abs.Modality_ref _) = ModalityRef
 buildModality (Parser.Abs.Modality_res _) = ModalityRes
 buildModality (Parser.Abs.Modality_valres _) = ModalityValRes
+buildModality (Parser.Abs.Modality1 _) = ModalityVal -- it was "modality" `unexpectedDuring` "buildModality"
 
 buildExpr :: Parser.Abs.Expr -> ParserOutput -> Expr ParserOutput
 buildExpr (Parser.Abs.Or (Just pos) expr1 expr2) = pass2 (BinaryOp pos $ BooleanOp Or) (buildExpr expr1) (buildExpr expr2)
@@ -111,8 +117,8 @@ buildExpr (Parser.Abs.String (Just pos) string) = StringLiteral pos string
 buildExpr (Parser.Abs.Float (Just pos) double) = FloatLiteral pos double
 buildExpr (Parser.Abs.Bool (Just pos) boolean) = BoolLiteral pos (buildBoolean boolean)
 buildExpr (Parser.Abs.Array (Just pos) exprs) = \x -> ArrayLiteral pos (flip buildExpr x <$> exprs) x
---buildExpr (Parser.Abs.RangedArray (Just pos) expr1 expr2) = pass2 (RangedArray pos) (buildExpr expr1) (buildExpr expr2)
-buildExpr _ = "expression" `unexpectedDuring` "buildExpr"
+buildExpr (Parser.Abs.IfExpr (Just pos) expr1 expr2 expr3) = pass3 (CondExpr pos) (buildExpr expr1) (buildExpr expr2) (buildExpr expr3)
+buildExpr _ = buildFail "expr"
 
 buildBasicType :: Parser.Abs.BasicType -> DeclType ParserOutput
 buildBasicType (Parser.Abs.BasicType_bool _) = DBoolType

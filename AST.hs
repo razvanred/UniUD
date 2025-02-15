@@ -56,9 +56,9 @@ data Warning
     deriving (Show)
 
 warningRank = \case
-    LowercaseConstant{} -> "1"
+    LowercaseConstant decl -> "1" ++ show decl
     UpperCaseSymbol -> "2"
-    ConstantAlreadyDefined{} -> "3"
+    ConstantAlreadyDefined decl -> "3" ++ show decl
     LiteralOutOfRange expr -> "4" ++ show expr
     DivisionBy0 -> "5"
 
@@ -113,14 +113,6 @@ data ErrorCollectorOutput = ErrorCollectorOutput
     }
     deriving (Show)
 
--- lrv is used to give information about the fact wether we want to generate
---  the l-value or right-value of an expression.
--- Recall that for every expressions representing a binaryOP I need the R-VALUE!!!
--- modality is used to give information about the modality of every identifier.
--- Default: for identifiers not being formal parameters the modality is by-value!
--- do we permit the following case: f(ref &int i) ?????? y
--- that is a formal paratameter having pointer type and modality by ref!!!
-
 data LeftRightValue = LeftValue | RightValue
     deriving (Eq, Show)
 
@@ -151,8 +143,12 @@ instance Lattice Type where -- fix
     (\/) :: Type -> Type -> Type
     type1 \/ type2
         | type1 == type2 = type1
+    IntType \/ BoolType = IntType
+    BoolType \/ IntType = IntType
     IntType \/ CharType = IntType
     CharType \/ IntType = IntType
+    FloatType \/ BoolType = FloatType
+    BoolType \/ FloatType = FloatType
     FloatType \/ CharType = FloatType
     CharType \/ FloatType = FloatType
     FloatType \/ IntType = FloatType
@@ -199,6 +195,8 @@ data Instruction a
     | ReturnVoid Position a
     | ReturnExp Position (Expr a) a
     | While Position (Expr a) (Block a) a
+    | DoWhile Position (Expr a) (Block a) a
+    | For Position Ident (Expr a) (Expr a) (Expr a) (Block a) a
     | IfThen Position (Expr a) (Block a) a
     | IfThenElse Position (Expr a) (Block a) (Block a) a
     | TryCatch Position (Block a) (Block a) a
@@ -230,6 +228,8 @@ instance Annotated Instruction a where
     ann (ReturnVoid _ x) = x
     ann (ReturnExp _ _ x) = x
     ann (While _ _ _ x) = x
+    ann (DoWhile _ _ _ x) = x
+    ann (For _ _ _ _ _ _ x) = x
     ann (IfThen _ _ _ x) = x
     ann (IfThenElse _ _ _ _ x) = x
     ann (TryCatch _ _ _ x) = x
@@ -245,6 +245,8 @@ instance Annotated Instruction a where
     updateAnn x (ReturnVoid pos _) = ReturnVoid pos x
     updateAnn x (ReturnExp pos expr _) = ReturnExp pos expr x
     updateAnn x (While pos expr block _) = While pos expr block x
+    updateAnn x (DoWhile pos expr block _) = DoWhile pos expr block x
+    updateAnn x (For pos id fromExpr toExpr incrExpr block _) = For pos id fromExpr toExpr incrExpr block x
     updateAnn x (IfThen pos expr block _) = IfThen pos expr block x
     updateAnn x (IfThenElse pos expr block1 block2 _) = IfThenElse pos expr block1 block2 x
     updateAnn x (TryCatch pos block1 block2 _) = TryCatch pos block1 block2 x
@@ -261,13 +263,15 @@ instance Positioned (Instruction a) where
     position (ReturnVoid pos _) = pos
     position (ReturnExp pos _ _) = pos
     position (While pos _ _ _) = pos
+    position (DoWhile pos _ _ _) = pos
+    position (For pos _ _ _ _ _ _) = pos
     position (IfThen pos _ _ _) = pos
     position (IfThenElse pos _ _ _ _) = pos
     position (TryCatch pos _ _ _) = pos
     position (Assignment pos _ _ _ _) = pos
     position (Expression pos _ _) = pos
 
-data Parameter a = Param Modality Ident (DeclType a) a
+data Parameter a = Param Position Modality Ident (DeclType a) a
     deriving (Show, Functor, Foldable, Traversable)
 
 instance (StatusCollector Error a) => StatusCollector Error (Parameter a) where
@@ -277,8 +281,11 @@ instance (StatusCollector Warning a) => StatusCollector Warning (Parameter a) wh
     (|<) e = pass1 updateAnn ((e |<) . ann)
 
 instance Annotated Parameter a where
-    ann (Param _ _ _ x) = x
-    updateAnn x (Param modty id declType _) = Param modty id declType x
+    ann (Param _ _ _ _ x) = x
+    updateAnn x (Param pos modty id declType _) = Param pos modty id declType x
+
+instance Positioned (Parameter a) where
+    position (Param pos _ _ _ _) = pos
 
 data AssignmentOp = BasicAssignment | AssignMul | AssignAdd | AssignDiv | AssignSub | AssignPow | AssignAnd | AssignOr
     deriving (Show)
@@ -290,13 +297,13 @@ data DeclType a
     | DStringType
     | DFloatType
     | DVoidType
-    | DArrayType (Maybe (Expr a)) (DeclType a)
+    | DArrayType Bool (Maybe (Expr a)) (DeclType a)
     | DPointerType (DeclType a)
     deriving (Show, Functor, Foldable, Traversable)
 
 emapAccumLDeclType :: (a -> DeclType a1 -> (a, DeclType a1)) -> a -> DeclType a1 -> (a, DeclType a1)
 emapAccumLDeclType f oldAcc declType = case f oldAcc declType of
-    (acc, DArrayType expr declType) -> (newAcc, DArrayType expr newDeclType)
+    (acc, DArrayType chk expr declType) -> (newAcc, DArrayType chk expr newDeclType)
         where
             (newAcc, newDeclType) = emapAccumLDeclType f acc declType
     (acc, DPointerType declType) -> (newAcc, newDeclType)
@@ -310,13 +317,13 @@ instance EndoFunctor DeclType where
         where
             cnv = (,) acc . (snd <$>)
             emapAccumR f declType = f $ case declType of
-                (DArrayType expr declType) -> DArrayType expr (r declType)
+                (DArrayType chk expr declType) -> DArrayType chk expr (r declType)
                 (DPointerType declType) -> DPointerType (r declType)
                 _ -> declType
                 where
                     r = emapAccumR f
             emapAccumL f acc declType = case newDeclType of
-                (DArrayType expr declType) -> DArrayType (cnv <$> expr) (r declType)
+                (DArrayType chk expr declType) -> DArrayType chk (cnv <$> expr) (r declType)
                 (DPointerType declType) -> DPointerType (r declType)
                 _ -> cnv declType
                 where
@@ -512,7 +519,7 @@ astEmap fInstruction fParameter fDeclType fExpr = emapBlock f
             (Assignment pos expr1 op expr2 x) -> Assignment pos (emap fExpr expr1) op (emap fExpr expr2) x
             (Expression pos expr x) -> Expression pos (emap fExpr expr) x
             _ -> instruction
-        g (Param modty id declType x) = fParameter $ Param modty id (emap h declType) x
+        g (Param pos modty id declType x) = fParameter $ Param pos modty id (emap h declType) x
         h declType = fDeclType $ case declType of
-            (DArrayType (Just expr) declType) -> DArrayType (Just $ emap fExpr expr) declType
+            (DArrayType chk (Just expr) declType) -> DArrayType chk (Just $ emap fExpr expr) declType
             _ -> declType

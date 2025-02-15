@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 {-# OPTIONS_GHC -Wno-unused-matches #-}
 
 module TAC.TACutils where
@@ -159,7 +160,7 @@ sizeof x = case x of
     IntType -> 4
     PointerType _ -> 8
     FloatType -> 8
-    ArrayType i t -> i * sizeof t
+    ArrayType _ i t -> i * sizeof t
     StringType -> 8
     _ -> error "Cannot be another type"
 
@@ -174,7 +175,7 @@ flatten listExpr = reverse $ (flatten' listExpr [])
 -- flatten' (x:[]) acc = x : acc
 
 getPrimitiveTypeArr :: Type -> Type
-getPrimitiveTypeArr (ArrayType _ t) = getPrimitiveTypeArr t
+getPrimitiveTypeArr (ArrayType _ _ t) = getPrimitiveTypeArr t
 getPrimitiveTypeArr x = case x of
     bool@BoolType -> bool
     char@CharType -> char
@@ -210,7 +211,6 @@ extractTypeFromExpr x = case x of
     (FloatLiteral _ _ tco) -> t tco
     (BoolLiteral _ _ tco) -> t tco
     ArrayLiteral _ _ tco -> t tco
-    RangedArray _ _ _ tco -> t tco
 
 oppositeRel relOp = case relOp of
     NotEq -> Eq
@@ -219,7 +219,6 @@ oppositeRel relOp = case relOp of
     LessThan -> GreaterThanEq
     GreaterThan -> LessThanEq
     LessThanEq -> GreaterThan
-
 
 getLocFromDecl :: Instruction () -> Position
 getLocFromDecl x = case x of
@@ -231,3 +230,10 @@ getParamList :: Instruction () -> [Parameter ()]
 getParamList x = case x of
     (FunctionDecl _ _ paramList _ _ _) -> paramList
     _ -> error "This function should not be used on this type."
+
+paramsContainsResOrValResMod :: [(Modality, Type)] -> Bool
+paramsContainsResOrValResMod [] = False
+paramsContainsResOrValResMod ((mod, ty) : modtys) = case mod of
+    ModalityRes -> True
+    ModalityValRes -> True
+    _ -> paramsContainsResOrValResMod modtys

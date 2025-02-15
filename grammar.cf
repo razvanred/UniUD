@@ -40,7 +40,7 @@ Jump.       Statement ::= JumpStatement  ;
 Iter.       Statement ::= IterStatement ;
 Branch.     Statement ::= BranchStatement ;
 Assign.     Statement ::= Expr Assignment_op Expr ;
-TryStmt.    Statement ::= "try" Statement "catch" Statement ;
+TryStmt.    Statement ::= "try" Block "catch" Block ;
 
 StmntExpr.   Statement ::= Expr ;
 

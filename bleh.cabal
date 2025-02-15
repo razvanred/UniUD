@@ -79,6 +79,7 @@ common shared-properties
     TypeChecker.Checker
     TypeChecker.ConstExprSolver
     TypeChecker.Main
+    TypeChecker.Totality
     TypeChecker.TypeUtils
     Utils
 

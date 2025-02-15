@@ -1,3 +1,6 @@
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+
+{-# HLINT ignore "Avoid partial function" #-}
 module TypeChecker.TypeUtils where
 
 import AST
@@ -45,13 +48,6 @@ fillOutStep3 _ _ _ x = "record " ++ show x `unexpectedDuring` "fillOutStep3"
 
 newStep3 sSide sType = Step3 Set.empty Set.empty Nothing sType sSide Nothing
 
--- stepToConstantSolverOutput x =
---   ConstantSolverOutput
---     { cserrors = serrors x,
---       cswarnings = swarnings x,
---       csReplacedFromConstant = sReplacedFromConstant x
---     }
-
 step2ToStep3 x@Step2{} = Step3 (serrors x) (swarnings x) (sReplacedFromConstant x) (sType x) (sSide x) Nothing
 step2ToStep3 x = "record " ++ show x `unexpectedDuring` "step2ToStep3"
 
@@ -78,6 +74,10 @@ eType e = sType $ ann (assertEGeqStep 2 e)
 
 eSide e = sSide $ ann (assertEGeqStep 2 e)
 
+joinLe tpe1 tpe2 = tpe1 `joinLeq` tpe2 && tpe1 /= tpe2
+
+notJoinLeq tpe1 tpe2 = not (tpe1 `joinLeq` tpe2)
+
 isLiteral (IntLiteral{}) = True
 isLiteral (CharLiteral{}) = True
 isLiteral (StringLiteral{}) = True
@@ -88,7 +88,7 @@ isLiteral _ = False
 popPointer (PointerType tpe) = tpe
 popPointer _ = "unexpected" `unexpectedIn` "popPointer"
 
-popArray (ArrayType _ tpe) = tpe
+popArray (ArrayType _ _ tpe) = tpe
 popArray _ = "unexpected" `unexpectedIn` "popArray"
 
 pushPointer = PointerType
@@ -122,7 +122,7 @@ satisfiesUnOp op expr
   | isAssignOp op, RightValue <- eSide expr = Just (eType expr, Right "LValue")
   | otherwise =
       maybeBool
-        (not (tpe `joinLeq` opSup))
+        (tpe `notJoinLeq` opSup)
         . (,) tpe
         $ ( case op of
               Neg -> Right "numeric"
@@ -133,15 +133,26 @@ satisfiesUnOp op expr
     tpe = eType expr
     opSup = unOpSup op
 
-satisfiesBinOp op expr1 expr2 =
-  ( maybeBool (not (tpe1 `joinLeq` opSup)) (tpe1, Left expType),
-    maybeBool (not (tpe2 `joinLeq` opSup)) (tpe2, Left expType)
-  )
+satisfiesBinOp op expr1 expr2
+  | ArithmeticOp _ <- op,
+    BoolType <- tpe1,
+    BoolType <- tpe2 =
+      ( Just (tpe1, Right "Numeric"),
+        Just (tpe2, Right "Numeric")
+      )
+  | otherwise =
+      let
+        opSup
+          | RelationalOp op <- op, (Eq == op || NotEq == op) && (tpe1 == StringType || tpe2 == StringType) = StringType
+          | otherwise = binOpSup op
+      in
+        ( maybeBool (tpe1 `notJoinLeq` opSup) (tpe1, Left $ expType opSup),
+          maybeBool (tpe2 `notJoinLeq` opSup) (tpe2, Left $ expType opSup)
+        )
   where
-    opSup = binOpSup op
     tpe1 = eType expr1
     tpe2 = eType expr2
-    expType
+    expType opSup
       | tpe1 `joinLeq` opSup = tpe1
       | tpe2 `joinLeq` opSup = tpe2
       | otherwise = opSup
@@ -164,12 +175,13 @@ satisfiesDeref expr
     tpe = eType expr
 
 satisfiesAccessor expr indExpr =
+  -- todo check <=?
   ( maybeBool (not isArray) (tpe, Right "Array"),
-    maybeBool (IntType /= indType) (indType, Left IntType)
+    maybeBool (indType `joinLeq` IntType) (indType, Left IntType)
   )
   where
     isArray = case tpe of
-      (ArrayType _ _) -> True
+      (ArrayType{}) -> True
       _ -> False
     indType = eType indExpr
     tpe = eType expr
@@ -192,8 +204,22 @@ satisfiesFCall (FunctionType argTypes _) exprs =
       _ -> Just (tpe, Left argType)
 satisfiesFCall _ _ = "input" `unexpectedIn` "satisfiesFCall"
 
+satisfiesCondExpr expr expr1 expr2
+  | ErrorType == tpe1 || ErrorType == tpe2 = (2 :: Int, condErr)
+  | ErrorType <- sup = (1 :: Int, condErr)
+  | otherwise = (0 :: Int, condErr)
+  where
+    condErr
+      | tpe `joinLeq` BoolType = Nothing
+      | otherwise = Just (tpe, Left BoolType)
+    sup = tpe1 \/ tpe2
+    tpe = eType expr
+    tpe1 = eType expr1
+    tpe2 = eType expr2
+
 satisfiesArrayLiteral (ArrayLiteral _ exprs _)
   | null exprs = (True, False)
+  | ErrorType `elem` exprTypes = (True, True)
   | ErrorType <- sup = (False, True)
   | otherwise = (False, False)
   where
@@ -201,14 +227,16 @@ satisfiesArrayLiteral (ArrayLiteral _ exprs _)
     sup = foldl1 (\/) exprTypes
 satisfiesArrayLiteral _ = "input" `unexpectedIn` "satisfiesFCall"
 
+-- non expressions
+
 satisfiesAssignment op expr1 expr2 =
   ( error1,
-    maybeBool (tpe1 `joinLeq` tpe2 && tpe1 /= tpe2) (tpe2, Left tpe1)
+    maybeBool (tpe1 `joinLe` tpe2) (tpe2, Left tpe1)
   )
   where
     error1
       | RightValue <- eSide expr1 = Just (tpe1, Right "LValue")
-      | not (tpe1 `joinLeq` opSup) || ErrorType == tpe1 = Just (tpe1, Left opSup)
+      | tpe1 `notJoinLeq` opSup || ErrorType == tpe1 = Just (tpe1, Left opSup)
       | otherwise = Nothing
     opSup = assignOpSup op
     tpe1 = eType expr1
@@ -229,15 +257,3 @@ satisfiesTypeExpr expr =
     litVal (IntLiteral _ v _) = v
     litVal (CharLiteral _ v _) = fromIntegral $ fromEnum v
     litVal _ = "literal" `unexpectedDuring` "litVal"
-
--- argErrors = zipWith3 f argTypes (liftA2 (,) eSide eType <$> exprs) (argName <$> args)
---     f (modty, argType) (side, tpe) name = case modty of
---       ModalityVal | argType == tpe -> Nothing
---       ModalityRef
---         | argType == tpe ->
---             if side == LeftValue
---               then Nothing
---               else
---                 Just (name, tpe, Right "LValue")
---       _ -> Just (name, tpe, Left argType)
---     argName (Param _ id _ _) = id

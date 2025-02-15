@@ -178,7 +178,7 @@ Statement
   | IterStatement { (fst $1, Parser.Abs.Iter (fst $1) (snd $1)) }
   | BranchStatement { (fst $1, Parser.Abs.Branch (fst $1) (snd $1)) }
   | Expr Assignment_op Expr { (fst $1, Parser.Abs.Assign (fst $1) (snd $1) (snd $2) (snd $3)) }
-  | 'try' Statement 'catch' Statement { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.TryStmt (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $2) (snd $4)) }
+  | 'try' Block 'catch' Block { (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1), Parser.Abs.TryStmt (uncurry Parser.Abs.BNFC'Position (tokenLineCol $1)) (snd $2) (snd $4)) }
   | Expr { (fst $1, Parser.Abs.StmntExpr (fst $1) (snd $1)) }
 
 Assignment_op :: { (Parser.Abs.BNFC'Position, Parser.Abs.Assignment_op) }

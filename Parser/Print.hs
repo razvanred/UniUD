@@ -201,7 +201,7 @@ instance Print (Parser.Abs.Statement' a) where
     Parser.Abs.Iter _ iterstatement -> prPrec i 0 (concatD [prt 0 iterstatement])
     Parser.Abs.Branch _ branchstatement -> prPrec i 0 (concatD [prt 0 branchstatement])
     Parser.Abs.Assign _ expr1 assignmentop expr2 -> prPrec i 0 (concatD [prt 0 expr1, prt 0 assignmentop, prt 0 expr2])
-    Parser.Abs.TryStmt _ statement1 statement2 -> prPrec i 0 (concatD [doc (showString "try"), prt 0 statement1, doc (showString "catch"), prt 0 statement2])
+    Parser.Abs.TryStmt _ block1 block2 -> prPrec i 0 (concatD [doc (showString "try"), prt 0 block1, doc (showString "catch"), prt 0 block2])
     Parser.Abs.StmntExpr _ expr -> prPrec i 0 (concatD [prt 0 expr])
 
 instance Print (Parser.Abs.Assignment_op' a) where

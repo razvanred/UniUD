@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-incomplete-record-updates #-}
 {-# HLINT ignore "Avoid partial function" #-}
 {-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
@@ -46,13 +47,13 @@ lStep3 = flip (fillOutStep3 LeftValue) Nothing
 
 rBindStep3 = fillOutStep3 RightValue
 
-eLBindStep3 tpe binding = pass1 updateAnn (fillOutStep3 LeftValue tpe (Just binding) . ann)
+eBindStep3 tpe side binding = pass1 updateAnn (fillOutStep3 side tpe (Just binding) . ann)
 
 eRStep3 tpe = pass1 updateAnn (rStep3 tpe . ann)
 
 eLStep3 tpe = pass1 updateAnn (lStep3 tpe . ann)
 
-eStep3 side tpe = pass1 updateAnn (fillOutStep3 side tpe Nothing . ann)
+-- eStep3 side tpe = pass1 updateAnn (fillOutStep3 side tpe Nothing . ann)
 
 we |?< e
     | ErrorType <- eType e = e
@@ -104,16 +105,16 @@ solveVarDeclType declType initType = (ErrorType == accType, tpe, newDeclType)
         fDes (False, cons, initType) declType@(DPointerType _)
             | PointerType initType <- initType = (,) (False, cons . PointerType, initType) declType
             | otherwise = (,) (False, cons . PointerType, ErrorType) declType
-        fDes (False, cons, initType) declType@(DArrayType Nothing _)
-            | ArrayType len initType <- initType = (,) (False, cons . ArrayType len, initType) declType
+        fDes (False, cons, initType) declType@(DArrayType chk Nothing _)
+            | ArrayType _ len initType <- initType = (,) (False, cons . ArrayType chk len, initType) declType
             | otherwise = (,) (True, const ErrorType, ErrorType) declType
-        fDes (False, cons, initType') (DArrayType (Just expr') declType) =
+        fDes (False, cons, initType') (DArrayType chk (Just expr') declType) =
             case satisfiesTypeExpr expr of
-                Nothing -> (,) (False, cons . ArrayType len1, initType) (DArrayType (Just $ promoteTo IntType expr) declType) -- TAC team said ok
-                Just err -> (,) (True, const ErrorType, ErrorType) (DArrayType (Just $ err |?< expr) declType)
+                Nothing -> (,) (False, cons . ArrayType chk len1, initType) (DArrayType chk (Just $ promoteTo IntType expr) declType) -- TAC team said ok
+                Just err -> (,) (True, const ErrorType, ErrorType) (DArrayType chk (Just $ err |?< expr) declType)
             where
                 initType = case initType' of
-                    (ArrayType len2 initType) | len2 == len1 -> initType
+                    (ArrayType _ len2 initType) | len2 == len1 -> initType
                     _ -> ErrorType
                 len1 = litVal expr
                 expr
@@ -136,34 +137,9 @@ solveVarDeclType declType initType = (ErrorType == accType, tpe, newDeclType)
         g DVoidType = VoidType
         g _ = ErrorType
 
-functionDeclPass symStack (FunctionDecl pos id args' return' block x) =
-    case addBind symStack ModalityRef fDecl of
-        Left (_, _, oldFDecl) -> (symStack, FunctionAlreadyDefined (void oldFDecl) |< fDecl)
-        Right symStack -> (symStack, fDecl)
-    where
-        (retType, ret) = buildDeclType return'
-        (argTypes, args) =
-            unzip
-                [ ( (modty, tpe),
-                    if ErrorType == tpe
-                        then UnsolvableType |< arg
-                        else arg
-                  )
-                  | (Param modty id argDecl' x) <- args',
-                    let (tpe, argDecl) = buildDeclType argDecl',
-                    let arg = Param modty id argDecl (rStep3 tpe x)
-                ]
-        finalType
-            | ErrorType `notElem` (snd <$> argTypes) = retType
-            | otherwise = ErrorType
-        fDecl = case FunctionDecl pos id args ret block (rStep3 (FunctionType argTypes retType) x) of
-            t | ErrorType <- finalType -> UnsolvableType |< t
-            t -> t
-functionDeclPass symStack is = (symStack, is)
-
 buildArrayLiteral (ArrayLiteral pos exprs x) = ArrayLiteral pos (promoteTo sup <$> exprs) newX
     where
-        newX = rStep3 (ArrayType (toInteger $ length exprs) sup) x
+        newX = rStep3 (ArrayType False (toInteger $ length exprs) sup) x
         exprTypes = eType <$> exprs
         sup = foldl1 (\/) exprTypes
 buildArrayLiteral _ = "expression" `unexpectedIn` "buildArrayLiteral"
@@ -186,13 +162,38 @@ promoteList = zipWith promoteTo
 
 checkTypes = checkBlock (Status (pushEnv []) Nothing False)
 
+functionDeclPass symStack (FunctionDecl pos id args' return' block x) =
+    case addBind symStack ModalityRef fDecl of
+        Left (_, _, oldFDecl) -> (symStack, FunctionAlreadyDefined (void oldFDecl) |< fDecl)
+        Right symStack -> (symStack, fDecl)
+    where
+        (retType, ret) = buildDeclType return'
+        (argTypes, args) =
+            unzip
+                [ ( (modty, tpe),
+                    if ErrorType == tpe
+                        then UnsolvableType |< arg
+                        else arg
+                  )
+                  | (Param pos modty id argDecl' x) <- args',
+                    let (tpe, argDecl) = buildDeclType argDecl',
+                    let arg = Param pos modty id argDecl (lStep3 tpe x)
+                ]
+        finalType
+            | ErrorType `notElem` (snd <$> argTypes) = retType
+            | otherwise = ErrorType
+        fDecl = case FunctionDecl pos id args ret block (rStep3 (FunctionType argTypes retType) x) of
+            t | ErrorType <- finalType -> UnsolvableType |< t
+            t -> t
+functionDeclPass symStack is = (symStack, is)
+
 checkExpr symStack = emap check
     where
         check :: Expr Step -> Expr Step
         check expr
             | Step2{} <- ann expr = updateAnn (step2ToStep3 $ ann expr) expr -- literals
-        check ident@(Id{}) = case queryBind symStack ident of
-            Just binding@(_, _, decl) -> eLBindStep3 (eType decl) binding ident
+        check ident@(Id{}) = case queryBind symStack ident of -- TODO get valueness from declaration
+            Just binding@(_, _, decl) -> eBindStep3 (eType decl) (eSide decl) binding ident
             Nothing -> UnknownSymbol |< eLStep3 ErrorType ident
         check expr@(UnaryOp pos op subExpr x) =
             case satisfiesUnOp op subExpr of
@@ -218,9 +219,10 @@ checkExpr symStack = emap check
             case satisfiesDeref subExpr of
                 Nothing -> eLStep3 (popPointer $ eType subExpr) expr
                 Just (got, expected) -> Deref pos (TypeMismatch got expected |?< subExpr) (lStep3 ErrorType x)
-        check expr@(ArrayAcc pos subExpr indExpr x) =
+        check (ArrayAcc pos subExpr indExpr x) =
             case satisfiesAccessor subExpr indExpr of
-                (Nothing, Nothing) -> eStep3 (eSide subExpr) (popArray $ eType subExpr) expr
+                (Nothing, Nothing) ->
+                    ArrayAcc pos subExpr (promoteTo IntType indExpr) (fillOutStep3 (eSide subExpr) (popArray $ eType subExpr) Nothing x)
                 (err1, err2) ->
                     let f = maybe idty $ \(got, expected) -> (TypeMismatch got expected |?<)
                     in  ArrayAcc pos (f err1 subExpr) (f err2 indExpr) (rStep3 ErrorType x)
@@ -228,7 +230,7 @@ checkExpr symStack = emap check
             case queryBind symStack fcall of
                 Just binding@(_, _, decl) ->
                     case satisfiesFCall fType subExprs of
-                        (False, argErrors) -- todo revise
+                        (False, argErrors)
                             | Nothing <- foldl (<|>) Nothing argErrors ->
                                 FunctionCall pos id (promoteList (snd <$> argTypes) subExprs) (rBindStep3 retType (Just binding) x)
                         (argCount, argErrors) ->
@@ -242,9 +244,22 @@ checkExpr symStack = emap check
         check expr@(ArrayLiteral{}) =
             case satisfiesArrayLiteral expr of
                 (False, False) -> buildArrayLiteral expr
-                (True, _) -> EmptyArray |?< eRStep3 ErrorType expr
-                _ -> eRStep3 ErrorType expr
-        check (RangedArray pos expr1 expr2 x) = RangedArray pos expr1 expr2 x
+                t ->
+                    let newExpr = eRStep3 ErrorType expr
+                    in  case t of
+                            (True, False) -> EmptyArray |?< newExpr
+                            (False, True) -> UnsolvableType |?< newExpr
+                            (True, True) -> newExpr
+        check (CondExpr pos subExpr subExpr1 subExpr2 x) =
+            case satisfiesCondExpr subExpr subExpr1 subExpr2 of
+                (0, Nothing) -> CondExpr pos subExpr (promoteTo sup subExpr1) (promoteTo sup subExpr2) (rStep3 sup x)
+                (n, condErr) ->
+                    let expr = CondExpr pos (maybe subExpr (\(got, expected) -> TypeMismatch got expected |?< subExpr) condErr) subExpr1 subExpr2 (rStep3 ErrorType x)
+                    in  case n of
+                            1 -> UnsolvableType |< expr
+                            _ -> expr
+            where
+                sup = eType subExpr1 \/ eType subExpr2
         check expr = "expression " ++ show expr `unexpectedDuring` "checkExpr"
 
 checkBlock status@Status{symStack} block' =
@@ -263,7 +278,7 @@ checkInstruction status@Status{symStack} (VariableDecl pos id declType' expr' x)
         expr
             | error && ErrorType /= tpe = TypeMismatch (eType expr) (Left tpe) |?< tExpr
             | otherwise = tExpr
-        variableDecl = case VariableDecl pos id declType (promoteTo tpe expr) (rStep3 tpe x) of
+        variableDecl = case VariableDecl pos id declType (promoteTo tpe expr) (lStep3 tpe x) of
             t | (False, ErrorType, _) <- solveResult -> UnsolvableType |< t
             t -> t
 checkInstruction status@Status{symStack} (FunctionDecl pos id args' declType block' x@Step3{sType = FunctionType argTypes retType}) =
@@ -272,14 +287,13 @@ checkInstruction status@Status{symStack} (FunctionDecl pos id args' declType blo
         bindings =
             -- this was tragic mistake
             [ (modty, VariableDecl pos id declType (Id pos id x) x) -- binding has param x
-              | ((modty, _), Param _ id declType x) <-
+              | ((modty, _), Param pos _ id declType x) <-
                     zip argTypes args'
             ]
         (newSymStack, args) = mapAccumL f (pushEnv symStack) $ zip bindings args'
         block = checkBlock status{symStack = newSymStack, function = Just retType, loop = False} block'
-        f symStack (binding@(_, decl), arg)
-            | ErrorType <- eType decl = (symStack, arg)
-            | otherwise = case uncurry (addBind symStack) binding of
+        f symStack (binding, arg) =
+            case uncurry (addBind symStack) binding of
                 Left (_, _, decl) -> (symStack, VariableAlreadyDefined (void decl) |< arg)
                 Right symStack -> (symStack, arg)
 checkInstruction status@Status{symStack} (Assignment pos expr1' op expr2' x) =
@@ -303,6 +317,31 @@ checkInstruction status@Status{symStack} (While pos expr' block' x) =
         expr = case checkExpr symStack expr' of
             t | BoolType <- eType t -> t
             t -> TypeMismatch (eType t) (Left BoolType) |?< t
+checkInstruction status@Status{symStack} (DoWhile pos expr' block' x) =
+    (status, DoWhile pos expr block (rStep3 VoidType x))
+    where
+        block = checkBlock status{symStack = pushEnv symStack, loop = True} block'
+        expr = case checkExpr symStack expr' of
+            t | BoolType <- eType t -> t
+            t -> TypeMismatch (eType t) (Left BoolType) |?< t
+checkInstruction status@Status{symStack} (For pos id fromExpr' toExpr' incrExpr' block' x) =
+    (status, For pos id fromExpr toExpr incrExpr block (rStep3 VoidType x))
+    where
+        fromExpr = case checkExpr symStack fromExpr' of
+            t | eType t `joinLeq` IntType -> promoteTo IntType t
+            t -> TypeMismatch (eType t) (Right "Integral") |?< t
+        toExpr = case checkExpr symStack toExpr' of
+            t | eType t `joinLeq` IntType -> promoteTo IntType t
+            t -> TypeMismatch (eType t) (Right "Integral") |?< t
+        incrExpr = case checkExpr symStack incrExpr' of
+            t | eType t `joinLeq` IntType -> promoteTo IntType t
+            t -> TypeMismatch (eType t) (Right "Integral") |?< t
+        binding = (ModalityVal, VariableDecl pos id DIntType (eToRValue fromExpr) (newStep3 RightValue IntType))
+        newSymStack = case uncurry (addBind (pushEnv symStack)) binding of
+            Left _ -> "bound accumulator " ++ id `unexpectedIn` "newSymStack"
+            Right symStack -> symStack
+        block = checkBlock status{symStack = newSymStack, loop = True} block'
+        eToRValue e = updateAnn (ann e){sSide = RightValue} e
 checkInstruction status@Status{symStack} (IfThen pos expr' block' x) =
     (status, IfThen pos expr block (rStep3 VoidType x))
     where
@@ -316,6 +355,12 @@ checkInstruction status@Status{symStack} (IfThenElse pos expr' block1' block2' x
         expr = case checkExpr symStack expr' of
             t | BoolType <- eType t -> t
             t -> TypeMismatch (eType t) (Left BoolType) |?< t
+        block1 = checkBlock status{symStack = pushEnv symStack} block1'
+        block2 = checkBlock status{symStack = pushEnv symStack} block2'
+checkInstruction status@Status{symStack} (TryCatch pos block1' block2' x) =
+    (status, TryCatch pos block1 block2 (rStep3 VoidType x))
+    where
+        -- ?
         block1 = checkBlock status{symStack = pushEnv symStack} block1'
         block2 = checkBlock status{symStack = pushEnv symStack} block2'
 checkInstruction status@Status{loop} is@(Break{}) =
