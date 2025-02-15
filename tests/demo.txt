@@ -1,0 +1,24 @@
+var w :int := 2;
+var x :int := 1024;
+var y :@int := &x;
+var z :@@int := &y;
+
+for i in ++w, 2, (20*w) {
+    --x;
+    x /= 2;
+};
+
+var c1 :checked [2] checked [3] int := [[1,2,3],[4,5,6]];
+var c3 :checked [3] int := [9,8,5];
+c1[1] := c3;
+
+def f4(val x :@@int) :int {
+    var y :int := $$x;
+    $$x := y;
+    def f5() :void {};
+    return y;
+};
+
+var d1 :string := "ciao";
+var d2 :string := "cibo";
+var e :bool := d1 == d2;

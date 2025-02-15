@@ -24,11 +24,10 @@ instance Eq CoppiaStringhe where
 instance Ord CoppiaStringhe where
     (<=) (CoppiaStringhe (i, j)) (CoppiaStringhe (p, q)) = j <= q
 
-type AuxStack = State [(Bool, Int, Int, [Label], [TAC], [Label], [(Label, Label)], Stringhe)]
+type AuxStack = State [(Int, Int, [Label], [TAC], [Label], [(Label, Label)], Stringhe)]
 
-type Stato = StateT (Bool, Int, Int, [Label], [TAC], [Label], [(Label, Label)], Stringhe) AuxStack
+type Stato = StateT (Int, Int, [Label], [TAC], [Label], [(Label, Label)], Stringhe) AuxStack
 
--- bool per indicare se è stata tirata una eccezione
 -- intero per temporanei/label,
 -- intero per stringhe statiche
 -- listalabel a rovescio
@@ -39,43 +38,42 @@ type Stato = StateT (Bool, Int, Int, [Label], [TAC], [Label], [(Label, Label)], 
 
 checkIfSuspendedLabel :: Stato Bool
 checkIfSuspendedLabel = do
-    (b, k, j, labels, tac, suspendedLabels, bclabels, strings) <- get
+    (k, j, labels, tac, suspendedLabels, bclabels, strings) <- get
     return . not . null $ suspendedLabels
 
 outWithSuspendedLabel :: TAC -> Stato ()
 outWithSuspendedLabel tacInstr = do
-    (b, k, j, labels, tac, sl, bcl, strings) <- get
+    (k, j, labels, tac, sl, bcl, strings) <- get
     case sl of
-        [] -> put (b, k, j, LabEmpty : labels, tacInstr : tac, sl, bcl, strings)
-        (x : xs) -> put (b, k, j, x : labels, tacInstr : tac, xs, bcl, strings)
+        [] -> put (k, j, LabEmpty : labels, tacInstr : tac, sl, bcl, strings)
+        (x : xs) -> put (k, j, x : labels, tacInstr : tac, xs, bcl, strings)
 
 labelNext :: Label -> Stato ()
 labelNext l = do
-    (b, k, j, labels, tac, suspendedLabels, bcl, strings) <- get
-    put (b, k, j, labels, tac, l : suspendedLabels, bcl, strings)
+    (k, j, labels, tac, suspendedLabels, bcl, strings) <- get
+    put (k, j, labels, tac, l : suspendedLabels, bcl, strings)
 
 newtemp :: Stato (Type -> Addr)
 newtemp = do
-    (b, k, j, labels, tac, suspendedLabels, bcl, strings) <- get
-    put (b, k + 1, j, labels, tac, suspendedLabels, bcl, strings)
+    (k, j, labels, tac, suspendedLabels, bcl, strings) <- get
+    put (k + 1, j, labels, tac, suspendedLabels, bcl, strings)
     return $ int2AddrTempName k
 
 newLabelNum :: Stato Int
 newLabelNum = do
-    (b, k, j, labels, tac, suspendedLabels, bcl, strings) <- get
-    put (b, k + 1, j, labels, tac, suspendedLabels, bcl, strings)
+    (k, j, labels, tac, suspendedLabels, bcl, strings) <- get
+    put (k + 1, j, labels, tac, suspendedLabels, bcl, strings)
     return k
 
 int2AddrTempName :: Int -> Type -> Addr
 int2AddrTempName = Temporary
 
-genCode :: Stato a -> (Bool, Int, Int, [Label], [TAC], [Label], [(Label, Label)], Stringhe)
--- genCode gen = reverse $ snd $ execState gen (0, [])
-genCode gen = evalState (execStateT gen (False,0, 0, [], [], [], [], Map.empty)) []
+genCode :: Stato a -> (Int, Int, [Label], [TAC], [Label], [(Label, Label)], Stringhe)
+genCode gen = evalState (execStateT gen (0, 0, [], [], [], [], Map.empty)) []
 
 printOutput :: Stato a -> IO ()
 printOutput x = do
-    let (_, _, _, labels, tac, _, _, strings) = genCode x
+    let (_, _, labels, tac, _, _, strings) = genCode x
     let orderedLabelsToPrint = map pp . reverse $ labels
     let orderedTACToPrint = map pp . reverse $ tac
     let listStrings = Map.toList strings
@@ -211,6 +209,7 @@ extractTypeFromExpr x = case x of
     (BoolLiteral _ _ tco) -> t tco
     ArrayLiteral _ _ tco -> t tco
 
+oppositeRel :: RelOp -> RelOp
 oppositeRel relOp = case relOp of
     NotEq -> Eq
     Eq -> NotEq
@@ -236,3 +235,5 @@ paramsContainsResOrValResMod ((mod, ty) : modtys) = case mod of
     ModalityRes -> True
     ModalityValRes -> True
     _ -> paramsContainsResOrValResMod modtys
+
+    

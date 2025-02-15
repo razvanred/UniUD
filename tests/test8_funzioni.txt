@@ -6,12 +6,11 @@ var d :int := 4;
 f1(a,b,c);
 
 def f1 (ref p :float, ref q :float, r :float) :float {
-    p := g1(q,r);
+    g1(q,r);
     return ++p + q-- + r++;
 };
 
-def g1 (ref x :float, ref y :float) :float {
-    return x + y;
+def g1 (ref x :float, ref y :float) :void {
 };
 
 

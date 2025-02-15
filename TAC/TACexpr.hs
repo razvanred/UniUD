@@ -1,6 +1,4 @@
-{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
 {-# OPTIONS_GHC -Wno-overlapping-patterns #-}
-{-# OPTIONS_GHC -Wno-unused-local-binds #-}
 {-# OPTIONS_GHC -Wno-unused-matches #-}
 {-# OPTIONS_GHC -fno-warn-incomplete-patterns #-}
 
@@ -100,25 +98,28 @@ tacExpr (UnaryOp pos uop expr (ErrorCollectorOutput t _ _ _)) = do
             xtmp <- buildTempANDIndirectLoad a t False
             outWithSuspendedLabel $ TacUnary temp uop t (addr xtmp)
             return xtmp
+
 tacExpr expr@(BinaryOp _ (RelationalOp NotEq) expr1 expr2 _) = do
-    case (extractTypeFromExpr expr1, extractTypeFromExpr expr2) of
-        (StringType, StringType) -> do
-            let mockParam = Param (0, 0) ModalityVal "" DVoidType ()
-            let mockParamList = [mockParam, mockParam]
-            let mockFunctionDecl = Just (FunctionDecl (0, 0) "" mockParamList DVoidType [] ())
-            let mockAnnotedField = ErrorCollectorOutput StringType Nothing Nothing mockFunctionDecl
-            let funCallexpr = FunctionCall (0, 0) "stringEq" [expr1, expr2] mockAnnotedField
-            boolExprAuxCustom funCallexpr (buildTacLiteral . TacLitBool $ False) (buildTacLiteral . TacLitBool $ True)
+    case (extractTypeFromExpr expr1,extractTypeFromExpr expr2) of
+        (StringType,StringType) -> do
+                let mockParam = Param (0, 0) ModalityVal "" DVoidType ()
+                let mockParamList = [mockParam, mockParam]
+                let mockFunctionDecl = Just (FunctionDecl (0, 0) "" mockParamList DVoidType [] ())
+                let mockAnnotedField = ErrorCollectorOutput StringType Nothing Nothing mockFunctionDecl
+                let funCallexpr = FunctionCall (0, 0) "stringEq" [expr1, expr2] mockAnnotedField
+                boolExprAuxCustom funCallexpr (buildTacLiteral . TacLitBool $ False) (buildTacLiteral . TacLitBool $ True) 
         _ -> boolExprAux expr (buildTacLiteral . TacLitBool $ True) (buildTacLiteral . TacLitBool $ False)
+
 tacExpr expr@(BinaryOp _ (RelationalOp Eq) expr1 expr2 _) = do
-    case (extractTypeFromExpr expr1, extractTypeFromExpr expr2) of
-        (StringType, StringType) -> do
-            let mockParam = Param (0, 0) ModalityVal "" DVoidType ()
-            let mockParamList = [mockParam, mockParam]
-            let mockFunctionDecl = Just (FunctionDecl (0, 0) "" mockParamList DVoidType [] ())
-            let mockAnnotedField = ErrorCollectorOutput StringType Nothing Nothing mockFunctionDecl
-            tacExpr (FunctionCall (0, 0) "stringEq" [expr1, expr2] mockAnnotedField)
+    case (extractTypeFromExpr expr1,extractTypeFromExpr expr2) of
+        (StringType,StringType) -> do
+                let mockParam = Param (0, 0) ModalityVal "" DVoidType ()
+                let mockParamList = [mockParam, mockParam]
+                let mockFunctionDecl = Just (FunctionDecl (0, 0) "" mockParamList DVoidType [] ())
+                let mockAnnotedField = ErrorCollectorOutput StringType Nothing Nothing mockFunctionDecl
+                tacExpr (FunctionCall (0, 0) "stringEq" [expr1, expr2] mockAnnotedField)
         _ -> boolExprAux expr (buildTacLiteral . TacLitBool $ True) (buildTacLiteral . TacLitBool $ False)
+
 tacExpr expr@(BinaryOp _ (BooleanOp _) _ _ _) = boolExprAux expr (buildTacLiteral . TacLitBool $ True) (buildTacLiteral . TacLitBool $ False)
 tacExpr (BinaryOp pos bop expr1 expr2 (ErrorCollectorOutput t _ _ _)) = do
     xaddr1 <- tacExpr expr1
@@ -165,13 +166,14 @@ tacExpr (Deref _ expr (ErrorCollectorOutput t lr _ _)) = do
                 _ -> do
                     xtmp <- buildTempANDTacIndexedLoad t xaddr
                     return $ RefAddr (addr xtmp)
+
 tacExpr (ArrayAcc pos expr1 expr2 (ErrorCollectorOutput t lr _ _)) = do
     xaddr1 <- tacExpr expr1
     xaddr2 <- tacExpr expr2
     let bt@(ArrayType flag dim ty) = extractTypeFromExpr expr1
     case (xaddr1, xaddr2) of
         (Addr a1, Addr a2) -> do
-            checkDim flag dim a2
+            checkDim flag dim a2 
             case a2 of
                 TacLit _ _ -> do
                     let contentLiterala2 = contentInt . tacLit $ a2
@@ -240,15 +242,6 @@ tacExpr (ArrayAcc pos expr1 expr2 (ErrorCollectorOutput t lr _ _)) = do
             xtmp2 <- buildTempANDPointerTacBinary (PointerType . getPrimitiveTypeArr $ bt) a1 (addr xtmp1)
             return . RefAddr . addr $ xtmp2
 
--- example of (RefAddr,RefAddr) case
--- void main() {
--- void g(&[10]int a){
--- int x = 5;
--- &int y = &x;
--- &&int p = &y;
--- (*a)[**p] = 10;
--- }
-
 tacExpr (Id _ _ (ErrorCollectorOutput _ _ _ Nothing)) = error "An Identifier must have a declaration information"
 tacExpr (Id _ _ (ErrorCollectorOutput _ _ Nothing _)) = error "An Identifier must have a modality"
 tacExpr (Id _ identifier (ErrorCollectorOutput t _ (Just m) (Just decl))) = case m of
@@ -274,21 +267,34 @@ tacExpr (FloatLiteral _ f _) = return $ Addr{addr = buildTacLiteral (TacLitFloat
 tacExpr (BoolLiteral _ b _) = return $ Addr{addr = buildTacLiteral (TacLitBool b)}
 tacExpr (StringLiteral pos str _) = do
     let terminatedStr = str ++ "\0"
-    (b, k, j, labels, tac, suspendedLabels, bclabels, strings) <- get
+    (k, j, labels, tac, suspendedLabels, bclabels, strings) <- get
     case Map.lookup terminatedStr strings of
         Nothing -> do
             let stringRef = "stringPtr" ++ show j
             let stringProgVar = ProgVar{progVar = buildProgVariable stringRef pos (PointerType CharType) ModalityVal, addrT = PointerType CharType}
             let adjStrings = Map.insert terminatedStr stringRef strings
-            put (b, k, j + 1, labels, tac, suspendedLabels, bclabels, adjStrings)
+            put (k, j + 1, labels, tac, suspendedLabels, bclabels, adjStrings)
             return . Addr $ stringProgVar
         Just stringRef -> do
             let stringProgVar = ProgVar{progVar = buildProgVariable stringRef pos (PointerType CharType) ModalityVal, addrT = PointerType CharType}
             return . Addr $ stringProgVar
-tacExpr (CondExpr pos expr1 expr2 expr3 _) = do
+tacExpr (CondExpr pos guardExpr expr2 expr3 (ErrorCollectorOutput t _ _ _)) = do
+    int <- newLabelNum 
+    let label = LabIfFalse int
+    f <- newtemp
+    let temp = f t
+    tacBoolExpr guardExpr FALL label
     xaddrLeft <- tacExpr expr2
+    outWithSuspendedLabel $ TacNullary temp t (addr xaddrLeft)
+    int2 <- newLabelNum
+    let label2 = LabInstr int2
+    outWithSuspendedLabel $ TacUnCondJump label2
+    labelNext label
     xaddrRight <- tacExpr expr3
-    boolExprAux expr1 (addr xaddrLeft) (addr xaddrRight)
+    outWithSuspendedLabel $ TacNullary temp t (addr xaddrRight)
+    labelNext label2
+    return . Addr $ temp
+
 
 tacArrInit :: Addr -> Addr -> [Expr ErrorCollectorOutput] -> Type -> Stato ()
 tacArrInit _ _ [] _ = return ()
@@ -322,13 +328,6 @@ copyActualArray from baseType offset size = do
             let sizeBaseType = buildTacLiteral . TacLitInt . sizeof $ baseType
             xtmp1 <- buildTempANDTacBinary (ArithmeticOp Add) IntType offset sizeBaseType
             copyActualArray from baseType (addr xtmp1) (size - sizeof baseType)
-
--- * p with p pointer to array
-
--- (*p)[....]
---  f (ref [2]int a) {
---         g(a)
--- }
 
 tacActualParameters :: [Expr ErrorCollectorOutput] -> [Parameter a] -> Stato ()
 tacActualParameters [] _ = return ()
@@ -456,14 +455,15 @@ boolExprAux expr addr1 addr2 = do
     labelNext label2
     return . Addr $ temp
 
-boolExprAuxCustom :: Expr ErrorCollectorOutput -> Addr -> Addr -> Stato XAddr
+
+boolExprAuxCustom:: Expr ErrorCollectorOutput -> Addr -> Addr -> Stato XAddr
 boolExprAuxCustom expr addr1 addr2 = do
     int <- newLabelNum
     let label = LabIfFalse int
     f <- newtemp
     let temp = f BoolType
     funCall <- tacExpr expr
-    outWithSuspendedLabel $ TacBoolCondJump False (addr funCall) label
+    outWithSuspendedLabel $ TacBoolCondJump False (addr funCall) label 
     outWithSuspendedLabel $ TacNullary temp BoolType addr1
     int2 <- newLabelNum
     let label2 = LabInstr int2
@@ -481,5 +481,5 @@ checkDim True dim a1 = do
     int <- newLabelNum
     let label = LabInstr int
     outWithSuspendedLabel $ TacRelCondJump a1 LessThan BoolType (buildTacLiteral . TacLitInt $ dim) label
-    outWithSuspendedLabel $ TacCall Nothing (FunId (0, 0) "arrayOutOfBoundAcc_procedure" 0)
+    outWithSuspendedLabel $ TacCall Nothing (FunId (0,0) "arrayOutOfBoundAcc_procedure" 0)
     labelNext label

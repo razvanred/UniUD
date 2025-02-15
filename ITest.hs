@@ -18,7 +18,7 @@ f x = do
         Left x -> putStrLn x
         Right pt -> do
             let t = buildTree pt
-            let t1 = solveConstants 1 t
+            let t1 = solveConstants 3 t
             let t2 = staticAnalizer t1
             case collectErrors True t2 of
                 Left msgs -> do

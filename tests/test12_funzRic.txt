@@ -1,0 +1,15 @@
+var x :int := 300;
+
+def f1(t :int) :int {
+    var h :int := t;
+    t--;
+    if (t > 0) {return f2(t);};
+    return 2;
+};
+
+def f2(t :int) :int {
+    var h :int := t;
+    t--;
+    if (t > 0) {return f1(t);};
+    return 3;
+};

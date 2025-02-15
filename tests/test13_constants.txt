@@ -1,0 +1,16 @@
+def b := True;
+def c := 'c';
+def x := 5;
+def y := x + 2;
+
+{ 
+  def b := True;
+  def c := 'c';
+  def x := 5;
+  def y := x + 2;
+  def z := y + c + b;
+  var w :float := z;  
+};
+
+def z := y + c + b;
+var w :int := z;
