@@ -135,15 +135,14 @@ satisfiesUnOp op expr
 
 satisfiesBinOp op expr1 expr2
   | ArithmeticOp _ <- op,
-    BoolType <- tpe1,
-    BoolType <- tpe2 =
+    BoolType <- tpe1 \/ tpe2 =
       ( Just (tpe1, Right "Numeric"),
         Just (tpe2, Right "Numeric")
       )
   | otherwise =
       let
         opSup
-          | RelationalOp op <- op, (Eq == op || NotEq == op) && (tpe1 == StringType || tpe2 == StringType) = StringType
+          | RelationalOp op <- op, (Eq == op || NotEq == op) && (tpe1 \/ tpe2 == StringType) = StringType
           | otherwise = binOpSup op
       in
         ( maybeBool (tpe1 `notJoinLeq` opSup) (tpe1, Left $ expType opSup),
@@ -177,7 +176,7 @@ satisfiesDeref expr
 satisfiesAccessor expr indExpr =
   -- todo check <=?
   ( maybeBool (not isArray) (tpe, Right "Array"),
-    maybeBool (indType `joinLeq` IntType) (indType, Left IntType)
+    maybeBool (indType `notJoinLeq` IntType) (indType, Left IntType)
   )
   where
     isArray = case tpe of
