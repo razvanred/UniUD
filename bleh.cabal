@@ -93,19 +93,12 @@ common shared-properties
     Parser.Print
 
 -- fake target to make HLS happy
-library noBuild
-  buildable: False
-  other-modules:
-    -- PrettyPrinter
-    --TAC.TACgenerator
-    TAC.TAC
-    TypeChecker.Test
-
+-- library noBuild
+--   buildable: False
+--   other-modules:
+--     TAC.TAC
+--     TypeChecker.Test
 executable main
   import: shared-properties, warnings
   -- .hs or .lhs file containing the Main module.
   main-is: Main.hs
-
-library itest
-  import: shared-properties, warnings
-  exposed-modules: ITest
