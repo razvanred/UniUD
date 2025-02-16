@@ -3,7 +3,7 @@
 Versioni degli strumenti usati:
 
 BNFC - 2.9.5 | GHC - 9.8.2 | Happy - 2.0.2 | Alex - 3.5.1.0
-Il codice viene compilato chiamando `make`. Oltre alla demo il cui risultato si può vedere con il comando `make demo`, nella cartella di test ci sono 14 file con alcuni nomi esplicativi che possono essere eseguiti chiamando `make test` seguito dal nome file. 
+Il codice viene compilato chiamando `make`. Oltre alla demo il cui risultato si può vedere con il comando `make demo`, nella cartella `tests` ci sono 14 file con alcuni nomi esplicativi che possono essere eseguiti chiamando `cabal repl main` e usando la funzione `testFile` seguita dal percorso del file.
 
 La **grammatica** è stata implementata usando BNFC con l'opzione ```--functor```, che permette di generare un Abstract Syntax Tree costituito da tipi di dato con un parametro polimorfo. Ciò permette al parser di salvare la posizione (riga, colonna) dei Token comunicatigli dal Lexer. Ai file Alex e Happy generati da BNFC sono state apportate delle piccole modifiche per permettere il riconoscimento degli interi che rappresentano caratteri e per salvare l'informazione relativa alla posizione di dichiarazione dei parametri delle funzioni.
 
