@@ -264,13 +264,13 @@ tacExpr (FloatLiteral _ f _) = return $ Addr{addr = buildTacLiteral (TacLitFloat
 tacExpr (BoolLiteral _ b _) = return $ Addr{addr = buildTacLiteral (TacLitBool b)}
 tacExpr (StringLiteral pos str _) = do
     let terminatedStr = str ++ "\0"
-    (k, j, labels, tac, suspendedLabels, bclabels, strings) <- get
+    (b, k, j, labels, tac, suspendedLabels, bclabels, strings) <- get
     case Map.lookup terminatedStr strings of
         Nothing -> do
             let stringRef = "stringPtr" ++ show j
             let stringProgVar = ProgVar{progVar = buildProgVariable stringRef pos (PointerType CharType) ModalityVal, addrT = PointerType CharType}
             let adjStrings = Map.insert terminatedStr stringRef strings
-            put (k, j + 1, labels, tac, suspendedLabels, bclabels, adjStrings)
+            put (b, k, j + 1, labels, tac, suspendedLabels, bclabels, adjStrings)
             return . Addr $ stringProgVar
         Just stringRef -> do
             let stringProgVar = ProgVar{progVar = buildProgVariable stringRef pos (PointerType CharType) ModalityVal, addrT = PointerType CharType}

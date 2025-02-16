@@ -102,3 +102,8 @@ executable main
   import: shared-properties, warnings
   -- .hs or .lhs file containing the Main module.
   main-is: Main.hs
+
+executable test
+  import: shared-properties, warnings
+  -- .hs or .lhs file containing the Main module.
+  main-is: Test.hs

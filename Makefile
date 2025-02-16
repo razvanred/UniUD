@@ -54,7 +54,10 @@ main :
 	cabal build main
 
 demo : 
-	cabal run main 
+	cabal run main
+
+test : 
+	cabal run test
 
 itest:
 	cabal repl main --repl-options="-interactive-print=Text.Pretty.Simple.pPrint"

@@ -203,6 +203,18 @@ satisfiesFCall (FunctionType argTypes _) exprs =
               then Nothing
               else
                 Just (tpe, Right "LValue")
+      ModalityRes -- todo, needs more
+        | tpe `joinLeq` argType ->
+            if LeftValue == side
+              then Nothing
+              else
+                Just (tpe, Right "LValue")
+      ModalityValRes -- todo, needs more
+        | tpe `joinLeq` argType ->
+            if LeftValue == side
+              then Nothing
+              else
+                Just (tpe, Right "LValue")
       _ -> Just (tpe, Left argType)
 satisfiesFCall _ _ = "input" `unexpectedIn` "satisfiesFCall"
 

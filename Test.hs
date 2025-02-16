@@ -1,25 +1,25 @@
-module Main where
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+
+{-# HLINT ignore "Avoid partial function" #-}
+module Test where
 
 import ConstantSolver.Solver
 import ErrorCollector.Main
 import Parser.ASTBuilder
 import Parser.Par (myLexer, pBlock1)
+import System.Environment (getArgs)
 import TAC.TACInstruction
 import TAC.TACutils (printOutput)
 import TypeChecker.Main
-import Utils
+import Utils (prp)
 
 main :: IO ()
 main = do
-    contents <- readFile "tests/demo.txt"
+    filename <- getArgs
+    contents <- readFile (head filename)
     putStrLn "########## PROGRAMMA SORGENTE ##########"
     putStrLn contents
     putStrLn "##########        TAC         ##########"
-    f contents
-
-testFile :: FilePath -> IO ()
-testFile fileName = do
-    contents <- readFile fileName
     f contents
 
 f :: String -> IO ()
