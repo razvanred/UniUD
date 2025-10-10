@@ -1,0 +1,354 @@
+[
+    {
+        "demijohnsNumber": 10,
+        "demijohnCapacity": 1,
+        "batches": [
+            {
+                "quantity": 4,
+                "capacity": 0.375,
+                "height": 24,
+                "diameter": 6
+            },
+            {
+                "quantity": 0,
+                "capacity": 0.75,
+                "height": 30,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.0,
+                "height": 32,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.5,
+                "height": 35,
+                "diameter": 9
+            },
+            {
+                "quantity": 0,
+                "capacity": 3.0,
+                "height": 47,
+                "diameter": 13
+            }
+        ],
+        "boxSizes": [
+            {
+                "width": 12,
+                "length": 12,
+                "height": 100,
+                "minCoverage": 1
+            }
+        ]
+    },
+    {
+        "demijohnsNumber": 10,
+        "demijohnCapacity": 1,
+        "batches": [
+            {
+                "quantity": 4,
+                "capacity": 0.375,
+                "height": 24,
+                "diameter": 6
+            },
+            {
+                "quantity": 0,
+                "capacity": 0.75,
+                "height": 30,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.0,
+                "height": 32,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.5,
+                "height": 35,
+                "diameter": 9
+            },
+            {
+                "quantity": 0,
+                "capacity": 3.0,
+                "height": 47,
+                "diameter": 13
+            }
+        ],
+        "boxSizes": [
+            {
+                "width": 12,
+                "length": 12,
+                "height": 100,
+                "minCoverage": 1
+            }
+        ]
+    },
+    {
+        "demijohnsNumber": 10,
+        "demijohnCapacity": 1,
+        "batches": [
+            {
+                "quantity": 4,
+                "capacity": 0.375,
+                "height": 24,
+                "diameter": 6
+            },
+            {
+                "quantity": 0,
+                "capacity": 0.75,
+                "height": 30,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.0,
+                "height": 32,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.5,
+                "height": 35,
+                "diameter": 9
+            },
+            {
+                "quantity": 0,
+                "capacity": 3.0,
+                "height": 47,
+                "diameter": 13
+            }
+        ],
+        "boxSizes": [
+            {
+                "width": 12,
+                "length": 12,
+                "height": 100,
+                "minCoverage": 1
+            }
+        ]
+    },
+    {
+        "demijohnsNumber": 10,
+        "demijohnCapacity": 1,
+        "batches": [
+            {
+                "quantity": 4,
+                "capacity": 0.375,
+                "height": 24,
+                "diameter": 6
+            },
+            {
+                "quantity": 0,
+                "capacity": 0.75,
+                "height": 30,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.0,
+                "height": 32,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.5,
+                "height": 35,
+                "diameter": 9
+            },
+            {
+                "quantity": 0,
+                "capacity": 3.0,
+                "height": 47,
+                "diameter": 13
+            }
+        ],
+        "boxSizes": [
+            {
+                "width": 12,
+                "length": 12,
+                "height": 100,
+                "minCoverage": 1
+            }
+        ]
+    },
+    {
+        "demijohnsNumber": 10,
+        "demijohnCapacity": 1,
+        "batches": [
+            {
+                "quantity": 4,
+                "capacity": 0.375,
+                "height": 24,
+                "diameter": 6
+            },
+            {
+                "quantity": 0,
+                "capacity": 0.75,
+                "height": 30,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.0,
+                "height": 32,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.5,
+                "height": 35,
+                "diameter": 9
+            },
+            {
+                "quantity": 0,
+                "capacity": 3.0,
+                "height": 47,
+                "diameter": 13
+            }
+        ],
+        "boxSizes": [
+            {
+                "width": 12,
+                "length": 12,
+                "height": 100,
+                "minCoverage": 1
+            }
+        ]
+    },
+    {
+        "demijohnsNumber": 10,
+        "demijohnCapacity": 1,
+        "batches": [
+            {
+                "quantity": 4,
+                "capacity": 0.375,
+                "height": 24,
+                "diameter": 6
+            },
+            {
+                "quantity": 0,
+                "capacity": 0.75,
+                "height": 30,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.0,
+                "height": 32,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.5,
+                "height": 35,
+                "diameter": 9
+            },
+            {
+                "quantity": 0,
+                "capacity": 3.0,
+                "height": 47,
+                "diameter": 13
+            }
+        ],
+        "boxSizes": [
+            {
+                "width": 12,
+                "length": 12,
+                "height": 100,
+                "minCoverage": 1
+            }
+        ]
+    },
+    {
+        "demijohnsNumber": 10,
+        "demijohnCapacity": 1,
+        "batches": [
+            {
+                "quantity": 4,
+                "capacity": 0.375,
+                "height": 24,
+                "diameter": 6
+            },
+            {
+                "quantity": 0,
+                "capacity": 0.75,
+                "height": 30,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.0,
+                "height": 32,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.5,
+                "height": 35,
+                "diameter": 9
+            },
+            {
+                "quantity": 0,
+                "capacity": 3.0,
+                "height": 47,
+                "diameter": 13
+            }
+        ],
+        "boxSizes": [
+            {
+                "width": 12,
+                "length": 12,
+                "height": 100,
+                "minCoverage": 1
+            }
+        ]
+    },
+    {
+        "demijohnsNumber": 10,
+        "demijohnCapacity": 1,
+        "batches": [
+            {
+                "quantity": 4,
+                "capacity": 0.375,
+                "height": 24,
+                "diameter": 6
+            },
+            {
+                "quantity": 0,
+                "capacity": 0.75,
+                "height": 30,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.0,
+                "height": 32,
+                "diameter": 8
+            },
+            {
+                "quantity": 0,
+                "capacity": 1.5,
+                "height": 35,
+                "diameter": 9
+            },
+            {
+                "quantity": 0,
+                "capacity": 3.0,
+                "height": 47,
+                "diameter": 13
+            }
+        ],
+        "boxSizes": [
+            {
+                "width": 12,
+                "length": 12,
+                "height": 100,
+                "minCoverage": 1
+            }
+        ]
+    }
+]
