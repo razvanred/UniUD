@@ -1,0 +1,19 @@
+import <demo5.txt>
+
+[sez1]
+var1 = "ciao"
+
+[sez2]
+inherit demo5sez1
+var2 = $sez1.var1
+
+[sez3]
+var3 = $sez2.var2
+
+[sez4]
+var4 = "x"
+
+[sez5]
+inherit sez2
+var5a = $a
+var5b = $var2

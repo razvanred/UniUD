@@ -1,0 +1,13 @@
+# questo file contiene dei riferimenti ciclici
+
+[sez1]
+var1 = $sez2.var2
+
+[sez2]
+var2 = $sez3.var3
+
+[sez3]
+var3 = $sez1.var1
+
+[sez4]
+var4 = "x"

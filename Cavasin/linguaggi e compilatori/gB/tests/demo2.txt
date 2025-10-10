@@ -1,0 +1,10 @@
+# questo file genera un warning nella ridefinizione di var1 in sez2
+
+[sez1]
+var1 = "y"
+var2 = "x"
+
+[sez2]
+inherit sez1
+var1 = "r"
+var1 = "s"

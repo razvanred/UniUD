@@ -1,0 +1,70 @@
+import java.util.Collections;
+import java.util.List;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.Optional;
+import jflex.base.Pair;
+
+class Parser;
+
+parser code {: private Lexer lexer;
+    public Parser(Lexer lexer, java_cup.runtime.SymbolFactory sf) {
+                       super(lexer, sf);
+                       this.lexer = lexer;
+                   } :};
+
+terminal String IDENTIFIER, SECTION, INHERIT, EQUAL;
+terminal Pair<Optional<String>,String> REFERENCE;
+terminal Integer NUMBER;
+terminal String STRING;
+terminal Boolean BOOL;
+
+non terminal Configuration file;
+// non terminal import_list;
+non terminal Configuration sections_list;
+non terminal List<String> inherit_list;
+non terminal String inherit;
+non terminal Section single_section;
+non terminal Map<String, Assignment<?>> assignments;
+non terminal Assignment<?> assignment;
+non terminal String section_name;
+
+file ::= sections_list:sl {: RESULT = sl; :};
+
+sections_list ::= sections_list:sl single_section:ss {: if (!sl.containsKey(ss.name)) {
+                                                           sl.put(ss.name,ss);
+                                                           RESULT = sl;
+                                                        } else {
+                                                          report_fatal_error("Section " + ss.name + " has already been defined" + System.lineSeparator(), null);
+                                                        } :}
+                  | single_section:ss {: RESULT = new Configuration(ss); :};
+
+single_section ::= section_name:name inherit_list:i assignments:a {: RESULT = new Section(name, i, a); :}
+                   | section_name:name assignments:a {: RESULT = new Section(name,a); :};
+
+section_name ::= SECTION:name {: lexer.parsedSection(name); RESULT = name; :};
+
+inherit_list ::= inherit_list:inherits inherit:i {: if (inherits.contains(i)) {
+                                                       System.err.println("Duplicated inherit of " + i);
+                                                    }
+                                                    inherits.add(0, i);
+                                                    RESULT = inherits; :}
+                 | inherit:i {: RESULT = new LinkedList<String>(Arrays.asList(i)); :};
+
+inherit ::= INHERIT IDENTIFIER:s {: RESULT = s; :};
+
+assignments ::= assignments:assignments assignment:a  {: if(assignments.containsKey(a.lValue)) {
+                                                           System.err.println("Variable " + a.lValue + " has already been assigned");
+                                                         }
+                                                         assignments.put(a.lValue, a);
+                                                         RESULT = assignments; :}
+               | assignment:a {:  Map<String, Assignment<?>> t = new LinkedHashMap<>();
+                                  t.put(a.lValue, a);
+                                  RESULT = t; :};
+
+assignment ::= IDENTIFIER:lValue EQUAL NUMBER:rValue {: Assignment<Integer> a = new Assignment<>(lValue, Either.left(rValue)); lexer.parsedAssignment(lValue); RESULT = a; :}
+               | IDENTIFIER:lValue EQUAL STRING:rValue {: Assignment<String> a = new Assignment<>(lValue, Either.left(rValue)); lexer.parsedAssignment(lValue); RESULT = a; :}
+               | IDENTIFIER:lValue EQUAL BOOL:rValue {: Assignment<Boolean> a = new Assignment<>(lValue, Either.left(rValue)); lexer.parsedAssignment(lValue); RESULT = a; :}
+               | IDENTIFIER:lValue EQUAL REFERENCE:rValue {: Assignment<Void> a = new Assignment<>(lValue, Either.right(rValue)); lexer.parsedAssignment(lValue); RESULT = a; :};
