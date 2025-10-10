@@ -51,22 +51,29 @@ common warnings
 common shared-properties
   -- Base language which the package is written in.
   default-language: GHC2021
-  -- List of Haskell executables needed to build this component
-  build-tool-depends:
-    alex:alex,
-    happy:happy,
 
   build-depends:
-    array,
     base >=4.19.1.0,
+    array,
     containers,
     extra >=1.8,
     lattices ==2.2.1,
     pretty-simple ==4.1.3.0,
     transformers,
 
+  ghc-options:
+    -Wno-missing-home-modules
+
+library common
+  import: shared-properties, warnings
+
+  -- List of Haskell executables needed to build this component
+  build-tool-depends:
+    alex:alex,
+    happy:happy,
+
   -- cabal-gild: discover --include Utils.hs --include AST.hs --include */* --exclude Parser/* --exclude ConstantSolver/Solver.old.hs
-  other-modules:
+  exposed-modules:
     AST
     ConstantSolver.Solver
     ErrorCollector.Collector
@@ -85,12 +92,13 @@ common shared-properties
     Utils
 
   -- manually specified modules
-  other-modules:
+  exposed-modules:
     Parser.ASTBuilder
     Parser.Abs
     Parser.Lex
     Parser.Par
     Parser.Print
+
 
 -- fake target to make HLS happy
 -- library noBuild
@@ -102,8 +110,10 @@ executable main
   import: shared-properties, warnings
   -- .hs or .lhs file containing the Main module.
   main-is: Main.hs
+  build-depends: bleh:common
 
 executable test
   import: shared-properties, warnings
   -- .hs or .lhs file containing the Main module.
   main-is: Test.hs
+  build-depends: bleh:common
