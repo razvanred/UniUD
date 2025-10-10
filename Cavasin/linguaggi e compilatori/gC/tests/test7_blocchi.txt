@@ -1,0 +1,11 @@
+{
+    var x :float := 5;
+    var y :int := 4;
+    {
+        {
+            var y :int := 6;
+            x := y;
+        };
+        y := 4;
+    };
+};

@@ -1,0 +1,17 @@
+var a :float := 4.123e2;
+var b :float := 3.14;
+var c :int := 3;
+var d :int := 4;
+
+f1(a,b,c);
+
+def f1 (ref p :float, ref q :float, r :float) :float {
+    g1(q,r);
+    return ++p + q-- + r++;
+};
+
+def g1 (ref x :float, ref y :float) :void {
+};
+
+
+

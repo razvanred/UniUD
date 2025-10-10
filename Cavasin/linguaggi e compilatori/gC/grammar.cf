@@ -1,0 +1,115 @@
+comment "#" ;
+comment "#<" ">#" ;
+
+entrypoints Block1;
+
+-- un blocco è una sequenza di istruzioni
+_.          Block ::= "{" Block1 "}" ;
+Blck.       Block1 ::= [ Instruction ];
+-- un'istruzione è una dichiarazione o uno statement
+Stmt.       Instruction ::= Statement;
+Decl.       Instruction ::= Declaration;
+separator Instruction ";";
+
+-- dichiarazione di costante
+ConstDecl.  Declaration ::= "def" Ident ":=" Expr ; 
+
+-- dichiarazione di variabile
+VarDecl.    Declaration ::= "var" Ident ":" Type ":=" Expr ;
+
+-- dichiarazione di procedura o funzione
+FunDecl.    Declaration ::= "def" Ident "(" [Parameter] ")" ":" Type Block ;
+separator   Parameter "," ;
+Param.      Parameter ::= Modality Ident ":" Type ;
+
+rules  Modality ::= {-empty-} | "val" | "ref" | "valres" | "res" ; 
+
+-- sintassi tipi
+BsType.             Type ::= BasicType ;
+ArrayType.          Type ::= "[" Expr "]" Type ;
+CArrType.           Type ::= "checked" "[" Expr "]" Type ;
+UnsizedArrayType.   Type ::= "["  "]" Type ;
+UnsizedCArrayType.  Type ::= "checked" "["  "]" Type ;
+
+Pointer.           Type ::= "@" Type ;
+rules BasicType ::= "bool" | "char" | "int" | "string" | "float" | "void" ;
+
+-- statements
+Compound.   Statement ::= Block ;
+Jump.       Statement ::= JumpStatement  ;
+Iter.       Statement ::= IterStatement ;
+Branch.     Statement ::= BranchStatement ;
+Assign.     Statement ::= Expr Assignment_op Expr ;
+TryStmt.    Statement ::= "try" Block "catch" Block ;
+Throw.      Statement ::= "throw" String ;
+
+StmntExpr.   Statement ::= Expr ;
+
+AssignOp.   Assignment_op ::= ":=" ;
+AssignMul.  Assignment_op ::= "*=" ;
+AssignAdd.  Assignment_op ::= "+=" ;
+AssignDiv.  Assignment_op ::= "/=" ;
+AssignSub.  Assignment_op ::= "-=" ;
+AssignPow.  Assignment_op ::= "^=" ;
+AssignAnd.  Assignment_op ::= "&=" ;
+AssignOr.   Assignment_op ::= "|=" ;
+
+Break.      JumpStatement ::= "break" ;
+Continue.   JumpStatement ::= "continue" ;
+RetExpVoid. JumpStatement ::= "return" ;
+RetExp.     JumpStatement ::= "return" Expr ;
+
+If.         BranchStatement ::= "if" "(" Expr ")" Block ;
+IfElse.     BranchStatement ::= "if" "(" Expr ")" Block "else" Block ;
+
+While.      IterStatement ::= "while" "(" Expr ")" Block ;
+DoWhile.    IterStatement ::= "do" Block "while" "(" Expr ")";
+For.        IterStatement ::= "for" Ident "in" Expr "," Expr "," Expr Block ;
+
+IfExpr.     Expr  ::= "(" Expr ")" "?" Expr ":" Expr ;
+Or.         Expr  ::= Expr "||" Expr1 ;
+And.        Expr1 ::= Expr1 "&&" Expr2 ;
+Not.        Expr2 ::= "!" Expr3 ;
+
+Eq.         Expr3 ::= Expr4 "==" Expr4 ;
+Neq.        Expr3 ::= Expr4 "!=" Expr4 ;
+Lt.         Expr3 ::= Expr4 "<"  Expr4 ;
+LtE.        Expr3 ::= Expr4 "<=" Expr4 ;
+Gt.         Expr3 ::= Expr4 ">"  Expr4 ;
+GtE.        Expr3 ::= Expr4 ">=" Expr4 ;
+
+Add.        Expr4 ::= Expr4 "+" Expr5 ;
+Sub.        Expr4 ::= Expr4 "-" Expr5 ;
+
+Mul.        Expr5 ::= Expr5 "*" Expr6 ;
+Div.        Expr5 ::= Expr5 "/" Expr6 ;
+Mod.        Expr5 ::= Expr5 "%" Expr6 ;
+
+Pow.        Expr6 ::= Expr7 "**" Expr6 ;
+
+Neg.        Expr7 ::= "-" Expr8 ;
+
+PreInc.     Expr8 ::= "++" Expr9 ;
+PreDecr.    Expr8 ::= "--" Expr9 ;
+PostInc.    Expr8 ::= Expr9 "++" ;
+PostDecr.   Expr8 ::= Expr9 "--" ;
+
+Ref.        Expr9 ::= "&" Expr9 ;
+Deref.      Expr9 ::= "$" Expr9 ;
+ArrayAcc.   Expr9 ::= Expr9 "[" Expr "]";
+
+Id.         Expr10 ::= Ident ;
+FunCall.    Expr10 ::= Ident "(" [Expr] ")" ;
+separator   Expr "," ;
+
+Int.        Expr11 ::= Integer ;
+Char.       Expr11 ::= Char ;
+String.     Expr11 ::= String ;
+Float.      Expr11 ::= Double ;
+Bool.       Expr11 ::= Boolean ;
+rules Boolean ::= "True" | "False" ;
+
+Array.        Expr12 ::= "[" [Expr4] "]" ;
+separator nonempty Expr4 "," ;
+
+coercions Expr 12 ;

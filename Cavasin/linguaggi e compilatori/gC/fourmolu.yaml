@@ -1,0 +1,6 @@
+record-brace-space: false
+comma-style: trailing
+in-style: left-align
+respectful: false
+
+indent-wheres: true

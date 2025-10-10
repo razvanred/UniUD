@@ -1,0 +1,20 @@
+var x :int := 1024;
+var y :int := 6;
+
+while (x < 10) { 
+
+    while (y > 0) {
+        --y; 
+        if (x % 2 == 0) {continue;};    
+    };
+
+    x := x + 1;
+
+    if (x == 2) {break;};
+    if (x == 3) {break;};
+
+};
+
+for i in 1, 4, 20 {
+    x /= 2;
+};

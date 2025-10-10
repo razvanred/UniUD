@@ -1,0 +1,5 @@
+/build
+/dist-newstyle
+/Parser/Parser.cf
+/Parser/Par.hs
+/Parser/Lex.hs

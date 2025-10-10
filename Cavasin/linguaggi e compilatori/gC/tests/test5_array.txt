@@ -1,0 +1,28 @@
+var a1 :[2]int := [1,2];
+var a2 :[3]int := [5,6,7];
+var a3 :[3]int := [8,9,1];
+var a4 :[2][3]int := [a2,a3];
+var a5 :[2][3]int := [[1,2,3],[4,5,6]];
+var x :int := 0;
+var y :int := 2;
+
+# assegnamento accesso array monodimensionale
+a1[1] := 7;
+x := a1[0];
+
+# assegnamento accesso array bidimensionale
+x := a4[1][1];
+a5[1][1] := y;
+
+# assegnamento slice
+a5[1] := a2;
+a2 := a4[1];
+
+# checked defined e undefined
+var c1 :checked [2] checked [3] int := [[1,2,3],[4,5,6]];
+var c2 :checked []  checked [] int := [[8,7],[3,4]];
+var c3 :checked [3] int := [9,8,5];
+var c4 :checked [2] int := [7,5];
+
+c1[1] := c3;
+c2[0] := c4;

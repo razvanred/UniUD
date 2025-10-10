@@ -1,0 +1,8 @@
+var x:int := 3;
+var y:int := 4;
+
+for i in 2*y, y, 5*y { x *= 2;};
+
+do { x := x + 1; } while (x < 10);
+
+while (x < 10) { x := x + 1; };

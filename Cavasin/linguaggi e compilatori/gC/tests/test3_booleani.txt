@@ -1,0 +1,14 @@
+var x :int := 5;
+var y :int := 6;
+
+var c :bool := x >= y;
+var d :bool := x == y;
+var e :bool := x != y;
+var f :bool := x <= y;
+
+f := c || d || e;
+f := c && d && e;
+
+f := c || d && e;
+f := c && d || e;
+

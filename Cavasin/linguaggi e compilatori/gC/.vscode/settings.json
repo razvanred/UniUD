@@ -1,0 +1,39 @@
+{
+    "markdown.math.macros": {
+        "\\clash": "\\uplus",
+        "\\shdw": "\\small{\\overleftarrow{\\cup}}",
+        "\\bool": "\\mathsf{bool}",
+        "\\char": "\\mathsf{char}",
+        "\\int": "\\mathsf{int}",
+        "\\float": "\\mathsf{float}",
+        "\\string": "\\mathsf{string}",
+        "\\void": "\\mathsf{void}",
+        "\\sup": "\\sqcup",
+        "\\rvalue": "r_{v}",
+        "\\lvalue": "l_{v}",
+        "\\extenv": "env_{ext}",
+        "\\fdecl": "f^\\mathrm{decl}",
+        "\\vdecl": "v^\\mathrm{decl}",
+        "\\fonly": "\\mathrm{fonly}(#1)"
+    },
+    "markdown.extension.katex.macros": {
+        "\\clash": "\\uplus",
+        "\\shdw": "\\small{\\overleftarrow{\\cup}}",
+        "\\bool": "\\mathsf{bool}",
+        "\\char": "\\mathsf{char}",
+        "\\int": "\\mathsf{int}",
+        "\\float": "\\mathsf{float}",
+        "\\string": "\\mathsf{string}",
+        "\\void": "\\mathsf{void}",
+        "\\sup": "\\sqcup",
+        "\\rvalue": "r_{v}",
+        "\\lvalue": "l_{v}",
+        "\\extenv": "env_{ext}",
+        "\\fdecl": "f^\\mathrm{decl}",
+        "\\vdecl": "v^\\mathrm{decl}",
+        "\\fonly": "\\mathrm{fonly}(#1)"
+    },
+    "markdown.extension.math.enabled": false,
+    "haskell.formattingProvider": "fourmolu",
+    "haskell.plugin.stan.globalOn": true
+}
