@@ -1,38 +1,16 @@
-%*
- * File: bin_packing.lp
- * Author: Joshua T. Guerin
- *
- * Description: Given a set of (item, cost) pairs, and parameter n,
- *              compute the assignment of items to bins that doesn't exceed
- *              n and minimizes the total number of bins.
- * Use: clingo bin_packing.lp instance.lp -c n=<val>
- *      where instance.lp contains item predicates.
- *%
+% Default
+#const n = 2.
 
-% The number of possible bins is equal to the possible items.
-% Each item may be included in any bin.
-{ bin(B, N) } :- item(B), item(N).
+% Generate
+{ color(X,1..n) } = 1 :- node(X).
+% Test
+:- edge(X,Y), color(X,C), color(Y,C).
 
-% Each item must be included in exactly one bin.
-1 { bin(B, N) : item(B) } 1 :- item(N).
+% Nodes
+node(1..6).
+% (Directed) Edges
+edge(1,(2;3;4)).  edge(2,(4;5;6)).  edge(3,(1;4;5)).
+edge(4,(1;2)).    edge(5,(3;4;6)).  edge(6,(2;3;5)).
 
-% Create a set of bins in the solution.
-bin(B) :- bin(B, N).
-
-% Compute how much is stored in each bin.
-weight(B, T) :- T = #sum{C, I : bin(B, I), item(I, C)}, bin(B).
-
-% Bins can pack items with a max cost of n.
-:- bin(B), weight(B, W), n < W.
-
-% More sensible numbering (rather than arbitrary bin numbers).
-% Have not tested to determine whether it affects complexity.
-%#minimize{B : bin(B)}.
-
-% Count the total number of bins
-count(C) :- C = #count{B : bin(B)}.
-
-#minimize{C : count(C)}.
-
-#show bin/2.
-#show weight/2.
+% Display
+#show color/2.

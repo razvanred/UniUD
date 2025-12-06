@@ -1,0 +1,86 @@
+
+-- commenti singola linea
+comment "#" ;
+
+-- un programma è una sequenza di dichiarazioni
+Prog.       Program ::= [Decl] ;
+separator   Decl "\\n" ;
+
+-- dichiarazione di costante
+ConstDecl.  Decl ::= "const" Ident : Type := RExpr ;
+
+-- dichiarazione di variabile
+VarDecl.    Decl ::= "var" Ident : Type := RExpr ;
+
+-- dichiarazione di procedura o funzione
+FunDecl.    Decl ::= "def" Ident "(" ")" : Type Block ;
+ProcDec.    Decl ::= "def" Ident "(" ")" : "void" Block ; -- forse meglio differenziare poi?
+
+-- un tipo può essere tipo semplice
+BasType.    Type ::= BasicType ;
+rules BasicType ::= "bool" | "char" | "float" | "int" | "void" ;  -- rimettere in ordine
+-- oppure tipo composto
+CompType.   Type ::= CompoundType ;
+ArrDef.     CompoundType ::= Type "[" Integer "]" ;
+ArrUnDef.   CompoundType ::= Type "["  "]" ;
+Pointer.    CompoundType ::= Type "*" ;
+
+Block ::= "{" [Decl] [Statement] "}" ;
+separator Stmt "" ;
+
+coercions   RExpr 14 ;
+
+Or.         RExpr ::= RExpr "||" RExpr1 ;
+And.        RExpr1 ::= RExpr1 "&&" RExpr2 ;
+Not.        RExpr2 ::= "!" RExpr3 ;
+
+Eq.         RExpr5 ::= RExpr6 "==" RExpr6 ;
+Neq.        RExpr5 ::= RExpr6 "!=" RExpr6 ;
+Lt.         RExpr5 ::= RExpr6 "<"  RExpr6 ;
+LtE.        RExpr5 ::= RExpr6 "<=" RExpr6 ;
+Gt.         RExpr5 ::= RExpr6 ">"  RExpr6 ;
+GtE.        RExpr5 ::= RExpr6 ">=" RExpr6 ;
+
+Add.        RExpr7 ::= RExpr7 "+" RExpr8 ;
+Sub.        RExpr7 ::= RExpr7 "-" RExpr8 ;
+
+Mul.        RExpr8 ::= RExpr8 "*" RExpr9 ;
+Div.        RExpr8 ::= RExpr8 "/" RExpr9 ;
+Mod.        RExpr8 ::= RExpr8 "%" RExpr9 ;
+
+Pow.        RExpr9 ::= RExpr10 "^" RExpr9 ;
+
+Neg.        RExpr11 ::= "-" RExpr12 ;
+Ref.        RExpr11 ::= "&" LExpr ;
+
+FCall.      RExpr12 ::= FunCall ;
+
+Int.        RExpr13 ::= Integer ;
+Char.       RExpr13 ::= Char ;
+String.     RExpr13 ::= String ;
+Float.      RExpr13 ::= Double ;
+Bool.       RExpr13 ::= Boolean ;
+
+Lexpr.      RExpr14 ::= LExpr ;
+
+Statement ::= Block ;
+
+
+
+-- dichiarazioni variabili e costanti a compile time
+-- dichiarazioni e chiamate di procedure e funzioni
+-- dichiarazioni di array
+-- dichiarazioni di puntatori
+
+-- espressioni
+
+
+-- assegnamenti (decidere se sono solo statement o anche espressioni)
+
+-- puntatori
+-- espressioni matematiche
+-- espressioni booleane
+-- if e if-else
+-- while
+-- break e continue
+-- modalità di passaggio argomenti
