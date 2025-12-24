@@ -3,10 +3,10 @@ from pathlib import Path
 import statistics as stats
 import time
 import warnings
-from collections.abc import Sequence
+from collections.abc import Iterable, Sequence
 from contextlib import contextmanager
 from datetime import timedelta
-from typing import Any, Iterable, cast
+from typing import Any, cast
 
 import config
 import minizinc as MZN
@@ -31,24 +31,30 @@ class Solution(solver.Solution):
         self.runtime = runtime
         self.best = best
 
+        batches_dict = {
+            (batch.capacity, batch.height, batch.diameter): batch
+            for batch in input.batches.values()
+        }
+
         used_boxes_dict = {
             bottle["box"]: Solution.Box(
-                bottle["box"] - 1,
+                bottle["box"],
                 input.box_sizes[solver_solution.boxes[bottle["box"] - 1] - 1],
             )
             for bottle in solver_solution.bottles
-            if bottle["box"] is not None
+            if solver_solution.boxes[bottle["box"] - 1] is not None
         }
         self.used_boxes = list(used_boxes_dict.values())
 
-        batches_list = list(input.batches.values())
         self.used_bottles = [
             Solution.Bottle(
-                batches_list[bottle["batch"] - 1],
+                batches_dict[
+                    (bottle["capacity"], bottle["height"], bottle["diameter"])
+                ],
                 used_boxes_dict[bottle["box"]],
             )
             for bottle in solver_solution.bottles
-            if bottle["box"] is not None
+            if solver_solution.boxes[bottle["box"] - 1] is not None
         ]
 
         self._fill_out()
@@ -157,7 +163,7 @@ class Instance(solver.Instance):
         match result.status:
             case MZN.Status.OPTIMAL_SOLUTION:
                 assert self.solutions
-                self.last_best()
+                self.was_best()
             case MZN.Status.UNSATISFIABLE:
                 self.unsatisfiable = True
 

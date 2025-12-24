@@ -1,8 +1,17 @@
+import importlib.util
 import random
+import sys
 from collections.abc import Collection, Iterable
 from datetime import timedelta
+from os import PathLike
+from pathlib import Path
+from types import ModuleType
+from typing import TYPE_CHECKING
 
-__all__ = ["str_tuple", "str_timedelta", "random_distribute"]
+if TYPE_CHECKING:
+    from _typeshed import StrPath
+
+__all__ = ["str_tuple", "str_timedelta", "random_distribute", "reimport_module"]
 
 
 def str_tuple(v: Iterable[object]):
@@ -36,3 +45,13 @@ def random_distribute(
         )
         v[lucky] += 1
     return v
+
+
+def reimport_module(module: ModuleType, copy_name: str) -> ModuleType:
+    copy_name = f"{module.__name__}_{copy_name}"
+    spec = importlib.util.spec_from_file_location(copy_name, module.__file__)
+    assert spec is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[copy_name] = module
+    spec.loader.exec_module(module)  # pyright: ignore[reportOptionalMemberAccess]
+    return module

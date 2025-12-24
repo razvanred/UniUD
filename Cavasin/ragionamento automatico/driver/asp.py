@@ -1,11 +1,15 @@
 import asyncio
-from multiprocessing.connection import _ConnectionBase
+import importlib.util
 import multiprocessing
-from pathlib import Path
 import statistics as stats
+import sys
 import time
+import uuid
+from collections.abc import Iterable
 from datetime import timedelta
-from typing import Any, Iterable, Literal, cast
+from multiprocessing.connection import _ConnectionBase
+from pathlib import Path
+from typing import Any, Literal, cast
 
 import config
 import solver
@@ -13,7 +17,7 @@ from clingo import Configuration, Control, Function, Number
 from solver import Input, NamedTuple
 from utils import str_timedelta, str_tuple
 
-__all__ = ["Solution", "Statistics", "Instance", "Solver"]
+__all__ = ["Solution", "Statistics", "Instance", "Solver", "AtomIPC", "ResultIPC"]
 
 type AtomIPC = tuple[str, *tuple[int, ...]]
 
@@ -176,7 +180,7 @@ class Instance(solver.Instance):
     def set_result(self, result: ResultIPC):
         self.statistics.update(self.start_time, result.statistics)
         if result.exhausted:
-            self.last_best()
+            self.was_best()
         if result.unsatisfiable:
             self.unsatisfiable = True
 

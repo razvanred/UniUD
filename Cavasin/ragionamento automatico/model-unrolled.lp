@@ -2,9 +2,9 @@
 % batch(Capacity, BHeight, Diameter, Quantity)
 % boxSize(Width, Length, OHeight, MinOccupancy)
 
-{bottle(1..Quantity, Capacity, BHeight, Diameter)} :- batch(Capacity, BHeight, Diameter, Quantity).
+bottle(1..Quantity, Capacity, BHeight, Diameter) :- batch(Capacity, BHeight, Diameter, Quantity).
 
-{box(1..I, Width, Length, OHeight, MinOccupancy)} :-
+box(1..I, Width, Length, OHeight, MinOccupancy) :-
 I = #sum{Quantity, Capacity, BHeight, Diameter : batch(Capacity, BHeight, Diameter, Quantity)},
 boxSize(Width, Length, OHeight, MinOccupancy).
 
@@ -22,7 +22,7 @@ placed(B2, Capacity2, BHeight2, Diameter2, O, Width, Length, OHeight, MinOccupan
 
 :- overlap(B1, Capacity1, BHeight1, Diameter1, B2, Capacity2, BHeight2, Diameter2).
 
-1 {
+{
     placed(B, Capacity, BHeight, Diameter, O, Width, Length, OHeight, MinOccupancy, X, Y) :
         X = 0..(Width - Diameter),
         Y = 0..(Length - Diameter),
@@ -32,17 +32,18 @@ placed(B2, Capacity2, BHeight2, Diameter2, O, Width, Length, OHeight, MinOccupan
 bottle(B, Capacity, BHeight, Diameter).
 
 :- Occupancy*100/(Width*Length*OHeight) < MinOccupancy,
+Occupancy > 0,
 Occupancy = #sum{
     Capacity, B, BHeight, Diameter : placed(B, Capacity, BHeight, Diameter, O, Width, Length, OHeight, MinOccupancy, _, _)
 },
 box(O, Width, Length, OHeight, MinOccupancy).
 
 :- UsedWine > AvailableWine,
-UsedWine = #sum{Capacity, B, BHeight, Diameter : bottle(B, Capacity, BHeight, Diameter)},
+UsedWine = #sum{Capacity, B, BHeight, Diameter : placed(B, Capacity, BHeight, Diameter, _, _, _, _, _, _, _)},
 AvailableWine = #sum{Number*DCapacity : demijohns(Number, DCapacity)}.
 
-#maximize {Capacity@1, B, BHeight, Diameter : bottle(B, Capacity, BHeight, Diameter)}.
+#maximize {Capacity@1, B, BHeight, Diameter : placed(B, Capacity, BHeight, Diameter, _, _, _, _, _, _, _)}.
 
-#minimize {1, O, Width, Length, OHeight, MinOccupancy : box(O, Width, Length, OHeight, MinOccupancy)}.
+#minimize {1, O, Width, Length, OHeight, MinOccupancy : placed(_, _, _, _, O, Width, Length, OHeight, MinOccupancy, _, _)}.
 
 #show placed/11.

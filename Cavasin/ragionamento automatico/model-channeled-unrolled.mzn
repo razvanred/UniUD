@@ -3,12 +3,13 @@ type uint = 0..infinity;
 type Coord = record(0..max (box_size in box_sizes) (box_size.width): x, 0..max (box_size in box_sizes) (box_size.length): y);
 type BottleSize = record(uint: capacity, uint: height, uint: diameter);
 type Batch = BottleSize ++ record(uint: quantity);
-type Bottle = BottleSize ++ var record(index_bottles: box, Coord: position);
+type Bottle = BottleSize ++ var record(opt index_boxes: box, Coord: position);
 type BoxSize = record(uint: width, uint: length, uint: height, uint: min_occupancy);
-function var bool: boxed(index_bottles: i) = occurs(boxes[bottles[i].box]);
-function var BoxSize: box_size_(var index_bottles: i) = box_sizes[deopt(boxes[i])];
+function var bool: boxed(index_bottles: i) = occurs(bottles[i].box);
 
-predicate occupancy(index_bottles: i) =
+function var BoxSize: box_size_(var opt index_boxes: i) = boxes[deopt(i)];
+
+predicate occupancy(index_boxes: i) =
   let {
       var BoxSize: box_size = box_size_(i);
       % 1ml = 1cm³
@@ -42,35 +43,29 @@ list of BoxSize: box_sizes;
 set of uint: index_bottles = 1..sum (batch in batches) (batch.quantity);
 array[index_bottles] of Bottle: bottles::add_to_output = let {
   array[index_bottles] of index_set(batches): bottles = [i | i in index_set(batches), _ in 1..batches[i].quantity];
-  array[index_bottles] of var index_bottles: boxes;
+  array[index_bottles] of var opt index_boxes: boxes;
   array[index_bottles] of var Coord: positions;
 } in [(capacity: batches[bottles[i]].capacity, height: batches[bottles[i]].height, diameter: batches[bottles[i]].diameter, box: boxes[i], position: positions[i]) | i in index_bottles];
-array[index_bottles] of var opt index_set(box_sizes): boxes::add_to_output;
+
+set of uint: index_boxes = 1..length(box_sizes)*card(index_bottles);
+array[index_boxes] of BoxSize: boxes::add_to_output = [box_size | box_size in box_sizes, _ in index_bottles];
+var set of index_boxes: used_boxes;
 
 var 0..demijohns_number*demijohn_capacity: bottled_wine::add_to_output = sum (i in index_bottles) (boxed(i)*bottles[i].capacity);
 
 % constraints
+constraint forall (i in index_bottles) (boxed(i) -> bottles[i].box in used_boxes);
+
 constraint forall (i in index_bottles) (boxed(i) -> bottles[i].height <= box_size_(bottles[i].box).height);
 
 constraint forall (i in index_bottles) (boxed(i) -> packed2D(i));
 
-constraint forall (i in index_bottles) (occurs(boxes[i]) -> occupancy(i));
+constraint forall (i in index_boxes) (i in used_boxes -> occupancy(i));
 
 % objective
 solve
-  % ::relax_and_reconstruct(
-  %   [deopt(box) | box in boxes] ++
-  %   [bottle.box | bottle in bottles] ++
-  %   [occurs(box) | box in boxes]
-  %   , 70)
-  % ::seq_search([
-  %   bool_search([occurs(box) | box in boxes], indomain_random, dom_w_deg),
-  %   int_search([bottles[j].box | j in index_bottles], indomain_random, smallest),
-  %   int_search([position(i).x | i in index_bottles], indomain_min, input_order),
-  %   int_search([position(i).y | i in index_bottles], indomain_min, input_order)])
-  % ::restart_luby(3)
   maximize let {
     uint: unit = card(index_bottles)+1;
-    var {0} union index_bottles: used_boxes = card(array2set(boxes));
+    var {0} union index_bottles: used_boxes = card(used_boxes);
     var {0} union index_bottles: sub = card(index_bottles)-used_boxes;
   } in bottled_wine*unit+sub;

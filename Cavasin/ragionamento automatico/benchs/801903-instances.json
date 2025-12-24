@@ -1,0 +1,94 @@
+[
+    {
+        "demijohns_number": 10,
+        "demijohn_capacity": 1000,
+        "batches": [
+            {
+                "quantity": 5,
+                "capacity": 1000,
+                "height": 32,
+                "diameter": 8
+            }
+        ],
+        "box_sizes": [
+            {
+                "width": 20,
+                "length": 17,
+                "height": 35,
+                "min_occupancy": 10
+            }
+        ]
+    },
+    {
+        "demijohns_number": 10,
+        "demijohn_capacity": 1000,
+        "batches": [
+            {
+                "quantity": 5,
+                "capacity": 1000,
+                "height": 32,
+                "diameter": 8
+            }
+        ],
+        "box_sizes": [
+            {
+                "width": 20,
+                "length": 17,
+                "height": 35,
+                "min_occupancy": 10
+            }
+        ]
+    },
+    {
+        "demijohns_number": 10,
+        "demijohn_capacity": 1000,
+        "batches": [
+            {
+                "quantity": 1,
+                "capacity": 375,
+                "height": 24,
+                "diameter": 6
+            },
+            {
+                "quantity": 4,
+                "capacity": 1000,
+                "height": 32,
+                "diameter": 8
+            }
+        ],
+        "box_sizes": [
+            {
+                "width": 20,
+                "length": 17,
+                "height": 35,
+                "min_occupancy": 10
+            }
+        ]
+    },
+    {
+        "demijohns_number": 10,
+        "demijohn_capacity": 1000,
+        "batches": [
+            {
+                "quantity": 1,
+                "capacity": 375,
+                "height": 24,
+                "diameter": 6
+            },
+            {
+                "quantity": 4,
+                "capacity": 1000,
+                "height": 32,
+                "diameter": 8
+            }
+        ],
+        "box_sizes": [
+            {
+                "width": 20,
+                "length": 17,
+                "height": 35,
+                "min_occupancy": 10
+            }
+        ]
+    }
+]

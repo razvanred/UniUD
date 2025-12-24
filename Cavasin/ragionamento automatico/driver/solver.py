@@ -55,6 +55,9 @@ class Input(NamedTuple):
     @staticmethod
     def generate():
         for _ in range(config.run_count):
+            usable_bottle_sizes = (
+                config.usable_bottle_sizes or config.bottle_sizes.keys()
+            )
             yield Input(
                 config.demijohns_number,
                 config.demijohn_capacity,
@@ -64,10 +67,10 @@ class Input(NamedTuple):
                         (
                             key
                             for key in config.bottle_sizes.keys()
-                            if key in config.usable_bottle_sizes
+                            if key in usable_bottle_sizes
                         ),
                         random_distribute(
-                            len(config.usable_bottle_sizes),
+                            len(usable_bottle_sizes),
                             config.bottles_quantity,
                         ),
                     )
@@ -90,7 +93,6 @@ class Input(NamedTuple):
         table = Table(
             "wine",
             "bottles",
-            title="Instance",
             title_justify="left",
             box=rich.box.MINIMAL,
         )
@@ -242,13 +244,12 @@ class Instance(ABC):
                 extrasaction="ignore",
             )
             writer.writeheader()
-            for i, run in enumerate(instances):
-                dict = run.asdict()
-                dict["instance"] = i
+            for i, instance in enumerate(instances):
+                dict = instance.asdict()
+                dict["instance"] = i + 1
                 writer.writerow(dict)
-        pass
 
-    def last_best(self):
+    def was_best(self):
         if self.solutions:
             self.solutions[-1].best = True
             self._table.rows[-1].style = "green"

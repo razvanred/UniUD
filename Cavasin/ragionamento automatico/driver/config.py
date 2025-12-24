@@ -17,29 +17,32 @@ bottle_sizes: Final[dict[str, BottleSize]] = {
     # jeroboam
     "jeroboam": BottleSize(3000, 47, 13),
 }
-usable_bottle_sizes: Final[set[str]] = {
-    "demi",
-    "standard",
-}  # set(range(len(bottleSizes)))
-box_sizes: Final[Sequence[BoxSize]] = [
-    BoxSize(11, 11, 100, 40),
-    BoxSize(20, 11, 100, 20),
-    BoxSize(17, 30, 100, 50),
-    BoxSize(18, 18, 25, 60),
+usable_bottle_sizes: Final[set[str] | None] = None
+# usable_bottle_sizes: Final[set[str] | None] = {
+#     "demi",
+#     "1L",
+# }
+box_sizes: Final[Sequence[BoxSize] | None] = [
+    BoxSize(20, 17, 35, 10),
+    BoxSize(13, 13, 25, 20),
+    BoxSize(13, 13, 47, 30),
+    BoxSize(26, 27, 47, 20),
+    BoxSize(26, 27, 32, 20),
+    BoxSize(16, 25, 30, 20),
 ]
 box_sizes_quantity: Final[int] = 2
-bottles_quantity: Final[int] = 12
+bottles_quantity: Final[int] = 10
 demijohns_number: Final[int] = 10
-demijohn_capacity: Final[int] = 1000
+demijohn_capacity: Final[int] = 10000
 box_widths: Final[Sequence[int]] = [15, 25, 30, 40]
 box_ratios: Final[Sequence[float]] = [1.0, 1.6, 2.0]
 box_heights: Final[Sequence[int]] = [30, 35, 50]
-box_occupancies: Final[Sequence[int]] = [50, 60, 70]
+box_occupancies: Final[Sequence[int]] = [5, 20, 25]
 
-seed: Final[int] = 230706628
-run_count: Final[int] = 2
-time_limit: Final[timedelta] = timedelta(minutes=3)
-processes: Final[int] = 6
+seed: Final[int] = 372845237
+run_count: Final[int] = 15
+time_limit: Final[timedelta] = timedelta(minutes=10)
+processes: Final[int] = 4
 out_dir: Final[Path] = Path("out")
 
 csp_solver_label: Final[str] = "gecode"
