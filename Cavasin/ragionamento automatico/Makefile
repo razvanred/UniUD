@@ -20,7 +20,7 @@ venv: $(VENV)/$(VENV_STAMP)
 
 $(VENV)/$(VENV_STAMP): requirements.txt
 	$(PYTHON) -m venv $(VENV)
-	source $(VENV)/bin/activate
+	. $(VENV)/bin/activate
 	pip install -Ur requirements.txt
 	touch $@
 
