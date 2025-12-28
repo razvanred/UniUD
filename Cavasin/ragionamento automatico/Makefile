@@ -19,16 +19,13 @@ all : main
 venv: $(VENV)/$(VENV_STAMP)
 
 $(VENV)/$(VENV_STAMP): requirements.txt
-    ifneq ($(wildcard $(VENV)/.),)
-        $(error Error: The directory '$(VENV)' already exists. Please remove it before proceeding)
-    endif
-    $(PYTHON) -m venv $(VENV)
-    source $(VENV)/bin/activate
-    pip install -Ur requirements.txt
-    $(file >$@)
+	$(PYTHON) -m venv $(VENV)
+	source $(VENV)/bin/activate
+	pip install -Ur requirements.txt
+	touch $@
 
 demo : | venv
-    $(PYTHON) driver/driver.py --demo
+	$(PYTHON) driver/driver.py --demo
 
 clean:
-    $(RM) -r $(VENV)
+	$(RM) -r $(VENV)
