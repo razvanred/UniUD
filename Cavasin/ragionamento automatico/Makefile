@@ -26,6 +26,7 @@ $(VENV)/$(VENV_STAMP): requirements.txt
 	touch $@
 
 demo : | venv
+	. $(VENV)/bin/activate
 	$(PYTHON) driver/driver.py --demo
 
 clean:
