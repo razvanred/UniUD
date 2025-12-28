@@ -4,6 +4,7 @@ PYTHON     := python3
 
 MAKEFLAGS += --warn-undefined-variables
 MAKEFLAGS += --no-builtin-rules
+.SHELLFLAGS += -e
 .ONESHELL:
 
 # List of goals not corresponding to file names.
