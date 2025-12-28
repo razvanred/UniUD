@@ -145,13 +145,6 @@ async def main():
         config.usable_bottle_sizes = {"standard", "1L"}
         config.bottles_quantity = 6
         config.box_sizes_quantity = 2
-
-        random.seed(config.seed)
-
-        inputs = list(Input.generate())
-
-        config.bottles_quantity = 10
-        config.usable_bottle_sizes = {"standard", "1L", "magnum"}
         config.box_sizes = [
             BoxSize(20, 17, 35, 10),
             BoxSize(13, 13, 25, 20),
@@ -159,34 +152,85 @@ async def main():
             BoxSize(16, 25, 30, 20),
         ]
 
+        random.seed(config.seed)
+
+        inputs = list(Input.generate())
+
+        config.bottles_quantity = 9
+        config.usable_bottle_sizes = {"standard", "1L", "magnum"}
+
         inputs += list(Input.generate())
 
-        config.run_count = 8
+        config.bottles_quantity = 16
+        config.usable_bottle_sizes = None
+        config.box_sizes_quantity = 3
+        config.box_sizes = [
+            BoxSize(20, 17, 35, 10),
+            BoxSize(13, 13, 25, 20),
+            BoxSize(13, 13, 47, 30),
+            BoxSize(26, 27, 47, 20),
+            BoxSize(26, 27, 32, 20),
+            BoxSize(16, 25, 30, 20),
+        ]
 
+        inputs += list(Input.generate())
+
+        config.run_count = 12
         csp.Instance.dump_inputs(config.out_dir, inputs)
-
-        minizinc = csp_channeled.Solver()
-        console.rule(title=minizinc.name)
-        minizinc_instances = await solve_all(inputs, minizinc)
-        if minizinc_instances:
-            console.print(
-                csp.Statistics.summarize(
-                    [instance.statistics for instance in minizinc_instances]
-                ),
-                end="\n\n",
-            )
-
-        asp.Instance.dump_inputs(config.out_dir, inputs)
-        # clingo = asp_unrolled.Solver()
-        # console.rule(clingo.name)
-        # clingo_instances = await solve_all(inputs, clingo)
-        # if clingo_instances:
+        # minizinc = csp_channeled.Solver()
+        # console.rule(title=minizinc.name)
+        # minizinc_instances = await solve_all(inputs, minizinc)
+        # if minizinc_instances:
         #     console.print(
-        #         asp.Statistics.summarize(
-        #             [instance.statistics for instance in clingo_instances]
+        #         csp.Statistics.summarize(
+        #             [instance.statistics for instance in minizinc_instances]
         #         ),
         #         end="\n\n",
         #     )
+
+        # --------
+
+        config.run_count = 4
+        config.usable_bottle_sizes = {"standard", "1L"}
+        config.bottles_quantity = 3
+        config.box_sizes_quantity = 1
+        config.box_sizes = [
+            BoxSize(20, 17, 35, 5),
+            BoxSize(16, 25, 32, 5),
+        ]
+
+        inputs = list(Input.generate())
+
+        config.usable_bottle_sizes = {"standard", "1L", "magnum"}
+        config.bottles_quantity = 6
+        config.box_sizes_quantity = 2
+
+        inputs += list(Input.generate())
+
+        config.bottles_quantity = 10
+        config.usable_bottle_sizes = None
+        config.box_sizes_quantity = 2
+        config.box_sizes = [
+            BoxSize(20, 17, 35, 10),
+            BoxSize(13, 13, 25, 20),
+            BoxSize(13, 13, 47, 30),
+            BoxSize(26, 27, 47, 20),
+            BoxSize(26, 27, 32, 20),
+            BoxSize(16, 25, 30, 20),
+        ]
+
+        config.run_count = 12
+        asp.Instance.dump_inputs(config.out_dir, inputs)
+        clingo = asp_unrolled.Solver()
+        console.rule(clingo.name)
+        clingo_instances = await solve_all(inputs, clingo)
+        if clingo_instances:
+            console.print(
+                asp.Statistics.summarize(
+                    [instance.statistics for instance in clingo_instances]
+                ),
+                end="\n\n",
+            )
 
     async def tests():
         async def csp_battery():
