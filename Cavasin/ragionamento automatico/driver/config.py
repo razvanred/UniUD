@@ -6,18 +6,13 @@ from typing import Final, Literal
 from solver import BottleSize, BoxSize
 
 bottle_sizes: Final[dict[str, BottleSize]] = {
-    # demi or half
     "demi": BottleSize(375, 24, 6),
-    # standard or bordeaux
     "standard": BottleSize(750, 30, 8),
-    # 1L
     "1L": BottleSize(1000, 32, 8),
-    # magnum
     "magnum": BottleSize(1500, 35, 9),
-    # jeroboam
     "jeroboam": BottleSize(3000, 47, 13),
 }
-usable_bottle_sizes: Final[set[str] | None] = None
+usable_bottle_sizes: Final[set[str] | None] = None  # None for all
 # usable_bottle_sizes: Final[set[str] | None] = {
 #     "demi",
 #     "1L",
@@ -29,7 +24,7 @@ box_sizes: Final[Sequence[BoxSize] | None] = [
     BoxSize(26, 27, 47, 20),
     BoxSize(26, 27, 32, 20),
     BoxSize(16, 25, 30, 20),
-]
+]  # None to generate them individually
 box_sizes_quantity: Final[int] = 2
 bottles_quantity: Final[int] = 10
 demijohns_number: Final[int] = 10

@@ -60,6 +60,22 @@ constraint forall (i in index_bottles) (occurs(boxes[i]) -> occupancy(i));
 
 % objective
 solve
+  ::seq_search([
+    % int_search([bottle.box | bottle in bottles], input_order, indomain_random),
+    % bool_search([occurs(bottle.box) | bottle in bottles], input_order, indomain_random),
+    % int_search([box | box in boxes], input_order, indomain_random),
+    % bool_search([occurs(box) | box in boxes], input_order, indomain_random),
+    % int_search([bottle.position.x | bottle in bottles], input_order, indomain_min),
+    % int_search([bottle.position.y | bottle in bottles], input_order, indomain_min)
+  ])
+  ::relax_and_reconstruct(
+      [deopt(bottle.box) | bottle in bottles] ++ [occurs(bottle.box) | bottle in bottles] ++
+      [deopt(box) | box in boxes] ++ [occurs(box) | box in boxes],
+      50 % higher with lots of variables
+  )
+  ::if card(index_bottles) >= 16 then
+    restart_luby(7)
+  endif
   maximize let {
     uint: unit = card(index_bottles)+1;
     var {0} union index_bottles: used_boxes = card(array2set(boxes));

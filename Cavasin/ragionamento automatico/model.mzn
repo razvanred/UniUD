@@ -58,17 +58,6 @@ constraint forall (i in index_bottles) (occurs(boxes[i]) -> occupancy(i));
 
 % objective
 solve
-  % ::relax_and_reconstruct(
-  %   [deopt(box) | box in boxes] ++
-  %   [bottle.box | bottle in bottles] ++
-  %   [occurs(box) | box in boxes]
-  %   , 70)
-  % ::seq_search([
-  %   bool_search([occurs(box) | box in boxes], indomain_random, dom_w_deg),
-  %   int_search([bottles[j].box | j in index_bottles], indomain_random, smallest),
-  %   int_search([position(i).x | i in index_bottles], indomain_min, input_order),
-  %   int_search([position(i).y | i in index_bottles], indomain_min, input_order)])
-  % ::restart_luby(3)
   maximize let {
     uint: unit = card(index_bottles)+1;
     var {0} union index_bottles: used_boxes = card(array2set(boxes));
