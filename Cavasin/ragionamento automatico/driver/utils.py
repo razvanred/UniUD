@@ -55,3 +55,108 @@ def reimport_module(module: ModuleType, copy_name: str) -> ModuleType:
     sys.modules[copy_name] = module
     spec.loader.exec_module(module)  # pyright: ignore[reportOptionalMemberAccess]
     return module
+
+
+# async def tests():
+#     async def csp_battery():
+#         random.seed(config.seed)
+#         inputs = list(Input.generate())
+#         csp.Instance.dump_inputs(config.out_dir, inputs)
+
+#         minizinc = csp_channeled_unrolled.Solver()
+#         console.rule(title=minizinc.name)
+#         minizinc_instances = await solve_all(inputs, minizinc)
+#         if minizinc_instances:
+#             console.print(
+#                 csp.Statistics.summarize(
+#                     [instance.statistics for instance in minizinc_instances]
+#                 ),
+#                 end="\n\n",
+#             )
+
+#         minizinc = csp_channeled.Solver()
+#         console.rule(title=minizinc.name)
+#         minizinc_instances = await solve_all(inputs, minizinc)
+#         if minizinc_instances:
+#             console.print(
+#                 csp.Statistics.summarize(
+#                     [instance.statistics for instance in minizinc_instances]
+#                 ),
+#                 end="\n\n",
+#             )
+
+#         minizinc = csp.Solver()
+#         console.rule(title=minizinc.name)
+#         minizinc_instances = await solve_all(inputs, minizinc)
+#         if minizinc_instances:
+#             console.print(
+#                 csp.Statistics.summarize(
+#                     [instance.statistics for instance in minizinc_instances]
+#                 ),
+#                 end="\n\n",
+#             )
+
+#         minizinc = csp_fat.Solver()
+#         console.rule(title=minizinc.name)
+#         minizinc_instances = await solve_all(inputs, minizinc)
+#         if minizinc_instances:
+#             console.print(
+#                 csp.Statistics.summarize(
+#                     [instance.statistics for instance in minizinc_instances]
+#                 ),
+#                 end="\n\n",
+#             )
+
+#     async def asp_battery():
+#         random.seed(config.seed)
+#         inputs = list(Input.generate())
+#         asp.Instance.dump_inputs(config.out_dir, inputs)
+
+#         clingo = asp.Solver()
+#         console.rule(clingo.name)
+#         clingo_instances = await solve_all(inputs, clingo)
+#         if clingo_instances:
+#             console.print(
+#                 asp.Statistics.summarize(
+#                     [instance.statistics for instance in clingo_instances]
+#                 ),
+#                 end="\n\n",
+#             )
+
+#         clingo = asp_unrolled.Solver()
+#         console.rule(clingo.name)
+#         clingo_instances = await solve_all(inputs, clingo)
+#         if clingo_instances:
+#             console.print(
+#                 asp.Statistics.summarize(
+#                     [instance.statistics for instance in clingo_instances]
+#                 ),
+#                 end="\n\n",
+#             )
+
+#         clingo = asp_indexed.Solver()
+#         console.rule(clingo.name)
+#         clingo_instances = await solve_all(inputs, clingo)
+#         if clingo_instances:
+#             console.print(
+#                 asp.Statistics.summarize(
+#                     [instance.statistics for instance in clingo_instances]
+#                 ),
+#                 end="\n\n",
+#             )
+
+#     # default config
+#     config.seed = 372845237
+#     config.bottles_quantity = 10
+#     # await csp_battery()
+#     # await asp_battery()
+
+#     config.seed = 344450736
+#     config.bottles_quantity = 12
+#     # await csp_battery()
+#     # await asp_battery()
+
+#     config.seed = 1577213729
+#     config.bottles_quantity = 16
+#     config.box_sizes_quantity = 3
+#     # await csp_battery()

@@ -302,4 +302,4 @@ L'interoperabilità con Python è ben gestita, e vengono offerte API asincrone c
 
 Le istanze sono generate secondo i parametri di configurazione in `config.py`, sulla funzione `main()` in `driver.py` è possibile commentare/scommentare l'esecuzione delle varie varianti di modello. `driver.py` va eseguito con la root di questa repository come working directory.
 
-Per eseguire i test richiesti dalla consegna, chiamare `make demo`, è necessaria una distribuzione pressoché aggiornata di Python.
+Per eseguire i test richiesti dalla consegna, chiamare `make demo`, è necessaria una distribuzione pressoché aggiornata di Python con *pip* e *venv*.
