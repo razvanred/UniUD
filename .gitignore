@@ -11,6 +11,7 @@ Rosu/*.bak
 
 # Exceptions
 
+!.lintr
 !.gitignore
 !.gitattributes
 
