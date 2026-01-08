@@ -72,3 +72,13 @@ Standard Error $SE=\sqrt{MSE}$. Con $\hat\theta$ è **unbiased** $SE=\sqrt{V(\ha
   * `var.test(data1, data2)` F test, confronta le varianze, opzionalmente `conf.level = 0.95` e `alternative = "two.sided"`
     * calcola p-value of $SVR$
 * normality test
+  * test grafici
+    * qq-plot
+    * histogram vs normal distribution
+  * test numerici
+    * `dagoTest(data)` calcola più p-value
+      * omnibus: cumulativo
+      * kurtosis: peso delle code
+      * skewness: simmetria delle code
+    * `shapiroTest(data)` Shapiro-Wilk test 
+    * `ks.test(data)` Kolmogorov-Smirnov test 
