@@ -100,6 +100,18 @@ Standard Error $SE=\sqrt{MSE}$. Con $\hat\theta$ è **unbiased** $SE=\sqrt{V(\ha
     * `shapiroTest(data)` Shapiro-Wilk test 
     * `ks.test(data)` Kolmogorov-Smirnov test 
 * test di correlazione
+  * correlazioni lineari
+    * `cor.test(data1, data2, method = "pearson")` Pearson's correlation coefficient
+
+      `cor(data1, data2, method = "pearson")` calcola $\rho(X,Y)=\frac{COV(X,Y)}{\sigma_X\sigma_Y}$
+  * correlazioni monotone
+    * `cor.test(data1, data2, method = "spearman")` Spearman's rank correlation coefficient
+      * `cor(data1, data2, method = "spearman")` calcola $\tau_s=\rho(R(X),R(Y))$
+    * `cor.test(data1, data2, method = "kendall")` Kendall's rank correlation coefficient
+      * `cor(data1, data2, method = "kendall")` calcola $\tau_k=\frac{n_c-n_d}{n}$
+
+        $n_c$ = numero di coppie concordi\
+        $n_d$ = numero di coppie discordi
   * tabella di contingenza di variabili categoriche
     * `chisq.test(contTable)` controlla la $\chi^2$-statistic.
 
