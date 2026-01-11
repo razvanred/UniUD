@@ -13,3 +13,5 @@ t.test(y1, mu = 30)
 dt()
 
 pnorm()
+
+pchisq()
