@@ -1,25 +1,19 @@
-[![](img/sd.svg)](https://en.wikipedia.org/wiki/Standard_error#Derivation)
-![](img/notes.png)
-![](img/notes_2.png)
+# Statistica
 
-![](img/notes_3.png)
-
----
----
-
-![](img/notes_1.png)
-
----
----
+> Per Wikipedia e Vidoni SSE, sum of squared errors = RSS, residual sum of squares
 
 ## Standard Error
 
 Mean Square Error $MSE=E[(\hat\theta-\theta)^2]=V(\hat\theta)+|E[\hat\theta]-\theta|^2=V(\hat\theta)+Bias^2$\
-Standard Error $SE=\sqrt{MSE}$. Con $\hat\theta$ è **unbiased** $SE=\sqrt{V(\hat\theta)}$ 
+Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\hat\theta)}$
 
 * mean
   * $SEM=\sqrt{\frac{\sigma^2}{n}}$
   * $\widehat{SEM}=\sqrt{\frac{S^2}{n}}$
+  * linear regression fitted mean ($\hat\mu_j$)
+    * $\widehat{SEFM}=\hat\sigma\sqrt{\frac1n+\frac{(x_j-\overline x)^2}{\sum\limits^n_{i=1}(x_i-\overline x)^2}}$
+
+      dipende da $x_j$
 * proportion
   * $SEP=\sqrt{\frac{p(1-p)}{n}}$
 * difference
@@ -31,35 +25,93 @@ Standard Error $SE=\sqrt{MSE}$. Con $\hat\theta$ è **unbiased** $SE=\sqrt{V(\ha
       * $S^2_p=\frac{S^2_1(n_1-1)+S^2_2(n_2-1)}{n_1+n_2-2}$
     * proportions
       * $S^2_p=\hat p(1-\hat p)$
+* predictors
+  * linear predictor
+    * $\widehat{SEL}=\sqrt{\sigma^2+\widehat{SEFM}}$
 
 ## Statistics
 
 * $T$-statistic
   * mean, studentized sample mean
-    * $\frac{\overline Y-\mu}{\widehat{SEM}}\sim t_{n-1}$
+
+    $\frac{\overline Y-\mu}{\widehat{SEM}}\sim t_{n-1}$
   * difference of mean, same variance
-    * $\frac{\overline X-\overline Y}{\widehat{SED^\sigma}}\sim t_{n_X+n_Y-2}$
+
+    $\frac{\overline X-\overline Y}{\widehat{SED^\sigma}}\sim t_{n_X+n_Y-2}$
   * difference of mean, different variance
-    * $\frac{\overline X-\overline Y}{SED}\sim t_?$
+
+    $\frac{\overline X-\overline Y}{SED}\sim t_?$
   * mean difference, paired data. Su $V=X-Y$ e $\mu=0$
-    * $\frac{\overline{V}}{\widehat{SEM}}\sim t_{n-1}$ 
+
+    $\frac{\overline{V}}{\widehat{SEM}}\sim t_{n-1}$
+  * linear predictor. Con $\hat Y_j=\hat\mu_j+0$
+
+    $\frac{Y_j-\hat\mu_j}{\widehat{SEL}}\sim t_{n-2}$
+  * linear confidence interval
+
+    $\frac{\hat\mu_j}{\widehat{SEFM}}\sim t_{n-2}$
 * $Z$-statistic
   * mean, standardized sample mean
-    * $\frac{\overline Y-\mu}{SEM}\sim N(0,1)$
+
+    $\frac{\overline Y-\mu}{SEM}\sim N(0,1)$
   * proportions
-    * $\frac{p_X-p_{H_0}}{SEP}\sim N(0,1)$
+
+    $\frac{p_X-p_{H_0}}{SEP}\sim N(0,1)$
   * difference of proportions
-    * $\frac{p_X-p_Y}{\widehat{SED^\sigma}}\sim N(0,1)$
+
+    $\frac{p_X-p_Y}{\widehat{SED^\sigma}}\sim N(0,1)$
 * $F$-statistic
   * sample variance ratio, normal distribution
-    * $\frac{S^2_X/\sigma^2_X}{S^2_Y/\sigma^2_Y}\sim F(n_X-1,n_Y-1)$
+
+    $\frac{S^2_X/\sigma^2_X}{S^2_Y/\sigma^2_Y}\sim F(n_X-1,n_Y-1)$
+  * generalized linear test
+
+    $\frac{\text{explained variance}}{\text{unexplained variance}}$
+    * ANOVA
+
+      $\frac{BSS/a-1}{WSS/an-a}\sim F(a-1,an-a)$
+
+    * comparison con un modello restricted $R$
+
+      $\frac{(SSE^R-SSE)/(p_2-p_1)}{SSE/(n-p_2)}\sim F(p_2-p_1,n-p_2)$
+
+      $\frac{(SST-SSE)-(SST-SSE^R)}{SSE}=\frac{SSE^R-SSE}{SSE}$
+    * linear regression. Su $\hat Y^R=\overline y$
+
+      $\frac{SSE^R-SSE}{SSE}=\frac{SST-SSE}{SSE}=\frac{SSR}{SSE}$
+
 * $\chi^2$-statistic
   * large enough contingency table
-    * $\sum\limits^i_{i=1..r}\sum\limits^j_{j=1..c}\frac{(n_{ij}-\hat p^0_{ij} n)}{\hat p^0_{ij} n}\sim \chi^2((r-1)(c-1))$
 
-      con $\hat p^0_{ij}=\frac{n_{i+}}{n}\frac{n_{+j}}{n}$
+    $\sum\limits^r_{i=1}\sum\limits^c_{j=1}\frac{(n_{ij}-\hat p^0_{ij} n)}{\hat p^0_{ij} n}\sim \chi^2((r-1)(c-1))$
+
+    $\hat p^0_{ij}=\frac{n_{i+}}{n}\frac{n_{+j}}{n}$
   * sample variance from normal distributions
-    * $\frac{(n-1)S^2}{\sigma^2}\sim \chi^2(n-1)$
+
+    $\frac{(n-1)S^2}{\sigma^2}\sim \chi^2(n-1)$
+  * ANOVA
+    * BSS, between-group sum of squares, sotto $H_0$
+
+      $n\sum\limits^{a}_{i=0}(\overline y_i-\overline y)^2\sim\chi^2(a-1)$
+    * WSS, within-group sum of squares
+
+      $\sum\limits^{a}_{i=0}\sum\limits^{n}_{j=0}(\overline y_{ij}-\overline y_i)^2\sim\chi^2(an-a)$
+  * linear regression
+    * sum of squared residuals, sotto $H_0$
+
+      $\frac{SSR}{\sigma^2}\sim\chi^2(k)$
+
+      $SSR=\sum\limits^n_{i=0}(\hat y_i-\overline y)^2$
+    * sum of squared errors
+
+      $\frac{SSE}{\sigma^2}\sim\chi^2(n-k-1)$
+
+      $SSE=\sum\limits^n_{i=0}\hat\epsilon_i^2$
+    * sum of squares total, sotto $H_0$
+
+      $\frac{SST}{\sigma^2}\sim\chi^2(n-1)$
+
+      $SST=\sum\limits^n_{i=0}(y_i-\overline y)^2=SSR+SSE$
 
 ## Test
 
@@ -97,17 +149,17 @@ Standard Error $SE=\sqrt{MSE}$. Con $\hat\theta$ è **unbiased** $SE=\sqrt{V(\ha
       * omnibus: cumulativo
       * kurtosis: peso delle code
       * skewness: simmetria delle code
-    * `shapiroTest(data)` Shapiro-Wilk test 
-    * `ks.test(data)` Kolmogorov-Smirnov test 
+    * `shapiroTest(data)` Shapiro-Wilk test
+    * `ks.test(data)` Kolmogorov-Smirnov test
 * test di correlazione
   * correlazioni lineari
     * `cor.test(data1, data2, method = "pearson")` Pearson's correlation coefficient
 
       `cor(data1, data2, method = "pearson")` calcola $\rho(X,Y)=\frac{COV(X,Y)}{\sigma_X\sigma_Y}$
   * correlazioni monotone
-    * `cor.test(data1, data2, method = "spearman")` Spearman's rank correlation coefficient
+    * `cor.test(data1, data2, method = "spearman")` calcola Spearman's rank correlation coefficient
       * `cor(data1, data2, method = "spearman")` calcola $\tau_s=\rho(R(X),R(Y))$
-    * `cor.test(data1, data2, method = "kendall")` Kendall's rank correlation coefficient
+    * `cor.test(data1, data2, method = "kendall")` calcola Kendall's rank correlation coefficient
       * `cor(data1, data2, method = "kendall")` calcola $\tau_k=\frac{n_c-n_d}{n}$
 
         $n_c$ = numero di coppie concordi\
@@ -117,3 +169,41 @@ Standard Error $SE=\sqrt{MSE}$. Con $\hat\theta$ è **unbiased** $SE=\sqrt{V(\ha
 
       Pearson's $\chi^2$-test, p-value alto se indipendenti
       * $\chi^2$-statistic/large enough contingency table
+* model checking
+  * `predict(model, newdata = data, interval = "confidence")` confidence interval for $\mu_i$ where $i=1..|$`newdata`$|$
+
+    $[\hat\mu_i\pm t_{n-2;1-\alpha/2}\widehat{SEFM}]$
+    * $T$-statistic/linear predictor
+  * `predict(model, newdata = data, interval = "prediction")` prediction interval for $Y_i$ where $i=1..|$`newdata`$|$
+
+    $[\hat Y_i\pm t_{n-2;1-\alpha/2}\widehat{SEL}]$
+    * $T$-statistic/linear confidence interval
+  * `logLik(mod)` calcola loglikelihood, alto è meglio
+  * `AIC(model)` calcola AIC, basso è meglio
+
+      $AIC_M=-2\ln(f_{\hat\theta}(y))+2\mathrm{dim}(\theta)$
+  * `BIC(model)` calcola BIC
+    * `AIC(model, k = log(length(data)))`, basso è meglio
+
+      $BIC_M=-2\ln(f_{\hat\theta}(y))+\ln(n)\mathrm{dim}(\theta)$
+  * `cv -= log(d(one_out, mu, sd))` cross validation leave-one-out, basso è meglio
+
+    $CV=-\sum\limits^n_{i=1}\ln(f_{\hat\theta[\setminus i]}(y_i))$
+  * `anova(model)` calcola la tabella ANOVA per un modello generico
+    * calcola F-statistic per ANOVA, calcola p-value
+    * opzionalmente `type`
+    * $F$-statistic/generalized linear test/ANOVA
+* `summary(model)` calcola informazioni su un modello
+  * $R^2=\frac{SSR}{SST}$ percentuale di varianza spiegata dal modello, adjusted $R^2=1-\frac{V(\hat\epsilon)}{V(y)}$
+  * $F$-statistic/generalized linear test/linear regression
+
+    Rigettare F-test $H_0:\beta_1=\beta_i=0$ (F-value estremo, p-value basso) con gli individuali t$_i$-test accettanti di $H_0:\beta_i=0$, suggerisce multicollinearità, una relazione di dipendenza senza stimatori significativi.
+
+## Fitting
+
+* `lm(response ~ predictor, data = data)` linear regression
+  * calcola coefficienti della regressione lineare, calcola p-value
+    * $F$-statistic/generalized linear test/linear regression
+* `aov(response ~ predictor, data = data)` calcola modello ANOVA
+  * calcola F-statistic per ANOVA, calcola p-value
+    * $F$-statistic/generalized linear test/ANOVA

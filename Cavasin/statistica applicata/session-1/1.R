@@ -17,4 +17,6 @@ qqline(onions$dens, lwd = 2, col = "red")
 
 par(mfrow = c(1, 1))
 
-(41 + 30 + 43 + (23)) / 322 * 100
+(41 + 30 + 43 + 34 + (1)) / 322 * 100
+
+ppoints

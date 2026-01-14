@@ -57,3 +57,11 @@ t.onesample <- function(
 
 y1 <- rnorm(40, mean = 30)
 t.onesample(y1, mu = 30.5)
+
+# plot lm intervals
+
+# test raggruppati per funzione
+
+# AIC e BIC che prendono liste di modelli
+
+lm
