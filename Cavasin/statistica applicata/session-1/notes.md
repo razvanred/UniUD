@@ -11,7 +11,7 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
   * $SEM=\sqrt{\frac{\sigma^2}{n}}$
   * $\widehat{SEM}=\sqrt{\frac{S^2}{n}}$
   * linear regression fitted mean ($\hat\mu_j$)
-    * $\widehat{SEFM}=\hat\sigma\sqrt{\frac1n+\frac{(x_j-\overline x)^2}{\sum\limits^n_{i=1}(x_i-\overline x)^2}}$
+    * $\widehat{SEFM}=\hat\sigma\sqrt{\frac1n+\frac{(x_j-\overline x)^2}{SST}}$
 
       dipende da $x_j$
 * proportion
@@ -35,21 +35,18 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
   * mean, studentized sample mean
 
     $\frac{\overline Y-\mu}{\widehat{SEM}}\sim t_{n-1}$
+  * linear confidence interval
+
+    $\frac{\overline Y_j-\hat y_j}{\widehat{SEFM}}\sim t_{n-2}$
   * difference of mean, same variance
 
     $\frac{\overline X-\overline Y}{\widehat{SED^\sigma}}\sim t_{n_X+n_Y-2}$
   * difference of mean, different variance
 
     $\frac{\overline X-\overline Y}{SED}\sim t_?$
-  * mean difference, paired data. Su $V=X-Y$ e $\mu=0$
+  * linear predictor
 
-    $\frac{\overline{V}}{\widehat{SEM}}\sim t_{n-1}$
-  * linear predictor. Con $\hat Y_j=\hat\mu_j+0$
-
-    $\frac{Y_j-\hat\mu_j}{\widehat{SEL}}\sim t_{n-2}$
-  * linear confidence interval
-
-    $\frac{\hat\mu_j}{\widehat{SEFM}}\sim t_{n-2}$
+    $\frac{Y_j-\hat y_j}{\widehat{SEL}}\sim t_{n-2}$
 * $Z$-statistic
   * mean, standardized sample mean
 
@@ -131,8 +128,8 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
       * $T$-statistic/difference of mean, same variance
     * `t.test(data1, data2, var.equal = FALSE)` Welch test, confronta medie con $\sigma^2$ diverso
       * $T$-statistic/difference of mean, different variance
-    * `t.test(data1, data2, paired = TRUE)` confronta medie con pairwise
-      * $T$-statistic/mean difference, paired data
+    * `t.test(data1, data2, paired = TRUE)` verifica se le differenze pairwise $Y'=X-Y$ sono compatibili con $\mu'=0$
+      * $T$-statistic/mean, studentized sample mean
     * `prop.test(c(successX, successY), c(totalX, totalY), correct = FALSE)` su large enough Bernoulli, confronta `successX/totalX` con `successY/totalY` e calcola p-value, opzionalmente `conf.level`.
 
       esegue un $\chi^2$-test su $z^2$, con $S^2_p$ appropriato
@@ -178,14 +175,19 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
 
     $[\hat Y_i\pm t_{n-2;1-\alpha/2}\widehat{SEL}]$
     * $T$-statistic/linear confidence interval
-  * `logLik(mod)` calcola loglikelihood, alto è meglio
+  * `logLik(model)` calcola $\log(\hat{\mathcal L})$, alto è meglio
+
+    $\mathcal L=P_\theta (X=x)$
+  * `boxcox(model, lambda = c(l1, l2, ...))` grafico box-cox interpolato sui valori in `lambda`. Se `plotit=F, interp=F` restituisce solo un vettore di likelihood.
+
+    $y(\lambda)=\begin{cases}\frac{y^\lambda-1}{\lambda}&\text{if }\lambda\neq0\\\log y&\text{if }\lambda=0\end{cases}$
   * `AIC(model)` calcola AIC, basso è meglio
 
-      $AIC_M=-2\ln(f_{\hat\theta}(y))+2\mathrm{dim}(\theta)$
-  * `BIC(model)` calcola BIC
-    * `AIC(model, k = log(length(data)))`, basso è meglio
+      $AIC=-2\ln(\hat{\mathcal L})+2\mathrm{dim}(\theta)$
+  * `BIC(model)` calcola BIC, penalizza numerosità del sample, basso è meglio
 
-      $BIC_M=-2\ln(f_{\hat\theta}(y))+\ln(n)\mathrm{dim}(\theta)$
+    $BIC=-2\ln(\hat{\mathcal L})+\ln(n)\mathrm{dim}(\theta)$
+    * `AIC(model, k = log(length(data)))`
   * `cv -= log(d(one_out, mu, sd))` cross validation leave-one-out, basso è meglio
 
     $CV=-\sum\limits^n_{i=1}\ln(f_{\hat\theta[\setminus i]}(y_i))$
@@ -207,3 +209,21 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
 * `aov(response ~ predictor, data = data)` calcola modello ANOVA
   * calcola F-statistic per ANOVA, calcola p-value
     * $F$-statistic/generalized linear test/ANOVA
+* `glm(response ~ predictor, data = data, family = distribution(link = link))` generalized linear regression
+  * `distribution(link = default)`
+    * `binomial(link = "logit")`
+    * `gaussian(link = "identity")`
+    * `Gamma(link = "inverse")`
+    * `inverse.gaussian(link = "1/mu^2")`
+    * `poisson(link = "log")`
+    * `quasi(link = "identity", variance = "constant")`
+    * `quasibinomial(link = "logit")`
+    * `quasipoisson(link = "log")`
+  * `link`
+    * `"logit"`
+    * `"probit"`
+    * `"identity"`
+    * `"log"`
+    * `"sqrt"`
+    * `"1/mu^2"`
+    * `"inverse"`
