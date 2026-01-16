@@ -97,7 +97,7 @@ logistic.plot <- function(mod, par = TRUE) {
         oldpar <- par(mfrow = c(1, 2))
     }
     xy <- model.frame(mod)
-    plot(data.frame(xy[1], fitted(mod)),
+    plot.default(data.frame(xy[1], fitted(mod)),
         pch = 1, ylim = c(-0.1, 1.1), xaxt = "n",
         ylab = "Fitted values"
     )

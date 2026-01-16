@@ -32,7 +32,7 @@ mod4.glm <- glm(GRADE ~ GPA + PSI, family = binomial, data = program)
 logistic.plot(mod4.glm, par = FALSE)
 summary(mod4.glm)
 
-# predict gives raw log(odds) values
-predicted <- exp(predict(mod4.glm)) / (1 + exp(predict(mod4.glm)))
+# predict gives raw log(odds) values, type must be specified
+predicted <- predict(mod4.glm, type = c("response"))
 
 table(as.numeric(predicted >= 0.5), program$GRADE)

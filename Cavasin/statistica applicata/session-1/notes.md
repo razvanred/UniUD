@@ -113,11 +113,9 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
 ## Test
 
 * mean
-  * not normal
-    * `t.test(data)` intervallo di confidenza della media, opzionalmente secondo `conf.level` e `alternative`
-      * $T$-statistic/mean, studentized sample mean
-    * `t.test(data, mu = mu0)` verifica se la media è compatibile con mu, e calcola p-value
-      * $T$-statistic/mean, studentized sample mean
+  * `t.test(data)` intervallo di confidenza della media, opzionalmente secondo `conf.level` e `alternative`
+    * $T$-statistic/mean, studentized sample mean
+    * `t.test(data, mu = mu0)` verifica se la media è compatibile con `mu0`
   * normal
     * `prop.test(success, total, p = mu0, correct = FALSE)` su large enough Bernoulli, confronta `success/total` con `p` e calcola p-value, opzionalmente `conf.level`.
 
