@@ -1,0 +1,73 @@
+---
+output: pdf_document
+title: "Esame 1"
+author:
+- name: Name Surname
+---
+
+Si consideri il dataset `automobili.txt`, che contiene informazioni su 30 modelli di auto per le quali si
+rilevano le seguenti variabili: consumo in miglia/gallone (mpg), numero di cilindri (cyl), cilindrata (disp),
+potenza (hp), rapporto al ponte posteriore (drat), peso in 1000 libbre (wt), tempo per 1/4 di miglio (qsec),
+motore (vs, con 0 = V-shaped, 1 = straight), cambio (am, con 0 = automatic, 1 = manual), numero di marce (gear),
+numero carburatoroi (carb).
+
+Si definisca un opportuno modello statistico per studiare la relazione tra il
+consumo **mpg** (variabile risposta) e le potenziali variabili esplicative presenti nel dataset.
+
+Note
+
+Per caricare il dataset si utilizzi il comando `read.table(file = "automobili.txt", header = TRUE, row.names=1)`,
+dopo aver salvato il file .txt nella directory di lavoro corrente
+
+| name | desc                                   |
+| ---- | -------------------------------------- |
+| mpg  | consumo in miglia/gallone              |
+| cyl  | numero di cilindri                     |
+| disp | cilindrata                             |
+| hp   | potenza                                |
+| drat | rapporto al ponte posteriore           |
+| wt   | peso in 1000 libbre                    |
+| qsec | tempo per 1/4 di miglia                |
+| vs   | motore, con 0 = V-shaped, 1 = straight |
+| am   | cambio, con 0 = automatic, 1 = manual  |
+| gear | numero di marce                        |
+| carb | numero carburatori                     |
+
+```{r include = FALSE}
+source("utils.R")
+
+cars <- read.csv(
+    "automobili.txt",
+    sep = " ",
+    dec = ".",
+    quote = "\"",
+    header = TRUE,
+)
+cars$vs <- factor(cars$vs)
+cars$am <- factor(cars$am)
+```
+
+Stampo una versione modificata di `pairs()` che aggiunge istogrammi sulla diagonale e indici di correlazione sulla metà superiore.
+
+```{r, echo = FALSE, out.width="100%"}
+plot.pairs(cars)
+```
+
+Notiamo che le variabili potenzialmente più correlate a `mpg` sono: `cyl`, `disp`, `hp`, e `wt`. Notiamo inoltre che gli indici di Pearson e Spearman sono molto vicini, quindi non si evidenziano correlazioni non lineari.
+
+Notiamo anche che `cyl` (il numero di cilindri) e `disp` (la cilindrata) sono fortemente correlate, quindi potrebbe essere inutile tenere entrambe come variabili esplanatorie.
+
+```{r}
+mod1.lm <- lm(mpg ~ cyl, data = cars)
+mod2.lm <- lm(mpg ~ disp, data = cars)
+mod3.lm <- lm(mpg ~ cyl + disp, data = cars)
+
+par(mfrow=c(2,2))
+plot(mod1.lm)
+plot(mod2.lm)
+plot(mod3.lm)
+
+summary(mod1.lm)
+summary(mod2.lm)
+summary(mod3.lm)
+```

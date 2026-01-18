@@ -37,7 +37,7 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
     $\frac{\overline Y-\mu}{\widehat{SEM}}\sim t_{n-1}$
   * linear confidence interval
 
-    $\frac{\overline Y_j-\hat y_j}{\widehat{SEFM}}\sim t_{n-2}$
+    $\frac{\overline Y_i-\hat y_i}{\widehat{SEFM}}\sim t_{n-2}$
   * difference of mean, same variance
 
     $\frac{\overline X-\overline Y}{\widehat{SED^\sigma}}\sim t_{n_X+n_Y-2}$
@@ -46,7 +46,7 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
     $\frac{\overline X-\overline Y}{SED}\sim t_?$
   * linear predictor
 
-    $\frac{Y_j-\hat y_j}{\widehat{SEL}}\sim t_{n-2}$
+    $\frac{Y_i-\hat y_i}{\widehat{SEL}}\sim t_{n-2}$
 * $Z$-statistic
   * mean, standardized sample mean
 
@@ -70,7 +70,7 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
 
     * comparison con un modello restricted $R$
 
-      $\frac{(SSE^R-SSE)/(p_2-p_1)}{SSE/(n-p_2)}\sim F(p_2-p_1,n-p_2)$
+      $\frac{(SSE^R-SSE)/(k-k_R)}{SSE/(n-k)}\sim F(k-k_R,n-k)$
 
       $\frac{(SST-SSE)-(SST-SSE^R)}{SSE}=\frac{SSE^R-SSE}{SSE}$
     * linear regression. Su $\hat Y^R=\overline y$
@@ -117,7 +117,7 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
     * $T$-statistic/mean, studentized sample mean
     * `t.test(data, mu = mu0)` verifica se la media è compatibile con `mu0`
   * normal
-    * `prop.test(success, total, p = mu0, correct = FALSE)` su large enough Bernoulli, confronta `success/total` con `p` e calcola p-value, opzionalmente `conf.level`.
+    * `prop.test(success, total, p = mu0, correct = FALSE)` su large enough Bernoulli, confronta `success/total` con `p` e calcola p-value, opzionalmente `conf.level`
 
       esegue un $\chi^2$-test su $z^2$, con $SE$ appropriato
       * $Z$-statistic/proportions
@@ -130,10 +130,10 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
       * $T$-statistic/mean, studentized sample mean
     * `prop.test(c(successX, successY), c(totalX, totalY), correct = FALSE)` su large enough Bernoulli, confronta `successX/totalX` con `successY/totalY` e calcola p-value, opzionalmente `conf.level`.
 
-      esegue un $\chi^2$-test su $z^2$, con $S^2_p$ appropriato
+      esegue un $\chi^2$-test su $z^2$, con $S^2_p$ per le proporzioni
       * $Z$-statistic/difference of proportions
 * variance test
-  * `var.test(data1, data2)` F test, confronta le varianze, opzionalmente `conf.level` e `alternative"`
+  * `var.test(data1, data2)` F-test, confronta le varianze, opzionalmente `conf.level` e `alternative`
     * $F$-statistic/sample variance ratio, normal distribution
 * normality test
   * test grafici
@@ -150,7 +150,7 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
   * correlazioni lineari
     * `cor.test(data1, data2, method = "pearson")` Pearson's correlation coefficient
 
-      `cor(data1, data2, method = "pearson")` calcola $\rho(X,Y)=\frac{COV(X,Y)}{\sigma_X\sigma_Y}$
+      `cor(data1, data2, method = "pearson")` calcola $\rho(X,Y)=\frac{COV(X,Y)}{\sigma_X\sigma_Y}$, $-1\leq\rho\leq1$
   * correlazioni monotone
     * `cor.test(data1, data2, method = "spearman")` calcola Spearman's rank correlation coefficient
       * `cor(data1, data2, method = "spearman")` calcola $\tau_s=\rho(R(X),R(Y))$
@@ -159,33 +159,38 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
 
         $n_c$ = numero di coppie concordi\
         $n_d$ = numero di coppie discordi
-  * tabella di contingenza di variabili categoriche
-    * `chisq.test(contTable)` controlla la $\chi^2$-statistic.
+  * `chisq.test(contTable)` tabella di contingenza di variabili categoriche
 
-      Pearson's $\chi^2$-test, p-value alto se indipendenti
-      * $\chi^2$-statistic/large enough contingency table
+    Pearson's $\chi^2$-test, p-value alto se indipendenti
+    * $\chi^2$-statistic/large enough contingency table
+  * `vif(model)` calcola variance inflation factor, $\gtrapprox5$ multicollinearità, $\gt10$ severa
+
+    $\text{VIF}_j(\frac{1}{1-R^2_j})$
+
+    Dove $R^2_j$ è $R^2$ per il modello avente $X_j$ come response variable, e il resto delle variabili come regressors
 * model checking
   * `predict(model, newdata = data, interval = "confidence")` confidence interval for $\mu_i$ where $i=1..|$`newdata`$|$
 
     $[\hat\mu_i\pm t_{n-2;1-\alpha/2}\widehat{SEFM}]$
-    * $T$-statistic/linear predictor
+    * $T$-statistic/linear confidence interval
   * `predict(model, newdata = data, interval = "prediction")` prediction interval for $Y_i$ where $i=1..|$`newdata`$|$
 
     $[\hat Y_i\pm t_{n-2;1-\alpha/2}\widehat{SEL}]$
-    * $T$-statistic/linear confidence interval
+    * $T$-statistic/linear predictor
   * `logLik(model)` calcola $\log(\hat{\mathcal L})$, alto è meglio
 
     $\mathcal L=P_\theta (X=x)$
   * `boxcox(model, lambda = c(l1, l2, ...))` grafico box-cox interpolato sui valori in `lambda`. Se `plotit=F, interp=F` restituisce solo un vettore di likelihood.
 
     $y(\lambda)=\begin{cases}\frac{y^\lambda-1}{\lambda}&\text{if }\lambda\neq0\\\log y&\text{if }\lambda=0\end{cases}$
-  * `AIC(model)` calcola AIC, basso è meglio
+  * `AIC(model1, model2, ...)` calcola AIC, basso è meglio
 
-      $AIC=-2\ln(\hat{\mathcal L})+2\mathrm{dim}(\theta)$
-  * `BIC(model)` calcola BIC, penalizza numerosità del sample, basso è meglio
+      $AIC=-2\ln(\hat{\mathcal L})+2k$
+  * `BIC(model1, model2, ...)` calcola BIC, penalizza numerosità del sample, basso è meglio
 
-    $BIC=-2\ln(\hat{\mathcal L})+\ln(n)\mathrm{dim}(\theta)$
+    $BIC=-2\ln(\hat{\mathcal L})+\ln(n)k$
     * `AIC(model, k = log(length(data)))`
+  * `drop1()`, `add1()` TODO
   * `cv -= log(d(one_out, mu, sd))` cross validation leave-one-out, basso è meglio
 
     $CV=-\sum\limits^n_{i=1}\ln(f_{\hat\theta[\setminus i]}(y_i))$
@@ -193,6 +198,7 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
     * calcola F-statistic per ANOVA, calcola p-value
     * opzionalmente `type`
     * $F$-statistic/generalized linear test/ANOVA
+      * `anova(model1, model2, ...)` TODO
 * `summary(model)` calcola informazioni su un modello
   * $R^2=\frac{SSR}{SST}$ percentuale di varianza spiegata dal modello, adjusted $R^2=1-\frac{V(\hat\epsilon)}{V(y)}$
   * $F$-statistic/generalized linear test/linear regression
@@ -225,3 +231,17 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
     * `"sqrt"`
     * `"1/mu^2"`
     * `"inverse"`
+
+## Linear-Logistic Comparison
+
+| Linear regression                    | Logistic regression                                             |
+| ------------------------------------ | --------------------------------------------------------------- |
+| estimates, std. errors, t-values     | estimates, std. errors, z-values                                |
+| sum of squares                       | deviance                                                        |
+| residual standard error              | -                                                               |
+| minimize the residual sum of squares | maximize the $\log(\hat{\mathcal L})$ (minimizing the deviance) |
+| select models with smaller AIC       | select models with smaller AIC                                  |
+| compare nested models via F-tests    | compare nested models via $\chi^2$ tests                        |
+| full set of diagnostic plots         | some diagnostic plots                                           |
+| partial residual plots               | plots of explanatory variable contributions                     |
+| $R^2$ and adjusted $R^2$             | predictive accuracy                                             |

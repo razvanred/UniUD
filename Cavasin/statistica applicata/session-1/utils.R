@@ -1,3 +1,5 @@
+clear.plots <- function() while (dev.cur() > 1) dev.off()
+
 t.onesample <- function(
   x,
   # y = NULL,
@@ -94,7 +96,8 @@ lm.intervals <- function(mod, inverse_expr = x, xlab = NULL, ylab = NULL) {
 
 logistic.plot <- function(mod, par = TRUE) {
     if (par) {
-        oldpar <- par(mfrow = c(1, 2))
+        old.par <- par(mfrow = c(1, 2))
+        on.exit(par(old.par))
     }
     xy <- model.frame(mod)
     plot.default(data.frame(xy[1], fitted(mod)),
@@ -111,10 +114,66 @@ logistic.plot <- function(mod, par = TRUE) {
     )
     abline(0, 0, col = "red", lwd = 2)
     abline(1, 0, col = "red", lwd = 2)
+}
 
-    if (par) {
-        par(oldpar)
+plot.pairs <- function(Dataset) {
+    # correlazione sull'upper, pearson(sx) e spearman(dx)
+    panel.cor <- function(x,
+                          y,
+                          digits = 2,
+                          prefix = "",
+                          cex.cor,
+                          ...) {
+        par(usr = c(0, 1, 0, 1))
+        cor_pearson <- cor(x, y, method = "pearson")
+        cor_spearman <- cor(x, y, method = "spearman")
+
+        txt_pearson <- format(cor_pearson, digits = digits)
+        txt_spearman <- format(cor_spearman, digits = digits)
+
+        if (missing(cex.cor)) {
+            cex.cor <- 0.8 / strwidth(txt)
+        }
+        rect(0, 0, 0.25, abs(cor_pearson), border = rgb(0, 0, 0, alpha = 0.5), col = if (cor_pearson > 0) "#8BBF65" else "#F2BC57")
+        rect(0.75, 0, 1, abs(cor_spearman), border = rgb(0, 0, 0, alpha = 0.5), col = if (cor_spearman > 0) "#8BBF65" else "#F2BC57")
+        text(0.04, 0.96, adj = c(0, 1), txt_pearson, cex = 1.2)
+        text(0.96, 0.04, adj = c(1, 0), txt_spearman, cex = 1.2)
     }
+
+    # istogramma sulla diagonale
+    panel.hist <- function(x, ...) {
+        old.usr <- par(usr = c(par("usr")[1:2], 0, 1.5))
+        on.exit(par(usr = old.usr))
+        h <- hist(x, plot = FALSE)
+        breaks <- h$breaks
+        y <- h$counts
+
+        rect(breaks[-length(breaks)], 0, breaks[-1], y / max(y), col = "#5B97D3")
+    }
+
+    # label magenta se è factor
+    panel.text <- function(x, y, labels, cex, font, ...) {
+        col <- ifelse(is.factor(getElement(Dataset, labels[1])), "#D95959", "black")
+        text(0.5, 0.95, labels[1], col = col, adj = c(0.5, 1), font = 2, cex = 1.15)
+    }
+
+    # effettivo plotting
+    pairs(
+        Dataset,
+        panel = panel.smooth,
+        diag.panel = panel.hist,
+        upper.panel = panel.cor,
+        text.panel = panel.text,
+        bg = "blue",
+        font.labels = 2,
+        pch = 1,
+        cex = 1,
+        cex.labels = 1,
+        oma = c(1, 1, 1, 1),
+        mgp = c(2, 0.2, 0),
+        gap = 0.2,
+        tcl = -0.25
+    )
 }
 
 # par(mfrow = c(2, 1))
