@@ -1,3 +1,5 @@
+library("car")
+
 clear.plots <- function() while (dev.cur() > 1) dev.off()
 
 t.onesample <- function(
@@ -35,17 +37,17 @@ t.onesample <- function(
 
     cord.x <- c(xs$min, seq(xs$min, int[1], length.out = 100), int[1])
     cord.y <- c(0, dt(nor(seq(xs$min, int[1], length.out = 100)), df), 0)
-    polygon(cord.x, cord.y, col = "skyblue")
+    polygon(cord.x, cord.y, col = "#5B97D3")
     cord.x <- c(xs$max, seq(xs$max, int[2], length.out = 100), int[2])
     cord.y <- c(0, dt(nor(seq(xs$max, int[2], length.out = 100)), df), 0)
-    polygon(cord.x, cord.y, col = "skyblue")
+    polygon(cord.x, cord.y, col = "#5B97D3")
     abline(0, 0, lwd = 2)
     points(x, rep(0, length.out = length(x)), pch = "|", cex = 0.8)
-    points(res$estimate, 0, pch = "|", col = "tomato1")
+    points(res$estimate, 0, pch = "|", col = "#D95959")
 
 
     if (!is.null(mu)) {
-        abline(v = mu, col = "tomato1")
+        abline(v = mu, col = "#D95959")
         points(dnor(stat), 0, pch = 16, cex = 1.2, col = "red")
 
         curve(dt(nor(x), df),
@@ -176,6 +178,33 @@ plot.pairs <- function(Dataset) {
     )
 }
 
+plot.vif <- function(mod) {
+    vif <- vif(mod)
+    barplot(vif,
+        main = "VIF",
+        col = ifelse(vif > 5, "#D95959", "#5B97D3"),
+    )
+    abline(h = 5, col = "red", lwd = 2)
+}
+
+drop1.aicbic <- function(mod, test = c("F", "none", "Chisq")) {
+    test <- match.arg(test)
+    df <- drop1(mod, test = test)
+    bics <- drop1(mod, k = log(nrow(mod$model)))$AIC
+    df$BIC <- bics
+    # Reorder columns to move the last one to the first position
+    # [ncol(df)] is the index of the last column, [1:(ncol(df)-1)] are the rest
+    df[, c(1:4, ncol(df), 5:(ncol(df) - 1))]
+}
+
+aicbic <- function(...) {
+    names <- as.character(substitute(list(...))[-1])
+
+    df <- AIC(...)
+    df$BIC <- BIC(...)$BIC
+    rownames(df) <- names
+    df
+}
 # par(mfrow = c(2, 1))
 # y1 <- rnorm(40, mean = 30)
 # t.onesample(y1, mu = 30.1)

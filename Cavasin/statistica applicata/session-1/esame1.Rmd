@@ -5,19 +5,27 @@ author:
 - name: Name Surname
 ---
 
-Si consideri il dataset `automobili.txt`, che contiene informazioni su 30 modelli di auto per le quali si
-rilevano le seguenti variabili: consumo in miglia/gallone (mpg), numero di cilindri (cyl), cilindrata (disp),
-potenza (hp), rapporto al ponte posteriore (drat), peso in 1000 libbre (wt), tempo per 1/4 di miglio (qsec),
-motore (vs, con 0 = V-shaped, 1 = straight), cambio (am, con 0 = automatic, 1 = manual), numero di marce (gear),
-numero carburatoroi (carb).
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+    warning = FALSE, # Hide warnings
+    message = FALSE, # Hide messages
+    fig.align = "center",
+    out.width = "70%",
+    # fig.width = 8, # Default figure width
+    fig.height = 4 # Default figure height
+)
+```
 
-Si definisca un opportuno modello statistico per studiare la relazione tra il
-consumo **mpg** (variabile risposta) e le potenziali variabili esplicative presenti nel dataset.
-
-Note
-
-Per caricare il dataset si utilizzi il comando `read.table(file = "automobili.txt", header = TRUE, row.names=1)`,
-dopo aver salvato il file .txt nella directory di lavoro corrente
+> Si consideri il dataset `automobili.txt`, che contiene informazioni su 30 modelli di auto per le quali si rilevano le seguenti variabili: consumo in miglia/gallone (mpg), numero di cilindri (cyl), cilindrata (disp) 
+potenza (hp), rapporto al ponte posteriore (drat), peso in 1000 libbre (wt), tempo per 1/4 di miglio (qsec) 
+motore (vs, con 0 = V-shaped, 1 = straight), cambio (am, con 0 = automatic, 1 = manual), numero di marce (gear) 
+numero carburatori (carb).
+>
+> Si definisca un opportuno modello statistico per studiare la relazione tra il consumo **mpg** (variabile risposta) e le potenziali variabili esplicative presenti nel dataset.
+>
+> Note
+>
+> Per caricare il dataset si utilizzi il comando `read.table(file = "automobili.txt", header = TRUE, row.names=1)`, dopo aver salvato il file .txt nella directory di lavoro corrente
 
 | name | desc                                   |
 | ---- | -------------------------------------- |
@@ -43,31 +51,85 @@ cars <- read.csv(
     quote = "\"",
     header = TRUE,
 )
+```
+
+```{r}
 cars$vs <- factor(cars$vs)
 cars$am <- factor(cars$am)
 ```
 
+Il dataset ha due variabili categoriali: `vs` e `am`.
+
 Stampo una versione modificata di `pairs()` che aggiunge istogrammi sulla diagonale e indici di correlazione sulla metà superiore.
 
-```{r, echo = FALSE, out.width="100%"}
+```{r, echo = FALSE, fig.height=6, out.width="100%"}
 plot.pairs(cars)
 ```
 
-Notiamo che le variabili potenzialmente più correlate a `mpg` sono: `cyl`, `disp`, `hp`, e `wt`. Notiamo inoltre che gli indici di Pearson e Spearman sono molto vicini, quindi non si evidenziano correlazioni non lineari.
+Notiamo che le variabili potenzialmente più correlate a `mpg` sono: `cyl`, `disp`, `hp`, e `wt`. Notiamo inoltre che gli indici di Pearson e Spearman sono molto vicini, quindi non si evidenziano correlazioni non lineari. In prima analisi sembra esserci molta collinearità.
 
-Notiamo anche che `cyl` (il numero di cilindri) e `disp` (la cilindrata) sono fortemente correlate, quindi potrebbe essere inutile tenere entrambe come variabili esplanatorie.
+```{r, echo = FALSE}
+par(mfrow = c(1, 2))
+boxplot(mpg ~ vs, data = cars)
+boxplot(mpg ~ am, data = cars)
+```
+
+Il boxplot per evidenzia una correlazione tra i fattori e `mpg`. Le includo nel modello completo e considererò eventuale eliminazione successivamente.
 
 ```{r}
-mod1.lm <- lm(mpg ~ cyl, data = cars)
-mod2.lm <- lm(mpg ~ disp, data = cars)
-mod3.lm <- lm(mpg ~ cyl + disp, data = cars)
-
-par(mfrow=c(2,2))
-plot(mod1.lm)
-plot(mod2.lm)
-plot(mod3.lm)
-
-summary(mod1.lm)
-summary(mod2.lm)
-summary(mod3.lm)
+mod.lm1 <- lm(mpg ~ cyl + disp + hp + wt + vs + am, data = cars)
+plot.vif(mod.lm1)
 ```
+
+I VIF indicano una collinearità tra `wt`, `cyl` e `disp`, forte tra `cyl` e `disp`. Uso la funzione `drop1` per analizzare gli effetti di rimuovere una covariata.
+
+```{r}
+drop1.aicbic(mod.lm1)
+summary(mod.lm1)
+```
+
+`cyl` e `disp` in `drop1` hanno VIF alti, p-value poco significativi, AIC migliori se rimossi. I p-value sono anche rispecchiati su `summary`. Si nota che data l'alta collinearità rende i p-value poco affidabili.
+
+Uso VIF per identificare un sottoinsieme di variabili non correlate.
+
+```{r}
+par(mfrow = c(2, 2), mar = c(2, 2, 2, 1))
+mod.lm2 <- lm(mpg ~ cyl + hp + wt + vs + am, data = cars)
+plot.vif(mod.lm2)
+mod.lm3 <- lm(mpg ~ disp + hp + wt + vs + am, data = cars)
+plot.vif(mod.lm3)
+mod.lm4 <- lm(mpg ~ hp + wt + vs + am, data = cars)
+plot.vif(mod.lm4)
+```
+
+Dopo aver ottenuto il modello `mod.lm4` con i VIF ridotti, vogliamo valutare le sue performance rispetto al primo modello.
+
+```{r}
+summary(mod.lm4)
+anova(mod.lm4, mod.lm1)
+```
+
+Osserviamo che la F-statistic è migliorata, mentre l'$R^2$ è rimasto pressoché identico, suggerendo di preferire il modello più semplice `mod.lm4`. Il testa ANOVA conferma che `mod.lm1` non è statisticamente diverso da `mod.lm4`. 
+
+Dal summary osserviamo che i p-value dell'intercetta, `hp` e `wt` sono significativi, quelli di `vs` e `am` no. Successivamente proviamo a considerare la loro interazione.
+
+```{r}
+mod.lm5 <- lm(mpg ~ hp + wt, data = cars)
+summary(mod.lm5)
+anova(mod.lm5, mod.lm4)
+aicbic(mod.lm5, mod.lm4)
+```
+
+Il test ristretto senza 
+
+```{r}
+mod.lm6 <- lm(mpg ~ hp + wt + vs:am, data = cars)
+summary(mod.lm6)
+anova(mod.lm5, mod.lm6)
+aicbic(mod.lm5, mod.lm6)
+par(mfrow = c(2, 2), mar = c(2, 2, 2, 1))
+plot(mod.lm5)
+plot(mod.lm6)
+```
+
+Il p-value dell'interazione è significativo, però il test ANOVA suggerisce che non ci siano sostanziali differenze. La statistica AIC preferisce il modello più complesso, mentre

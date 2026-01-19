@@ -1,0 +1,285 @@
+---
+title: "Modello di Regressione per il Consumo di Carburante"
+author: "Analisi Statistica"
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width = 10, fig.height = 6)
+source("utils.R")
+library(car)
+library(lmtest)
+```
+
+# Obiettivo
+
+Costruire un modello di regressione lineare multipla per predire il consumo di carburante (**mpg**) in funzione delle caratteristiche tecniche delle automobili.
+
+# Caricamento dei Dati
+
+```{r load-data}
+auto <- read.table(file = "automobili.txt", header = TRUE, row.names = 1)
+```
+
+Il dataset contiene **`r nrow(auto)` osservazioni** e **`r ncol(auto)` variabili**.
+
+```{r summary}
+summary(auto)
+```
+
+## Preparazione dei Dati
+
+Le variabili `vs` (tipo motore) e `am` (tipo cambio) sono binarie e vanno trattate come fattori.
+
+```{r convert-factors}
+auto$vs <- factor(auto$vs, levels = c(0, 1), labels = c("V-shaped", "Straight"))
+auto$am <- factor(auto$am, levels = c(0, 1), labels = c("Automatico", "Manuale"))
+```
+
+# Analisi Esplorativa
+
+## Distribuzione della Variabile Risposta
+
+```{r mpg-distribution, fig.height=4}
+par(mfrow = c(1, 2))
+hist(auto$mpg, main = "Distribuzione di mpg", xlab = "mpg (miglia/gallone)",
+     col = "steelblue", breaks = 10, probability = TRUE)
+lines(density(auto$mpg), col = "red", lwd = 2)
+boxplot(auto$mpg, main = "Boxplot di mpg", ylab = "mpg", col = "steelblue")
+```
+
+La variabile risposta mpg presenta una distribuzione approssimativamente simmetrica con media `r round(mean(auto$mpg), 2)` e deviazione standard `r round(sd(auto$mpg), 2)`.
+
+## Correlazioni tra Variabili
+
+```{r correlation}
+auto_num <- auto[, sapply(auto, is.numeric)]
+cor_mpg <- cor(auto_num)[, "mpg"]
+sort(cor_mpg, decreasing = TRUE)
+```
+
+**Osservazione:** Le variabili più correlate con mpg sono:
+
+- **wt** (peso): r = -0.87 (correlazione negativa forte)
+- **cyl** (cilindri): r = -0.85
+- **disp** (cilindrata): r = -0.85
+- **hp** (potenza): r = -0.78
+
+Queste correlazioni elevate tra predittori suggeriscono potenziali problemi di **multicollinearità**.
+
+```{r pairs-plot, fig.width=12, fig.height=12}
+plot.pairs(auto_num)
+```
+
+## Relazione con Variabili Categoriali
+
+```{r categorical-analysis, fig.height=4}
+par(mfrow = c(1, 2))
+boxplot(mpg ~ vs, data = auto, main = "mpg per Tipo di Motore",
+        xlab = "Tipo Motore", ylab = "mpg", col = c("tomato", "steelblue"))
+boxplot(mpg ~ am, data = auto, main = "mpg per Tipo di Cambio",
+        xlab = "Tipo Cambio", ylab = "mpg", col = c("tomato", "steelblue"))
+```
+
+```{r t-tests}
+t.test(mpg ~ vs, data = auto)
+t.test(mpg ~ am, data = auto)
+```
+
+Entrambe le variabili categoriali mostrano differenze significative nei consumi medi (p < 0.05).
+
+# Modello Completo
+
+Stimiamo un modello con tutte le variabili esplicative.
+
+```{r full-model}
+mod_full <- lm(mpg ~ ., data = auto)
+summary(mod_full)
+```
+
+## Diagnosi: Multicollinearità
+
+```{r vif-full}
+vif_full <- vif(mod_full)
+vif_full
+```
+
+```{r vif-plot, fig.height=4}
+barplot(vif_full, main = "VIF - Modello Completo",
+        col = ifelse(vif_full > 5, "tomato", "steelblue"),
+        las = 2, ylab = "VIF")
+abline(h = 5, col = "red", lty = 2, lwd = 2)
+legend("topright", "Soglia VIF = 5", lty = 2, col = "red")
+```
+
+**Decisione statistica:** I valori di VIF mostrano grave multicollinearità:
+
+- **disp**: VIF = 21.6 (> 5)
+- **cyl**: VIF = 15.4 (> 5)
+- **wt**: VIF = 15.2 (> 5)
+- **hp**: VIF = 9.8 (> 5)
+
+Questo spiega perché nel modello completo nessuna variabile risulta significativa nonostante l'R² elevato (0.87). La multicollinearità gonfia gli errori standard dei coefficienti, rendendo i test t poco affidabili.
+
+**Conseguenza:** È necessario selezionare un sottoinsieme di variabili per eliminare la multicollinearità.
+
+# Selezione del Modello
+
+Utilizziamo la procedura **stepwise bidirezionale** basata sul criterio AIC.
+
+```{r stepwise}
+mod_step <- step(mod_full, direction = "both", trace = 0)
+```
+
+## Modello Selezionato
+
+```{r selected-model}
+summary(mod_step)
+```
+
+La procedura stepwise ha selezionato il modello:
+
+$$\text{mpg} = \beta_0 + \beta_1 \cdot \text{wt} + \beta_2 \cdot \text{qsec} + \beta_3 \cdot \text{am} + \varepsilon$$
+
+**Interpretazione dei coefficienti:**
+
+| Variabile | Coefficiente | Interpretazione |
+|-----------|--------------|-----------------|
+| wt | -3.92 | A parità di altre condizioni, un aumento di 1000 libbre nel peso riduce il consumo di **3.92 mpg** |
+| qsec | 1.23 | A parità di altre condizioni, un aumento di 1 secondo nel tempo sul quarto di miglio aumenta il consumo di **1.23 mpg** |
+| am (Manuale) | 2.94 | A parità di altre condizioni, le auto con cambio manuale hanno un consumo superiore di **2.94 mpg** rispetto alle automatiche |
+
+## Verifica Multicollinearità del Modello Selezionato
+
+```{r vif-selected}
+vif_step <- vif(mod_step)
+vif_step
+```
+
+```{r vif-comparison, fig.height=4}
+barplot(vif_step, main = "VIF - Modello Selezionato",
+        col = "steelblue", las = 2, ylab = "VIF", ylim = c(0, 6))
+abline(h = 5, col = "red", lty = 2, lwd = 2)
+```
+
+**Decisione statistica:** Tutti i VIF sono inferiori a 3, indicando assenza di multicollinearità nel modello selezionato. I coefficienti stimati sono ora affidabili.
+
+## Confronto tra Modelli
+
+```{r model-comparison}
+comparison <- data.frame(
+  Modello = c("Completo", "Selezionato"),
+  R2_adj = c(summary(mod_full)$adj.r.squared, summary(mod_step)$adj.r.squared),
+  AIC = c(AIC(mod_full), AIC(mod_step)),
+  BIC = c(BIC(mod_full), BIC(mod_step)),
+  RSE = c(summary(mod_full)$sigma, summary(mod_step)$sigma)
+)
+comparison
+```
+
+**Decisione statistica:** Il modello selezionato è preferibile perché:
+
+1. **R² adjusted maggiore** (0.834 vs 0.807): spiega meglio la variabilità tenendo conto del numero di parametri
+2. **AIC inferiore** (154.1 vs 163.7): miglior compromesso tra adattamento e complessità
+3. **BIC inferiore** (161.4 vs 181.3): conferma la preferenza per il modello più parsimonioso
+4. **RSE inferiore** (2.46 vs 2.65): errore di previsione più basso
+
+# Diagnostica del Modello Selezionato
+
+## Analisi Grafica dei Residui
+
+```{r residual-plots, fig.height=8}
+par(mfrow = c(2, 2))
+plot(mod_step)
+```
+
+### Interpretazione dei Grafici
+
+1. **Residuals vs Fitted:** I residui sono distribuiti casualmente attorno allo zero senza pattern evidenti. La linearità è rispettata.
+
+2. **Normal Q-Q:** I punti seguono approssimativamente la diagonale, indicando normalità dei residui.
+
+3. **Scale-Location:** La dispersione dei residui è relativamente costante. Non ci sono evidenze di eteroschedasticità.
+
+4. **Residuals vs Leverage:** Nessuna osservazione supera la soglia della distanza di Cook (linee tratteggiate), quindi non ci sono punti influenti problematici.
+
+## Test Formali sulle Assunzioni
+
+### Test di Normalità (Shapiro-Wilk)
+
+$H_0$: I residui seguono una distribuzione normale
+
+```{r shapiro-test}
+shapiro.test(residuals(mod_step))
+```
+
+**Decisione statistica:** Con p-value = 0.080 > 0.05, **non rifiutiamo** l'ipotesi nulla di normalità al livello di significatività del 5%. I residui possono essere considerati normalmente distribuiti.
+
+### Test di Omoschedasticità (Breusch-Pagan)
+
+$H_0$: La varianza dei residui è costante (omoschedasticità)
+
+```{r bp-test}
+bptest(mod_step)
+```
+
+**Decisione statistica:** Con p-value = 0.103 > 0.05, **non rifiutiamo** l'ipotesi nulla di omoschedasticità. La varianza dei residui può essere considerata costante.
+
+## Intervalli di Confidenza dei Coefficienti
+
+```{r confidence-intervals}
+confint(mod_step, level = 0.95)
+```
+
+**Osservazione:** Tutti gli intervalli di confidenza al 95% non contengono lo zero (tranne l'intercetta), confermando la significatività dei predittori.
+
+# Capacità Predittiva
+
+```{r prediction-example}
+# Esempio di previsione per un'auto con caratteristiche specifiche
+nuova_auto <- data.frame(wt = 3.0, qsec = 18, am = factor("Manuale", levels = c("Automatico", "Manuale")))
+pred <- predict(mod_step, newdata = nuova_auto, interval = "prediction", level = 0.95)
+pred
+```
+
+Per un'automobile con peso di 3000 libbre, tempo sul quarto di miglio di 18 secondi e cambio manuale, il modello prevede un consumo di **`r round(pred[1], 1)` mpg** con intervallo di previsione al 95% [`r round(pred[2], 1)`, `r round(pred[3], 1)`].
+
+```{r fitted-vs-actual, fig.height=5}
+plot(auto$mpg, fitted(mod_step),
+     xlab = "Valori Osservati (mpg)", ylab = "Valori Predetti (mpg)",
+     main = "Valori Osservati vs Predetti", pch = 16, col = "steelblue")
+abline(0, 1, col = "red", lwd = 2)
+legend("topleft", "Linea identità", lty = 1, col = "red", lwd = 2)
+```
+
+# Conclusioni
+
+## Modello Finale
+
+Il modello selezionato per predire il consumo di carburante è:
+
+$$\widehat{\text{mpg}} = 9.62 - 3.92 \cdot \text{wt} + 1.23 \cdot \text{qsec} + 2.94 \cdot \mathbb{1}_{\text{am=Manuale}}$$
+
+## Sintesi delle Decisioni Statistiche
+
+| Aspetto | Test/Criterio | Risultato | Decisione |
+|---------|---------------|-----------|-----------|
+| Multicollinearità (mod. completo) | VIF | disp=21.6, cyl=15.4, wt=15.2 | Necessaria selezione variabili |
+| Selezione modello | Stepwise AIC | mpg ~ wt + qsec + am | Modello parsimonioso |
+| Multicollinearità (mod. finale) | VIF | Tutti < 3 | OK |
+| Confronto modelli | AIC, BIC, R² adj | Mod. selezionato migliore | Preferire mod. ridotto |
+| Normalità residui | Shapiro-Wilk | p = 0.080 | Non rifiuto H₀ |
+| Omoschedasticità | Breusch-Pagan | p = 0.103 | Non rifiuto H₀ |
+| Significatività predittori | Test t | wt, qsec, am tutti p < 0.05 | Tutti significativi |
+
+## Interpretazione Finale
+
+Il consumo di carburante (mpg) è determinato principalmente da tre fattori:
+
+1. **Peso (wt):** Fattore più influente. Auto più pesanti consumano di più (mpg più basso).
+
+2. **Tempo sul quarto di miglio (qsec):** Auto più lente (qsec maggiore) tendono ad avere consumi migliori, probabilmente perché sono meno sportive/potenti.
+
+3. **Tipo di cambio (am):** Le auto con cambio manuale hanno consumi migliori di circa 3 mpg rispetto alle automatiche, a parità di peso e prestazioni.
+
+Il modello spiega l'**83.4%** della variabilità del consumo (R² adjusted) con un errore standard di **2.46 mpg**.

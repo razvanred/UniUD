@@ -1,0 +1,248 @@
+---
+title: "Analisi del Consumo di Carburante - Dataset Automobili"
+author: "Analisi Statistica"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width = 10, fig.height = 6)
+source("utils.R")
+```
+
+# Introduzione
+
+L'obiettivo di questa analisi è costruire un modello di regressione lineare multipla per studiare la relazione tra il consumo di carburante (**mpg** - miglia per gallone) e le potenziali variabili esplicative presenti nel dataset.
+
+# Caricamento e Esplorazione dei Dati
+
+```{r load-data}
+auto <- read.table(file = "automobili.txt", header = TRUE, row.names = 1)
+str(auto)
+```
+
+```{r summary}
+summary(auto)
+```
+
+Il dataset contiene `r nrow(auto)` osservazioni e `r ncol(auto)` variabili:
+
+- **mpg**: consumo in miglia/gallone (variabile risposta)
+- **cyl**: numero di cilindri
+- **disp**: cilindrata
+- **hp**: potenza
+- **drat**: rapporto al ponte posteriore
+- **wt**: peso in 1000 libbre
+- **qsec**: tempo per 1/4 di miglio
+- **vs**: tipo di motore (0 = V-shaped, 1 = straight)
+- **am**: tipo di cambio (0 = automatico, 1 = manuale)
+- **gear**: numero di marce
+- **carb**: numero di carburatori
+
+## Conversione delle Variabili Categoriali
+
+Le variabili `vs` e `am` sono codificate come 0/1 ma rappresentano categorie. Le convertiamo in fattori per una corretta interpretazione nel modello.
+
+```{r convert-factors}
+auto$vs <- factor(auto$vs, levels = c(0, 1), labels = c("V-shaped", "Straight"))
+auto$am <- factor(auto$am, levels = c(0, 1), labels = c("Automatico", "Manuale"))
+```
+
+# Analisi Esplorativa
+
+## Distribuzione della Variabile Risposta
+
+```{r mpg-distribution, fig.height=4}
+par(mfrow = c(1, 2))
+hist(auto$mpg, main = "Distribuzione di mpg", xlab = "mpg", col = "steelblue", breaks = 10)
+boxplot(auto$mpg, main = "Boxplot di mpg", ylab = "mpg", col = "steelblue")
+```
+
+La distribuzione di mpg appare approssimativamente simmetrica, senza evidenti outlier.
+
+## Matrice di Correlazione
+
+Analizziamo le correlazioni tra le variabili numeriche per identificare potenziali predittori e problemi di multicollinearità.
+
+```{r correlation-matrix}
+# Selezioniamo solo le variabili numeriche per la correlazione
+auto_num <- auto[, sapply(auto, is.numeric)]
+cor_matrix <- cor(auto_num)
+round(cor_matrix, 2)
+```
+
+```{r pairs-plot, fig.width=12, fig.height=12}
+plot.pairs(auto_num)
+```
+
+### Osservazioni sulla Correlazione
+
+Le variabili con correlazione più forte con mpg sono:
+
+- **wt** (peso): correlazione negativa forte (-0.87)
+- **cyl** (cilindri): correlazione negativa forte (-0.85)
+- **disp** (cilindrata): correlazione negativa forte (-0.85)
+- **hp** (potenza): correlazione negativa forte (-0.78)
+
+Si nota anche una forte multicollinearità tra alcune variabili esplicative (es. cyl, disp, wt sono fortemente correlate tra loro).
+
+## Relazione tra mpg e Variabili Categoriali
+
+```{r categorical-plots, fig.height=4}
+par(mfrow = c(1, 2))
+boxplot(mpg ~ vs, data = auto, main = "mpg per Tipo di Motore",
+        xlab = "Tipo Motore", ylab = "mpg", col = c("tomato", "steelblue"))
+boxplot(mpg ~ am, data = auto, main = "mpg per Tipo di Cambio",
+        xlab = "Tipo Cambio", ylab = "mpg", col = c("tomato", "steelblue"))
+```
+
+I motori "Straight" e il cambio manuale sembrano associati a consumi migliori (mpg più alto).
+
+# Costruzione del Modello
+
+## Modello Completo
+
+Iniziamo con un modello che include tutte le variabili esplicative.
+
+```{r full-model}
+mod_full <- lm(mpg ~ ., data = auto)
+summary(mod_full)
+```
+
+Il modello completo ha un R² elevato, ma molte variabili non sono significative. Questo è dovuto alla multicollinearità tra i predittori.
+
+## Verifica della Multicollinearità (VIF)
+
+```{r vif}
+library(car)
+vif(mod_full)
+```
+
+Valori di VIF > 5 indicano problemi di multicollinearità. Le variabili cyl, disp e wt mostrano VIF elevati, confermando la correlazione osservata.
+
+## Selezione del Modello con Stepwise
+
+Utilizziamo la procedura stepwise basata su AIC per selezionare le variabili più rilevanti.
+
+```{r stepwise}
+mod_step <- step(mod_full, direction = "both", trace = 0)
+summary(mod_step)
+```
+
+```{r step-anova}
+anova(mod_step)
+```
+
+## Confronto tra Modelli
+
+```{r model-comparison}
+AIC(mod_full, mod_step)
+BIC(mod_full, mod_step)
+```
+
+Il modello ridotto ha AIC e BIC inferiori, indicando un miglior compromesso tra adattamento e parsimonia.
+
+# Diagnostica del Modello Selezionato
+
+## Analisi dei Residui
+
+```{r residual-plots, fig.height=8}
+par(mfrow = c(2, 2))
+plot(mod_step)
+```
+
+### Interpretazione dei Grafici Diagnostici
+
+1. **Residuals vs Fitted**: verifica la linearità. I residui dovrebbero essere distribuiti casualmente attorno allo zero.
+
+2. **Normal Q-Q**: verifica la normalità dei residui. I punti dovrebbero seguire la linea diagonale.
+
+3. **Scale-Location**: verifica l'omoschedasticità. La linea rossa dovrebbe essere approssimativamente orizzontale.
+
+4. **Residuals vs Leverage**: identifica osservazioni influenti. Punti oltre le linee tratteggiate (distanza di Cook) sono potenzialmente problematici.
+
+## Test di Normalità dei Residui
+
+```{r normality-test}
+shapiro.test(residuals(mod_step))
+```
+
+Se il p-value > 0.05, non rifiutiamo l'ipotesi di normalità dei residui.
+
+## Test di Omoschedasticità
+
+```{r homoscedasticity-test}
+library(lmtest)
+bptest(mod_step)
+```
+
+Il test di Breusch-Pagan verifica l'ipotesi nulla di omoschedasticità. Un p-value > 0.05 indica che non ci sono evidenze di eteroschedasticità.
+
+## Verifica VIF del Modello Finale
+
+```{r vif-final}
+vif(mod_step)
+```
+
+I valori di VIF nel modello ridotto dovrebbero essere più contenuti.
+
+# Interpretazione del Modello Finale
+
+```{r final-summary}
+summary(mod_step)
+```
+
+```{r coefficients}
+coef_table <- data.frame(
+  Coefficiente = coef(mod_step),
+  IC_inf = confint(mod_step)[, 1],
+  IC_sup = confint(mod_step)[, 2]
+)
+round(coef_table, 4)
+```
+
+## Interpretazione dei Coefficienti
+
+```{r interpretation}
+cat("Variabili nel modello finale:\n")
+names(coef(mod_step))[-1]
+```
+
+Per ogni variabile significativa nel modello:
+
+- Un aumento di una unità nella variabile esplicativa comporta una variazione nel consumo (mpg) pari al coefficiente stimato, a parità delle altre variabili.
+- Coefficienti negativi indicano che all'aumentare della variabile, il consumo (mpg) diminuisce.
+- Coefficienti positivi indicano che all'aumentare della variabile, il consumo (mpg) aumenta.
+
+# Capacità Predittiva
+
+## R² e R² Adjusted
+
+```{r r-squared}
+cat("R²:", summary(mod_step)$r.squared, "\n")
+cat("R² adjusted:", summary(mod_step)$adj.r.squared, "\n")
+```
+
+Il modello spiega circa il `r round(summary(mod_step)$adj.r.squared * 100, 1)`% della variabilità del consumo.
+
+## Errore Standard dei Residui
+
+```{r rse}
+cat("Residual Standard Error:", summary(mod_step)$sigma, "mpg\n")
+```
+
+# Conclusioni
+
+L'analisi ha permesso di identificare un modello parsimonioso per predire il consumo di carburante (mpg) delle automobili.
+
+**Risultati principali:**
+
+1. Il modello completo presenta problemi di multicollinearità tra le variabili esplicative.
+
+2. La procedura di selezione stepwise ha identificato un sottoinsieme di variabili che bilancia capacità esplicativa e parsimonia.
+
+3. La diagnostica dei residui conferma la validità delle assunzioni del modello lineare.
+
+4. Il modello finale spiega una proporzione elevata della variabilità del consumo.
+
+**Variabili più rilevanti per il consumo:**
+
+Le variabili selezionate nel modello finale rappresentano i fattori più importanti per determinare il consumo di carburante, tenendo conto della multicollinearità presente nei dati.

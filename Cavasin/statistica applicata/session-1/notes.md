@@ -11,7 +11,7 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
   * $SEM=\sqrt{\frac{\sigma^2}{n}}$
   * $\widehat{SEM}=\sqrt{\frac{S^2}{n}}$
   * linear regression fitted mean ($\hat\mu_j$)
-    * $\widehat{SEFM}=\hat\sigma\sqrt{\frac1n+\frac{(x_j-\overline x)^2}{SST}}$
+    * $\widehat{SEFM}=\hat\sigma\sqrt{\frac1n+\frac{(x_j-\overline x)^2}{SST_X}}$
 
       dipende da $x_j$
 * proportion
@@ -27,7 +27,7 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
       * $S^2_p=\hat p(1-\hat p)$
 * predictors
   * linear predictor
-    * $\widehat{SEL}=\sqrt{\sigma^2+\widehat{SEFM}}$
+    * $\widehat{SEL}=\sqrt{\hat\sigma^2+\widehat{SEFM}^2}$
 
 ## Statistics
 
@@ -43,7 +43,7 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
     $\frac{\overline X-\overline Y}{\widehat{SED^\sigma}}\sim t_{n_X+n_Y-2}$
   * difference of mean, different variance
 
-    $\frac{\overline X-\overline Y}{SED}\sim t_?$
+    $\frac{\overline X-\overline Y}{SED}$
   * linear predictor
 
     $\frac{Y_i-\hat y_i}{\widehat{SEL}}\sim t_{n-2}$
@@ -165,7 +165,7 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
     * $\chi^2$-statistic/large enough contingency table
   * `vif(model)` calcola variance inflation factor, $\gtrapprox5$ multicollinearità, $\gt10$ severa
 
-    $\text{VIF}_j(\frac{1}{1-R^2_j})$
+    $\text{VIF}_j=\frac{1}{1-R^2_j}$
 
     Dove $R^2_j$ è $R^2$ per il modello avente $X_j$ come response variable, e il resto delle variabili come regressors
 * model checking
@@ -190,16 +190,19 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
 
     $BIC=-2\ln(\hat{\mathcal L})+\ln(n)k$
     * `AIC(model, k = log(length(data)))`
-  * `drop1()`, `add1()` TODO
+  * `drop1(model, test = "F")` restricts a turno un parametro a 0 e calcola statistiche con `test`
   * `cv -= log(d(one_out, mu, sd))` cross validation leave-one-out, basso è meglio
 
     $CV=-\sum\limits^n_{i=1}\ln(f_{\hat\theta[\setminus i]}(y_i))$
   * `anova(model)` calcola la tabella ANOVA per un modello generico
     * calcola F-statistic per ANOVA, calcola p-value
-    * opzionalmente `type`
     * $F$-statistic/generalized linear test/ANOVA
-      * `anova(model1, model2, ...)` TODO
+  * `anova(model.r, model)` generalized linear test tra un modello ristretto e uno completo. $H_0$ è `model.r`, perché la statistica si basa sulla distanza da $SSE^R$ a $SSE$
+    * calcola F-statistic per comparison, calcola p-value
+    * `RSS` sono rispettivamente $SSE^R$ e $SSE$. $SSE^R\geq SSE$
+    * $F$-statistic/generalized linear test/comparison
 * `summary(model)` calcola informazioni su un modello
+  * t-test su ciascun coefficiente su $H_0=\beta_i=0$
   * $R^2=\frac{SSR}{SST}$ percentuale di varianza spiegata dal modello, adjusted $R^2=1-\frac{V(\hat\epsilon)}{V(y)}$
   * $F$-statistic/generalized linear test/linear regression
 
