@@ -61,7 +61,7 @@ mod.cs
 
 ### ROC plot
 
-The curve is created by plotting the true positive rate (sensitivity) against the false positive rate (1−specificity) at various threshold settings. The area under the curve is viewed as a measure of classification accuracy.
+The curve is created by plotting the true positive rate (sensitivity) against the false positive rate (1-specificity) at various threshold settings. The area under the curve is viewed as a measure of classification accuracy.
 
 ```{r}
 roc.plot(as.numeric(db[, "Class"]) - 1, fitted(mod),
