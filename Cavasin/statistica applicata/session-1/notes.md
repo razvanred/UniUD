@@ -194,6 +194,8 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
   * `cv -= log(d(one_out, mu, sd))` cross validation leave-one-out, basso è meglio
 
     $CV=-\sum\limits^n_{i=1}\ln(f_{\hat\theta[\setminus i]}(y_i))$
+  * `CVbinary(model)` cross validation su un modello di regressione logistica
+    * stima di accuratezza
   * `anova(model)` calcola la tabella ANOVA per un modello generico
     * calcola F-statistic per ANOVA, calcola p-value
     * $F$-statistic/generalized linear test/ANOVA

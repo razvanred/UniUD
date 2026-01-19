@@ -1,6 +1,15 @@
 library("car")
+library("lattice")
 
 clear.plots <- function() while (dev.cur() > 1) dev.off()
+
+grid.plot <- function(rows, cols) par(mfrow = c(rows, cols), mar = c(3, 3, 1, 1), mgp = c(1.6, 0.5, 0))
+
+equispaced <- function(from = 1, to, n = to) {
+    length <- abs(to - from)
+    radius <- length / (2 * n)
+    centers <- seq(from = from + radius, to = to - radius, length.out = n)
+}
 
 t.onesample <- function(
   x,
@@ -79,9 +88,6 @@ lm.intervals <- function(mod, inverse_expr = x, xlab = NULL, ylab = NULL) {
     )
     curve(f(predict(mod, newdata = setNames(list(x), names$x))), col = "blue", add = TRUE)
 
-    # t <- predict(mod, interval = "prediction")
-    # print(t)
-
     curve(f(predict(mod, newdata = setNames(list(x), names$x), interval = "confidence")[, "lwr"]),
         add = TRUE, lty = 2, lwd = 2, col = "red"
     )
@@ -104,7 +110,7 @@ logistic.plot <- function(mod, par = TRUE) {
     xy <- model.frame(mod)
     plot.default(data.frame(xy[1], fitted(mod)),
         pch = 1, ylim = c(-0.1, 1.1), xaxt = "n",
-        ylab = "Fitted values"
+        ylab = "Fitted values",
     )
     axis(1, at = xy[, 1])
     abline(0, 0, col = "red", lwd = 2)
@@ -118,7 +124,7 @@ logistic.plot <- function(mod, par = TRUE) {
     abline(1, 0, col = "red", lwd = 2)
 }
 
-plot.pairs <- function(Dataset) {
+plot.pairs <- function(data) {
     # correlazione sull'upper, pearson(sx) e spearman(dx)
     panel.cor <- function(x,
                           y,
@@ -136,35 +142,69 @@ plot.pairs <- function(Dataset) {
         if (missing(cex.cor)) {
             cex.cor <- 0.8 / strwidth(txt)
         }
-        rect(0, 0, 0.25, abs(cor_pearson), border = rgb(0, 0, 0, alpha = 0.5), col = if (cor_pearson > 0) "#8BBF65" else "#F2BC57")
-        rect(0.75, 0, 1, abs(cor_spearman), border = rgb(0, 0, 0, alpha = 0.5), col = if (cor_spearman > 0) "#8BBF65" else "#F2BC57")
+        rect(0, 0, 0.5, abs(cor_pearson), border = rgb(0, 0, 0, alpha = 0.5), col = if (cor_pearson > 0) "#8BBF65" else "#F2BC57")
+        rect(0.5, 0, 1, abs(cor_spearman), border = rgb(0, 0, 0, alpha = 0.5), col = if (cor_spearman > 0) "#8BBF65" else "#F2BC57")
         text(0.04, 0.96, adj = c(0, 1), txt_pearson, cex = 1.2)
         text(0.96, 0.04, adj = c(1, 0), txt_spearman, cex = 1.2)
+    }
+
+    panel.dist <- function(x, y, ...) {
+        box.plot <- function(x, y, horizontal = FALSE) {
+            levels <- length(levels(data[[par("mfg")[if (horizontal) 1 else 2]]]))
+            plot.length <- diff(par("usr")[if (horizontal) 3:4 else 1:2])
+            boxplot(y ~ x,
+                add = TRUE,
+                horizontal = horizontal,
+                axes = FALSE,
+                at = equispaced(to = levels),
+                boxwex = (plot.length / levels) * 0.8
+            )
+        }
+        input <- list(row = data[[par("mfg")[1]]], col = data[[par("mfg")[2]]])
+        if (is.factor(input$col) && is.factor(input$row)) {
+            levels <- list(
+                width = length(levels(data[[par("mfg")[1]]])),
+                height = length(levels(data[[par("mfg")[2]]]))
+            )
+            image(equispaced(to = levels$height),
+                equispaced(to = levels$width),
+                table(x, y),
+                col = gray.colors(12),
+                add = TRUE
+            )
+        } else if (is.factor(input$col)) {
+            box.plot(x, y)
+        } else if (is.factor(input$row)) {
+            box.plot(y, x, horizontal = TRUE)
+        } else {
+            panel.smooth(x, y, ...)
+        }
     }
 
     # istogramma sulla diagonale
     panel.hist <- function(x, ...) {
         old.usr <- par(usr = c(par("usr")[1:2], 0, 1.5))
         on.exit(par(usr = old.usr))
-        h <- hist(x, plot = FALSE)
+        col <- data[[par("mfg")[1]]]
+        h <- hist(x, breaks = if (is.factor(col)) length(levels(col)) else "Sturges", plot = FALSE)
         breaks <- h$breaks
         y <- h$counts
-
         rect(breaks[-length(breaks)], 0, breaks[-1], y / max(y), col = "#5B97D3")
     }
 
     # label magenta se è factor
     panel.text <- function(x, y, labels, cex, font, ...) {
-        col <- ifelse(is.factor(getElement(Dataset, labels[1])), "#D95959", "black")
+        col <- ifelse(is.factor(getElement(data, labels[1])), "#D95959", "black")
         text(0.5, 0.95, labels[1], col = col, adj = c(0.5, 1), font = 2, cex = 1.15)
     }
 
     # effettivo plotting
     pairs(
-        Dataset,
+        data,
         panel = panel.smooth,
         diag.panel = panel.hist,
         upper.panel = panel.cor,
+        lower.panel = panel.dist,
         text.panel = panel.text,
         bg = "blue",
         font.labels = 2,
@@ -194,7 +234,7 @@ drop1.aicbic <- function(mod, test = c("F", "none", "Chisq")) {
     df$BIC <- bics
     # Reorder columns to move the last one to the first position
     # [ncol(df)] is the index of the last column, [1:(ncol(df)-1)] are the rest
-    df[, c(1:4, ncol(df), 5:(ncol(df) - 1))]
+    df[, c(1:match("AIC", colnames(df)), ncol(df), 5:(ncol(df) - 1))]
 }
 
 aicbic <- function(...) {
@@ -205,6 +245,7 @@ aicbic <- function(...) {
     rownames(df) <- names
     df
 }
+
 # par(mfrow = c(2, 1))
 # y1 <- rnorm(40, mean = 30)
 # t.onesample(y1, mu = 30.1)
@@ -212,3 +253,10 @@ aicbic <- function(...) {
 # lm.intervals(lm(log(dist / (1 - dist)) ~ speed, data = cars), exp(x) / (1 + exp(x)), ylab = "dist")
 
 # test raggruppati per funzione
+
+# cars$vs <- factor(cars$vs)
+# cars$am <- factor(cars$am)
+# cars$cyl <- factor(cars$cyl)
+# cars$gear <- factor(cars$gear)
+
+# plot.pairs(cars)

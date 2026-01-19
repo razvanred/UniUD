@@ -1,0 +1,85 @@
+---
+output: pdf_document
+title: "Esame 2"
+author:
+- name: Name Surname
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+    warning = FALSE, # Hide warnings
+    message = FALSE, # Hide messages
+    fig.align = "center",
+    out.width = "70%",
+    # fig.width = 8, # Default figure width
+    fig.height = 4 # Default figure height
+)
+```
+
+> Si consideri il dataset Rice_3.txt, che contiene informazioni sulle varietà di riso chiamate "Cammeo" e "Osmancik".
+> Si sono analizzate 1500 immagini di chicchi
+di riso per le quali si sono rilevate le seguenti variabili: varieta' di riso (Class, con modalità "Cammeo" e "Osmancik"), area dell'immagine in pixel (Area), perimetro dell'immagine in pixel (Perimeter), lunghezza asse maggiore (Major_Axis_Length), lunghezza asse minore (Minor_Axis_Length), eccentricità dell'ellisse che racchiude il chicco (Eccentricity), area in pixel della regione convessa che racchiude il chicco (Convex_Area), rapporto tra la regione formata dal chicco e la sua frontiera in pixel (Extent).
+>
+> Si definisca un opportuno modello statistico per studiare la relazione tra Class (variabile risposta binaria) e le possibili variabili esplicative Perimeter, Major_Axis_Length, Minor_Axis_Length, Convex_Area e Extent. Inoltre, si utilizzi il modello per finalità di classificazione e si confronti il classificatore ottenuto con altri classificatori.
+
+<!-- "Area" "Perimeter" "Major_Axis_Length" "Minor_Axis_Length" "Eccentricity" "Convex_Area" "Extent" "Class" -->
+
+```{r include = FALSE}
+library("DAAG")
+source("utils.R")
+
+db <- read.csv(
+    "Rice_3.txt",
+    sep = " ",
+    dec = ".",
+    quote = "\"",
+    header = TRUE,
+)
+
+db <- db[c("Class", "Perimeter", "Major_Axis_Length", "Minor_Axis_Length", "Convex_Area", "Extent")]
+db$Class <- factor(db$Class)
+```
+
+```{r, echo = FALSE, fig.height=6, out.width="100%"}
+head(db)
+plot.pairs(db)
+```
+
+`Perimeter`, `Major_Axis_Length` e `Convex_Area` sono interessanti sia visivamente che secondo gli indici di correlazione `\rho` che spearman. La variabile di risposta `Class` è binaria quindi procedo con una regressione logistica.
+
+```{r}
+mod.glm1 <- glm(Class ~ Perimeter + Major_Axis_Length + Convex_Area, family = binomial, data = db)
+summary(mod.glm1)
+plot.vif(mod.glm1)
+```
+
+```{r}
+drop1.aicbic(mod.glm1)
+```
+
+```{r}
+grid.plot(1, 2)
+mod.glm2 <- glm(Class ~ Major_Axis_Length + Convex_Area, family = binomial, data = db)
+summary(mod.glm2)
+plot.vif(mod.glm2)
+mod.glm3 <- glm(Class ~ Perimeter + Major_Axis_Length, family = binomial, data = db)
+summary(mod.glm3)
+plot.vif(mod.glm3)
+
+anova(mod.glm2, mod.glm1)
+anova(mod.glm3, mod.glm1)
+```
+
+
+```{r}
+mod.glm4 <- glm(Class ~ Major_Axis_Length, family = binomial, data = db)
+anova(mod.glm4, mod.glm1)
+aicbic(mod.glm4, mod.glm2)
+
+grid.plot(1,2)
+logistic.plot(mod.glm2)
+logistic.plot(mod.glm4)
+#table(as.numeric(fitted(mod.glm2) > 0.5), default)
+CVbinary(mod.glm2)
+CVbinary(mod.glm4)
+```
