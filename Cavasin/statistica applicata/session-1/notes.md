@@ -194,7 +194,7 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
   * `cv -= log(d(one_out, mu, sd))` cross validation leave-one-out, basso è meglio
 
     $CV=-\sum\limits^n_{i=1}\ln(f_{\hat\theta[\setminus i]}(y_i))$
-  * `CVbinary(model)` cross validation su un modello di regressione logistica
+  * `CVbinary(model, nfolds = 10)` cross validation su un modello di regressione logistica. Leave $\frac{n}{\text{nfolds}}$-out
     * stima di accuratezza
   * `anova(model)` calcola la tabella ANOVA per un modello generico
     * calcola F-statistic per ANOVA, calcola p-value
@@ -250,3 +250,25 @@ Standard Error $SE=\sqrt{MSE}$. Se $\hat\theta$ è **unbiased**, $SE=\sqrt{V(\ha
 | full set of diagnostic plots         | some diagnostic plots                                           |
 | partial residual plots               | plots of explanatory variable contributions                     |
 | $R^2$ and adjusted $R^2$             | predictive accuracy                                             |
+
+## Classifiers
+
+Classificazione di una variabile di risposta categoriale:
+
+$$
+\text{trainingERR}=\frac1n\sum_{i=1}^nI(y_i=\hat y_i)\\[1ex]
+\text{testERR}=\frac1m\sum_{i=1}^mI(y_i=\hat y_i)\\[1ex]
+E[I(Y_0\neq\hat Y_0)]=P(Y_0\neq\hat Y_0)
+$$
+
+### Classificatore Bayesiano ideale
+
+$$
+P(Y_0=1|X_0=x_0)>P(Y_0=0|X_0=x_0)
+$$
+
+### kNN
+
+$$
+\hat P(Y_0=1|X_0=x)=\frac1k\sum_{i\in\mathcal{N}_x}y_i
+$$

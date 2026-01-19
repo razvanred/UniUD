@@ -1,0 +1,123 @@
+---
+output: pdf_document
+title: "Esame 2"
+author:
+- name: Name Surname
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+    warning = FALSE, # Hide warnings
+    message = FALSE, # Hide messages
+    fig.align = "center",
+    out.width = "70%",
+    # fig.width = 8, # Default figure width
+    fig.height = 4 # Default figure height
+)
+```
+
+> Si consideri il dataset Rice_3.txt, che contiene informazioni sulle varietà di riso chiamate "Cammeo" e "Osmancik".
+> Si sono analizzate 1500 immagini di chicchi
+di riso per le quali si sono rilevate le seguenti variabili: varieta' di riso (Class, con modalità "Cammeo" e "Osmancik"), area dell'immagine in pixel (Area), perimetro dell'immagine in pixel (Perimeter), lunghezza asse maggiore (Major_Axis_Length), lunghezza asse minore (Minor_Axis_Length), eccentricità dell'ellisse che racchiude il chicco (Eccentricity), area in pixel della regione convessa che racchiude il chicco (Convex_Area), rapporto tra la regione formata dal chicco e la sua frontiera in pixel (Extent).
+>
+> Si definisca un opportuno modello statistico per studiare la relazione tra Class (variabile risposta binaria) e le possibili variabili esplicative Perimeter, Major_Axis_Length, Minor_Axis_Length, Convex_Area e Extent. Inoltre, si utilizzi il modello per finalità di classificazione e si confronti il classificatore ottenuto con altri classificatori.
+
+<!-- "Area" "Perimeter" "Major_Axis_Length" "Minor_Axis_Length" "Eccentricity" "Convex_Area" "Extent" "Class" -->
+
+```{r include = FALSE}
+library("DAAG")
+library("crossval")
+library("verification")
+library("RWeka")
+source("utils.R")
+
+db <- read.csv(
+    "Rice_3.txt",
+    sep = " ",
+    dec = ".",
+    quote = "\"",
+    header = TRUE,
+)
+
+db <- db[c("Class", "Perimeter", "Major_Axis_Length", "Minor_Axis_Length", "Convex_Area", "Extent")]
+db$Class <- factor(db$Class)
+```
+
+```{r, echo = FALSE, fig.height=6, out.width="100%"}
+head(db)
+plot.pairs(db)
+```
+
+`Perimeter`, `Major_Axis_Length` e `Convex_Area` sono interessanti sia visivamente che secondo gli indici di correlazione `\rho` che spearman. La variabile di risposta `Class` è binaria quindi procedo con una regressione logistica.
+
+### Confusion matrix
+
+```{r}
+mod <- glm(Class ~ Major_Axis_Length, family = binomial, data = db)
+mod.cs <- classifier.summary(as.numeric(db[, "Class"]) - 1, as.numeric(fitted(mod) > 0.5))
+mod.cs
+# head(db[, !(names(df) %in% c("Class"))])
+```
+
+### ROC plot
+
+The curve is created by plotting the true positive rate (sensitivity) against the false positive rate (1−specificity) at various threshold settings. The area under the curve is viewed as a measure of classification accuracy.
+
+```{r}
+roc.plot(as.numeric(db[, "Class"]) - 1, fitted(mod),
+    xlab = "false positive rate = 1-true negative rate", ylab = "true positive rate"
+)
+segments(1 - mod.cs$de[3], -0.05, 1 - mod.cs$de[3], mod.cs$de[2], lty = 2, col = 2, lwd = 2)
+segments(-0.05, mod.cs$de[2], 1 - mod.cs$de[3], mod.cs$de[2], lty = 2, col = 2, lwd = 2)
+```
+
+### LDA
+
+The LDA procedure can be developed in R using the function `lda` of the library `MASS`. The main arguments are similar to those of function `glm` and the output is an object of class `lda`, which may be considered as argument of the predict function, in order to obtain the posterior probabilities of the two labels, for the considered data set
+
+```{r}
+z <- lda(Class ~ Major_Axis_Length + Perimeter + Convex_Area, data = db)
+prob.lda <- predict(z)$posterior[, 2]
+
+summary(z)
+plot(z)
+```
+
+### kNN
+
+Using the functions of the library RWeka, it is possible to apply the kNN method in order to obtain alternative estimates for the posterior probabilities.
+
+In particular, we consider the function `IBk`, which provides a kNN classifier. The main arguments are similar to those of function `glm`, whereas the argument control gives the options to be passed to the Weka learner.
+
+In this case, RWeka automatically find the best value for `k`, between 1 and 20, obtained using a leave-one-out cross-validation procedure.
+
+Finally, using function `predict`, we obtain the posterior probabilities of the two labels.
+
+```{r}
+classifier <- IBk(Class ~ Major_Axis_Length + Perimeter + Convex_Area,
+    data = db,
+    control = Weka_control(K = 20, X = TRUE)
+) # selects K with CV n
+prob.knn <- predict(classifier, type = "probability")[, 2]
+```
+
+The verify function, of the library verification, is used to compute verification statistics and skill scores for the three classification solutions. The arguments are the binary observations and the prediction probabilities, and the output is an object of class verify, which may be considered as the argument of function `roc.plot`.
+
+Then, the three classifiers are compared by considering the ROC curve representation, where the `roc.lines` function adds the **LDA** (in red) and the **kNN** (in blue) specific ROC curves to the plot with the curve related to the logistic model (in black).
+
+The kNN classification procedure presents the best classification accuracy. 
+
+```{r, out.width="100%"}
+ver_mod1 <- verify(as.numeric(db[, "Class"]) - 1, fitted(mod),
+    bins = FALSE,
+    show = FALSE
+)
+ver_lda <- verify(as.numeric(db[, "Class"]) - 1, prob.lda, bins = FALSE, show = FALSE)
+ver_knn <- verify(as.numeric(db[, "Class"]) - 1, prob.knn, bins = FALSE, show = FALSE)
+roc.plot(ver_mod1,
+    xlab = "false positive rate", ylab = "true positive rate", lwd = 2,
+    show.thres = FALSE
+)
+lines.roc(ver_lda, col = 2, lwd = 2)
+lines.roc(ver_knn, col = 4, lwd = 2)
+```

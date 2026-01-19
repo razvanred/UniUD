@@ -246,6 +246,13 @@ aicbic <- function(...) {
     df
 }
 
+classifier.summary <- function(actual, predicted, negative = 0) {
+    cm <- confusionMatrix(actual, predicted, negative)
+    de <- diagnosticErrors(cm)
+    list(cm = cm, de = de)
+}
+
+
 # par(mfrow = c(2, 1))
 # y1 <- rnorm(40, mean = 30)
 # t.onesample(y1, mu = 30.1)
