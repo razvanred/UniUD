@@ -18,7 +18,7 @@ The affine subspaces $\lang S,W,+\rang$ of $A$ are the subsets in the form $S=P+
 
 ### Affine Independence
 
-The points $P_0,\ldots,P_k$ of an affine space are affinely independent if and only if, the vectors $\overrightarrow{P_0P_1},\ldots,\overrightarrow{P_0P_k}$ are linearly independent $\forall P_0\in A$.Equivalently, $k$ points in an affine space are affinely independent iff the smallest affine subspace containing them has dimension $k-1$.
+The points $P_0,\ldots,P_k$ of an affine space are affinely independent if and only if, the vectors $\overrightarrow{P_0P_1},\ldots,\overrightarrow{P_0P_k}$ are linearly independent $\forall P_0\in A$. Equivalently, $k$ points in an affine space are affinely independent iff the smallest affine subspace containing them has dimension $k-1$.
 
 * Two points are affinely independent if and only if they are distinct
 * Three points are affinely independent if and only if they are not collinear
@@ -105,7 +105,7 @@ We can use homogeneous coordinates to both implement affine transformations and 
 * point $+$ vector $=$ point
 * point $-$ point $=$ vector
 * $\alpha P+\beta Q=$ point
-* affine tranformations encoding
+* affine transformations encoding
 
 If we divide each point $(αx_1,αx_2,\ldots,α)$ by its respective $\alpha$, they get *projected* on what can be seen as an affine subspace of $\mathbb R^n$ with $x_{n+1}=1$. From the point of view of $\mathbb P^n(\mathbb R)$, nothing has changed.
 
@@ -182,19 +182,19 @@ $$
 
 The elements of a $n$ tuple $(\alpha_1:\ldots:\alpha_n)$ that satisfies this equation are called barycentric coordinates of $Q$ with respect to $P_1,\ldots,P_n$.
 
-The use of colons means that barycentric coordinates are a sort of homogeneous coordinates, the point is not changed if all coordinates are multiplied by the same nonzero constant because everything gets scaled around $O$ by the same amount. Equivalently, two coordinates refer to the same point iff they are multiples of eachother, as there's only one tuple $(\alpha_1:\ldots:\alpha_n)$ that satisfies the above equation for a given $Q$.
+The use of colons means that barycentric coordinates are a sort of homogeneous coordinates, the point is not changed if all coordinates are multiplied by the same nonzero constant because everything gets scaled around $O$ by the same amount. Equivalently, two coordinates refer to the same point iff they are multiples of each other, as there’s only one tuple $(\alpha_1:\ldots:\alpha_n)$ that satisfies the above equation for a given $Q$.
 
-For example, let's consider $n=3$ and $(\alpha_1+\alpha_2+\alpha_3)=1$. In this case, $\alpha_1\overrightarrow{OP_1}+\alpha_2\overrightarrow{OP_2}+\alpha_3\overrightarrow{OP_3}$ is an affine combination.\
-We now define an alternative representation $(0,\beta_1,\beta_2)$ for a point with non-zero barycentric coordinates $Q$, such way that the tuples are not multiple of eachother. These coordinates do not satisfy the equation $\overrightarrow{OQ}=0+\beta_2\overrightarrow{OP_2}+\beta_3\overrightarrow{OP_3}$, because $Q$, having non-zero barycentric coordinates, lies outside the line defined by the affine combination of the vertices $P_2$ and $P_3$.\
+For example, let’s consider $n=3$ and $(\alpha_1+\alpha_2+\alpha_3)=1$. In this case, $\alpha_1\overrightarrow{OP_1}+\alpha_2\overrightarrow{OP_2}+\alpha_3\overrightarrow{OP_3}$ is an affine combination.\
+We now define an alternative representation $(0,\beta_1,\beta_2)$ for a point with non-zero barycentric coordinates $Q$, such way that the tuples are not multiple of each other. These coordinates do not satisfy the equation $\overrightarrow{OQ}=0+\beta_2\overrightarrow{OP_2}+\beta_3\overrightarrow{OP_3}$, because $Q$, having non-zero barycentric coordinates, lies outside the line defined by the affine combination of the vertices $P_2$ and $P_3$.\
 We chose $0$ as the first coordinate to guarantee it to not be a multiple of the solution $(\alpha_1:\alpha_2:\alpha_3)$, but it holds true for all non-multiples. Also remember that $(\alpha_1+\alpha_2+\alpha_3)=k$ is just an uniform scaling of factor $k$.
 
 Moreover, the barycentric coordinates are also not changed if the origin point $O$ is changed:
 
 $$
-(\alpha_1+\cdots+\alpha_n)\overrightarrow{O'Q'}=\alpha_1\overrightarrow{O'P_1}+\cdots+\alpha_n\overrightarrow{O'P_n}\;\implies\\[6pt]
-(\alpha_1+\cdots+\alpha_n)(\overrightarrow{O'Q'}-\overrightarrow{OQ})=\alpha_1(\overrightarrow{O'P_1}-\overrightarrow{OP_1})+\cdots+\alpha_n(\overrightarrow{O'P_n}-\overrightarrow{O'P_n})\\
-=(\alpha_1+\cdots+\alpha_n)\overrightarrow{O'O}\;\implies\\[6pt]
-\overrightarrow{O'Q'}=\overrightarrow{O'O}+\overrightarrow{OQ}=\overrightarrow{O'Q},\quad Q'=Q
+(\alpha_1+\cdots+\alpha_n)\overrightarrow{O’Q’}=\alpha_1\overrightarrow{O’P_1}+\cdots+\alpha_n\overrightarrow{O’P_n}\;\implies\\[6pt]
+(\alpha_1+\cdots+\alpha_n)(\overrightarrow{O’Q’}-\overrightarrow{OQ})=\alpha_1(\overrightarrow{O’P_1}-\overrightarrow{OP_1})+\cdots+\alpha_n(\overrightarrow{O’P_n}-\overrightarrow{O’P_n})\\
+=(\alpha_1+\cdots+\alpha_n)\overrightarrow{O’O}\;\implies\\[6pt]
+\overrightarrow{O’Q’}=\overrightarrow{O’O}+\overrightarrow{OQ}=\overrightarrow{O’Q},\quad Q’=Q
 $$
 
 Intuitively, the influence (in blue) of each $\overrightarrow{OP_i}$ vector is proportional to its length.
@@ -205,7 +205,7 @@ The convex combination of $P_1,\ldots,P_n$ (all the points with nonnegative bary
 ### Normalized barycentric coordinates
 
 In our context it is useful to constrain the barycentric coordinates of a point so that they are unique. This is achieved by dividing every $\alpha_i$ by the sum of all $\alpha_i$. These specific barycentric coordinates are called *normalized*.
-In our case, normalized barycentric coordinates are called barycentric coordinates. The above defined coordinates are called "homogeneous barycentric coordinates".
+In our case, normalized barycentric coordinates are called barycentric coordinates. The above defined coordinates are called “homogeneous barycentric coordinates”.
 
 For $n=3$, normalized barycentric coordinates measure the signed areas of the subtriangles around $Q$.
 
@@ -213,7 +213,7 @@ For $n=3$, normalized barycentric coordinates measure the signed areas of the su
 
 ## Adjugate (adjoint) matrix
 
-We can compute the cofactors of a square matrix $A$ using Cramer's rule:
+We can compute the cofactors of a square matrix $A$ using Cramer’s rule:
 
 $$
 C=

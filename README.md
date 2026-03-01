@@ -7,3 +7,4 @@
 * [Algebra Lineare](https://github.com/razvnred/UniUD/tree/master/Cavasin/algebra%20lineare)
 * [Interazione Uomo-Macchina](https://github.com/razvanred/UniUD/tree/master/Bruniera/interazione%20uomo-macchina)
 * [Interactive Computer Graphics](https://github.com/razvanred/UniUD/tree/master/Cavasin/interactive%203d%20graphics) (english, vscode/katex only)
+* [Logica e Modelli Finiti](https://github.com/razvanred/UniUD/tree/master/Cavasin/logica%20e%20modelli%20finiti) (vscode/katex only)
