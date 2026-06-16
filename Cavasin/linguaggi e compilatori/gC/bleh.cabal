@@ -24,7 +24,7 @@ synopsis: The "Basic Lookalike of E in Haskell" compiler
 -- A longer description of the package.
 -- description:
 -- URL for the project homepage or repository.
-homepage: https://github.com/LEC2024/C
+homepage: https://github.com/razvanred/UniUD/tree/master/Cavasin/linguaggi%20e%20compilatori/gC
 -- The license under which the package is released.
 license: MIT
 -- The file containing the license text.

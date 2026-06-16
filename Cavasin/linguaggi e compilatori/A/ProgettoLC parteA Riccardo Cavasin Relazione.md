@@ -57,8 +57,8 @@ Il simbolo non terminale O è stato introdotto per avere messaggi d'errore più 
 
 La grammatica riscritta è LL(1) dato che, per ogni produzione $A\rightarrow \alpha$ | $\beta$:
 
-* vale che $first(\alpha)\cap first(\beta)=\empty$
-* valgono $\epsilon\in first(\alpha)\implies first(\beta)\cap follow(A)=\empty$ e $\epsilon\in first(\beta)\implies first(\alpha)\cap follow(A)=\empty$
+* vale che $first(\alpha)\cap first(\beta)=\emptyset$
+* valgono $\epsilon\in first(\alpha)\implies first(\beta)\cap follow(A)=\emptyset$ e $\epsilon\in first(\beta)\implies first(\alpha)\cap follow(A)=\emptyset$
 
 ### Tabella di parsing
 
